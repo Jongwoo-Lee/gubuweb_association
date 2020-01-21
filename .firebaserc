@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "gubuapp"
+  },
+  "targets": {
+    "gubuapp": {
+      "hosting": {
+        "asc": [
+          "asc-bf848"
+        ]
+      }
+    }
+  }
+}
