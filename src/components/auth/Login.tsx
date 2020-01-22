@@ -1,6 +1,10 @@
-import * as React from "react";
+import React, { useState } from "react";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import Firebase from "../../helpers/Firebase";
+import { useInput } from "../../hooks";
 
 import { AUTH } from "../../constants/texts";
+import * as ROUTES from "../../constants/routes";
 
 //Material UI
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -62,17 +66,54 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface LoginProps {}
+interface LoginProps extends RouteComponentProps {}
 
-export const Login: React.SFC<LoginProps> = () => {
+const LoginForm: React.SFC<LoginProps> = ({ history }) => {
   const classes = useStyles();
+
+  const {
+    value: email,
+    setValue: setEmail,
+    onChange: emailChange
+  } = useInput();
+
+  const {
+    value: password,
+    setValue: setPassword,
+    onChange: passwordChange
+  } = useInput();
+
+  const [error, setError] = useState<firebase.auth.Error>({
+    code: "",
+    message: ""
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    let persistence: Promise<void>;
+    persistence = Firebase.auth.setPersistence(Firebase.persistence.SESSION);
+    persistence
+      .then(() => {
+        Firebase.fireLogin(email.value, password.value)
+          .then(user => {
+            setEmail({ ...email, value: "" });
+            setPassword({ ...password, value: "" });
+            // history.push(ROUTES.HOME);
+          })
+          .catch(err => setError(err));
+      })
+      .catch(err => {
+        setError(err);
+      });
+  };
 
   return (
     <div className={classes.main}>
       <Typography color="textPrimary" variant="h4" className={classes.title}>
         관리자 로그인
       </Typography>
-      <form className={classes.form} noValidate>
+      <form className={classes.form} onSubmit={handleSubmit} noValidate>
         <FormControl
           margin="normal"
           // error={email.error.length > 0}
@@ -82,8 +123,8 @@ export const Login: React.SFC<LoginProps> = () => {
           <Input
             id="email"
             name="email"
-            // value={email.value}
-            // onChange={emailChange}
+            value={email.value}
+            onChange={emailChange}
             autoComplete="email"
             autoFocus
             aria-describedby="component-loginemail-text"
@@ -102,8 +143,8 @@ export const Login: React.SFC<LoginProps> = () => {
             name="password"
             type="password"
             id="password"
-            // value={password.value}
-            // onChange={passwordChange}
+            value={password.value}
+            onChange={passwordChange}
             autoComplete="current-password"
             aria-describedby="component-loginpassword-text"
           />
@@ -125,3 +166,5 @@ export const Login: React.SFC<LoginProps> = () => {
     </div>
   );
 };
+
+export const Login = withRouter(LoginForm);

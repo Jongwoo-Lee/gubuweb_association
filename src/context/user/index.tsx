@@ -1,29 +1,30 @@
 // React
 import React from "react";
+import { FirebaseAuth } from "../../helpers/Firebase";
 import { useFirebaseAuth } from "../../hooks";
 
-export const AuthUserContext: React.Context<any> = React.createContext(null);
+export const AuthUserContext: React.Context<FirebaseAuth> = React.createContext<
+  FirebaseAuth
+>(null);
 
-const AuthContextProvider = (props: { children: React.ReactNode }) => {
+export const AuthContextProvider = (props: { children: React.ReactNode }) => {
   const authUser = useFirebaseAuth();
 
   return (
-    <AuthUserContext.Provider value={{ authUser }}>
+    <AuthUserContext.Provider value={authUser}>
       {props.children}
     </AuthUserContext.Provider>
   );
 };
 
-export default AuthContextProvider;
-
-// const [authUser, setAuthUser] = useState<firebase.User | null>(() => {
+// const [authUser, setAuthUser] = useState<FirebaseAuth>(() => {
 //   const localUser = localStorage.getItem("authUser");
 //   if (typeof localUser === "string") return JSON.parse(localUser);
 // });
 
 // useEffect(() => {
 //   const listener = Firebase.auth.onAuthStateChanged(
-//     (user: firebase.User | null) => {
+//     (user: FirebaseAuth) => {
 //       if (user !== null) {
 //         localStorage.setItem("authUser", JSON.stringify(user));
 //         setAuthUser(user);

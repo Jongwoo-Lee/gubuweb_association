@@ -26,6 +26,8 @@ const devConfig = {
 // TODO_JW: Prod config 추가
 const config = process.env.NODE_ENV === "production" ? devConfig : devConfig;
 
+export type FirebaseAuth = firebase.User | null;
+
 class Firebase {
   static auth: app.auth.Auth;
   static firestore: app.firestore.Firestore;

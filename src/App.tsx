@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 // Context
-import AuthContextProvider from "./context/user";
+import { AuthContextProvider } from "./context/user";
 
 // Constants, Hooks, Interfaces
 import * as ROUTES from "./constants/routes";
