@@ -1,21 +1,18 @@
 import React from "react";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Firebase from "./functions/Firebase";
 
 // Context
-import AuthContextProvider from "./context/User/auth";
+import AuthContextProvider from "./context/user";
 
 // Constants, Hooks, Interfaces
 import * as ROUTES from "./constants/routes";
 
 // Components
-import Navbar from "./components/layout/Navbar";
-import Login from "./components/auth/Login";
+import { Navbar } from "./components/layout/Navbar";
+import { Login } from "./components/auth/Login";
 
-Firebase.init();
-
-const App: React.FC = () => {
+export const App: React.FC = () => {
   return (
     <div className="App">
       <AuthContextProvider>
@@ -27,5 +24,3 @@ const App: React.FC = () => {
     </div>
   );
 };
-
-export default App;

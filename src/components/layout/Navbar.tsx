@@ -6,10 +6,7 @@ import logoText from "../../images/logo_text.png";
 
 //Material UI
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import { Toolbar, AppBar, Grid, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Navbar = () => {
+export const Navbar = () => {
   const classes = useStyles({});
   return (
     <div>
@@ -53,5 +50,3 @@ const Navbar = () => {
     </div>
   );
 };
-
-export default Navbar;

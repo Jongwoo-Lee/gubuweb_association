@@ -1,3 +1,4 @@
+// React
 import app, { auth } from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
