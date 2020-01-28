@@ -1,28 +1,38 @@
-// Home
-export const LANDING = "/";
-export const HOME = "/home";
+export const ROUTES = {
+  // Home
+  LANDING: "/",
+  HOME: "/home",
 
-// Auth
-export const REGISTER = "/register";
-export const LOGIN = "/login";
-export const ACCOUNT = "/account";
-export const ADMIN = "/admin";
-export const PASSWORD_FORGET = "/pw-forget";
-export const USERINFO = "/user-info";
-export const TEAMINFO = "/team-info";
+  // Auth
+  REGISTER: "/register",
+  LOGIN: "/login",
+  ACCOUNT: "/account",
+  ADMIN: "/admin",
+  PASSWORD_FORGET: "/pw-forget",
+  USERINFO: "/user-info",
+  TEAMINFO: "/team-info",
 
-// Posts
-export const POSTS = "/posts";
-export const POST = "/post";
-export const EDIT = "/edit";
-export const CREATEPOST = "/createpost";
+  // Posts
+  POSTS: "/posts",
+  POST: "/post",
+  EDIT: "/edit",
+  CREATEPOST: "/createpost",
 
-// etc
-export const LEGAL = "/legal";
-export const TERMS = "/terms";
-export const PRIVACY = "/privacy";
+  // etc
+  LEGAL: "/legal",
+  TERMS: "/terms",
+  PRIVACY: "/privacy",
 
-// Chat
-export const CHATROOM = "/chatroom";
+  // Chat
+  CHATROOM: "/chatroom",
 
-export const IDPARAM = "/:id";
+  IDPARAM: "/:id"
+};
+
+export const ROUTENAMES = {
+  HOME: "홈페이지",
+  USERINFO: "사용자 정보",
+  POSTS: "글",
+  CHATROOM: "채팅방",
+  TEAMINFO: "팀 정보"
+};

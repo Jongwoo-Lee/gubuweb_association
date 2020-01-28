@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { AuthContextProvider } from "./context/user";
 
 // Constants, Hooks, Interfaces
-import * as ROUTES from "./constants/routes";
+import { ROUTES } from "./constants/routes";
 
 // Components
 import { Navbar } from "./components/layout/Navbar";
@@ -23,8 +23,6 @@ export const App: React.FC = () => {
           <Navbar />
           <Router>
             <Route exact path={ROUTES.LANDING} component={Login} />
-          </Router>
-          <Router>
             <Route exact path={ROUTES.REGISTER} component={Register} />
           </Router>
         </AuthContextProvider>

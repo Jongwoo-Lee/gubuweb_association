@@ -4,7 +4,15 @@ export const CONTENTS = "contents";
 
 export const COL_USERS = {
   USERS: "users",
-  ASSOC: "association"
+  ASSOC: "asc"
+};
+
+export const COL_ASC = {
+  ASSOC: "asc",
+  EMAIL: "e",
+  DISPLAYNAME: "n",
+  PHONENUMBER: "p",
+  ISVERIFIED: "iv"
 };
 
 export const COL_TEAMS = {

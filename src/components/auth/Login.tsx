@@ -4,7 +4,7 @@ import Firebase from "../../helpers/Firebase";
 import { useInput } from "../../hooks";
 
 import { AUTH } from "../../constants/texts";
-import * as ROUTES from "../../constants/routes";
+import { ROUTES } from "../../constants/routes";
 
 //Material UI
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -16,11 +16,10 @@ import {
   Input,
   InputLabel
 } from "@material-ui/core";
-import blue from "@material-ui/core/colors/blue";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    main: {
+    login: {
       display: "flex",
       flexDirection: "column",
       width: "40vw",
@@ -77,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface LoginProps extends RouteComponentProps {}
 
-const LoginForm: React.SFC<LoginProps> = ({ history }) => {
+const LoginComponent: React.SFC<LoginProps> = ({ history }) => {
   const classes = useStyles();
 
   const {
@@ -124,7 +123,7 @@ const LoginForm: React.SFC<LoginProps> = ({ history }) => {
   };
 
   return (
-    <div className={classes.main}>
+    <div className={classes.login}>
       <Typography color="textPrimary" variant="h4" className={classes.title}>
         대회 관리자 로그인
       </Typography>
@@ -138,6 +137,7 @@ const LoginForm: React.SFC<LoginProps> = ({ history }) => {
           <Input
             id="email"
             name="email"
+            type="email"
             value={email.value}
             onChange={emailChange}
             autoComplete="email"
@@ -189,4 +189,4 @@ const LoginForm: React.SFC<LoginProps> = ({ history }) => {
   );
 };
 
-export const Login = withRouter(LoginForm);
+export const Login = withRouter(LoginComponent);

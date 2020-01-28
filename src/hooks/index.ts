@@ -12,6 +12,7 @@ export const useFirebaseAuth = () => {
   useEffect(() => {
     const listener = Firebase.auth.onAuthStateChanged((user: FirebaseAuth) => {
       if (user !== null) {
+        console.log("GUBU firebase user: " + user.email);
         localStorage.setItem(AUTHUSER, JSON.stringify(user));
         setAuthUser(user);
       } else {
