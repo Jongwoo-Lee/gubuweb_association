@@ -21,29 +21,31 @@ import blue from "@material-ui/core/colors/blue";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     main: {
+      display: "flex",
+      flexDirection: "column",
+      width: "40vw",
+      alignItems: "center",
+      textAlign: "center",
+
       marginTop: "10vh",
-      [theme.breakpoints.down("xs")]: {
-        marginTop: "5vw"
+      marginLeft: "auto",
+      marginRight: "auto",
+
+      [theme.breakpoints.down("sm")]: {
+        width: "80vw"
       },
-      display: "grid",
-      justifyContent: "center",
-      textAlign: "center"
+      [theme.breakpoints.down("xs")]: {
+        marginTop: "5vw",
+        width: "90vw"
+      }
     },
     title: {
       width: "100%", // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-      gridColumnStart: 1,
-      gridColumnEnd: 4,
-      gridRowStart: 1,
-      gridRowEnd: 2
+      marginTop: theme.spacing(1)
     },
     form: {
       width: "100%", // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-      gridColumnStart: 1,
-      gridColumnEnd: 4,
-      gridRowStart: 3,
-      gridRowEnd: 4
+      marginTop: theme.spacing(1)
     },
     formControl: {
       width: "90%",
@@ -51,16 +53,23 @@ const useStyles = makeStyles((theme: Theme) =>
         width: "70vw"
       }
     },
-    submit: {
-      color: "white",
-      backgroundColor: blue.A100,
-      "&:hover": {
-        backgroundColor: blue.A200
-      },
-      width: "30em",
+    register: {
       marginTop: theme.spacing(2),
+      width: "30em",
       [theme.breakpoints.down("xs")]: {
         width: "70vw"
+      }
+    },
+    submit: {
+      marginTop: theme.spacing(2),
+      width: "30em",
+      [theme.breakpoints.down("xs")]: {
+        width: "70vw"
+      },
+      color: "white",
+      backgroundColor: theme.palette.primary.light,
+      "&:hover": {
+        backgroundColor: theme.palette.primary.main
       }
     }
   })
@@ -108,10 +117,16 @@ const LoginForm: React.SFC<LoginProps> = ({ history }) => {
       });
   };
 
+  const handleRegister = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    history.push(ROUTES.REGISTER);
+  };
+
   return (
     <div className={classes.main}>
       <Typography color="textPrimary" variant="h4" className={classes.title}>
-        관리자 로그인
+        대회 관리자 로그인
       </Typography>
       <form className={classes.form} onSubmit={handleSubmit} noValidate>
         <FormControl
@@ -127,9 +142,9 @@ const LoginForm: React.SFC<LoginProps> = ({ history }) => {
             onChange={emailChange}
             autoComplete="email"
             autoFocus
-            aria-describedby="component-loginemail-text"
+            aria-describedby="component-login-email-text"
           />
-          <FormHelperText id="component-loginemail-text">
+          <FormHelperText id="component-login-email-text">
             {/* {email.error.length > 0 && email.error} */}
           </FormHelperText>
         </FormControl>
@@ -146,23 +161,30 @@ const LoginForm: React.SFC<LoginProps> = ({ history }) => {
             value={password.value}
             onChange={passwordChange}
             autoComplete="current-password"
-            aria-describedby="component-loginpassword-text"
+            aria-describedby="component-login-password-text"
           />
-          <FormHelperText id="component-loginpassword-text">
+          <FormHelperText id="component-login-password-text">
             {/* {password.error.length > 0 && password.error} */}
           </FormHelperText>
         </FormControl>
         <Fab
           variant="extended"
           type="submit"
-          color="primary"
+          aria-label="login"
           className={classes.submit}
         >
           {AUTH.LOGIN}
         </Fab>
       </form>
-
-      {/* <Snackbar error={error} /> */}
+      <Fab
+        variant="extended"
+        aria-label="register"
+        color="secondary"
+        className={classes.register}
+        onClick={handleRegister}
+      >
+        {AUTH.REGISTER}
+      </Fab>
     </div>
   );
 };
