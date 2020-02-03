@@ -14,7 +14,8 @@ import {
   FormControl,
   FormHelperText,
   Input,
-  InputLabel
+  InputLabel,
+  Snackbar
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -107,7 +108,7 @@ const LoginComponent: React.SFC<LoginProps> = ({ history }) => {
           .then(user => {
             setEmail({ ...email, value: "" });
             setPassword({ ...password, value: "" });
-            // history.push(ROUTES.HOME);
+            history.push(ROUTES.HOME);
           })
           .catch(err => setError(err));
       })
@@ -120,6 +121,10 @@ const LoginComponent: React.SFC<LoginProps> = ({ history }) => {
     e.preventDefault();
 
     history.push(ROUTES.REGISTER);
+  };
+
+  const handleErrorClose = () => {
+    setError({ code: "", message: "" });
   };
 
   return (
@@ -187,6 +192,12 @@ const LoginComponent: React.SFC<LoginProps> = ({ history }) => {
       >
         {AUTH.REGISTER}
       </Fab>
+      <Snackbar
+        open={error?.message !== ""}
+        message={error?.message}
+        autoHideDuration={6000}
+        onClose={handleErrorClose}
+      />
     </div>
   );
 };
