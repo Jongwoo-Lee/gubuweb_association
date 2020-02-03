@@ -130,7 +130,7 @@ const LoginComponent: React.SFC<LoginProps> = ({ history }) => {
       <form className={classes.form} onSubmit={handleSubmit} noValidate>
         <FormControl
           margin="normal"
-          // error={email.error.length > 0}
+          error={email.error !== undefined && email.error.length > 0}
           className={classes.formControl}
         >
           <InputLabel htmlFor="email">{AUTH.EMAIL}</InputLabel>
@@ -145,12 +145,12 @@ const LoginComponent: React.SFC<LoginProps> = ({ history }) => {
             aria-describedby="component-login-email-text"
           />
           <FormHelperText id="component-login-email-text">
-            {/* {email.error.length > 0 && email.error} */}
+            {email.error !== undefined && email.error.length > 0 && email.error}
           </FormHelperText>
         </FormControl>
         <FormControl
           margin="normal"
-          // error={password.error !== ""}
+          error={password.error !== ""}
           className={classes.formControl}
         >
           <InputLabel htmlFor="password">{AUTH.PASSWORD}</InputLabel>
@@ -164,7 +164,9 @@ const LoginComponent: React.SFC<LoginProps> = ({ history }) => {
             aria-describedby="component-login-password-text"
           />
           <FormHelperText id="component-login-password-text">
-            {/* {password.error.length > 0 && password.error} */}
+            {password.error !== undefined &&
+              password.error.length > 0 &&
+              password.error}
           </FormHelperText>
         </FormControl>
         <Fab

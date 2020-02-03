@@ -3,7 +3,7 @@ import app, { auth } from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-import { COL_ASC } from "../../constants/firestore";
+import { Association, setAscData } from "./asc";
 
 const devConfig = {
   apiKey: process.env.REACT_APP_DEV_API_KEY,
@@ -26,7 +26,9 @@ const prodConfig = {
 // TODO_JW: Prod config 추가
 const config = process.env.NODE_ENV === "production" ? prodConfig : devConfig;
 
+// Firebase Type, Interface Definition
 export type FirebaseAuth = firebase.User | null;
+export type FirebaseAsc = Association | null;
 
 class Firebase {
   static auth: app.auth.Auth;
@@ -64,18 +66,9 @@ class Firebase {
           });
         }
 
-        userUpdate = Firebase.firestore
-          .collection(COL_ASC.ASSOC)
-          .doc(user.uid)
-          .set({
-            [COL_ASC.EMAIL]: user.email,
-            [COL_ASC.DISPLAYNAME]: username, // display name
-            [COL_ASC.PHONENUMBER]: phoneNumber, // phone number
-            [COL_ASC.ISVERIFIED]: false // is verified
-          })
-          .catch(err => {
-            throw err;
-          });
+        userUpdate = setAscData(
+          new Association(user.uid, username, email, false, phoneNumber)
+        );
 
         return Promise.all([nameUpdate, userUpdate]);
       })

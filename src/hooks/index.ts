@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import Firebase, { FirebaseAuth } from "../helpers/Firebase";
+import Firebase, { FirebaseAuth, FirebaseAsc } from "../helpers/Firebase";
 import { AUTHUSER } from "../constants/local";
+import { getAscData } from "../helpers/Firebase/asc";
 
 export const useFirebaseAuth = () => {
   const [authUser, setAuthUser] = useState<FirebaseAuth>(() => {
@@ -47,4 +48,20 @@ export const useInput = () => {
       setValue({ ...value, value: event.target.value, error: "" });
     }
   };
+};
+
+export const useAssociation = (ascID: string | undefined) => {
+  const [ascData, setAscData] = useState<FirebaseAsc>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (ascID === undefined) return;
+      const result = await getAscData(ascID);
+      setAscData(result);
+    };
+
+    fetchData();
+  }, [ascID]);
+
+  return ascData;
 };
