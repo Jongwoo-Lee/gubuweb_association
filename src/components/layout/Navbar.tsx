@@ -19,6 +19,7 @@ import { useAssociationValue } from "../../context/user";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
+      zIndex: theme.zIndex.drawer + 1,
       backgroundColor: "white",
 
       paddingLeft: "8vw",
@@ -33,7 +34,8 @@ const useStyles = makeStyles((theme: Theme) =>
     asc: {
       display: "flex",
       flexShrink: 0
-    }
+    },
+    toolbar: theme.mixins.toolbar
   })
 );
 

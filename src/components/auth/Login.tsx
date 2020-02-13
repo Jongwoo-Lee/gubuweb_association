@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Firebase from "../../helpers/Firebase";
 import { useInput } from "../../hooks";
 
@@ -75,10 +75,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface LoginProps extends RouteComponentProps {}
+interface LoginProps {}
 
-const LoginComponent: React.SFC<LoginProps> = ({ history }) => {
+export const Login: React.SFC<LoginProps> = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const {
     value: email,
@@ -201,5 +202,3 @@ const LoginComponent: React.SFC<LoginProps> = ({ history }) => {
     </div>
   );
 };
-
-export const Login = withRouter(LoginComponent);

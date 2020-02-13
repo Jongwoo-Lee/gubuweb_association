@@ -1,7 +1,7 @@
 import React from "react";
 import Firebase from "../../helpers/Firebase";
 import validator from "validator";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useInput } from "../../hooks";
 
 import { AUTH, TEXTINPUT, ERROR } from "../../constants/texts";
@@ -61,10 +61,11 @@ const useStyles = makeStyles((theme: Theme) => {
   });
 });
 
-interface RegisterProps extends RouteComponentProps {}
+interface RegisterProps {}
 
-const RegisterComponent: React.SFC<RegisterProps> = ({ history }) => {
+export const Register: React.SFC<RegisterProps> = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const {
     value: ascName,
@@ -261,5 +262,3 @@ const RegisterComponent: React.SFC<RegisterProps> = ({ history }) => {
     </div>
   );
 };
-
-export const Register = withRouter(RegisterComponent);

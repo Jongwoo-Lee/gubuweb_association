@@ -36,3 +36,5 @@ export const ROUTENAMES = {
   CHATROOM: "채팅방",
   TEAMINFO: "팀 정보"
 };
+
+export const MENU = ["대회 관리", "팀 / 선수 관리", "연맹 정보 관리"];
