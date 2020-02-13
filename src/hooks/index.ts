@@ -55,9 +55,12 @@ export const useAssociation = (ascID: string | undefined) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (ascID === undefined) return;
-      const result = await getAscData(ascID);
-      setAscData(result);
+      if (ascID === undefined) {
+        setAscData(null);
+      } else {
+        const result = await getAscData(ascID);
+        setAscData(result);
+      }
     };
 
     fetchData();
