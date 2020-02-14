@@ -23,20 +23,16 @@ const useStyles = makeStyles((theme: Theme) =>
     login: {
       display: "flex",
       flexDirection: "column",
-      width: "40vw",
+      width: "100%",
       alignItems: "center",
       textAlign: "center",
 
       marginTop: "10vh",
-      marginLeft: "auto",
-      marginRight: "auto",
-
-      [theme.breakpoints.down("sm")]: {
-        width: "80vw"
+      [theme.breakpoints.up("md")]: {
+        width: "60vw"
       },
-      [theme.breakpoints.down("xs")]: {
-        marginTop: "5vw",
-        width: "90vw"
+      [theme.breakpoints.up("lg")]: {
+        width: "40vw"
       }
     },
     title: {

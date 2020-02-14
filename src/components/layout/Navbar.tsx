@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: theme.zIndex.drawer + 1,
       backgroundColor: "white",
 
+      width: "100vw",
+
       paddingLeft: "8vw",
       [theme.breakpoints.down("sm")]: {
         paddingLeft: "4vw"
@@ -34,8 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
     asc: {
       display: "flex",
       flexShrink: 0
-    },
-    toolbar: theme.mixins.toolbar
+    }
   })
 );
 

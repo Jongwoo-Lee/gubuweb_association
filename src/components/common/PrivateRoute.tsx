@@ -33,20 +33,10 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = props => {
     props.path === ROUTES.ACCOUNT ||
     (ascData && ascData.isVerified)
   ) {
-    return (
-      <div className={classes.private}>
-        <Menubar />
-        <Route {...props} />
-      </div>
-    );
+    return <Route {...props} />;
   } else {
     const renderComponent = () => <Redirect to={{ pathname: ROUTES.HOME }} />;
-    return (
-      <div className={classes.private}>
-        <Menubar />
-        <Route {...props} component={renderComponent} render={undefined} />
-      </div>
-    );
+    return <Route {...props} component={renderComponent} render={undefined} />;
   }
 };
 

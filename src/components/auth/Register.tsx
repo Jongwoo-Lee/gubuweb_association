@@ -21,19 +21,16 @@ const useStyles = makeStyles((theme: Theme) => {
     register: {
       display: "flex",
       flexDirection: "column",
-      width: "40vw",
+      width: "100%",
       alignItems: "center",
       textAlign: "center",
 
       marginTop: "3em",
-      marginLeft: "auto",
-      marginRight: "auto",
 
-      [theme.breakpoints.down("sm")]: {
-        width: "80vw"
-      },
-      [theme.breakpoints.down("xs")]: {
-        width: "90vw"
+      [theme.breakpoints.up("lg")]: {
+        width: "40vw",
+        marginLeft: "auto",
+        marginRight: "auto"
       }
     },
     form: {

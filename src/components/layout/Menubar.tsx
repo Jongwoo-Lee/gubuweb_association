@@ -18,8 +18,7 @@ export interface MenubarProps {}
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     menubar: {
-      width: 240,
-      flexShrink: 0
+      width: "100%"
     },
     toolbar: theme.mixins.toolbar
   })
@@ -67,7 +66,7 @@ export const Menubar: React.SFC<MenubarProps> = () => {
     return (
       <List>
         {MENU.map((text, index) => (
-          <MenubarItem text={text} index={index} />
+          <MenubarItem text={text} index={index} key={text} />
         ))}
       </List>
     );
@@ -76,8 +75,8 @@ export const Menubar: React.SFC<MenubarProps> = () => {
   const HideMenu: React.SFC = () => {
     return (
       <List>
-        <MenubarItem text={MENU[0]} index={0} />
-        <MenubarItem text={MENU[3]} index={3} />
+        <MenubarItem text={MENU[0]} index={0} key={MENU[0]} />
+        <MenubarItem text={MENU[3]} index={3} key={MENU[3]} />
       </List>
     );
   };
