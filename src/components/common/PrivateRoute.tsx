@@ -1,25 +1,13 @@
 // React
 import React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-
-// Constants, Hooks, Interfaces
 import { ROUTES } from "../../constants/routes";
 import { useAuthUserValue, useAssociationValue } from "../../context/user";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Menubar } from "../layout/Menubar";
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    private: {
-      display: "flex"
-    }
-  });
-});
 
 interface PrivateRouteProps extends RouteProps {}
 
 // 로그인이 안되어있으면 landing 으로 이동
 export const PrivateRoute: React.FC<PrivateRouteProps> = props => {
-  const classes = useStyles();
   const authUser = useAuthUserValue();
   const ascData = useAssociationValue();
 
