@@ -1,7 +1,7 @@
 import React from "react";
 import { useAssociationValue } from "../context/user";
 import { SquareButton } from "./common/SquareButton";
-import { ROUTES } from "../constants/routes";
+import { ROUTES, ROUTENAMES } from "../constants/routes";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Trophy from "../images/trophy_on.svg";
@@ -15,11 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
-      flexDirection: "column",
-      marginTop: "40px",
-      [theme.breakpoints.down("sm")]: {
-        alignItems: "center"
-      }
+      flexDirection: "column"
     },
     cards: {
       display: "flex",
@@ -36,20 +32,22 @@ export const Home: React.SFC<HomeProps> = () => {
   const Verified = () => {
     return (
       <div className={classes.root}>
-        <Typography variant="h3">시작 페이지</Typography>
+        <Typography style={{ marginLeft: "40px" }} variant="h4">
+          {ROUTENAMES.HOMESCREEN}
+        </Typography>
         <div className={classes.cards}>
           <SquareButton
-            title="대회 관리"
+            title={ROUTENAMES.CONTEST}
             route={ROUTES.CONTEST}
             imgSrc={Trophy}
           />
           <SquareButton
-            title="팀 / 선수 관리"
+            title={ROUTENAMES.ROSTER}
             route={ROUTES.ROSTER}
             imgSrc={Team}
           />
           <SquareButton
-            title="연맹 정보 관리"
+            title={ROUTENAMES.ACCOUNT}
             route={ROUTES.ACCOUNT}
             imgSrc={Setting}
           />

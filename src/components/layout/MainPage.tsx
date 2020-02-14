@@ -25,7 +25,7 @@ export const MainPage: React.SFC<MainPageProps> = () => {
             <Menubar />
           </Grid>
         </Hidden>
-        <Grid item sm={8} md={6}>
+        <Grid item sm={8} md={6} style={{ margin: "30px auto" }}>
           <PublicRoute exact path={ROUTES.LANDING} component={Login} />
           <PublicRoute exact path={ROUTES.REGISTER} component={Register} />
           <PrivateRoute exact path={ROUTES.HOME} component={Home} />

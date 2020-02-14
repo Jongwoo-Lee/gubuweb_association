@@ -8,7 +8,7 @@ import {
   Typography
 } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { MENU, ROUTES } from "../../constants/routes";
+import { ROUTES, ROUTENAMES } from "../../constants/routes";
 import { useAuthUserValue, useAssociationValue } from "../../context/user";
 import Firebase from "../../helpers/Firebase";
 import { useLocation, useHistory } from "react-router-dom";
@@ -35,25 +35,25 @@ export const Menubar: React.SFC<MenubarProps> = () => {
     Firebase.fireLogout();
   };
 
-  const handleMenuClick = (e: React.MouseEvent, index: number) => {
+  const handleMenuClick = (e: React.MouseEvent, text: string) => {
     e.preventDefault();
-    if (checkRoute() === index) {
-    } else if (index === 0) {
+    if (checkRoute() === text) {
+    } else if (text === ROUTENAMES.HOME) {
       history.push(ROUTES.HOME);
-    } else if (index === 3) {
+    } else if (text === ROUTENAMES.ACCOUNT) {
       history.push(ROUTES.ACCOUNT);
     } else if (ascData && ascData.isVerified) {
-      switch (index) {
-        case 0:
+      switch (text) {
+        case ROUTENAMES.HOME:
           history.push(ROUTES.HOME);
           break;
-        case 1:
+        case ROUTENAMES.CONTEST:
           history.push(ROUTES.CONTEST);
           break;
-        case 2:
+        case ROUTENAMES.ROSTER:
           history.push(ROUTES.ROSTER);
           break;
-        case 3:
+        case ROUTENAMES.ACCOUNT:
           history.push(ROUTES.ACCOUNT);
           break;
         default:
@@ -65,9 +65,10 @@ export const Menubar: React.SFC<MenubarProps> = () => {
   const UserMenu: React.SFC = () => {
     return (
       <List>
-        {MENU.map((text, index) => (
-          <MenubarItem text={text} index={index} key={text} />
-        ))}
+        <MenubarItem text={ROUTENAMES.HOME} key={ROUTENAMES.HOME} />
+        <MenubarItem text={ROUTENAMES.CONTEST} key={ROUTENAMES.CONTEST} />
+        <MenubarItem text={ROUTENAMES.ROSTER} key={ROUTENAMES.ROSTER} />
+        <MenubarItem text={ROUTENAMES.ACCOUNT} key={ROUTENAMES.ACCOUNT} />
       </List>
     );
   };
@@ -75,8 +76,8 @@ export const Menubar: React.SFC<MenubarProps> = () => {
   const HideMenu: React.SFC = () => {
     return (
       <List>
-        <MenubarItem text={MENU[0]} index={0} key={MENU[0]} />
-        <MenubarItem text={MENU[3]} index={3} key={MENU[3]} />
+        <MenubarItem text={ROUTENAMES.HOME} key={ROUTENAMES.HOME} />
+        <MenubarItem text={ROUTENAMES.ACCOUNT} key={ROUTENAMES.ACCOUNT} />
       </List>
     );
   };
@@ -94,28 +95,25 @@ export const Menubar: React.SFC<MenubarProps> = () => {
   const checkRoute = () => {
     switch (pathname) {
       case ROUTES.HOME:
-        return 0;
+        return ROUTENAMES.HOME;
       case ROUTES.CONTEST:
-        return 1;
+        return ROUTENAMES.CONTEST;
       case ROUTES.ROSTER:
-        return 2;
+        return ROUTENAMES.ROSTER;
       case ROUTES.ACCOUNT:
-        return 3;
+        return ROUTENAMES.ACCOUNT;
       default:
-        return -1;
+        return undefined;
     }
   };
 
-  const MenubarItem: React.SFC<{ text: string; index: number }> = ({
-    text,
-    index
-  }) => {
+  const MenubarItem: React.SFC<{ text: string }> = ({ text }) => {
     return (
-      <ListItem button onClick={e => handleMenuClick(e, index)} key={text}>
+      <ListItem button onClick={e => handleMenuClick(e, text)} key={text}>
         <ListItemText
           disableTypography
           primary={
-            checkRoute() === index ? (
+            checkRoute() === text ? (
               <Typography style={{ fontWeight: "bold" }}>{text}</Typography>
             ) : (
               <Typography>{text}</Typography>

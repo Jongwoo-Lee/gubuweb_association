@@ -24,6 +24,7 @@ export const ROUTES = {
 
   CHATROOM: "/chatroom",
   CONTEST: "/cup",
+  ADD_CONTEST: "/cup/add",
   ROSTER: "/roster",
   ACCOUNT: "/account",
 
@@ -31,11 +32,14 @@ export const ROUTES = {
 };
 
 export const ROUTENAMES = {
-  HOME: "홈페이지",
+  HOME: "홈",
+  HOMESCREEN: "홈 화면",
   USERINFO: "사용자 정보",
   POSTS: "글",
   CHATROOM: "채팅방",
-  TEAMINFO: "팀 정보"
+  TEAMINFO: "팀 정보",
+  CONTEST: "대회 관리",
+  ROSTER: "팀 / 선수 관리",
+  ACCOUNT: "연맹 정보 관리",
+  ADD_CONTEST: "대회 추가"
 };
-
-export const MENU = ["홈", "대회 관리", "팀 / 선수 관리", "연맹 정보 관리"];
