@@ -17,6 +17,9 @@ import { Navbar } from "./components/layout/Navbar";
 import { Login } from "./components/auth/Login";
 import { Register } from "./components/auth/Register";
 import { Home } from "./components/Home";
+import { Contest } from "./components/contest/Contest";
+import { Account } from "./components/auth/Account";
+import { Roster } from "./components/roster/Roster";
 
 export const App: React.FC = () => {
   return (
@@ -29,6 +32,9 @@ export const App: React.FC = () => {
             <PublicRoute exact path={ROUTES.LANDING} component={Login} />
             <PublicRoute exact path={ROUTES.REGISTER} component={Register} />
             <PrivateRoute exact path={ROUTES.HOME} component={Home} />
+            <PrivateRoute path={ROUTES.CONTEST} component={Contest} />
+            <PrivateRoute path={ROUTES.ROSTER} component={Roster} />
+            <PrivateRoute exact path={ROUTES.ACCOUNT} component={Account} />
           </Router>
         </AuthContextProvider>
       </MuiThemeProvider>

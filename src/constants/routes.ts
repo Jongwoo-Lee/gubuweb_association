@@ -6,7 +6,6 @@ export const ROUTES = {
   // Auth
   REGISTER: "/register",
   LOGIN: "/login",
-  ACCOUNT: "/account",
   ADMIN: "/admin",
   PASSWORD_FORGET: "/pw-forget",
   USERINFO: "/user-info",
@@ -23,8 +22,10 @@ export const ROUTES = {
   TERMS: "/terms",
   PRIVACY: "/privacy",
 
-  // Chat
   CHATROOM: "/chatroom",
+  CONTEST: "/cup",
+  ROSTER: "/roster",
+  ACCOUNT: "/account",
 
   IDPARAM: "/:id"
 };
@@ -37,4 +38,4 @@ export const ROUTENAMES = {
   TEAMINFO: "팀 정보"
 };
 
-export const MENU = ["대회 관리", "팀 / 선수 관리", "연맹 정보 관리"];
+export const MENU = ["홈", "대회 관리", "팀 / 선수 관리", "연맹 정보 관리"];
