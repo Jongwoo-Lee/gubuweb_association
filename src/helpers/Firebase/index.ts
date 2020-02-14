@@ -50,7 +50,9 @@ class Firebase {
     email: string,
     password: string,
     username?: string,
-    phoneNumber?: string
+    phoneNumber?: string,
+    url?: string,
+    introduction?: string
   ) =>
     Firebase.auth
       .createUserWithEmailAndPassword(email, password)
@@ -67,7 +69,7 @@ class Firebase {
         }
 
         userUpdate = setAscData(
-          new Association(user.uid, username, email, false, phoneNumber)
+          new Association(user.uid, username, email, false, phoneNumber, url, introduction)
         );
 
         return Promise.all([nameUpdate, userUpdate]);

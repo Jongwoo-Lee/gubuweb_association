@@ -12,7 +12,9 @@ export const COL_ASC = {
   EMAIL: "e",
   DISPLAYNAME: "n",
   PHONENUMBER: "p",
-  ISVERIFIED: "iv"
+  URL: "url",
+  INTRODUCTION: "i",
+  ISVERIFIED: "iv",
 };
 
 export const COL_TEAMS = {

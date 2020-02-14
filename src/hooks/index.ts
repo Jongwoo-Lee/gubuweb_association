@@ -30,13 +30,13 @@ export const useFirebaseAuth = () => {
   return authUser;
 };
 
-export const useInput = () => {
+export const useInput = (initialValue: string = "") => {
   const [value, setValue] = useState<{
     value: string;
     focus?: boolean;
     error?: string;
   }>({
-    value: "",
+    value: initialValue,
     error: "",
     focus: false
   });

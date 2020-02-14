@@ -16,18 +16,25 @@ export class Association {
   isVerified: boolean;
   name: string | null;
   phoneNumber: string | null;
+  url: string | null;
+  introduction: string | null;
+
   constructor(
     uid: string,
     name: string | undefined,
     email: string,
     isVerified: boolean,
-    phoneNumber: string | undefined
+    phoneNumber: string | undefined,
+    url: string | undefined,
+    introduction: string | undefined
   ) {
     this.name = name ?? null;
     this.uid = uid;
     this.email = email;
     this.isVerified = isVerified ?? false;
     this.phoneNumber = phoneNumber ?? null;
+    this.url = url ?? null;
+    this.introduction = introduction ?? null;
   }
   toString() {
     return this.uid + ", " + this.name + ", " + this.email;
@@ -36,7 +43,7 @@ export class Association {
 
 // Firestore data converter
 export const ascConverter = {
-  toFirestore: function(asc: Association) {
+  toFirestore: function (asc: Association) {
     return {
       [COL_ASC.DISPLAYNAME]: asc.name,
       [COL_ASC.EMAIL]: asc.email,
@@ -44,7 +51,7 @@ export const ascConverter = {
       [COL_ASC.PHONENUMBER]: asc.phoneNumber
     };
   },
-  fromFirestore: function(
+  fromFirestore: function (
     snapshot: firebase.firestore.DocumentSnapshot,
     options: firebase.firestore.SnapshotOptions | undefined
   ) {
@@ -54,7 +61,9 @@ export const ascConverter = {
       data?.[COL_ASC.DISPLAYNAME],
       data?.[COL_ASC.EMAIL],
       data?.[COL_ASC.ISVERIFIED],
-      data?.[COL_ASC.PHONENUMBER]
+      data?.[COL_ASC.PHONENUMBER],
+      data?.[COL_ASC.URL],
+      data?.[COL_ASC.INTRODUCTION]
     );
   }
 };

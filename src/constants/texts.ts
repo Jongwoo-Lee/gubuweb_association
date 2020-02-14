@@ -39,7 +39,8 @@ export const TEXTINPUT = {
   PHONENUMBER_INFO: "연락 가능한 전화번호를 입력해주세요",
   ADD_TEAM: "팀 추가",
   ADD_TEAM_PLHD: "팀 이름",
-  ADD_TEAM_INFO: "생성할 팀 이름을 입력해주세요. 예) Outsid FC"
+  ADD_TEAM_INFO: "생성할 팀 이름을 입력해주세요. 예) Outsid FC",
+  INTRODUCTION: "연맹 소개"
 };
 
 export const ERROR = {
