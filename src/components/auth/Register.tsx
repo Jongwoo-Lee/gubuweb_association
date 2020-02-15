@@ -2,13 +2,12 @@ import React from "react";
 import Firebase from "../../helpers/Firebase";
 import validator from "validator";
 import { useHistory } from "react-router-dom";
-import { useInput } from "../../hooks";
+import { useTextInput } from "../../hooks";
 
 import { AUTH, TEXTINPUT, ERROR } from "../../constants/texts";
 import { ROUTES } from "../../constants/routes";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
-  Typography,
   FormControl,
   InputLabel,
   Input,
@@ -69,31 +68,31 @@ export const Register: React.SFC<RegisterProps> = () => {
     value: ascName,
     setValue: setAscName,
     onChange: ascNameChange
-  } = useInput();
+  } = useTextInput();
 
   const {
     value: email,
     setValue: setEmail,
     onChange: emailChange
-  } = useInput();
+  } = useTextInput();
 
   const {
     value: phoneNumber,
     setValue: setPhoneNumber,
     onChange: phoneNumberChange
-  } = useInput();
+  } = useTextInput();
 
   const {
     value: password,
     setValue: setPassword,
     onChange: passwordChange
-  } = useInput();
+  } = useTextInput();
 
   const {
     value: password2,
     setValue: setPassword2,
     onChange: password2Change
-  } = useInput();
+  } = useTextInput();
 
   const validateRegister = (): boolean => {
     let isInvalid = true;
@@ -145,7 +144,7 @@ export const Register: React.SFC<RegisterProps> = () => {
 
   return (
     <div className={classes.register}>
-      <TitleGoback title="대회 관리자 회원가입" marginLeft="20px" />
+      <TitleGoback title="대회 관리자 회원가입" />
       <form className={classes.form} onSubmit={handleSubmit} noValidate>
         <br />
         <FormControl

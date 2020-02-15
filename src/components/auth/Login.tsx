@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Firebase from "../../helpers/Firebase";
-import { useInput } from "../../hooks";
+import { useTextInput } from "../../hooks";
 
 import { AUTH } from "../../constants/texts";
 import { ROUTES } from "../../constants/routes";
@@ -81,13 +81,13 @@ export const Login: React.SFC<LoginProps> = () => {
     value: email,
     setValue: setEmail,
     onChange: emailChange
-  } = useInput();
+  } = useTextInput();
 
   const {
     value: password,
     setValue: setPassword,
     onChange: passwordChange
-  } = useInput();
+  } = useTextInput();
 
   const [error, setError] = useState<firebase.auth.Error>({
     code: "",

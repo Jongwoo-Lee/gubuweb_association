@@ -1,11 +1,21 @@
 import React from "react";
-import { Avatar, makeStyles, createStyles, Theme, Typography, FormControl, InputLabel, Input, FormHelperText, TextField } from "@material-ui/core";
-import { useAssociationValue, useAuthUserValue } from "../../context/user";
-import Firebase, { FirebaseAsc } from "../../helpers/Firebase";
-import { useInput } from "../../hooks";
+import {
+  Avatar,
+  makeStyles,
+  createStyles,
+  Theme,
+  Typography,
+  FormControl,
+  InputLabel,
+  Input,
+  FormHelperText,
+  TextField
+} from "@material-ui/core";
+import { useAssociationValue } from "../../context/user";
+import { FirebaseAsc } from "../../helpers/Firebase";
+import { useTextInput } from "../../hooks";
 import { AUTH, TEXTINPUT, ERROR } from "../../constants/texts";
 import validator from "validator";
-
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -17,20 +27,19 @@ const useStyles = makeStyles((theme: Theme) => {
 
       marginTop: "3em",
       marginLeft: "auto",
-      marginRight: "auto",
+      marginRight: "auto"
     },
     avatar: {
       width: "30%",
       height: "30%"
     },
     formControl: {
-      width: "90%",
-    },
+      width: "90%"
+    }
   });
 });
 
-
-export interface AccountProps { }
+export interface AccountProps {}
 
 export const Account: React.FC<AccountProps> = () => {
   const classes = useStyles();
@@ -42,26 +51,25 @@ export const Account: React.FC<AccountProps> = () => {
     value: ascName,
     setValue: setAscName,
     onChange: ascNameChange
-  } = useInput((ascData?.name == null) ? "" : ascData?.name);
+  } = useTextInput(ascData?.name == null ? "" : ascData?.name);
 
   const {
     value: email,
     setValue: setEmail,
     onChange: emailChange
-  } = useInput((ascData?.email == null) ? "" : ascData?.email);
+  } = useTextInput(ascData?.email == null ? "" : ascData?.email);
 
   const {
     value: phoneNumber,
     setValue: setPhoneNumber,
     onChange: phoneNumberChange
-  } = useInput((ascData?.phoneNumber == null) ? "" : ascData?.phoneNumber);
+  } = useTextInput(ascData?.phoneNumber == null ? "" : ascData?.phoneNumber);
 
   const {
     value: introduction,
     setValue: setIntroduction,
     onChange: introductionChange
-  } = useInput((ascData?.introduction == null) ? "" : ascData?.introduction);
-
+  } = useTextInput(ascData?.introduction == null ? "" : ascData?.introduction);
 
   const validateSave = (): boolean => {
     let isInvalid = true;
@@ -78,19 +86,14 @@ export const Account: React.FC<AccountProps> = () => {
     return isInvalid;
   };
 
-
   return (
     <div className={classes.manage}>
-      <Typography
-        color="textPrimary" variant="h4">
+      <Typography color="textPrimary" variant="h4">
         연맹 정보 관리
       </Typography>
       <br />
 
-      <Avatar
-        className={classes.avatar}
-        
-      />
+      <Avatar className={classes.avatar} />
       <br />
       <FormControl
         className={classes.formControl}
@@ -132,9 +135,7 @@ export const Account: React.FC<AccountProps> = () => {
         </FormHelperText>
       </FormControl>
       <FormControl
-        error={
-          phoneNumber.error !== undefined && phoneNumber.error.length > 0
-        }
+        error={phoneNumber.error !== undefined && phoneNumber.error.length > 0}
         className={classes.formControl}
       >
         <InputLabel htmlFor="phoneNumber">{AUTH.PHONE}</InputLabel>
@@ -155,7 +156,9 @@ export const Account: React.FC<AccountProps> = () => {
       <br />
       <FormControl
         className={classes.formControl}
-        error={introduction.error !== undefined && introduction.error.length > 0}
+        error={
+          introduction.error !== undefined && introduction.error.length > 0
+        }
       >
         <TextField
           variant="outlined"
@@ -176,6 +179,6 @@ export const Account: React.FC<AccountProps> = () => {
             introduction.error}
         </FormHelperText>
       </FormControl>
-
-    </div >);
+    </div>
+  );
 };

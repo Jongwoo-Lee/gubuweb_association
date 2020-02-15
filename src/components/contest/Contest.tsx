@@ -27,12 +27,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Contest = (props: RouteComponentProps) => {
-  // const classes = useStyles();
   return (
     <div>
       <Route exact path={props.match.path} component={ContestComponent} />
       <Route path={ROUTES.ADD_CONTEST} component={AddContest} />
-      {/* <Route path={`${props.match.path}/privacy`} component={Privacy} /> */}
     </div>
   );
 };
