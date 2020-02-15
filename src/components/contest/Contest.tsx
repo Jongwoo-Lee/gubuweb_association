@@ -6,9 +6,9 @@ import { AddContest } from "./AddContest";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { SquareButton } from "../common/SquareButton";
+import { TitleGoback } from "../common/TitleGoBack";
 //  import Trophy from "../../images/trophy_on.svg";
 import AddIcon from "@material-ui/icons/Add";
-import TitleGoback from "../common/TitleGoBack";
 
 export interface ContestMainProps {}
 

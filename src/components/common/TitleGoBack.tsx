@@ -5,10 +5,12 @@ import { useHistory } from "react-router-dom";
 
 export interface TitleGobackProps {
   title: string;
+  marginLeft?: string;
 }
 
-const TitleGoback: React.SFC<TitleGobackProps> = ({
-  title
+export const TitleGoback: React.SFC<TitleGobackProps> = ({
+  title,
+  marginLeft
 }: TitleGobackProps) => {
   const history = useHistory();
 
@@ -25,7 +27,7 @@ const TitleGoback: React.SFC<TitleGobackProps> = ({
       </Button>
 
       <Typography
-        style={{ marginLeft: "100px", marginRight: "auto" }}
+        style={{ marginLeft: marginLeft ?? "100px", marginRight: "auto" }}
         variant="h4"
       >
         {title}
@@ -33,5 +35,3 @@ const TitleGoback: React.SFC<TitleGobackProps> = ({
     </div>
   );
 };
-
-export default TitleGoback;
