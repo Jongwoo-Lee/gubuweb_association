@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, } from "react";
 import {
   Avatar,
   makeStyles,
@@ -12,7 +12,7 @@ import {
   TextField,
   Button,
   Grid,
-  IconButton
+  CircularProgress
 } from "@material-ui/core";
 import { useAssociationValue, useSetAssociationValue } from "../../context/user";
 import Firebase, { FirebaseSetAsc } from "../../helpers/Firebase";
@@ -57,6 +57,8 @@ export const Account: React.FC<AccountProps> = () => {
   const classes = useStyles();
   const ascData: FirebaseAsc = useAssociationValue();
   const setAscData: FirebaseSetAsc = useSetAssociationValue();
+  const [progress, setProgress] = useState(false);
+
   // const loadData: boolean = (ascData && setAscData) ? true : false;
 
   let url: string = (ascData?.url) ? ascData?.url : "";
@@ -127,25 +129,24 @@ export const Account: React.FC<AccountProps> = () => {
     if (ascData && setAscData && file && file?.length > 0) {
       const uploadTask: firebase.storage.UploadTask = Firebase.storage.ref(`${STORAGE.ASC}/${ascData.uid}`).put(file[0]);
       uploadTask.on('state_changed', (snapshot: firebase.storage.UploadTaskSnapshot) => {
+        setProgress(true);
         // progress function 
-        console.log(snapshot);
+        // const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
       }, (err: Error) => {
-        console.log(err);
+        setProgress(false);
+        alert(`이미지 업로드에 실패하였습니다. error message: ${err.message}`);
       }, () => {
         Firebase.storage.ref(STORAGE.ASC).child(ascData.uid).getDownloadURL().then((url: string) => {
           const newAsc: FirebaseAsc = Firebase.fireURLUpdate(
             ascData,
             url
           );
-
           setAscData(newAsc);
+          setProgress(false);
         })
       });
     }
-
   };
-
-
 
 
   return (
@@ -171,7 +172,7 @@ export const Account: React.FC<AccountProps> = () => {
       />
       <InputLabel htmlFor="icon-button-photo"
         className={classes.label}>
-        <Avatar className={classes.avatar} src={url} />
+        {progress ? <CircularProgress className={classes.avatar} /> : <Avatar className={classes.avatar} src={url} />}
       </InputLabel>
       <br />
       <FormControl
