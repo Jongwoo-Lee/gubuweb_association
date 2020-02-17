@@ -13,6 +13,10 @@ export const customTheme = createMuiTheme({
       light: "#2DB784",
       main: "#3A8A41",
       dark: "#397D40"
+    },
+    text: {
+      primary: "#333333",
+      secondary: "#ffffff"
     }
   }
 });

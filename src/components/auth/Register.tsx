@@ -4,7 +4,7 @@ import validator from "validator";
 import { useHistory } from "react-router-dom";
 import { useTextInput } from "../../hooks";
 
-import { AUTH, TEXTINPUT, ERROR } from "../../constants/texts";
+import { AUTH, FORMTEXT, ERROR } from "../../constants/texts";
 import { ROUTES } from "../../constants/routes";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -97,9 +97,9 @@ export const Register: React.SFC<RegisterProps> = () => {
   const validateRegister = (): boolean => {
     let isInvalid = true;
     if (!validator.isLength(ascName.value, { min: 2, max: 18 })) {
-      setAscName({ ...ascName, error: TEXTINPUT.USERNAME_LENGTH });
+      setAscName({ ...ascName, error: FORMTEXT.USERNAME_LENGTH });
     } else if (!validator.isMobilePhone(phoneNumber.value, "ko-KR")) {
-      setPhoneNumber({ ...phoneNumber, error: TEXTINPUT.PHONENUMBER_INFO });
+      setPhoneNumber({ ...phoneNumber, error: FORMTEXT.PHONENUMBER_INFO });
     } else if (!validator.isEmail(email.value)) {
       setEmail({ ...email, error: ERROR.EMAIL_ERR_REGISTER });
     } else if (
@@ -108,9 +108,9 @@ export const Register: React.SFC<RegisterProps> = () => {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*?()]{8,16}$/
       )
     ) {
-      setPassword({ ...password, error: TEXTINPUT.PASSWORD_INFO });
+      setPassword({ ...password, error: FORMTEXT.PASSWORD_INFO });
     } else if (password.value !== password2.value) {
-      setPassword2({ ...password2, error: TEXTINPUT.PASSWORD_DIFF });
+      setPassword2({ ...password2, error: FORMTEXT.PASSWORD_DIFF });
     } else {
       isInvalid = false;
     }
