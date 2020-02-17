@@ -67,3 +67,7 @@ export const ERROR = {
   LOGIN_WRONG: "등록되지 않은 이메일이거나 비밀번호가 맞는지 확인해주세요.",
   TEAM_ALREADY: "이미 존재하는 팀 이름입니다."
 };
+
+export const STORAGE = {
+  ASC: "ASC"
+};

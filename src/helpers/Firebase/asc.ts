@@ -12,7 +12,7 @@ import firebase from "firebase";
 
 export class Association {
   uid: string;
-  email: string | null;
+  email: string;
   isVerified: boolean;
   name: string | null;
   phoneNumber: string | null;
@@ -21,12 +21,12 @@ export class Association {
 
   constructor(
     uid: string,
-    name: string | undefined,
+    name: string | undefined | null,
     email: string,
     isVerified: boolean,
-    phoneNumber: string | undefined,
-    url: string | undefined,
-    introduction: string | undefined
+    phoneNumber: string | undefined | null,
+    url?: string | undefined | null,
+    introduction?: string | undefined | null
   ) {
     this.name = name ?? null;
     this.uid = uid;
@@ -36,6 +36,7 @@ export class Association {
     this.url = url ?? null;
     this.introduction = introduction ?? null;
   }
+
   toString() {
     return this.uid + ", " + this.name + ", " + this.email;
   }
@@ -48,7 +49,9 @@ export const ascConverter = {
       [COL_ASC.DISPLAYNAME]: asc.name,
       [COL_ASC.EMAIL]: asc.email,
       [COL_ASC.ISVERIFIED]: asc.isVerified,
-      [COL_ASC.PHONENUMBER]: asc.phoneNumber
+      [COL_ASC.PHONENUMBER]: asc.phoneNumber,
+      [COL_ASC.URL]: asc.url,
+      [COL_ASC.INTRODUCTION]: asc.introduction,
     };
   },
   fromFirestore: function (
@@ -88,6 +91,17 @@ export const setAscData = async (asc: Association) =>
     .doc(asc.uid)
     .withConverter(ascConverter)
     .set(asc)
+    .catch(err => {
+      throw err;
+    });
+
+export const updateURL = async (uid: string, url: string) =>
+  Firebase.firestore
+    .collection(COL_ASC.ASSOC)
+    .doc(uid)
+    .set({
+      [COL_ASC.URL]: url
+    }, { merge: true })
     .catch(err => {
       throw err;
     });

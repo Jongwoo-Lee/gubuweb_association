@@ -2,8 +2,9 @@
 import app, { auth } from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
 
-import { Association, setAscData } from "./asc";
+import { Association, setAscData, updateURL, ascConverter } from "./asc";
 
 const devConfig = {
   apiKey: process.env.REACT_APP_DEV_API_KEY,
@@ -33,16 +34,19 @@ export type FirebaseAsc = Association | null;
 class Firebase {
   static auth: app.auth.Auth;
   static firestore: app.firestore.Firestore;
+  static storage: firebase.storage.Storage;
 
   static persistence = auth.Auth.Persistence;
   static field = app.firestore.FieldValue;
   static fireFunc = app.firestore;
+
 
   static init() {
     app.initializeApp(config);
 
     Firebase.auth = app.auth();
     Firebase.firestore = app.firestore();
+    Firebase.storage = app.storage();
   }
 
   // Firebase Auth API
@@ -51,8 +55,6 @@ class Firebase {
     password: string,
     username?: string,
     phoneNumber?: string,
-    url?: string,
-    introduction?: string
   ) =>
     Firebase.auth
       .createUserWithEmailAndPassword(email, password)
@@ -69,7 +71,7 @@ class Firebase {
         }
 
         userUpdate = setAscData(
-          new Association(user.uid, username, email, false, phoneNumber, url, introduction)
+          new Association(user.uid, username, email, false, phoneNumber)
         );
 
         return Promise.all([nameUpdate, userUpdate]);
@@ -91,6 +93,29 @@ class Firebase {
   static firePasswordUpdate = (password: string) => {
     if (Firebase.auth.currentUser != null)
       Firebase.auth.currentUser.updatePassword(password);
+  };
+
+  static fireInfoUpdate = (
+    asc: Association,
+    email: string,
+    username?: string,
+    phoneNumber?: string,
+    introduction?: string,
+  ) => {
+    const userUpdate: FirebaseAsc = new Association(asc.uid, username, email, asc.isVerified, phoneNumber, asc?.url, introduction);
+    Promise.resolve(setAscData(userUpdate));
+
+    return userUpdate;
+  };
+
+  static fireURLUpdate = (
+    asc: Association,
+    url: string,
+  ) => {
+    const userUpdate: Association = new Association(asc.uid, asc.name, asc.email, asc.isVerified, asc.phoneNumber, url, asc.introduction);
+    Promise.resolve(updateURL(asc.uid, url));
+
+    return userUpdate;
   };
 }
 
