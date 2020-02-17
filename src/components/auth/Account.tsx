@@ -14,8 +14,8 @@ import {
   Grid,
   IconButton
 } from "@material-ui/core";
-import { useAssociationValue } from "../../context/user";
-import Firebase from "../../helpers/Firebase";
+import { useAssociationValue, useSetAssociationValue } from "../../context/user";
+import Firebase, { FirebaseSetAsc } from "../../helpers/Firebase";
 import { FirebaseAsc } from "../../helpers/Firebase";
 import { useTextInput, } from "../../hooks";
 import { AUTH, FORMTEXT, ERROR, STORAGE } from "../../constants/texts";
@@ -56,6 +56,9 @@ export interface AccountProps { }
 export const Account: React.FC<AccountProps> = () => {
   const classes = useStyles();
   const ascData: FirebaseAsc = useAssociationValue();
+  const setAscData: FirebaseSetAsc = useSetAssociationValue();
+  // const loadData: boolean = (ascData && setAscData) ? true : false;
+
   let url: string = (ascData?.url) ? ascData?.url : "";
 
   // 동일한 이름을 사용 할 수 없으니 새롭게 이름을 정해준다 javascript
@@ -104,15 +107,16 @@ export const Account: React.FC<AccountProps> = () => {
     e.preventDefault();
 
     const isInvalid = validateSave();
-    if (ascData && isInvalid) {
+    if (ascData && setAscData && isInvalid) {
 
-      const test: FirebaseAsc = Firebase.fireInfoUpdate(
+      const newAsc: FirebaseAsc = Firebase.fireInfoUpdate(
         ascData,
         email.value,
         ascName.value,
         phoneNumber.value,
         introduction.value
       )
+      setAscData(newAsc);
     }
   };
 
@@ -120,7 +124,7 @@ export const Account: React.FC<AccountProps> = () => {
   const selectImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file: FileList | null = e.target.files;
-    if (ascData && file && file?.length > 0) {
+    if (ascData && setAscData && file && file?.length > 0) {
       const uploadTask: firebase.storage.UploadTask = Firebase.storage.ref(`${STORAGE.ASC}/${ascData.uid}`).put(file[0]);
       uploadTask.on('state_changed', (snapshot: firebase.storage.UploadTaskSnapshot) => {
         // progress function 
@@ -129,10 +133,12 @@ export const Account: React.FC<AccountProps> = () => {
         console.log(err);
       }, () => {
         Firebase.storage.ref(STORAGE.ASC).child(ascData.uid).getDownloadURL().then((url: string) => {
-          Firebase.fireURLUpdate(
+          const newAsc: FirebaseAsc = Firebase.fireURLUpdate(
             ascData,
             url
           );
+
+          setAscData(newAsc);
         })
       });
     }

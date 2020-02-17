@@ -57,7 +57,7 @@ export const useAssociation = (ascID: string | undefined) => {
     };
   }, [ascID]);
 
-  return ascData;
+  return { ascData, setAscData };
 };
 
 export const useTextInput = (initialValue: string = "") => {
@@ -132,10 +132,10 @@ export const useWindowSize = () => {
         window.innerWidth >= 1200
           ? "lg"
           : window.innerWidth >= 992
-          ? "md"
-          : window.innerWidth >= 768
-          ? "sm"
-          : "xs";
+            ? "md"
+            : window.innerWidth >= 768
+              ? "sm"
+              : "xs";
       setSize({
         width: window.innerWidth,
         height: window.innerHeight,
