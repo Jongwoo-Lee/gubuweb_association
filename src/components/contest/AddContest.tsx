@@ -3,7 +3,12 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { ContestRegister } from "../../helpers/Firebase/contest";
 import { TitleGoback } from "../common/TitleGoBack";
-import { useTextInput, useDateInput, useWindowSize } from "../../hooks";
+import {
+  useTextInput,
+  useDateInput,
+  useWindowSize,
+  useRadioInput
+} from "../../hooks";
 import { FORMTEXT } from "../../constants/texts";
 import DateFnsUtils from "@date-io/date-fns";
 import korLocale from "date-fns/locale/ko";
@@ -15,6 +20,7 @@ import {
   Typography
 } from "@material-ui/core";
 import { OnOffButton } from "../common/OnOffButton";
+import { OnOffRadioButton } from "../common/OnOffRadioButton";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -51,9 +57,9 @@ export const AddContest: React.SFC<AddContestProps> = () => {
   const { value: region, onChange: handleRegion } = useTextInput();
   const { date: startDate, onChange: handleStartDate } = useDateInput();
   const { date: endDate, onChange: handleEndDate } = useDateInput();
-  const [cupType, setCupType] = useState<string>();
-  const [gender, setGender] = useState<string>();
-  const [athlete, setAthlete] = useState<string>();
+  const { radio: cupType, onChange: handleCupType } = useRadioInput();
+  const { radio: gender, onChange: handleGender } = useRadioInput();
+  const { radio: athlete, onChange: handleAthlete } = useRadioInput();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -165,85 +171,50 @@ export const AddContest: React.SFC<AddContestProps> = () => {
             {FORMTEXT.TYPE} *
           </Typography>
           <div>
-            <OnOffButton
+            <OnOffRadioButton
               title={FORMTEXT.TOURNAMENT}
-              isOn={cupType === FORMTEXT.TOURNAMENT}
-              handleClick={(e: React.MouseEvent) => {
-                e.preventDefault();
-                cupType === FORMTEXT.TOURNAMENT
-                  ? setCupType("")
-                  : setCupType(FORMTEXT.TOURNAMENT);
-              }}
+              checkInput={cupType.input}
+              onChange={handleCupType}
             />
-            <OnOffButton
+            <OnOffRadioButton
               title={FORMTEXT.LEAGUE}
-              isOn={cupType === FORMTEXT.LEAGUE}
-              handleClick={(e: React.MouseEvent) => {
-                e.preventDefault();
-                cupType === FORMTEXT.LEAGUE
-                  ? setCupType("")
-                  : setCupType(FORMTEXT.LEAGUE);
-              }}
+              checkInput={cupType.input}
+              onChange={handleCupType}
             />
           </div>
           <Typography className={classes.title} variant="body1">
             {FORMTEXT.GENDER} *
           </Typography>
           <div>
-            <OnOffButton
+            <OnOffRadioButton
               title={FORMTEXT.MALE}
-              isOn={gender === FORMTEXT.MALE}
-              handleClick={(e: React.MouseEvent) => {
-                e.preventDefault();
-                gender === FORMTEXT.MALE
-                  ? setGender("")
-                  : setGender(FORMTEXT.MALE);
-              }}
+              checkInput={gender.input}
+              onChange={handleGender}
             />
-            <OnOffButton
+            <OnOffRadioButton
               title={FORMTEXT.FEMALE}
-              isOn={gender === FORMTEXT.FEMALE}
-              handleClick={(e: React.MouseEvent) => {
-                e.preventDefault();
-                gender === FORMTEXT.FEMALE
-                  ? setGender("")
-                  : setGender(FORMTEXT.FEMALE);
-              }}
+              checkInput={gender.input}
+              onChange={handleGender}
             />
-            <OnOffButton
+            <OnOffRadioButton
               title={FORMTEXT.COED}
-              isOn={gender === FORMTEXT.COED}
-              handleClick={(e: React.MouseEvent) => {
-                e.preventDefault();
-                gender === FORMTEXT.COED
-                  ? setGender("")
-                  : setGender(FORMTEXT.COED);
-              }}
+              checkInput={gender.input}
+              onChange={handleGender}
             />
           </div>
           <Typography className={classes.title} variant="body1">
             {FORMTEXT.ALLOW_ATHLETE}
           </Typography>
           <div>
-            <OnOffButton
+            <OnOffRadioButton
               title={FORMTEXT.NOTALLOWED}
-              isOn={athlete === FORMTEXT.NOTALLOWED}
-              handleClick={(e: React.MouseEvent) => {
-                e.preventDefault();
-                athlete === FORMTEXT.NOTALLOWED
-                  ? setAthlete("")
-                  : setAthlete(FORMTEXT.NOTALLOWED);
-              }}
+              checkInput={athlete.input}
+              onChange={handleAthlete}
             />
-            <OnOffButton
+            <OnOffRadioButton
               title={FORMTEXT.ALLOWED}
-              isOn={athlete === FORMTEXT.ALLOWED}
-              handleClick={(e: React.MouseEvent) => {
-                e.preventDefault();
-                athlete === FORMTEXT.ALLOWED
-                  ? setAthlete("")
-                  : setAthlete(FORMTEXT.ALLOWED);
-              }}
+              checkInput={athlete.input}
+              onChange={handleAthlete}
             />
           </div>
           <Typography className={classes.title} variant="body1">

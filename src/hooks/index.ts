@@ -75,6 +75,7 @@ export const useTextInput = (initialValue: string = "") => {
     value,
     setValue,
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
       setValue({ ...value, value: event.target.value, error: "" });
     }
   };
@@ -96,6 +97,29 @@ export const useDateInput = (initialDate: Date = new Date()) => {
     setDate,
     onChange: (date: Date | null) => {
       setDate({ ...date, date: date, error: "" });
+    }
+  };
+};
+
+export const useRadioInput = (initialInput: string = "") => {
+  const [radio, setRadio] = useState<{
+    input: string;
+    error?: string;
+  }>({
+    input: initialInput,
+    error: ""
+  });
+
+  return {
+    radio,
+    setRadio,
+    onChange: (event: React.MouseEvent, newInput: string) => {
+      event.preventDefault();
+      setRadio({
+        ...radio,
+        input: radio.input === newInput ? "" : newInput,
+        error: ""
+      });
     }
   };
 };
