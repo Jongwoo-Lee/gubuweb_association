@@ -14,7 +14,7 @@ export const COL_ASC = {
   PHONENUMBER: "p",
   URL: "url",
   INTRODUCTION: "i",
-  ISVERIFIED: "iv",
+  ISVERIFIED: "iv"
 };
 
 export const COL_TEAMS = {
@@ -23,3 +23,5 @@ export const COL_TEAMS = {
   MEMBERS: "members",
   TEMPORARIES: "team_temporaries"
 };
+
+export const COL_CONTEST = {};

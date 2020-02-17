@@ -22,7 +22,7 @@ export const NAMES = {
   OUTSID: "OUTSID"
 };
 
-export const TEXTINPUT = {
+export const FORMTEXT = {
   ASK_EXIST_ID: "계정이 있으신가요?",
   TEAMNAME: "팀 이름",
   USERNAME_INFO: "팀 멤버들에게 보여질 이름을 입력해주세요 (2~30자)",
@@ -42,7 +42,21 @@ export const TEXTINPUT = {
   ADD_TEAM_INFO: "생성할 팀 이름을 입력해주세요. 예) Outsid FC",
   INTRODUCTION: "연맹 소개",
   CONTESTNAME: "대회 명칭",
-  REGION: "개최 지역"
+  REGION: "개최 지역",
+  TERM: "기간",
+  START_DATE: "시작일",
+  END_DATE: "종료일",
+  TOURNAMENT: "토너먼트",
+  LEAGUE: "리그",
+  TYPE: "종류",
+  GENDER: "성별",
+  MALE: "남성",
+  FEMALE: "여성",
+  COED: "혼성",
+  ALLOW_ATHLETE: "선수 출신 참가 여부",
+  NOTALLOWED: "불가",
+  ALLOWED: "허용",
+  DOCUMENTS_NEEDED: "필요 제출 서류"
 };
 
 export const ERROR = {

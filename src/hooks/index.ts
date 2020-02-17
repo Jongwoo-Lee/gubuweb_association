@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import Firebase, { FirebaseAuth, FirebaseAsc } from "../helpers/Firebase";
-import { AUTHUSER } from "../constants/local";
+import { AUTHUSER, ASSOCIATION } from "../constants/local";
 import { getAscData } from "../helpers/Firebase/asc";
 
 export const useFirebaseAuth = () => {
@@ -30,6 +30,36 @@ export const useFirebaseAuth = () => {
   return authUser;
 };
 
+export const useAssociation = (ascID: string | undefined) => {
+  const [ascData, setAscData] = useState<FirebaseAsc>(() => {
+    const localUser = localStorage.getItem(ASSOCIATION);
+    if (typeof localUser === "string") return JSON.parse(localUser);
+    else return null;
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (ascID === undefined) {
+        localStorage.removeItem(ASSOCIATION);
+        setAscData(null);
+      } else {
+        const result = await getAscData(ascID);
+        localStorage.setItem(ASSOCIATION, JSON.stringify(result));
+
+        setAscData(result);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      localStorage.removeItem(ASSOCIATION);
+    };
+  }, [ascID]);
+
+  return ascData;
+};
+
 export const useTextInput = (initialValue: string = "") => {
   const [value, setValue] = useState<{
     value: string;
@@ -50,21 +80,47 @@ export const useTextInput = (initialValue: string = "") => {
   };
 };
 
-export const useAssociation = (ascID: string | undefined) => {
-  const [ascData, setAscData] = useState<FirebaseAsc>(null);
+export const useDateInput = (initialDate: Date = new Date()) => {
+  const [date, setDate] = useState<{
+    date: Date | null;
+    focus?: boolean;
+    error?: string;
+  }>({
+    date: initialDate,
+    error: "",
+    focus: false
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (ascID === undefined) {
-        setAscData(null);
-      } else {
-        const result = await getAscData(ascID);
-        setAscData(result);
-      }
+  return {
+    date,
+    setDate,
+    onChange: (date: Date | null) => {
+      setDate({ ...date, date: date, error: "" });
+    }
+  };
+};
+
+export const useWindowSize = () => {
+  const [size, setSize] = useState({ width: 0, height: 0, device: "xs" });
+  useLayoutEffect(() => {
+    const updateSize = () => {
+      const device =
+        window.innerWidth >= 1200
+          ? "lg"
+          : window.innerWidth >= 992
+          ? "md"
+          : window.innerWidth >= 768
+          ? "sm"
+          : "xs";
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        device: device
+      });
     };
-
-    fetchData();
-  }, [ascID]);
-
-  return ascData;
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+  return size;
 };

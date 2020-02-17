@@ -14,7 +14,7 @@ import {
 import { useAssociationValue } from "../../context/user";
 import { FirebaseAsc } from "../../helpers/Firebase";
 import { useTextInput } from "../../hooks";
-import { AUTH, TEXTINPUT, ERROR } from "../../constants/texts";
+import { AUTH, FORMTEXT, ERROR } from "../../constants/texts";
 import validator from "validator";
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -74,9 +74,9 @@ export const Account: React.FC<AccountProps> = () => {
   const validateSave = (): boolean => {
     let isInvalid = true;
     if (!validator.isLength(ascName.value, { min: 2, max: 18 })) {
-      setAscName({ ...ascName, error: TEXTINPUT.USERNAME_LENGTH });
+      setAscName({ ...ascName, error: FORMTEXT.USERNAME_LENGTH });
     } else if (!validator.isMobilePhone(phoneNumber.value, "ko-KR")) {
-      setPhoneNumber({ ...phoneNumber, error: TEXTINPUT.PHONENUMBER_INFO });
+      setPhoneNumber({ ...phoneNumber, error: FORMTEXT.PHONENUMBER_INFO });
     } else if (!validator.isEmail(email.value)) {
       setEmail({ ...email, error: ERROR.EMAIL_ERR_REGISTER });
     } else {
@@ -164,7 +164,7 @@ export const Account: React.FC<AccountProps> = () => {
           variant="outlined"
           name="introduction"
           type="text"
-          label={TEXTINPUT.INTRODUCTION}
+          label={FORMTEXT.INTRODUCTION}
           id="introduction"
           multiline
           rows="6"
