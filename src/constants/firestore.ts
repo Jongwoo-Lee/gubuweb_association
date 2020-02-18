@@ -21,13 +21,14 @@ export const COL_TEAMS = {
   TEAMS: "teams",
   TEAMS_TEST: "teams_v2",
   TEAMS_TEST4: "teams_v4",
-  TEAMS_LOWERCASE:"team_lowercase",
+  TEAMS_LOWERCASE: "team_lowercase",
   TEAMS_GENDER: "team_gender",
   TEAMS_AGE: "team_age",
   TEAMS_INITIAL: "team_initial",
   TEAMS_REGION: "team_region",
   TEAMS_NAME: "teamname",
   TEAMS_MANAGER: "team_manager",
+  TEAMS_LOGO: "team_logo",
   MEMBERS: "members",
   TEMPORARIES: "team_temporaries"
 };

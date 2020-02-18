@@ -10,6 +10,8 @@ import { useWindowSize, useTextInput } from "../../hooks";
 import { FORMTEXT } from "../../constants/texts";
 import Firebase from "../../helpers/Firebase";
 import { Team } from "../../helpers/Firebase/team";
+import { useSearchTeam } from "../../hooks/team";
+import { SquareButton } from "../common/SquareButton";
 
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -22,17 +24,17 @@ const useStyles = makeStyles((theme: Theme) => {
             marginTop: "20px",
             marginBottom: "5px"
         },
-        form: {
-            width: "100%", // Fix IE 11 issue.
-            marginTop: theme.spacing(1),
-            margin: "0 20px"
-        },
         formControl: {
             width: "100%",
             maxWidth: "500px",
             [theme.breakpoints.down("xs")]: {
                 width: "75vw"
             }
+        },
+        cards: {
+            display: "flex",
+            marginTop: "40px",
+            flexWrap: "wrap"
         }
     });
 });
@@ -41,26 +43,9 @@ export interface AddTeamProps { }
 
 export const AddTeam: React.FC<AddTeamProps> = () => {
     const classes = useStyles();
-    const { device } = useWindowSize();
+    // const { device } = useWindowSize();
     const { value: searchTeam, onChange: handleSearchTeam } = useTextInput();
-
-
-    useEffect(() => {
-        if (searchTeam.value.length > 0) {
-            (async function test() {
-                Firebase.fireSearchTeams(searchTeam.value).then((teams: Team[]) => {
-                    teams.forEach((team: Team) => {
-                        console.log(team.teamName)
-                    })
-                })
-            })();
-        }
-
-        // return () => {
-        //     cleanup
-        // };
-    }, [searchTeam.value])
-
+    const teams: Team[] = useSearchTeam(searchTeam.value);
 
     return (
         <div className={classes.root}>
@@ -91,9 +76,15 @@ export const AddTeam: React.FC<AddTeamProps> = () => {
                         searchTeam.error}
                 </FormHelperText>
             </FormControl>
-            <Typography className={classes.title} variant="body1">
-                {searchTeam.value}
-            </Typography>
+            <div className={classes.cards}>
+                {(teams.length > 0) ?
+                    teams.map((team: Team) =>
+                        <SquareButton
+                            title={`${team.name}`}
+                            route={'test'}
+                        />
+                    ) : <br />
+                }</div>
         </div>
     );
 };
