@@ -7,19 +7,23 @@ import {
   useTextInput,
   useDateInput,
   useWindowSize,
-  useRadioInput
+  useRadioInput,
+  useListInput
 } from "../../hooks";
 import { FORMTEXT } from "../../constants/texts";
 import DateFnsUtils from "@date-io/date-fns";
 import korLocale from "date-fns/locale/ko";
 
-import { OnOffRadioButton } from "../common/OnOffButton";
+import { OnOffRadioButton, SimpleButton } from "../common/Buttons";
 import {
   FormControl,
   Input,
   FormHelperText,
-  Typography
+  Typography,
+  IconButton,
+  InputAdornment
 } from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -59,6 +63,12 @@ export const AddContest: React.SFC<AddContestProps> = () => {
   const { radio: cupType, onChange: handleCupType } = useRadioInput();
   const { radio: gender, onChange: handleGender } = useRadioInput();
   const { radio: athlete, onChange: handleAthlete } = useRadioInput();
+  const {
+    list: documents,
+    setList: setDocuments,
+    onElementChange,
+    onElementDelete
+  } = useListInput();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -216,9 +226,72 @@ export const AddContest: React.SFC<AddContestProps> = () => {
               onChange={handleAthlete}
             />
           </div>
-          <Typography className={classes.title} variant="body1">
-            {FORMTEXT.DOCUMENTS_NEEDED}
-          </Typography>
+          <div>
+            <Typography
+              className={classes.title}
+              variant="body1"
+              style={{ display: "inline-block" }}
+            >
+              {FORMTEXT.DOCUMENTS_NEEDED}
+            </Typography>
+            <Typography
+              className={classes.title}
+              variant="body2"
+              style={{ display: "inline-block", marginLeft: "1em" }}
+            >
+              {FORMTEXT.DOCUMENTS_INFO}
+            </Typography>
+          </div>
+          <div className={classes.root}>
+            {documents.map((input, index) => {
+              return (
+                <FormControl
+                  className={classes.formControl}
+                  error={input.error !== undefined && input.error.length > 0}
+                >
+                  <Input
+                    name={`document${index}`}
+                    type="text"
+                    id={`document${index}`}
+                    value={input.value}
+                    onChange={e => onElementChange(e, index)}
+                    autoFocus
+                    autoComplete="document"
+                    aria-describedby={`component-document-text-${index}`}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="delete-document"
+                          onClick={e => onElementDelete(e, index)}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                  <FormHelperText id={`component-document-text-${index}`}>
+                    {input.error !== undefined &&
+                      input.error.length > 0 &&
+                      input.error}
+                  </FormHelperText>
+                </FormControl>
+              );
+            })}
+
+            {documents.length < 3 && (
+              <SimpleButton
+                title="+ 추가"
+                handleClick={e => {
+                  e.preventDefault();
+                  if (documents.length >= 3) return;
+                  let addDoc = [...documents];
+
+                  addDoc.push({ value: "", error: "" });
+                  setDocuments(addDoc);
+                }}
+              />
+            )}
+          </div>
         </form>
       </MuiPickersUtilsProvider>
     </div>

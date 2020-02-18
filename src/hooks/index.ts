@@ -74,7 +74,9 @@ export const useTextInput = (initialValue: string = "") => {
   return {
     value,
     setValue,
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+    onChange: (
+      event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+    ) => {
       event.preventDefault();
       setValue({ ...value, value: event.target.value, error: "" });
     }
@@ -84,12 +86,10 @@ export const useTextInput = (initialValue: string = "") => {
 export const useDateInput = (initialDate: Date = new Date()) => {
   const [date, setDate] = useState<{
     date: Date | null;
-    focus?: boolean;
     error?: string;
   }>({
     date: initialDate,
-    error: "",
-    focus: false
+    error: ""
   });
 
   return {
@@ -116,7 +116,6 @@ export const useRadioInput = (initialInput: string = "") => {
     onChange: (event: React.MouseEvent, newInput: string) => {
       event.preventDefault();
       setRadio({
-        ...radio,
         input: radio.input === newInput ? "" : newInput,
         error: ""
       });
@@ -132,10 +131,10 @@ export const useWindowSize = () => {
         window.innerWidth >= 1200
           ? "lg"
           : window.innerWidth >= 992
-            ? "md"
-            : window.innerWidth >= 768
-              ? "sm"
-              : "xs";
+          ? "md"
+          : window.innerWidth >= 768
+          ? "sm"
+          : "xs";
       setSize({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -149,3 +148,27 @@ export const useWindowSize = () => {
   return size;
 };
 
+export const useListInput = () => {
+  const [list, setList] = useState<{ value: string; error: string }[]>([]);
+
+  return {
+    list,
+    setList,
+    onElementChange: (
+      event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+      index: number
+    ) => {
+      event.preventDefault();
+      let newList = [...list];
+      newList[index] = { value: event.target.value, error: "" };
+
+      setList(newList);
+    },
+    onElementDelete: (event: React.MouseEvent, index: number) => {
+      event.preventDefault();
+      let delDoc = [...list];
+      delDoc.splice(index, 1);
+      setList(delDoc);
+    }
+  };
+};

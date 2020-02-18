@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, withStyles, WithStyles } from "@material-ui/core";
 
-export interface OnOffButtonProps {
+export interface SimpleButtonProps {
   title: string;
-  isOn: boolean;
   handleClick: (e: React.MouseEvent) => void;
+  isOn?: boolean;
 }
 
 interface Styles {
@@ -46,11 +46,12 @@ const StyledButton = withStyles(
   <Button className={classes.button} {...other} />
 ));
 
-export const OnOffButton: React.SFC<OnOffButtonProps> = ({
+export const SimpleButton: React.SFC<SimpleButtonProps> = ({
   title,
-  isOn,
-  handleClick
+  handleClick,
+  isOn
 }) => {
+  if (isOn === undefined) isOn = false;
   return (
     <StyledButton color={isOn ? "on" : "off"} onClick={handleClick}>
       {title}
@@ -74,7 +75,7 @@ export const OnOffRadioButton: React.SFC<OnOffRadioButtonProps> = ({
 }) => {
   const isOn = checkInput === title;
   return (
-    <OnOffButton
+    <SimpleButton
       title={title}
       isOn={isOn}
       handleClick={(e: React.MouseEvent) => onChange(e, title)}

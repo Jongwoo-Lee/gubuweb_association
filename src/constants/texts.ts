@@ -56,7 +56,8 @@ export const FORMTEXT = {
   ALLOW_ATHLETE: "선수 출신 참가 여부",
   NOTALLOWED: "불가",
   ALLOWED: "허용",
-  DOCUMENTS_NEEDED: "필요 제출 서류"
+  DOCUMENTS_NEEDED: "필요 제출 서류",
+  DOCUMENTS_INFO: "(문서, 사진 파일. 최대 3개)"
 };
 
 export const ERROR = {
