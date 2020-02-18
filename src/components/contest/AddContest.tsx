@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { ContestRegister } from "../../helpers/Firebase/contest";
+// import { ContestRegister } from "../../helpers/Firebase/contest";
 import { TitleGoback } from "../common/TitleGoBack";
 import {
   useTextInput,
@@ -13,14 +13,13 @@ import { FORMTEXT } from "../../constants/texts";
 import DateFnsUtils from "@date-io/date-fns";
 import korLocale from "date-fns/locale/ko";
 
+import { OnOffRadioButton } from "../common/OnOffButton";
 import {
   FormControl,
   Input,
   FormHelperText,
   Typography
 } from "@material-ui/core";
-import { OnOffButton } from "../common/OnOffButton";
-import { OnOffRadioButton } from "../common/OnOffRadioButton";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
