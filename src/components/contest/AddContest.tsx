@@ -2,7 +2,7 @@ import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 // import { ContestRegister } from "../../helpers/Firebase/contest";
-import { TitleGoback } from "../common/TitleGoBack";
+import { TitleGoBackSave } from "../common/TitleGoBack";
 import {
   useTextInput,
   useDateInput,
@@ -21,9 +21,12 @@ import {
   FormHelperText,
   Typography,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  InputLabel,
+  TextField
 } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
+import { ROUTENAMES } from "../../constants/routes";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -62,7 +65,9 @@ export const AddContest: React.SFC<AddContestProps> = () => {
   const { date: endDate, onChange: handleEndDate } = useDateInput();
   const { radio: cupType, onChange: handleCupType } = useRadioInput();
   const { radio: gender, onChange: handleGender } = useRadioInput();
+  const { value: cupIntro, onChange: handleCupIntro } = useTextInput();
   const { radio: athlete, onChange: handleAthlete } = useRadioInput();
+  const { value: allowedRange, onChange: handleAllowedRange } = useTextInput();
   const {
     list: documents,
     setList: setDocuments,
@@ -76,7 +81,7 @@ export const AddContest: React.SFC<AddContestProps> = () => {
 
   return (
     <div className={classes.root}>
-      <TitleGoback title="대회 추가" />
+      <TitleGoBackSave title={ROUTENAMES.ADD_CONTEST} handleClick={() => {}} />
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={korLocale}>
         <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <br />
@@ -212,6 +217,31 @@ export const AddContest: React.SFC<AddContestProps> = () => {
             />
           </div>
           <Typography className={classes.title} variant="body1">
+            {FORMTEXT.CUP_INTRO}
+          </Typography>
+          <FormControl
+            className={classes.formControl}
+            error={cupIntro.error !== undefined && cupIntro.error.length > 0}
+          >
+            <TextField
+              variant="outlined"
+              name="introduction"
+              type="text"
+              id="introduction"
+              multiline
+              rows="6"
+              value={cupIntro.value}
+              onChange={handleCupIntro}
+              aria-describedby="component-manage-introduction-text"
+            />
+
+            <FormHelperText id="component-manage-introduction-text">
+              {cupIntro.error !== undefined &&
+                cupIntro.error.length > 0 &&
+                cupIntro.error}
+            </FormHelperText>
+          </FormControl>
+          <Typography className={classes.title} variant="body1">
             {FORMTEXT.ALLOW_ATHLETE}
           </Typography>
           <div>
@@ -226,6 +256,35 @@ export const AddContest: React.SFC<AddContestProps> = () => {
               onChange={handleAthlete}
             />
           </div>
+          {athlete.input === FORMTEXT.ALLOWED && (
+            <FormControl
+              className={classes.formControl}
+              style={{ marginTop: "10px" }}
+              error={
+                allowedRange.error !== undefined &&
+                allowedRange.error.length > 0
+              }
+            >
+              <InputLabel htmlFor="allowedrange">
+                {FORMTEXT.ALLOWEDRANGE}
+              </InputLabel>
+              <Input
+                name="allowedrange"
+                type="text"
+                id="allowedrange"
+                value={allowedRange.value}
+                onChange={handleAllowedRange}
+                autoFocus
+                autoComplete="document"
+                aria-describedby="component-allowedrange-text"
+              />
+              <FormHelperText id="component-allowedrange-text">
+                {allowedRange.error !== undefined &&
+                  allowedRange.error.length > 0 &&
+                  allowedRange.error}
+              </FormHelperText>
+            </FormControl>
+          )}
           <div>
             <Typography
               className={classes.title}

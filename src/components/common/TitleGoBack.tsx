@@ -2,6 +2,7 @@ import React from "react";
 import { Typography, Button } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory } from "react-router-dom";
+import { SimpleButton } from "./Buttons";
 
 export interface TitleGobackProps {
   title: string;
@@ -29,9 +30,35 @@ export const TitleGoback: React.SFC<TitleGobackProps> = ({
         <ArrowBackIcon />
       </Button>
 
-      <Typography style={{ marginLeft: "20px" }} variant="h4">
+      <Typography
+        style={{ marginLeft: "20px", display: "inline-block" }}
+        variant="h4"
+      >
         {title}
       </Typography>
+    </div>
+  );
+};
+
+export interface TitleGoBackSaveProps {
+  title: string;
+  handleClick: (e: React.MouseEvent) => void;
+}
+
+export const TitleGoBackSave: React.SFC<TitleGoBackSaveProps> = ({
+  title,
+  handleClick
+}) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        maxWidth: "600px"
+      }}
+    >
+      <TitleGoback title={title} />
+      <SimpleButton title="저장" handleClick={handleClick} />
     </div>
   );
 };

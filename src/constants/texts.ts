@@ -53,9 +53,11 @@ export const FORMTEXT = {
   MALE: "남성",
   FEMALE: "여성",
   COED: "혼성",
+  CUP_INTRO: "대회 소개",
   ALLOW_ATHLETE: "선수 출신 참가 여부",
   NOTALLOWED: "불가",
   ALLOWED: "허용",
+  ALLOWEDRANGE: "허용 선수 범위",
   DOCUMENTS_NEEDED: "필요 제출 서류",
   DOCUMENTS_INFO: "(문서, 사진 파일. 최대 3개)"
 };
