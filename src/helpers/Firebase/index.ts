@@ -1,10 +1,11 @@
 // React
-import app, { auth } from "firebase/app";
+import app, { auth, firestore } from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
 import { Association, setAscData, updateURL, ascConverter } from "./asc";
+import { searchTeams } from "./team";
 
 const devConfig = {
   apiKey: process.env.REACT_APP_DEV_API_KEY,
@@ -118,6 +119,12 @@ class Firebase {
 
     return userUpdate;
   };
+
+  static fireSearchTeams = (
+    search: string
+  ) =>
+    Promise.resolve(searchTeams(search))
+
 }
 
 export default Firebase;

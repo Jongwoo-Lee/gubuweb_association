@@ -26,6 +26,7 @@ export const ROUTES = {
   CONTEST: "/cup",
   ADD_CONTEST: "/cup/add",
   ROSTER: "/roster",
+  ADD_ROSTER: "/roster/add",
   ACCOUNT: "/account",
 
   IDPARAM: "/:id"
@@ -41,5 +42,6 @@ export const ROUTENAMES = {
   CONTEST: "대회 관리",
   ROSTER: "팀 / 선수 관리",
   ACCOUNT: "연맹 정보 관리",
-  ADD_CONTEST: "대회 추가"
+  ADD_CONTEST: "대회 추가",
+  ADD_TEAM: "팀 추가"
 };
