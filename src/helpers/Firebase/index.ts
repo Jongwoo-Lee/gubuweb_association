@@ -30,6 +30,7 @@ const config = process.env.NODE_ENV === "production" ? prodConfig : devConfig;
 // Firebase Type, Interface Definition
 export type FirebaseAuth = firebase.User | null;
 export type FirebaseAsc = Association | null;
+export type FirebaseSetAsc = React.Dispatch<React.SetStateAction<FirebaseAsc>> | null;
 
 class Firebase {
   static auth: app.auth.Auth;

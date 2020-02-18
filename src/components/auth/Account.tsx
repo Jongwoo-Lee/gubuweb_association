@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, } from "react";
 import {
   Avatar,
   makeStyles,
@@ -12,10 +12,10 @@ import {
   TextField,
   Button,
   Grid,
-  IconButton
+  CircularProgress
 } from "@material-ui/core";
-import { useAssociationValue } from "../../context/user";
-import Firebase from "../../helpers/Firebase";
+import { useAssociationValue, useSetAssociationValue } from "../../context/user";
+import Firebase, { FirebaseSetAsc } from "../../helpers/Firebase";
 import { FirebaseAsc } from "../../helpers/Firebase";
 import { useTextInput, } from "../../hooks";
 import { AUTH, FORMTEXT, ERROR, STORAGE } from "../../constants/texts";
@@ -56,6 +56,11 @@ export interface AccountProps { }
 export const Account: React.FC<AccountProps> = () => {
   const classes = useStyles();
   const ascData: FirebaseAsc = useAssociationValue();
+  const setAscData: FirebaseSetAsc = useSetAssociationValue();
+  const [progress, setProgress] = useState(false);
+
+  // const loadData: boolean = (ascData && setAscData) ? true : false;
+
   let url: string = (ascData?.url) ? ascData?.url : "";
 
   // 동일한 이름을 사용 할 수 없으니 새롭게 이름을 정해준다 javascript
@@ -104,15 +109,16 @@ export const Account: React.FC<AccountProps> = () => {
     e.preventDefault();
 
     const isInvalid = validateSave();
-    if (ascData && isInvalid) {
+    if (ascData && setAscData && isInvalid) {
 
-      const test: FirebaseAsc = Firebase.fireInfoUpdate(
+      const newAsc: FirebaseAsc = Firebase.fireInfoUpdate(
         ascData,
         email.value,
         ascName.value,
         phoneNumber.value,
         introduction.value
       )
+      setAscData(newAsc);
     }
   };
 
@@ -120,26 +126,27 @@ export const Account: React.FC<AccountProps> = () => {
   const selectImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file: FileList | null = e.target.files;
-    if (ascData && file && file?.length > 0) {
+    if (ascData && setAscData && file && file?.length > 0) {
       const uploadTask: firebase.storage.UploadTask = Firebase.storage.ref(`${STORAGE.ASC}/${ascData.uid}`).put(file[0]);
       uploadTask.on('state_changed', (snapshot: firebase.storage.UploadTaskSnapshot) => {
+        setProgress(true);
         // progress function 
-        console.log(snapshot);
+        // const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
       }, (err: Error) => {
-        console.log(err);
+        setProgress(false);
+        alert(`이미지 업로드에 실패하였습니다. error message: ${err.message}`);
       }, () => {
         Firebase.storage.ref(STORAGE.ASC).child(ascData.uid).getDownloadURL().then((url: string) => {
-          Firebase.fireURLUpdate(
+          const newAsc: FirebaseAsc = Firebase.fireURLUpdate(
             ascData,
             url
           );
+          setAscData(newAsc);
+          setProgress(false);
         })
       });
     }
-
   };
-
-
 
 
   return (
@@ -165,7 +172,7 @@ export const Account: React.FC<AccountProps> = () => {
       />
       <InputLabel htmlFor="icon-button-photo"
         className={classes.label}>
-        <Avatar className={classes.avatar} src={url} />
+        {progress ? <CircularProgress className={classes.avatar} /> : <Avatar className={classes.avatar} src={url} />}
       </InputLabel>
       <br />
       <FormControl
