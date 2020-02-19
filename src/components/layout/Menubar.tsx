@@ -47,8 +47,8 @@ export const Menubar: React.SFC<MenubarProps> = () => {
         case ROUTENAMES.HOME:
           history.push(ROUTES.HOME);
           break;
-        case ROUTENAMES.CONTEST:
-          history.push(ROUTES.CONTEST);
+        case ROUTENAMES.CUP:
+          history.push(ROUTES.CUP);
           break;
         case ROUTENAMES.ROSTER:
           history.push(ROUTES.ROSTER);
@@ -66,7 +66,7 @@ export const Menubar: React.SFC<MenubarProps> = () => {
     return (
       <List>
         <MenubarItem text={ROUTENAMES.HOME} key={ROUTENAMES.HOME} />
-        <MenubarItem text={ROUTENAMES.CONTEST} key={ROUTENAMES.CONTEST} />
+        <MenubarItem text={ROUTENAMES.CUP} key={ROUTENAMES.CUP} />
         <MenubarItem text={ROUTENAMES.ROSTER} key={ROUTENAMES.ROSTER} />
         <MenubarItem text={ROUTENAMES.ACCOUNT} key={ROUTENAMES.ACCOUNT} />
       </List>
@@ -96,8 +96,8 @@ export const Menubar: React.SFC<MenubarProps> = () => {
     switch (pathname) {
       case ROUTES.HOME:
         return ROUTENAMES.HOME;
-      case ROUTES.CONTEST:
-        return ROUTENAMES.CONTEST;
+      case ROUTES.CUP:
+        return ROUTENAMES.CUP;
       case ROUTES.ROSTER:
         return ROUTENAMES.ROSTER;
       case ROUTES.ACCOUNT:

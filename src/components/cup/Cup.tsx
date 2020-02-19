@@ -2,7 +2,7 @@ import React from "react";
 import { Route, RouteComponentProps } from "react-router-dom";
 
 import { ROUTES, ROUTENAMES } from "../../constants/routes";
-import { AddContest } from "./AddContest";
+import { AddCup } from "./AddCup";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { SquareRouteButton } from "../common/SquareButton";
@@ -10,7 +10,7 @@ import { TitleGoback } from "../common/TitleGoBack";
 //  import Trophy from "../../images/trophy_on.svg";
 import AddIcon from "@material-ui/icons/Add";
 
-export interface ContestMainProps { }
+export interface CupMainProps { }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,25 +26,25 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Contest = (props: RouteComponentProps) => {
+export const Cup = (props: RouteComponentProps) => {
   return (
     <div>
-      <Route exact path={props.match.path} component={ContestComponent} />
-      <Route path={ROUTES.ADD_CONTEST} component={AddContest} />
+      <Route exact path={props.match.path} component={CupComponent} />
+      <Route path={ROUTES.ADD_CUP} component={AddCup} />
     </div>
   );
 };
 
-export const ContestComponent: React.SFC<ContestMainProps> = () => {
+export const CupComponent: React.SFC<CupMainProps> = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <TitleGoback title={ROUTENAMES.CONTEST} />
+      <TitleGoback title={ROUTENAMES.CUP} />
       <div className={classes.cards}>
         <SquareRouteButton
-          title={ROUTENAMES.ADD_CONTEST}
-          route={ROUTES.ADD_CONTEST}
+          title={ROUTENAMES.ADD_CUP}
+          route={ROUTES.ADD_CUP}
           ImgIcon={AddIcon}
         />
       </div>

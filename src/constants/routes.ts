@@ -23,8 +23,8 @@ export const ROUTES = {
   PRIVACY: "/privacy",
 
   CHATROOM: "/chatroom",
-  CONTEST: "/cup",
-  ADD_CONTEST: "/cup/add",
+  CUP: "/cup",
+  ADD_CUP: "/cup/add",
   ROSTER: "/roster",
   ADD_ROSTER: "/roster/add",
   ACCOUNT: "/account",
@@ -39,9 +39,9 @@ export const ROUTENAMES = {
   POSTS: "글",
   CHATROOM: "채팅방",
   TEAMINFO: "팀 정보",
-  CONTEST: "대회 관리",
+  CUP: "대회 관리",
   ROSTER: "팀 / 선수 관리",
   ACCOUNT: "연맹 정보 관리",
-  ADD_CONTEST: "대회 추가",
+  ADD_CUP: "대회 추가",
   ADD_TEAM: "팀 추가"
 };
