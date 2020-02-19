@@ -24,11 +24,13 @@ const useStyles = makeStyles({
     },
     subTitle: {
         position: "absolute",
-        left: "30px" // 20 px + 10px
+        left: "30px", // 20 px + 10px
+        maxWidth: 150,
     },
     subContent: {
         position: "absolute",
-        left: "130px"
+        left: "130px",
+        maxWidth: 150,
     }
 });
 
@@ -43,7 +45,8 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
 }: TeamInfoProps) => {
     const classes = useStyles();
 
-    console.log(`team - ${team.name}`);
+    const managers: string[] = ['tes1', 'test2', 'test3', 'test4']//Object.values(team.manager);
+
     return (
         <Card className={classes.root} variant="outlined">
             <CardContent className={classes.logo}>
@@ -54,7 +57,14 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
                     />
                 )}
             </CardContent>
-            {/* <CardContent>{team.manager}</CardContent> */}
+            <CardContent className={classes.detail}>
+                <div className={classes.subTitle}>
+                    매니저
+            </div>
+                <div className={classes.subContent}>
+                    {managers}
+                </div>
+            </CardContent>
 
             <CardContent className={classes.detail}>
                 <div className={classes.subTitle}>

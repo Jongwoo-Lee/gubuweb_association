@@ -1,13 +1,16 @@
 // React
 import React, { useContext } from "react";
-import { FirebaseAuth, FirebaseAsc, FirebaseSetAsc } from "../../helpers/Firebase";
+import { FirebaseAuth, FirebaseAsc } from "../../helpers/Firebase";
 import { useFirebaseAuth, useAssociation } from "../../hooks";
+
+
+export type ContextSetAsc = React.Dispatch<React.SetStateAction<FirebaseAsc>> | null;
 
 /// Firebase Auth User Context
 interface AscAuthData {
   authUser: FirebaseAuth;
   ascData: FirebaseAsc;
-  setAscData: FirebaseSetAsc;
+  setAscData: ContextSetAsc;
 }
 
 export const AuthUserContext: React.Context<AscAuthData> = React.createContext<
