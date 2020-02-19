@@ -44,20 +44,20 @@ export class Association {
 
 // Firestore data converter
 export const ascConverter = {
-  toFirestore: function (asc: Association) {
+  toFirestore: (asc: Association) => {
     return {
       [COL_ASC.DISPLAYNAME]: asc.name,
       [COL_ASC.EMAIL]: asc.email,
       [COL_ASC.ISVERIFIED]: asc.isVerified,
       [COL_ASC.PHONENUMBER]: asc.phoneNumber,
       [COL_ASC.URL]: asc.url,
-      [COL_ASC.INTRODUCTION]: asc.introduction,
+      [COL_ASC.INTRODUCTION]: asc.introduction
     };
   },
-  fromFirestore: function (
+  fromFirestore: (
     snapshot: firebase.firestore.DocumentSnapshot,
     options: firebase.firestore.SnapshotOptions | undefined
-  ) {
+  ) => {
     const data = snapshot.data(options);
     return new Association(
       snapshot.id,
@@ -99,9 +99,12 @@ export const updateURL = async (uid: string, url: string) =>
   Firebase.firestore
     .collection(COL_ASC.ASSOC)
     .doc(uid)
-    .set({
-      [COL_ASC.URL]: url
-    }, { merge: true })
+    .set(
+      {
+        [COL_ASC.URL]: url
+      },
+      { merge: true }
+    )
     .catch(err => {
       throw err;
     });

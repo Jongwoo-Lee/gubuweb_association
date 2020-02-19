@@ -39,8 +39,8 @@ class Firebase {
 
   static persistence = auth.Auth.Persistence;
   static field = app.firestore.FieldValue;
-  static fireFunc = app.firestore;
-
+  static arrayUnion = app.firestore.FieldValue.arrayUnion;
+  static arrayRemove = app.firestore.FieldValue.arrayRemove;
 
   static init() {
     app.initializeApp(config);
@@ -55,7 +55,7 @@ class Firebase {
     email: string,
     password: string,
     username?: string,
-    phoneNumber?: string,
+    phoneNumber?: string
   ) =>
     Firebase.auth
       .createUserWithEmailAndPassword(email, password)
@@ -101,29 +101,39 @@ class Firebase {
     email: string,
     username?: string,
     phoneNumber?: string,
-    introduction?: string,
+    introduction?: string
   ) => {
-    const userUpdate: FirebaseAsc = new Association(asc.uid, username, email, asc.isVerified, phoneNumber, asc?.url, introduction);
+    const userUpdate: FirebaseAsc = new Association(
+      asc.uid,
+      username,
+      email,
+      asc.isVerified,
+      phoneNumber,
+      asc?.url,
+      introduction
+    );
     Promise.resolve(setAscData(userUpdate));
 
     return userUpdate;
   };
 
-  static fireURLUpdate = (
-    asc: Association,
-    url: string,
-  ) => {
-    const userUpdate: Association = new Association(asc.uid, asc.name, asc.email, asc.isVerified, asc.phoneNumber, url, asc.introduction);
+  static fireURLUpdate = (asc: Association, url: string) => {
+    const userUpdate: Association = new Association(
+      asc.uid,
+      asc.name,
+      asc.email,
+      asc.isVerified,
+      asc.phoneNumber,
+      url,
+      asc.introduction
+    );
     Promise.resolve(updateURL(asc.uid, url));
 
     return userUpdate;
   };
 
-  static fireSearchTeams = (
-    search: string
-  ) =>
-    Promise.resolve(searchTeams(search))
-
+  static fireSearchTeams = (search: string) =>
+    Promise.resolve(searchTeams(search));
 }
 
 export default Firebase;

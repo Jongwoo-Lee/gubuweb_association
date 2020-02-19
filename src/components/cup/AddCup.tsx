@@ -1,7 +1,7 @@
 import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-// import { cupRegister } from "../../helpers/Firebase/cup";
+import { CupInfo, setCupInfo } from "../../helpers/Firebase/cup";
 import { TitleGoBackSave } from "../common/TitleGoBack";
 import {
   useTextInput,
@@ -75,13 +75,15 @@ export const AddCup: React.SFC<AddCupProps> = () => {
     onElementDelete
   } = useListInput();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent
+  ) => {
     e.preventDefault();
   };
 
   return (
     <div className={classes.root}>
-      <TitleGoBackSave title={ROUTENAMES.ADD_CUP} handleClick={() => {}} />
+      <TitleGoBackSave title={ROUTENAMES.ADD_CUP} handleClick={handleSubmit} />
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={korLocale}>
         <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <br />
