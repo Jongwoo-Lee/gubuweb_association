@@ -1,6 +1,6 @@
 import React from "react";
 import { useAssociationValue } from "../context/user";
-import { SquareButton } from "./common/SquareButton";
+import { SquareRouteButton } from "./common/SquareButton";
 import { ROUTES, ROUTENAMES } from "../constants/routes";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -9,7 +9,7 @@ import Team from "../images/team_off.svg";
 import Setting from "../images/setting.svg";
 import { Typography } from "@material-ui/core";
 
-export interface HomeProps {}
+export interface HomeProps { }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,17 +36,17 @@ export const Home: React.SFC<HomeProps> = () => {
           {ROUTENAMES.HOMESCREEN}
         </Typography>
         <div className={classes.cards}>
-          <SquareButton
+          <SquareRouteButton
             title={ROUTENAMES.CONTEST}
             route={ROUTES.CONTEST}
             imgSrc={Trophy}
           />
-          <SquareButton
+          <SquareRouteButton
             title={ROUTENAMES.ROSTER}
             route={ROUTES.ROSTER}
             imgSrc={Team}
           />
-          <SquareButton
+          <SquareRouteButton
             title={ROUTENAMES.ACCOUNT}
             route={ROUTES.ACCOUNT}
             imgSrc={Setting}

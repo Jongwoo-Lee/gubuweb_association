@@ -5,12 +5,12 @@ import { ROUTES, ROUTENAMES } from "../../constants/routes";
 import { AddContest } from "./AddContest";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { SquareButton } from "../common/SquareButton";
+import { SquareRouteButton } from "../common/SquareButton";
 import { TitleGoback } from "../common/TitleGoBack";
 //  import Trophy from "../../images/trophy_on.svg";
 import AddIcon from "@material-ui/icons/Add";
 
-export interface ContestMainProps {}
+export interface ContestMainProps { }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,7 +42,7 @@ export const ContestComponent: React.SFC<ContestMainProps> = () => {
     <div className={classes.root}>
       <TitleGoback title={ROUTENAMES.CONTEST} />
       <div className={classes.cards}>
-        <SquareButton
+        <SquareRouteButton
           title={ROUTENAMES.ADD_CONTEST}
           route={ROUTES.ADD_CONTEST}
           ImgIcon={AddIcon}

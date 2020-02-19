@@ -3,7 +3,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core";
 import { RouteComponentProps, Route } from "react-router-dom";
 import { TitleGoback } from "../common/TitleGoBack";
 import { ROUTENAMES, ROUTES } from "../../constants/routes";
-import { SquareButton } from "../common/SquareButton";
+import { SquareRouteButton } from "../common/SquareButton";
 import AddIcon from "@material-ui/icons/Add";
 import { AddTeam } from "./AddTeam";
 
@@ -42,7 +42,7 @@ export const RosterComponent: React.FC<RosterProps> = () => {
     <div className={classes.root}>
       <TitleGoback title={ROUTENAMES.ROSTER} />
       <div className={classes.cards}>
-        <SquareButton
+        <SquareRouteButton
           title={ROUTENAMES.ADD_TEAM}
           route={ROUTES.ADD_ROSTER}
           ImgIcon={AddIcon}

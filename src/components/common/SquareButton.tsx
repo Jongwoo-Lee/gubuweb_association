@@ -1,6 +1,6 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, CardActionArea } from "@material-ui/core";
+import { Card, Typography, CardActionArea, Dialog, DialogTitle, Button } from "@material-ui/core";
 
 import { useHistory, useLocation } from "react-router-dom";
 import { SvgIconProps } from "@material-ui/core/SvgIcon";
@@ -21,18 +21,34 @@ const useStyles = makeStyles({
 // imgSrc 나 ImgIcon 둘중 하나만 꼭 넣어야 함
 export interface SquareButtonProps {
   title: string;
-  route: string;
   imgSrc?: string;
   ImgIcon?(icon: SvgIconProps): JSX.Element;
+  clickEvent: MouseEventHandler;
 }
 
-export const SquareButton: React.SFC<SquareButtonProps> = ({
+export interface SquareRouteButtonProps {
+  route: string;
+  title: string;
+  imgSrc?: string;
+  ImgIcon?(icon: SvgIconProps): JSX.Element;
+  clickEvent?: MouseEventHandler;
+}
+
+
+export interface SquarePopDlgButtonProps {
+  item: JSX.Element;
+  title: string;
+  imgSrc?: string;
+  ImgIcon?(icon: SvgIconProps): JSX.Element;
+  clickEvent?: MouseEventHandler;
+}
+
+export const SquareRouteButton: React.FC<SquareRouteButtonProps> = ({
   title,
   route,
   imgSrc,
-  ImgIcon
-}: SquareButtonProps) => {
-  const classes = useStyles();
+  ImgIcon,
+}: SquareRouteButtonProps) => {
   const history = useHistory();
   const { pathname } = useLocation();
 
@@ -43,6 +59,54 @@ export const SquareButton: React.SFC<SquareButtonProps> = ({
       history.push(route);
     }
   };
+
+  return (
+    <SquareButton
+      title={title}
+      imgSrc={imgSrc}
+      ImgIcon={ImgIcon}
+      clickEvent={handleCardClick}
+    />
+  );
+};
+
+
+export const SquarePopDlgButton: React.FC<SquarePopDlgButtonProps> = ({
+  item,
+  title,
+  imgSrc,
+  ImgIcon,
+}: SquarePopDlgButtonProps) => {
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+  return (<div>
+    <SquareButton
+      title={title}
+      imgSrc={imgSrc}
+      ImgIcon={ImgIcon}
+      clickEvent={handleClickOpen}
+    />
+    <TeamInfoDlg title={'팀 정보'} item={item} open={open} onClose={handleClose} />
+  </div>
+  );
+};
+
+
+const SquareButton: React.FC<SquareButtonProps> = ({
+  title,
+  imgSrc,
+  ImgIcon,
+  clickEvent,
+}: SquareButtonProps) => {
+  const classes = useStyles();
+  const handleCardClick: MouseEventHandler = clickEvent
 
   return (
     <Card className={classes.root} variant="outlined">
@@ -66,3 +130,21 @@ export const SquareButton: React.SFC<SquareButtonProps> = ({
     </Card>
   );
 };
+
+
+function TeamInfoDlg(props: any) {
+  const { onClose, selectedValue, open, item, title } = props;
+
+  const handleClose = () => {
+    onClose(selectedValue);
+  };
+
+
+  return (
+    <Dialog onClose={handleClose} aria-labelledby="teaminfo-dialog-title" open={open}>
+      <DialogTitle id="teaminfo-dialog-title">{title}</DialogTitle>
+      {item}
+      <Button>초대</Button>
+    </Dialog>
+  );
+}
