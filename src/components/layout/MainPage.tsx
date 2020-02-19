@@ -8,7 +8,7 @@ import { ROUTES } from "../../constants/routes";
 import { Login } from "../auth/Login";
 import { Register } from "../auth/Register";
 import { Home } from "../Home";
-import { Contest } from "../contest/Contest";
+import { Cup } from "../cup/Cup";
 import { Account } from "../auth/Account";
 import { Roster } from "../roster/Roster";
 import { Grid, Hidden } from "@material-ui/core";
@@ -29,7 +29,7 @@ export const MainPage: React.SFC<MainPageProps> = () => {
           <PublicRoute exact path={ROUTES.LANDING} component={Login} />
           <PublicRoute exact path={ROUTES.REGISTER} component={Register} />
           <PrivateRoute exact path={ROUTES.HOME} component={Home} />
-          <PrivateRoute path={ROUTES.CONTEST} component={Contest} />
+          <PrivateRoute path={ROUTES.CUP} component={Cup} />
           <PrivateRoute path={ROUTES.ROSTER} component={Roster} />
           <PrivateRoute exact path={ROUTES.ACCOUNT} component={Account} />
         </Grid>

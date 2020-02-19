@@ -37,8 +37,8 @@ export const Home: React.SFC<HomeProps> = () => {
         </Typography>
         <div className={classes.cards}>
           <SquareButton
-            title={ROUTENAMES.CONTEST}
-            route={ROUTES.CONTEST}
+            title={ROUTENAMES.CUP}
+            route={ROUTES.CUP}
             imgSrc={Trophy}
           />
           <SquareButton

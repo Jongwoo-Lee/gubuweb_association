@@ -41,7 +41,7 @@ export const FORMTEXT = {
   ADD_TEAM_PLHD: "팀 이름",
   ADD_TEAM_INFO: "생성할 팀 이름을 입력해주세요. 예) Outsid FC",
   INTRODUCTION: "연맹 소개",
-  CONTESTNAME: "대회 명칭",
+  CUPNAME: "대회 명칭",
   REGION: "개최 지역",
   TERM: "기간",
   START_DATE: "시작일",

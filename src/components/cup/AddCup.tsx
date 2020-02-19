@@ -1,7 +1,7 @@
 import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-// import { ContestRegister } from "../../helpers/Firebase/contest";
+// import { cupRegister } from "../../helpers/Firebase/cup";
 import { TitleGoBackSave } from "../common/TitleGoBack";
 import {
   useTextInput,
@@ -53,13 +53,13 @@ const useStyles = makeStyles((theme: Theme) => {
   });
 });
 
-export interface AddContestProps {}
+export interface AddCupProps {}
 
-export const AddContest: React.SFC<AddContestProps> = () => {
+export const AddCup: React.SFC<AddCupProps> = () => {
   const classes = useStyles();
   const { device } = useWindowSize();
 
-  const { value: contestName, onChange: handleContestName } = useTextInput();
+  const { value: cupName, onChange: handleCupName } = useTextInput();
   const { value: region, onChange: handleRegion } = useTextInput();
   const { date: startDate, onChange: handleStartDate } = useDateInput();
   const { date: endDate, onChange: handleEndDate } = useDateInput();
@@ -81,33 +81,31 @@ export const AddContest: React.SFC<AddContestProps> = () => {
 
   return (
     <div className={classes.root}>
-      <TitleGoBackSave title={ROUTENAMES.ADD_CONTEST} handleClick={() => {}} />
+      <TitleGoBackSave title={ROUTENAMES.ADD_CUP} handleClick={() => {}} />
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={korLocale}>
         <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <br />
           <Typography className={classes.title} variant="body1">
-            {FORMTEXT.CONTESTNAME} *
+            {FORMTEXT.CUPNAME} *
           </Typography>
           <FormControl
             className={classes.formControl}
-            error={
-              contestName.error !== undefined && contestName.error.length > 0
-            }
+            error={cupName.error !== undefined && cupName.error.length > 0}
           >
             <Input
               name="name"
               type="text"
               id="name"
-              value={contestName.value}
-              onChange={handleContestName}
+              value={cupName.value}
+              onChange={handleCupName}
               autoFocus
-              autoComplete="current-contest"
-              aria-describedby="component-add-contest-text"
+              autoComplete="current-cup"
+              aria-describedby="component-add-cup-text"
             />
-            <FormHelperText id="component-add-contest-text">
-              {contestName.error !== undefined &&
-                contestName.error.length > 0 &&
-                contestName.error}
+            <FormHelperText id="component-add-cup-text">
+              {cupName.error !== undefined &&
+                cupName.error.length > 0 &&
+                cupName.error}
             </FormHelperText>
           </FormControl>
           <Typography className={classes.title} variant="body1">

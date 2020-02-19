@@ -33,4 +33,4 @@ export const COL_TEAMS = {
   TEMPORARIES: "team_temporaries"
 };
 
-export const COL_CONTEST = {};
+export const COL_CUP = {};
