@@ -77,7 +77,7 @@ export const AddTeam: React.FC<AddTeamProps> = () => {
         </FormHelperText>
       </FormControl>
       <div className={classes.cards}>
-        {teams.length > 0 ? (
+        {teams.length > 0 &&
           teams.map((team: Team) => (
             <SquarePopDlgButton
               key={team.name}
@@ -85,10 +85,7 @@ export const AddTeam: React.FC<AddTeamProps> = () => {
               title={team.name}
               imgSrc={team.logo ?? TeamIcon}
             />
-          ))
-        ) : (
-          <br />
-        )}
+          ))}
       </div>
     </div>
   );

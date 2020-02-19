@@ -6,6 +6,9 @@ import { ROUTENAMES, ROUTES } from "../../constants/routes";
 import { SquareRouteButton } from "../common/SquareButton";
 import AddIcon from "@material-ui/icons/Add";
 import { AddTeam } from "./AddTeam";
+import { useLoadTeam } from "../../hooks/team";
+import { Team } from "../../helpers/Firebase/team";
+import TeamIcon from "../../images/team_off.svg";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,6 +38,9 @@ export const Roster = (props: RouteComponentProps) => {
 export const RosterComponent: React.FC<RosterProps> = () => {
   const classes = useStyles();
 
+  // fire
+  const teams: Team[] = useLoadTeam();
+
   return (
     <div className={classes.root}>
       <TitleGoBack title={ROUTENAMES.ROSTER} />
@@ -44,6 +50,16 @@ export const RosterComponent: React.FC<RosterProps> = () => {
           route={ROUTES.ADD_ROSTER}
           ImgIcon={AddIcon}
         />
+        {(teams.length > 0) &&
+          teams.map((team: Team) =>
+            <SquareRouteButton
+              key={team.name}
+              title={team.name}
+              route={team.name}
+              imgSrc={team.logo ?? TeamIcon}
+            />
+          )
+        }
       </div>
     </div>
   );

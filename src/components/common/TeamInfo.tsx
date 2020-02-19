@@ -1,5 +1,5 @@
-import { Team } from "../../helpers/Firebase/team";
-import { Card, makeStyles, CardContent } from "@material-ui/core";
+import { Team, getTeamInfo } from "../../helpers/Firebase/team";
+import { Card, makeStyles, CardContent, Table, TableRow, TableCell, TableBody } from "@material-ui/core";
 import React from "react";
 import TeamIcon from "../../images/team_off.svg";
 
@@ -9,29 +9,20 @@ const useStyles = makeStyles({
     root: {
         display: "flex",
         flexDirection: "column",
-        width: 200,
-        minWidth: 150,
-        margin: "20px 20px"
+        width: 400,
+        minWidth: 400,
+        margin: "20px 20px",
+        overflow: "auto"
+
     },
     logo: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center"
     },
-    detail: {
-        display: "flex",
-        flexDirection: "row",
+    table: {
+        minWidth: 300,
     },
-    subTitle: {
-        position: "absolute",
-        left: "30px", // 20 px + 10px
-        maxWidth: 150,
-    },
-    subContent: {
-        position: "absolute",
-        left: "130px",
-        maxWidth: 150,
-    }
 });
 
 // imgSrc 나 ImgIcon 둘중 하나만 꼭 넣어야 함
@@ -44,8 +35,17 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
     team,
 }: TeamInfoProps) => {
     const classes = useStyles();
+    const teamInfo: Map<string, string> = getTeamInfo(team);
 
-    const managers: string[] = ['tes1', 'test2', 'test3', 'test4']//Object.values(team.manager);
+    const tableComponent: JSX.Element[] = new Array<JSX.Element>();
+    teamInfo.forEach((value: string, key: string, map: Map<string, string>) => {
+        tableComponent.push(
+            <TableRow>
+                <TableCell>{key}</TableCell>
+                <TableCell align="center">{value}</TableCell>
+            </TableRow>
+        )
+    });
 
     return (
         <Card className={classes.root} variant="outlined">
@@ -53,48 +53,17 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
                 {team.logo !== undefined && (
                     <img
                         src={team.logo ?? TeamIcon}
-                        style={{ width: "150px", height: "150px" }}
+                        style={{ width: "100px", height: "100px" }}
                     />
                 )}
             </CardContent>
-            <CardContent className={classes.detail}>
-                <div className={classes.subTitle}>
-                    매니저
-            </div>
-                <div className={classes.subContent}>
-                    {managers}
-                </div>
+            <CardContent>
+                <Table className={classes.table}>
+                    <TableBody>
+                        {(tableComponent.length > 0) && tableComponent.map((e: JSX.Element) => e)}
+                    </TableBody>
+                </Table>
             </CardContent>
-
-            <CardContent className={classes.detail}>
-                <div className={classes.subTitle}>
-                    팀 이름
-                </div>
-                <div className={classes.subContent}>
-                    {team.name}
-                </div>
-            </CardContent>
-            <CardContent className={classes.detail}>
-                <div className={classes.subTitle}>
-                    활동 지역
-                </div>
-                <div className={classes.subContent}>
-                    {team.region}
-                </div></CardContent>
-            <CardContent className={classes.detail}>
-                <div className={classes.subTitle}>
-                    팀 연령
-                </div>
-                <div className={classes.subContent}>
-                    {team.age}
-                </div></CardContent>
-            <CardContent className={classes.detail}>
-                <div className={classes.subTitle}>
-                    팀 성별
-                </div>
-                <div className={classes.subContent}>
-                    {team.gender}
-                </div></CardContent>
         </Card>
     );
 };

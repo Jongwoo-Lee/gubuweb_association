@@ -35,6 +35,21 @@ export class Team {
     }
 }
 
+export const getTeamInfo = function (
+    team: Team
+): Map<string, string> {
+    const teamScope: string[] = ['매니저', '팀 이름', '활동 지역', '팀 연령', '팀 성별'];
+    const managers: string[] = Object.values(team.manager);
+    const teamValue: (string | null)[] = [managers.join(','), team.name, team.region, team.age, team.gender];
+    let teamInfo: Map<string, string> = new Map<string, string>();
+
+    for (let i = 0; i < teamScope.length; i++)
+        teamInfo.set(teamScope[i], teamValue[i] ?? "");
+
+    return teamInfo;
+}
+
+
 const makeTeamfromDoc = function (
     doc: firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>,
 ): Team {
