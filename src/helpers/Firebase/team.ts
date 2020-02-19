@@ -8,7 +8,7 @@ export class Team {
     uid: string;
     name: string;
     initial: string;
-    manager: string;
+    manager: Object; // key: uid, value: name
     region: string | null;
     gender: string | null;
     age: string | null;
@@ -18,7 +18,7 @@ export class Team {
         teamUID: string,
         teamName: string,
         teamInitial: string,
-        manager: any,
+        manager: Object,
         region: string | null | undefined,
         gender: string | null | undefined,
         age: string | null | undefined,

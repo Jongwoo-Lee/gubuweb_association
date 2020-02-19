@@ -14,8 +14,8 @@ import {
   Grid,
   CircularProgress
 } from "@material-ui/core";
-import { useAssociationValue, useSetAssociationValue } from "../../context/user";
-import Firebase, { FirebaseSetAsc } from "../../helpers/Firebase";
+import { useAssociationValue, useSetAssociationValue, ContextSetAsc } from "../../context/user";
+import Firebase from "../../helpers/Firebase";
 import { FirebaseAsc } from "../../helpers/Firebase";
 import { useTextInput, } from "../../hooks";
 import { AUTH, FORMTEXT, ERROR, STORAGE } from "../../constants/texts";
@@ -56,7 +56,7 @@ export interface AccountProps { }
 export const Account: React.FC<AccountProps> = () => {
   const classes = useStyles();
   const ascData: FirebaseAsc = useAssociationValue();
-  const setAscData: FirebaseSetAsc = useSetAssociationValue();
+  const setAscData: ContextSetAsc = useSetAssociationValue();
   const [progress, setProgress] = useState(false);
 
   // const loadData: boolean = (ascData && setAscData) ? true : false;
