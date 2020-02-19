@@ -83,30 +83,30 @@ export const useTextInput = (initialValue: string = "") => {
   };
 };
 
-export const useDateInput = (initialDate: Date = new Date()) => {
-  const [date, setDate] = useState<{
-    date: Date | null;
+export const useDateInput = (initialDate: Date | null) => {
+  const [value, setDate] = useState<{
+    value: Date | null;
     error?: string;
   }>({
-    date: initialDate,
+    value: initialDate,
     error: ""
   });
 
   return {
-    date,
+    value,
     setDate,
-    onChange: (date: Date | null) => {
-      setDate({ ...date, date: date, error: "" });
+    onChange: (value: Date | null) => {
+      setDate({ ...value, value: value, error: "" });
     }
   };
 };
 
 export const useRadioInput = (initialInput: string = "") => {
   const [radio, setRadio] = useState<{
-    input: string;
+    value: string;
     error?: string;
   }>({
-    input: initialInput,
+    value: initialInput,
     error: ""
   });
 
@@ -116,7 +116,7 @@ export const useRadioInput = (initialInput: string = "") => {
     onChange: (event: React.MouseEvent, newInput: string) => {
       event.preventDefault();
       setRadio({
-        input: radio.input === newInput ? "" : newInput,
+        value: radio.value === newInput ? "" : newInput,
         error: ""
       });
     }
@@ -128,11 +128,11 @@ export const useWindowSize = () => {
   useLayoutEffect(() => {
     const updateSize = () => {
       const device =
-        window.innerWidth >= 1200
+        window.innerWidth >= 1280
           ? "lg"
-          : window.innerWidth >= 992
+          : window.innerWidth >= 960
           ? "md"
-          : window.innerWidth >= 768
+          : window.innerWidth >= 600
           ? "sm"
           : "xs";
       setSize({

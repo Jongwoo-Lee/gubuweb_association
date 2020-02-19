@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { CupInfo, setCupInfo } from "../../helpers/Firebase/cup";
-import { TitleGoBackSave } from "../common/TitleGoBack";
+import { TitleGoBack } from "../common/TitleGoBack";
 import {
   useTextInput,
   useDateInput,
@@ -23,10 +23,14 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  TextField
+  TextField,
+  Fab,
+  CircularProgress
 } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import { ROUTENAMES } from "../../constants/routes";
+import { useAssociationValue } from "../../context/user";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -41,13 +45,38 @@ const useStyles = makeStyles((theme: Theme) => {
     form: {
       width: "100%", // Fix IE 11 issue.
       marginTop: theme.spacing(1),
-      margin: "0 20px"
+      marginLeft: "20px",
+      marginRight: "20px",
+      marginBottom: "100px"
     },
     formControl: {
       width: "100%",
       maxWidth: "500px",
       [theme.breakpoints.down("xs")]: {
         width: "75vw"
+      }
+    },
+    error: {
+      color: "red",
+      fontSize: "1em"
+    },
+    submit: {
+      marginTop: theme.spacing(5),
+      maxWidth: "500px",
+      width: "40vw",
+      [theme.breakpoints.down("md")]: {
+        width: "50vw"
+      },
+      [theme.breakpoints.down("sm")]: {
+        width: "60vw"
+      },
+      [theme.breakpoints.down("xs")]: {
+        width: "80vw"
+      },
+      color: "white",
+      backgroundColor: theme.palette.primary.light,
+      "&:hover": {
+        backgroundColor: theme.palette.primary.main
       }
     }
   });
@@ -58,16 +87,55 @@ export interface AddCupProps {}
 export const AddCup: React.SFC<AddCupProps> = () => {
   const classes = useStyles();
   const { device } = useWindowSize();
+  const ascData = useAssociationValue();
+  const [isLoading, setLoading] = useState(false);
+  const history = useHistory();
 
-  const { value: cupName, onChange: handleCupName } = useTextInput();
-  const { value: region, onChange: handleRegion } = useTextInput();
-  const { date: startDate, onChange: handleStartDate } = useDateInput();
-  const { date: endDate, onChange: handleEndDate } = useDateInput();
-  const { radio: cupType, onChange: handleCupType } = useRadioInput();
-  const { radio: gender, onChange: handleGender } = useRadioInput();
-  const { value: cupIntro, onChange: handleCupIntro } = useTextInput();
-  const { radio: athlete, onChange: handleAthlete } = useRadioInput();
-  const { value: allowedRange, onChange: handleAllowedRange } = useTextInput();
+  const {
+    value: cupName,
+    setValue: setCupName,
+    onChange: handleCupName
+  } = useTextInput();
+  const {
+    value: region,
+    setValue: setRegion,
+    onChange: handleRegion
+  } = useTextInput();
+  const {
+    value: startDate,
+    setDate: setStartDate,
+    onChange: handleStartDate
+  } = useDateInput(new Date());
+  const {
+    value: endDate,
+    setDate: setEndDate,
+    onChange: handleEndDate
+  } = useDateInput(new Date());
+  const {
+    radio: cupType,
+    setRadio: setCupType,
+    onChange: handleCupType
+  } = useRadioInput();
+  const {
+    radio: gender,
+    setRadio: setGender,
+    onChange: handleGender
+  } = useRadioInput();
+  const {
+    value: cupIntro,
+    setValue: setCupIntro,
+    onChange: handleCupIntro
+  } = useTextInput();
+  const {
+    radio: athlete,
+    setRadio: setAthlete,
+    onChange: handleAthlete
+  } = useRadioInput();
+  const {
+    value: allowedRange,
+    setValue: setAllowedRange,
+    onChange: handleAllowedRange
+  } = useTextInput();
   const {
     list: documents,
     setList: setDocuments,
@@ -75,15 +143,98 @@ export const AddCup: React.SFC<AddCupProps> = () => {
     onElementDelete
   } = useListInput();
 
-  const handleSubmit = (
+  const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent
   ) => {
     e.preventDefault();
+    const isValid = validateCupInfo();
+
+    if (isValid) {
+      if (
+        startDate.value === null ||
+        endDate.value === null ||
+        ascData?.uid === undefined
+      )
+        return;
+
+      const listDocs = [...documents].map(doc => doc.value);
+
+      const newCup = new CupInfo(
+        cupName.value,
+        region.value,
+        startDate.value,
+        endDate.value,
+        cupType.value,
+        gender.value,
+        new Date(),
+        ascData?.uid,
+        athlete.value,
+        allowedRange.value,
+        undefined,
+        cupIntro.value,
+        listDocs
+      );
+
+      setLoading(true);
+      await setCupInfo(newCup).then(() => {
+        setCupName({ ...cupName, value: "" });
+        setRegion({ ...region, value: "" });
+        setStartDate({ ...startDate, value: new Date() });
+        setEndDate({ ...endDate, value: new Date() });
+        setCupType({ ...cupType, value: "" });
+        setGender({ ...gender, value: "" });
+        setCupIntro({ ...cupIntro, value: "" });
+        setAthlete({ ...athlete, value: "" });
+        setAllowedRange({ ...allowedRange, value: "" });
+        setDocuments(
+          [...documents].map(doc => {
+            return { ...doc, value: "" };
+          })
+        );
+        history.goBack();
+      });
+      setLoading(false);
+    }
+  };
+
+  const validateCupInfo = (): boolean => {
+    let isValid = true;
+    if (cupName.value === undefined || cupName.value === "") {
+      setCupName({
+        ...cupName,
+        error: FORMTEXT.ENTER_CUPNAME
+      });
+      isValid = false;
+    }
+    if (region.value === undefined || region.value === "") {
+      setRegion({ ...region, error: FORMTEXT.ENTER_REGION });
+      isValid = false;
+    }
+    if (!startDate.value || startDate.value === undefined) {
+      setStartDate({ ...startDate, error: FORMTEXT.ENTER_START_DATE });
+      isValid = false;
+    } else if (!endDate.value || endDate.value === undefined) {
+      setEndDate({ ...endDate, error: FORMTEXT.ENTER_END_DATE });
+      isValid = false;
+    } else if (startDate.value.getDate() > endDate.value.getDate()) {
+      setEndDate({ ...endDate, error: FORMTEXT.START_BEFORE_END });
+      isValid = false;
+    }
+    if (cupType.value === undefined || cupType.value === "") {
+      setCupType({ ...cupType, error: FORMTEXT.ENTER_TYPE });
+      isValid = false;
+    }
+    if (gender.value === undefined || gender.value === "") {
+      setGender({ ...gender, error: FORMTEXT.ENTER_GENDER });
+      isValid = false;
+    }
+
+    return isValid;
   };
 
   return (
     <div className={classes.root}>
-      <TitleGoBackSave title={ROUTENAMES.ADD_CUP} handleClick={handleSubmit} />
+      <TitleGoBack title={ROUTENAMES.ADD_CUP} />
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={korLocale}>
         <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <br />
@@ -154,9 +305,10 @@ export const AddCup: React.SFC<AddCupProps> = () => {
                 variant={device === "lg" ? "static" : "inline"}
                 format="yyyy/MM/dd"
                 id="date-startdate"
-                value={startDate.date}
+                value={startDate.value}
                 onChange={handleStartDate}
               />
+              <ErrorText value={startDate.error} />
             </div>
             {device === "lg" ? (
               <h1 style={{ margin: "0 10px" }}>{" ~ "}</h1>
@@ -176,9 +328,10 @@ export const AddCup: React.SFC<AddCupProps> = () => {
                 variant={device === "lg" ? "static" : "inline"}
                 format="yyyy/MM/dd"
                 id="date-enddate"
-                value={endDate.date}
+                value={endDate.value}
                 onChange={handleEndDate}
               />
+              <ErrorText value={endDate.error} />
             </div>
           </div>
           <Typography className={classes.title} variant="body1">
@@ -187,35 +340,37 @@ export const AddCup: React.SFC<AddCupProps> = () => {
           <div>
             <OnOffRadioButton
               title={FORMTEXT.TOURNAMENT}
-              checkInput={cupType.input}
+              checkInput={cupType.value}
               onChange={handleCupType}
             />
             <OnOffRadioButton
               title={FORMTEXT.LEAGUE}
-              checkInput={cupType.input}
+              checkInput={cupType.value}
               onChange={handleCupType}
             />
           </div>
+          <ErrorText value={cupType.error} />
           <Typography className={classes.title} variant="body1">
             {FORMTEXT.GENDER} *
           </Typography>
           <div>
             <OnOffRadioButton
               title={FORMTEXT.MALE}
-              checkInput={gender.input}
+              checkInput={gender.value}
               onChange={handleGender}
             />
             <OnOffRadioButton
               title={FORMTEXT.FEMALE}
-              checkInput={gender.input}
+              checkInput={gender.value}
               onChange={handleGender}
             />
             <OnOffRadioButton
               title={FORMTEXT.COED}
-              checkInput={gender.input}
+              checkInput={gender.value}
               onChange={handleGender}
             />
           </div>
+          <ErrorText value={gender.error} />
           <Typography className={classes.title} variant="body1">
             {FORMTEXT.CUP_INTRO}
           </Typography>
@@ -247,16 +402,16 @@ export const AddCup: React.SFC<AddCupProps> = () => {
           <div>
             <OnOffRadioButton
               title={FORMTEXT.NOTALLOWED}
-              checkInput={athlete.input}
+              checkInput={athlete.value}
               onChange={handleAthlete}
             />
             <OnOffRadioButton
               title={FORMTEXT.ALLOWED}
-              checkInput={athlete.input}
+              checkInput={athlete.value}
               onChange={handleAthlete}
             />
           </div>
-          {athlete.input === FORMTEXT.ALLOWED && (
+          {athlete.value === FORMTEXT.ALLOWED && (
             <FormControl
               className={classes.formControl}
               style={{ marginTop: "10px" }}
@@ -302,17 +457,17 @@ export const AddCup: React.SFC<AddCupProps> = () => {
             </Typography>
           </div>
           <div className={classes.root}>
-            {documents.map((input, index) => {
+            {documents.map((doc, index) => {
               return (
                 <FormControl
                   className={classes.formControl}
-                  error={input.error !== undefined && input.error.length > 0}
+                  error={doc.error !== undefined && doc.error.length > 0}
                 >
                   <Input
                     name={`document${index}`}
                     type="text"
                     id={`document${index}`}
-                    value={input.value}
+                    value={doc.value}
                     onChange={e => onElementChange(e, index)}
                     autoFocus
                     autoComplete="document"
@@ -329,9 +484,9 @@ export const AddCup: React.SFC<AddCupProps> = () => {
                     }
                   />
                   <FormHelperText id={`component-document-text-${index}`}>
-                    {input.error !== undefined &&
-                      input.error.length > 0 &&
-                      input.error}
+                    {doc.error !== undefined &&
+                      doc.error.length > 0 &&
+                      doc.error}
                   </FormHelperText>
                 </FormControl>
               );
@@ -351,8 +506,25 @@ export const AddCup: React.SFC<AddCupProps> = () => {
               />
             )}
           </div>
+          <Fab
+            variant="extended"
+            type="submit"
+            aria-label="add-cup-firebase"
+            className={classes.submit}
+            disabled={isLoading}
+          >
+            {isLoading ? <CircularProgress /> : "대회 생성"}
+          </Fab>
         </form>
       </MuiPickersUtilsProvider>
     </div>
+  );
+};
+
+const ErrorText = ({ value }: { value: string | undefined }) => {
+  return (
+    <p style={{ color: "red", fontSize: "1em" }}>
+      {value !== undefined && value.length > 0 && value}
+    </p>
   );
 };

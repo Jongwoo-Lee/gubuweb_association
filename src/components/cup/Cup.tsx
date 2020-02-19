@@ -6,11 +6,11 @@ import { AddCup } from "./AddCup";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { SquareRouteButton } from "../common/SquareButton";
-import { TitleGoback } from "../common/TitleGoBack";
+import { TitleGoBack } from "../common/TitleGoBack";
 //  import Trophy from "../../images/trophy_on.svg";
 import AddIcon from "@material-ui/icons/Add";
 
-export interface CupMainProps { }
+export interface CupMainProps {}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,7 +40,7 @@ export const CupComponent: React.SFC<CupMainProps> = () => {
 
   return (
     <div className={classes.root}>
-      <TitleGoback title={ROUTENAMES.CUP} />
+      <TitleGoBack title={ROUTENAMES.CUP} />
       <div className={classes.cards}>
         <SquareRouteButton
           title={ROUTENAMES.ADD_CUP}

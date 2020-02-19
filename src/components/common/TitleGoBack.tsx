@@ -4,13 +4,13 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory } from "react-router-dom";
 import { SimpleButton } from "./Buttons";
 
-export interface TitleGobackProps {
+export interface TitleGoBackProps {
   title: string;
 }
 
-export const TitleGoback: React.SFC<TitleGobackProps> = ({
+export const TitleGoBack: React.SFC<TitleGoBackProps> = ({
   title
-}: TitleGobackProps) => {
+}: TitleGoBackProps) => {
   const history = useHistory();
 
   const handleGoback = (e: React.MouseEvent) => {
@@ -57,7 +57,7 @@ export const TitleGoBackSave: React.SFC<TitleGoBackSaveProps> = ({
         maxWidth: "600px"
       }}
     >
-      <TitleGoback title={title} />
+      <TitleGoBack title={title} />
       <SimpleButton title="저장" handleClick={handleClick} />
     </div>
   );

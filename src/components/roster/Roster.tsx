@@ -1,12 +1,11 @@
 import React from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core";
 import { RouteComponentProps, Route } from "react-router-dom";
-import { TitleGoback } from "../common/TitleGoBack";
+import { TitleGoBack } from "../common/TitleGoBack";
 import { ROUTENAMES, ROUTES } from "../../constants/routes";
 import { SquareRouteButton } from "../common/SquareButton";
 import AddIcon from "@material-ui/icons/Add";
 import { AddTeam } from "./AddTeam";
-
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,9 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-
-export interface RosterProps { }
-
+export interface RosterProps {}
 
 export const Roster = (props: RouteComponentProps) => {
   return (
@@ -40,7 +37,7 @@ export const RosterComponent: React.FC<RosterProps> = () => {
 
   return (
     <div className={classes.root}>
-      <TitleGoback title={ROUTENAMES.ROSTER} />
+      <TitleGoBack title={ROUTENAMES.ROSTER} />
       <div className={classes.cards}>
         <SquareRouteButton
           title={ROUTENAMES.ADD_TEAM}

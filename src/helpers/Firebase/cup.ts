@@ -108,8 +108,5 @@ export const setCupInfo = async (cup: CupInfo) => {
     .doc(cup.createdBy);
   batch.update(ascRef, { [COL_ASC.CUPLIST]: Firebase.arrayUnion(cupRef.id) });
 
-  batch
-    .commit()
-    .then()
-    .catch();
+  batch.commit().catch(err => console.log(err));
 };

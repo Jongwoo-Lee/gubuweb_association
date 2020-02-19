@@ -14,7 +14,7 @@ import {
   FormHelperText,
   Fab
 } from "@material-ui/core";
-import { TitleGoback } from "../common/TitleGoBack";
+import { TitleGoBack } from "../common/TitleGoBack";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -144,7 +144,7 @@ export const Register: React.SFC<RegisterProps> = () => {
 
   return (
     <div className={classes.register}>
-      <TitleGoback title="대회 관리자 회원가입" />
+      <TitleGoBack title="대회 관리자 회원가입" />
       <form className={classes.form} onSubmit={handleSubmit} noValidate>
         <br />
         <FormControl
