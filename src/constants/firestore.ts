@@ -14,7 +14,8 @@ export const COL_ASC = {
   PHONENUMBER: "p",
   URL: "url",
   INTRODUCTION: "i",
-  ISVERIFIED: "iv"
+  ISVERIFIED: "iv",
+  CUPLIST: "cl"
 };
 
 export const COL_TEAMS = {
@@ -33,4 +34,19 @@ export const COL_TEAMS = {
   TEMPORARIES: "team_temporaries"
 };
 
-export const COL_CUP = {};
+export const COL_CUP = {
+  CUP: "cup",
+  CUPNAME: "n",
+  REGION: "r",
+  STARTDATE: "sd",
+  ENDDATE: "ed",
+  CUPTYPE: "t",
+  GENDER: "g",
+  ALLOWATHLETE: "aa",
+  ATHLETETYPE: "at",
+  URL: "u",
+  INTRODUCTION: "i",
+  DOCUMENTS: "d",
+  CREATEDAT: "ca",
+  CREATEDBY: "cb"
+};
