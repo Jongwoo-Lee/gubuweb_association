@@ -38,9 +38,9 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
     const teamInfo: Map<string, string> = getTeamInfo(team);
 
     const tableComponent: JSX.Element[] = new Array<JSX.Element>();
-    teamInfo.forEach((value: string, key: string, map: Map<string, string>) => {
+    teamInfo.forEach((value: string, key: string, _: Map<string, string>) => {
         tableComponent.push(
-            <TableRow>
+            <TableRow key={key} >
                 <TableCell>{key}</TableCell>
                 <TableCell align="center">{value}</TableCell>
             </TableRow>

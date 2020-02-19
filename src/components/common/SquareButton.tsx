@@ -85,6 +85,13 @@ export const SquarePopDlgButton: React.FC<SquarePopDlgButtonProps> = ({
     setOpen(false);
   };
 
+  const handleInvite = () => {
+    setOpen(false);
+    console.log('go invite')
+
+    // invite시 작업
+  };
+
 
   return (<div>
     <SquareButton
@@ -93,7 +100,11 @@ export const SquarePopDlgButton: React.FC<SquarePopDlgButtonProps> = ({
       ImgIcon={ImgIcon}
       clickEvent={handleClickOpen}
     />
-    <TeamInfoDlg title={'팀 정보'} item={item} open={open} onClose={handleClose} />
+    <Dialog onClose={handleClose} aria-labelledby="teaminfo-dialog-title" open={open}>
+      <DialogTitle id="teaminfo-dialog-title">팀 정보</DialogTitle>
+      {item}
+      <Button onClick={handleInvite}>초대</Button>
+    </Dialog>
   </div>
   );
 };
@@ -130,21 +141,3 @@ const SquareButton: React.FC<SquareButtonProps> = ({
     </Card>
   );
 };
-
-
-function TeamInfoDlg(props: any) {
-  const { onClose, selectedValue, open, item, title } = props;
-
-  const handleClose = () => {
-    onClose(selectedValue);
-  };
-
-
-  return (
-    <Dialog onClose={handleClose} aria-labelledby="teaminfo-dialog-title" open={open}>
-      <DialogTitle id="teaminfo-dialog-title">{title}</DialogTitle>
-      {item}
-      <Button>초대</Button>
-    </Dialog>
-  );
-}
