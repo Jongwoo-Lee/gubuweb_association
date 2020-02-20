@@ -7,8 +7,9 @@ import { FORMTEXT } from "../../constants/texts";
 import TeamIcon from "../../images/team_off.svg";
 import { Team } from "../../helpers/Firebase/team";
 import { useSearchTeam } from "../../hooks/team";
-import { SquarePopDlgButton } from "../common/SquareButton";
+import { SquarePopDlgButton } from "./SquarePopDlgButton";
 import { TeamInfo } from "../common/TeamInfo";
+import { usePushTeam, useTeams } from "../../context/team/team";
 
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -44,8 +45,6 @@ export const AddTeam: React.FC<AddTeamProps> = () => {
     const { value: searchTeam, onChange: handleSearchTeam } = useTextInput();
     const teams: Team[] = useSearchTeam(searchTeam.value);
 
-
-
     return (
         <div className={classes.root}>
             <TitleGoback title="팀 추가" />
@@ -77,12 +76,10 @@ export const AddTeam: React.FC<AddTeamProps> = () => {
             </FormControl>
             <div className={classes.cards}>
                 {(teams.length > 0) &&
-                    teams.map((team: Team) =>
+                    teams.map((team: Team, index: number) =>
                         <SquarePopDlgButton
-                            key={team.name}
-                            item={<TeamInfo team={team} />}
-                            title={team.name}
-                            imgSrc={team.logo ?? TeamIcon}
+                            key={index}
+                            team={team}
                         />
                     )
                 }</div>
