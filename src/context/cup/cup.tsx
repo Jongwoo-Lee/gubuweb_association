@@ -1,24 +1,28 @@
 import React, { useState, useContext } from "react";
+import { CupInfo } from "../../helpers/Firebase/cup";
+
+export type ContextSetCupInfos = React.Dispatch<React.SetStateAction<CupInfo[]>>;
 
 /// Firebase Auth User Context
-interface TempData {
-    temp: any;
-    setTemp: any;
+interface CupInfoData {
+    cupInfos: CupInfo[];
+    setCupInfos: ContextSetCupInfos;
 }
 
-export const TempContext: React.Context<TempData> = React.createContext<
-    TempData
->({ temp: null, setTemp: null });
+export const CupInfoContext: React.Context<CupInfoData> = React.createContext<
+    CupInfoData
+>({ cupInfos: Array<CupInfo>(), setCupInfos: () => { console.log('cup no initialize') } });
 
-export const TempProvider = (props: { children: React.ReactNode }) => {
-    const [temp, setTemp] = useState([])
+export const CupInfoProvider = (props: { children: React.ReactNode }) => {
+    const [cupInfos, setCupInfos] = useState<CupInfo[]>(Array<CupInfo>())
+
     return (
-        <TempContext.Provider value={{ temp, setTemp }}>
+        <CupInfoContext.Provider value={{ cupInfos: cupInfos, setCupInfos: setCupInfos }}>
             {props.children}
-        </TempContext.Provider>
+        </CupInfoContext.Provider>
     );
 };
 
-export const useTempTeam = () => useContext(TempContext).temp;
-export const useSetTempTeam = () => useContext(TempContext).setTemp;
+export const useCupsInfo = () => useContext(CupInfoContext).cupInfos;
+export const useSetCupsInfo = () => useContext(CupInfoContext).setCupInfos;
 

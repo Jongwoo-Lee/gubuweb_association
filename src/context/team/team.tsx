@@ -15,7 +15,7 @@ interface TempData {
 
 const TeamContext: React.Context<TempData> = React.createContext<
     TempData
->({ teams: Array<Team>(), setTeams: () => { } });
+>({ teams: Array<Team>(), setTeams: () => { console.log('team no initialize') } });
 
 export const TeamProvider = (props: { children: React.ReactNode }) => {
     const { teams, setTeams } = useLoadTeam();

@@ -15,7 +15,7 @@ import { CupDetailTree } from "./Cup_Detail_Tree";
 import { CupDetailRecord } from "./Cup_Detail_Record";
 import { CupDetailResult } from "./Cup_Detail_Result";
 import { CupDetailPlan } from "./Cup_Detail_Plan";
-import { TempProvider } from "../../context/cup/cup";
+import { CupInfoProvider } from "../../context/cup/cup";
 
 export interface CupMainProps { }
 
@@ -37,7 +37,7 @@ export const Cup = (props: RouteComponentProps) => {
   return (
 
     <div>
-      <TempProvider>
+      <CupInfoProvider>
         <Route exact path={props.match.path} component={CupComponent} />
         <Route path={ROUTES.ADD_CUP} component={AddCup} />
         <Route exact path={ROUTES.CUP_DETAIL} component={CupDetail} />
@@ -46,7 +46,7 @@ export const Cup = (props: RouteComponentProps) => {
         <Route path={ROUTES.CUP_DETAIL_PLAN} component={CupDetailPlan} />
         <Route path={ROUTES.CUP_DETAIL_RECORD} component={CupDetailRecord} />
         <Route path={ROUTES.CUP_DETAIL_RESULT} component={CupDetailResult} />
-      </TempProvider>
+      </CupInfoProvider>
     </div>
   );
 };
