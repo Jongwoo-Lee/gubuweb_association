@@ -33,6 +33,36 @@ export class Team {
         this.age = age ?? null;
         this.logo = logo ?? null;
     }
+
+    parseValue(value: string): string | string[] {
+        let returnV: string | string[];
+        switch (value) {
+            case 'name':
+                returnV = this.name;
+                break;
+
+            case 'manager':
+                returnV = Object.values(this.manager);
+                break;
+
+            case 'region':
+                returnV = this.region ?? "";
+                break;
+
+            case 'age':
+                returnV = this.age ?? "";
+                break;
+
+            case 'gender':
+                returnV = this.gender ?? "";
+                break;
+            default:
+                returnV = "";
+
+        }
+
+        return returnV;
+    }
 }
 
 export const getTeamInfo = function (
