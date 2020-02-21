@@ -16,6 +16,7 @@ export class CupInfo {
   url: string | null;
   introduction: string | null;
   documents: string[] | null;
+  selectedTeams: string[] | undefined;
 
   constructor(
     name: string,
@@ -110,3 +111,15 @@ export const setCupInfo = async (cup: CupInfo) => {
 
   batch.commit().catch(err => console.log(err));
 };
+
+// save team uid 
+export const saveTeams = async (cupUID: string, teams: string[]) => {
+  Firebase.firestore
+    .collection(COL_CUP.CUP)
+    .doc(cupUID)
+    .update({
+      [COL_CUP.TEAMS]: teams
+    })
+    .catch(err => console.log(`saveTeams error ${err}`));
+};
+

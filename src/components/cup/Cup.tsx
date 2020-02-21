@@ -63,6 +63,7 @@ export const CupComponent: React.SFC<CupMainProps> = () => {
           route={ROUTES.ADD_CUP}
           ImgIcon={AddIcon}
         />
+        {/* {나중에 cup 로드되면 삭제할 예정임.} */}
         <SquareRouteButton
           title={ROUTENAMES.CUP_DETAIL}
           route={ROUTES.CUP_DETAIL}

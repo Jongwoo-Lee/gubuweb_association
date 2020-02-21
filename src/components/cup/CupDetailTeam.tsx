@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { ROUTENAMES } from "../../constants/routes";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { TitleGoBack } from "../common/TitleGoBack";
-import { Typography, TableContainer, Table, TableRow, TableHead, TableCell, TablePagination, TableBody } from "@material-ui/core";
+import { Typography, TableContainer, Table, TableRow, TableHead, TableCell, TablePagination, TableBody, Button, Grid } from "@material-ui/core";
 import { Team } from "../../helpers/Firebase/team";
+import { saveTeams } from "../../helpers/Firebase/cup";
 
 export interface CupDetailTeamProps { }
 
@@ -53,8 +54,6 @@ export const CupDetailTeam: React.SFC<CupDetailTeamProps> = () => {
     teams.push(new Team(`uid${i}`, `tempTeam + ${i}`, 'tsx', managerObj, `${i}`, `${i}`, `${i}`, `${i}`));
   }
 
-
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -67,7 +66,7 @@ export const CupDetailTeam: React.SFC<CupDetailTeamProps> = () => {
     setPage(0);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, teamUID: string, isItemSelected: boolean) => {
+  const handleRowClick = (event: React.MouseEvent<unknown>, teamUID: string, isItemSelected: boolean) => {
     let selectedTeam: string[] = Array<string>();
     if (isItemSelected) {
       selectedTeam = [...selectedUID]
@@ -80,16 +79,34 @@ export const CupDetailTeam: React.SFC<CupDetailTeamProps> = () => {
     setselectedUID(selectedTeam);
   };
 
-  console.log(`selectedUID - ${selectedUID}`)
+  const handleSave = async (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent) => {
+    e.preventDefault();
 
+    // {/* {나중에 cup 로드되면 삭제할 예정임.}  cup uid를 넣자 */}
+    await saveTeams('WDclQ7CvGzda7fWyL90G', selectedUID);
+    // current cup uid에 SELECTED TEAM를 보낸다. 
+
+  };
 
   return (
     <div className={classes.root}>
       <TitleGoBack title='대회 이름' />
-      <br></br>
-      <Typography color="textPrimary" variant="h4">
-        {ROUTENAMES.CUP_DETAIL_TEAM}
-      </Typography>
+      <br />
+      <br />
+      <Grid container spacing={3}
+        justify="space-between"
+        alignItems="flex-start">
+        <Typography color="textPrimary" variant="h4">
+          {ROUTENAMES.CUP_DETAIL_TEAM}
+        </Typography>
+        <Button variant="contained" onClick={handleSave}>
+          저장
+        </Button>
+      </Grid>
+      <br />
+      <br />
+
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -110,7 +127,7 @@ export const CupDetailTeam: React.SFC<CupDetailTeamProps> = () => {
               const isItemSelected: boolean = selectedUID.includes(team.uid)
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={team.uid}
-                  onClick={event => handleClick(event, team.uid, isItemSelected)}
+                  onClick={event => handleRowClick(event, team.uid, isItemSelected)}
                   selected={isItemSelected}
                 >
                   {columns.map(column => {
