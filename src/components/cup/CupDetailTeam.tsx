@@ -22,24 +22,25 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       width: "100%"
     },
-
+    tableHeader: {
+      minWidth: 170
+    }
   })
 );
 
 interface Column {
   id: 'name' | 'manager' | 'age' | 'region' | 'gender' | 'add';
   label: string;
-  minWidth?: number;
 }
 
 
 const columns: Column[] = [
-  { id: 'name', label: '팀 이름', minWidth: 170 },
-  { id: 'manager', label: '매니저', minWidth: 170 },
-  { id: 'age', label: '연령대', minWidth: 170 },
-  { id: 'region', label: '지역', minWidth: 170 },
-  { id: 'gender', label: '성별', minWidth: 170 },
-  // { id: 'add', label: '추가', minWidth: 170 },
+  { id: 'name', label: '팀 이름' },
+  { id: 'manager', label: '매니저' },
+  { id: 'age', label: '연령대' },
+  { id: 'region', label: '지역' },
+  { id: 'gender', label: '성별' },
+  // { id: 'add', label: '추가'},
 ];
 
 
@@ -115,7 +116,7 @@ export const CupDetailTeam: React.SFC<CupDetailTeamProps> = () => {
                 <TableCell
                   key={column.id}
                   align='center'
-                  style={{ minWidth: column.minWidth }}
+                  className={classes.tableHeader}
                 >
                   {column.label}
                 </TableCell>
