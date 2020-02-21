@@ -16,7 +16,7 @@ export class CupInfo {
   url: string | null;
   introduction: string | null;
   documents: string[] | null;
-  selectedTeams: string[] | undefined;
+  selectedTeams: string[];
 
   constructor(
     name: string,
@@ -31,7 +31,8 @@ export class CupInfo {
     athleteType: string | undefined,
     url: string | undefined,
     introduction: string | undefined,
-    documents: string[] | undefined
+    documents: string[] | undefined,
+    selectedTeams: string[] | undefined,
   ) {
     this.name = name;
     this.region = region;
@@ -46,6 +47,7 @@ export class CupInfo {
     this.url = url ?? null;
     this.introduction = introduction ?? null;
     this.documents = documents ?? null;
+    this.selectedTeams = selectedTeams ?? Array<string>();
   }
   toString() {
     return this.name + ", " + this.cupType;
@@ -68,7 +70,8 @@ export const cupInfoConverter = {
       [COL_CUP.ATHLETETYPE]: cup.athleteType,
       [COL_CUP.URL]: cup.url,
       [COL_CUP.INTRODUCTION]: cup.introduction,
-      [COL_CUP.DOCUMENTS]: cup.documents
+      [COL_CUP.DOCUMENTS]: cup.documents,
+      [COL_CUP.TEAMS]: cup.selectedTeams,
     };
   },
   fromFirestore: (
@@ -89,7 +92,8 @@ export const cupInfoConverter = {
       data?.[COL_CUP.ATHLETETYPE],
       data?.[COL_CUP.URL],
       data?.[COL_CUP.INTRODUCTION],
-      data?.[COL_CUP.DOCUMENTS]
+      data?.[COL_CUP.DOCUMENTS],
+      data?.[COL_CUP.TEAMS],
     );
   }
 };

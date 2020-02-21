@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) => {
   });
 });
 
-export interface AddCupProps {}
+export interface AddCupProps { }
 
 export const AddCup: React.SFC<AddCupProps> = () => {
   const classes = useStyles();
@@ -172,7 +172,8 @@ export const AddCup: React.SFC<AddCupProps> = () => {
         allowedRange.value,
         undefined,
         cupIntro.value,
-        listDocs
+        listDocs,
+        undefined
       );
 
       setLoading(true);
@@ -313,8 +314,8 @@ export const AddCup: React.SFC<AddCupProps> = () => {
             {device === "lg" ? (
               <h1 style={{ margin: "0 10px" }}>{" ~ "}</h1>
             ) : (
-              <span style={{ margin: "0 10px" }}>{" ~ "}</span>
-            )}
+                <span style={{ margin: "0 10px" }}>{" ~ "}</span>
+              )}
             <div
               style={{
                 display: "flex",
