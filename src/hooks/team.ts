@@ -21,9 +21,9 @@ export const useSearchTeam = (search: string) => {
 
 
 export const useLoadTeam = () => {
-    const [teams, setTeams] = useState<Team[]>([]);
+    const [teams, setTeams] = useState<Team[]>(Array<Team>())
 
     // firebase 어딘가에서 불러와야 함, 거기엔 참가 확정 팀, 보류중인 팀 2종류가 존재 할 것 같음.
 
-    return teams;
+    return { teams, setTeams };
 };

@@ -13,8 +13,9 @@ import { FORMTEXT } from "../../constants/texts";
 import TeamIcon from "../../images/team_off.svg";
 import { Team } from "../../helpers/Firebase/team";
 import { useSearchTeam } from "../../hooks/team";
-import { SquarePopDlgButton } from "../common/SquareButton";
+import { SquarePopDlgButton } from "./SquarePopDlgButton";
 import { TeamInfo } from "../common/TeamInfo";
+import { usePushTeam, useTeams } from "../../context/team/team";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -78,13 +79,8 @@ export const AddTeam: React.FC<AddTeamProps> = () => {
       </FormControl>
       <div className={classes.cards}>
         {teams.length > 0 &&
-          teams.map((team: Team) => (
-            <SquarePopDlgButton
-              key={team.name}
-              item={<TeamInfo team={team} />}
-              title={team.name}
-              imgSrc={team.logo ?? TeamIcon}
-            />
+          teams.map((team: Team, index: number) => (
+            <SquarePopDlgButton key={index} team={team} />
           ))}
       </div>
     </div>

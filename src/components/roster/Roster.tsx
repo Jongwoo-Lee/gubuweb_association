@@ -6,9 +6,9 @@ import { ROUTENAMES, ROUTES } from "../../constants/routes";
 import { SquareRouteButton } from "../common/SquareButton";
 import AddIcon from "@material-ui/icons/Add";
 import { AddTeam } from "./AddTeam";
-import { useLoadTeam } from "../../hooks/team";
 import { Team } from "../../helpers/Firebase/team";
 import TeamIcon from "../../images/team_off.svg";
+import { TeamProvider, useTeams } from "../../context/team/team";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,8 +29,10 @@ export interface RosterProps {}
 export const Roster = (props: RouteComponentProps) => {
   return (
     <div>
-      <Route exact path={props.match.path} component={RosterComponent} />
-      <Route path={ROUTES.ADD_ROSTER} component={AddTeam} />
+      <TeamProvider>
+        <Route exact path={props.match.path} component={RosterComponent} />
+        <Route path={ROUTES.ADD_ROSTER} component={AddTeam} />
+      </TeamProvider>
     </div>
   );
 };
@@ -39,7 +41,7 @@ export const RosterComponent: React.FC<RosterProps> = () => {
   const classes = useStyles();
 
   // fire
-  const teams: Team[] = useLoadTeam();
+  const teams: Team[] | null = useTeams();
 
   return (
     <div className={classes.root}>
@@ -50,7 +52,7 @@ export const RosterComponent: React.FC<RosterProps> = () => {
           route={ROUTES.ADD_ROSTER}
           ImgIcon={AddIcon}
         />
-        {(teams.length > 0) &&
+        {teams && (teams.length > 0) &&
           teams.map((team: Team) =>
             <SquareRouteButton
               key={team.name}
