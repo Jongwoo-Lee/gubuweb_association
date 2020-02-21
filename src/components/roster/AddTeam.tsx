@@ -25,9 +25,13 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     title: {
       marginTop: "20px",
-      marginBottom: "5px"
+      marginBottom: "5px",
+      marginLeft: "20px",
+      marginRight: "20px"
     },
     formControl: {
+      marginLeft: "20px",
+      marginRight: "20px",
       width: "100%",
       maxWidth: "500px",
       [theme.breakpoints.down("xs")]: {

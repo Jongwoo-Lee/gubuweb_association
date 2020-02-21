@@ -28,9 +28,7 @@ const useStyles = makeStyles((theme: Theme) => {
       marginTop: "3em",
 
       [theme.breakpoints.up("lg")]: {
-        width: "40vw",
-        marginLeft: "auto",
-        marginRight: "auto"
+        width: "40vw"
       }
     },
     form: {

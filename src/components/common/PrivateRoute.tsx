@@ -3,6 +3,8 @@ import React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 import { useAuthUserValue, useAssociationValue } from "../../context/user";
+import { Grid, Hidden } from "@material-ui/core";
+import { Menubar } from "../layout/Menubar";
 
 interface PrivateRouteProps extends RouteProps {}
 
@@ -21,10 +23,16 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = props => {
     props.path === ROUTES.ACCOUNT ||
     (ascData && ascData.isVerified)
   ) {
-    return <Route {...props} />;
+    return <AddMenubar route={<Route {...props} />} />;
   } else {
     const renderComponent = () => <Redirect to={{ pathname: ROUTES.HOME }} />;
-    return <Route {...props} component={renderComponent} render={undefined} />;
+    return (
+      <AddMenubar
+        route={
+          <Route {...props} component={renderComponent} render={undefined} />
+        }
+      />
+    );
   }
 };
 
@@ -35,6 +43,27 @@ export const PublicRoute: React.FC<PrivateRouteProps> = props => {
     return <Route {...props} />;
   } else {
     const renderComponent = () => <Redirect to={{ pathname: ROUTES.HOME }} />;
-    return <Route {...props} component={renderComponent} render={undefined} />;
+    return (
+      <AddMenubar
+        route={
+          <Route {...props} component={renderComponent} render={undefined} />
+        }
+      />
+    );
   }
+};
+
+const AddMenubar: React.FC<{ route: JSX.Element }> = ({ route }) => {
+  return (
+    <Grid container>
+      <Hidden xsDown>
+        <Grid item sm={2} md={3}>
+          <Menubar />
+        </Grid>
+      </Hidden>
+      <Grid item xs={12} sm={10} md={9}>
+        {route}
+      </Grid>
+    </Grid>
+  );
 };
