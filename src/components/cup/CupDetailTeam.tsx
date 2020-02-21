@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ROUTENAMES } from "../../constants/routes";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { TitleGoBack } from "../common/TitleGoBack";
@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexWrap: "wrap"
     },
     container: {
+      width: "100%"
     },
 
   })
@@ -37,7 +38,7 @@ const columns: Column[] = [
   { id: 'age', label: '연령대', minWidth: 170 },
   { id: 'region', label: '지역', minWidth: 170 },
   { id: 'gender', label: '성별', minWidth: 170 },
-  { id: 'add', label: '추가', minWidth: 170 },
+  // { id: 'add', label: '추가', minWidth: 170 },
 ];
 
 
@@ -45,9 +46,11 @@ const columns: Column[] = [
 export const CupDetailTeam: React.SFC<CupDetailTeamProps> = () => {
   const classes = useStyles();
   const teams: Team[] = []; // 연맹에 가입된 팀 목록을 불러오면 될 듯 함 
+  const [selectedUID, setselectedUID] = useState<Array<string>>(Array<string>());
+
   for (let i = 0; i < 100; i++) {
     const managerObj: Object = { 'a': 'b' };
-    teams.push(new Team(`${i}`, `tempTeam + ${i}`, 'tsx', managerObj, `${i}`, `${i}`, `${i}`, `${i}`));
+    teams.push(new Team(`uid${i}`, `tempTeam + ${i}`, 'tsx', managerObj, `${i}`, `${i}`, `${i}`, `${i}`));
   }
 
 
@@ -63,6 +66,22 @@ export const CupDetailTeam: React.SFC<CupDetailTeamProps> = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const handleClick = (event: React.MouseEvent<unknown>, teamUID: string, isItemSelected: boolean) => {
+    let selectedTeam: string[] = Array<string>();
+    if (isItemSelected) {
+      selectedTeam = [...selectedUID]
+      const idx = selectedTeam.indexOf(teamUID)
+      if (idx > -1) selectedTeam.splice(idx, 1)
+    } else {
+      selectedTeam = [...selectedUID, teamUID];
+    }
+
+    setselectedUID(selectedTeam);
+  };
+
+  console.log(`selectedUID - ${selectedUID}`)
+
 
   return (
     <div className={classes.root}>
@@ -88,10 +107,14 @@ export const CupDetailTeam: React.SFC<CupDetailTeamProps> = () => {
           </TableHead>
           <TableBody>
             {teams.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(team => {
+              const isItemSelected: boolean = selectedUID.includes(team.uid)
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={team.uid}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={team.uid}
+                  onClick={event => handleClick(event, team.uid, isItemSelected)}
+                  selected={isItemSelected}
+                >
                   {columns.map(column => {
-                    const value: string | Object = team.parseValue(column.id);
+                    const value: string | string[] = team.parseValue(column.id);
                     return (
                       <TableCell key={column.id} align={'center'}>
                         {value}
