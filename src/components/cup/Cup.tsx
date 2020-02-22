@@ -9,15 +9,15 @@ import { SquareRouteButton } from "../common/SquareButton";
 import { TitleGoBack } from "../common/TitleGoBack";
 //  import Trophy from "../../images/trophy_on.svg";
 import AddIcon from "@material-ui/icons/Add";
-import { CupDetail } from "./Cup_Detail";
-import { CupDetailTeam } from "./Cup_Detail_Team";
-import { CupDetailTree } from "./Cup_Detail_Tree";
-import { CupDetailRecord } from "./Cup_Detail_Record";
-import { CupDetailResult } from "./Cup_Detail_Result";
-import { CupDetailPlan } from "./Cup_Detail_Plan";
+import { CupDetail } from "./CupDetail";
+import { CupDetailTeam } from "./CupDetailTeam";
+import { CupDetailTree } from "./CupDetailTree";
+import { CupDetailRecord } from "./CupDetailRecord";
+import { CupDetailResult } from "./CupDetailResult";
+import { CupDetailPlan } from "./CupDetailPlan";
 import { CupInfoProvider } from "../../context/cup/cup";
 
-export interface CupMainProps {}
+export interface CupMainProps { }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,6 +63,7 @@ export const CupComponent: React.SFC<CupMainProps> = () => {
           route={ROUTES.ADD_CUP}
           ImgIcon={AddIcon}
         />
+        {/* {나중에 cup 로드되면 삭제할 예정임.} */}
         <SquareRouteButton
           title={ROUTENAMES.CUP_DETAIL}
           route={ROUTES.CUP_DETAIL}

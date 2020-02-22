@@ -48,5 +48,6 @@ export const COL_CUP = {
   INTRODUCTION: "i",
   DOCUMENTS: "d",
   CREATEDAT: "ca",
-  CREATEDBY: "cb"
+  CREATEDBY: "cb",
+  TEAMS: "t"
 };
