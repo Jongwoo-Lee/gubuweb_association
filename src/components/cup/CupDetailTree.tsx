@@ -3,8 +3,8 @@ import { ROUTENAMES } from "../../constants/routes";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { TitleGoBack } from "../common/TitleGoBack";
 import { Grid, Typography, Button, Collapse, IconButton } from "@material-ui/core";
-import { ExpandMore, ExpandMoreRounded, ExpandMoreSharp, ExpandMoreTwoTone } from "@material-ui/icons";
-import { AddGroupCard } from "./addGroupCard";
+import { ExpandMore } from "@material-ui/icons";
+import { AddGroupComponent } from "./AddGroupComponent";
 
 export interface CupDetailTreeProps { }
 
@@ -87,7 +87,8 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
         className={classes.line} />
 
       {<Collapse in={expanded} timeout="auto" unmountOnExit>
-        <AddGroupCard></AddGroupCard>
+        <AddGroupComponent></AddGroupComponent>
+
       </Collapse>}
     </div>
   );
