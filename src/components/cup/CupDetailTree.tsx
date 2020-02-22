@@ -4,6 +4,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { TitleGoBack } from "../common/TitleGoBack";
 import { Grid, Typography, Button, Collapse, IconButton } from "@material-ui/core";
 import { ExpandMore, ExpandMoreRounded, ExpandMoreSharp, ExpandMoreTwoTone } from "@material-ui/icons";
+import { AddGroupCard } from "./addGroupCard";
 
 export interface CupDetailTreeProps { }
 
@@ -86,7 +87,7 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
         className={classes.line} />
 
       {<Collapse in={expanded} timeout="auto" unmountOnExit>
-        <p>test</p>
+        <AddGroupCard></AddGroupCard>
       </Collapse>}
     </div>
   );
