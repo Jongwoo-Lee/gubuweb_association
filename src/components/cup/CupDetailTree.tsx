@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ROUTENAMES } from "../../constants/routes";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { TitleGoBack } from "../common/TitleGoBack";
@@ -13,7 +13,7 @@ import { ExpandMore } from "@material-ui/icons";
 import { AddGroupComponent } from "./AddGroupComponent";
 import { Wrapper } from "@material-ui/pickers/wrappers/Wrapper";
 import { Draggable } from "./draggable";
-import { Droppable } from "./droppable";
+import { Droppable, DroppableStack } from "./droppable";
 
 export interface CupDetailTreeProps {}
 
@@ -48,10 +48,27 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 1,
       width: "100%"
     },
+    final: {
+      display: "flex",
+      flexDirection: "column"
+    },
+
+    finalBtn: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "start"
+    },
+
+    dragTarget: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center"
+    },
     test1: {
       width: "100%",
       padding: "32px",
       display: "flex",
+      flexDirection: "row",
       justifyContent: "center"
     },
 
@@ -67,11 +84,18 @@ const useStyles = makeStyles((theme: Theme) =>
 export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
   const classes = useStyles();
 
-  const [expanded, setExpanded] = React.useState(true);
+  const [expanded, setExpanded] = useState(true);
+  const [num, setnum] = useState(4);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const handleTreeNum = (event: React.MouseEvent<unknown>, n: number) => {
+    setnum(n);
+  };
+  console.log(`n - ${num}`);
+
   return (
     <div className={classes.root}>
       <TitleGoBack title="대회 이름" />
@@ -142,16 +166,30 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
       <br />
       <hr className={classes.line} />
 
-      <div className={classes.test1}>
-        <Droppable id="dr1">
-          <Draggable id="i1">
-            <div className={classes.test2}>Some text</div>
-          </Draggable>
-          <Draggable id="i2">
-            <div className={classes.test2}>Some Other Text</div>
-          </Draggable>
-        </Droppable>
-        <Droppable id="dr2"></Droppable>
+      <div className={classes.final}>
+        <div className={classes.finalBtn}>
+          {[...Array(5).keys()].reverse().map(i => {
+            const num: number = Math.pow(2, i + 2);
+
+            return (
+              <Button onClick={event => handleTreeNum(event, num)} key={i}>
+                {num}강
+              </Button>
+            );
+          })}
+        </div>
+        <div className={classes.test1}>
+          <div className={classes.dragTarget}>
+            {[...Array(num).keys()].map(i => (
+              <Droppable key={`dokey_${i}`} id={`do_${i}`}>
+                <Draggable key={`dakey_${i}`} id={`da_${i}`}>
+                  <div className={classes.test2}>Some text - {i}</div>
+                </Draggable>
+              </Droppable>
+            ))}
+          </div>
+          <DroppableStack id="dr2"></DroppableStack>
+        </div>
       </div>
     </div>
   );

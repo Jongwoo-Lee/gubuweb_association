@@ -23,8 +23,8 @@ export const Draggable: React.FC<DraggableProps> = ({
     e.dataTransfer.setData("transfer", e.target.id);
   };
 
-  const handleNoAllowDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.stopPropagation();
+  const handleAllowDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
   };
 
   return (
@@ -32,7 +32,7 @@ export const Draggable: React.FC<DraggableProps> = ({
       id={id}
       draggable="true"
       onDragStart={handleDrag}
-      onDragOver={handleNoAllowDrop}
+      onDragOver={handleAllowDrop}
       className={classes.drag}
     >
       {children}
