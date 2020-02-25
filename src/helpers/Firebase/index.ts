@@ -41,6 +41,7 @@ class Firebase {
   static field = app.firestore.FieldValue;
   static arrayUnion = app.firestore.FieldValue.arrayUnion;
   static arrayRemove = app.firestore.FieldValue.arrayRemove;
+  static docID = app.firestore.FieldPath.documentId();
 
   static init() {
     app.initializeApp(config);

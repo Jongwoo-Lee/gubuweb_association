@@ -18,8 +18,8 @@ export class Association {
   phoneNumber: string | null;
   url: string | null;
   introduction: string | null;
-  myTeamList: string[] | null;
-  cupList: string[] | null;
+  myTeamList: string[] | undefined;
+  cupList: string[] | undefined;
 
   constructor(
     uid: string,
@@ -29,8 +29,8 @@ export class Association {
     phoneNumber: string | undefined | null,
     url?: string | undefined | null,
     introduction?: string | undefined | null,
-    myTeamList?: string[] | null,
-    cupList?: string[] | null
+    myTeamList?: string[] | undefined,
+    cupList?: string[] | undefined
   ) {
     this.name = name ?? null;
     this.uid = uid;
@@ -39,8 +39,8 @@ export class Association {
     this.phoneNumber = phoneNumber ?? null;
     this.url = url ?? null;
     this.introduction = introduction ?? null;
-    this.myTeamList = myTeamList ?? null;
-    this.cupList = cupList ?? null;
+    this.myTeamList = myTeamList ?? undefined;
+    this.cupList = cupList ?? undefined;
   }
 
   toString() {

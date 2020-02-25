@@ -3,6 +3,7 @@ import Firebase, { FirebaseAuth, FirebaseAsc } from "../helpers/Firebase";
 import { AUTHUSER, ASSOCIATION } from "../constants/local";
 import { ascConverter } from "../helpers/Firebase/asc";
 import { COL_ASC } from "../constants/firestore";
+import { getAscCupInfos, CupInfoObject } from "../helpers/Firebase/cup";
 
 export const useFirebaseAuth = () => {
   const [authUser, setAuthUser] = useState<FirebaseAuth>(() => {
@@ -65,6 +66,40 @@ export const useAssociation = (ascID: string | undefined) => {
   }, [ascID]);
 
   return { ascData, setAscData };
+};
+
+export const useCupInfoList = (cuplist: string[] | undefined) => {
+  const [cupInfos, setCupInfos] = useState<CupInfoObject>({});
+  const [isCupLoading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (cuplist === undefined) {
+      setCupInfos({});
+      setLoading(false);
+      return;
+    }
+    let cupsData: CupInfoObject = {};
+    const fetchData = async () => {
+      console.log("get cup list" + cuplist.length);
+      setLoading(true);
+      await getAscCupInfos(cuplist)
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const cupData = doc.data();
+            cupsData[doc.id] = cupData;
+          });
+        })
+        .catch(err => console.log(err));
+      setCupInfos(cupsData);
+      setLoading(false);
+    };
+
+    fetchData();
+
+    return () => {};
+  }, [cuplist]);
+
+  return { cupInfos, setCupInfos, isCupLoading };
 };
 
 export const useTextInput = (initialValue: string = "") => {

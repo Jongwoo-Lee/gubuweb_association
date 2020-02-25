@@ -1,28 +1,38 @@
-import React, { useState, useContext } from "react";
-import { CupInfo } from "../../helpers/Firebase/cup";
+import React, { useContext } from "react";
+import { CupInfoObject } from "../../helpers/Firebase/cup";
+import { useCupInfoList } from "../../hooks";
 
-export type ContextSetCupInfos = React.Dispatch<React.SetStateAction<CupInfo[]>>;
+export type ContextSetCupInfos = React.Dispatch<
+  React.SetStateAction<CupInfoObject>
+>;
 
 /// Firebase Auth User Context
 interface CupInfoData {
-    cupInfos: CupInfo[];
-    setCupInfos: ContextSetCupInfos;
+  cupInfos: CupInfoObject | undefined;
+  setCupInfos: ContextSetCupInfos;
 }
 
 export const CupInfoContext: React.Context<CupInfoData> = React.createContext<
-    CupInfoData
->({ cupInfos: Array<CupInfo>(), setCupInfos: () => { console.log('cup no initialize') } });
+  CupInfoData
+>({
+  cupInfos: {},
+  setCupInfos: () => {
+    console.log("cup no initialize");
+  }
+});
 
-export const CupInfoProvider = (props: { children: React.ReactNode }) => {
-    const [cupInfos, setCupInfos] = useState<CupInfo[]>(Array<CupInfo>())
+export const CupInfoProvider = (props: {
+  children: React.ReactNode;
+  cuplist: string[] | undefined;
+}) => {
+  const cupContextValue = useCupInfoList(props.cuplist);
 
-    return (
-        <CupInfoContext.Provider value={{ cupInfos: cupInfos, setCupInfos: setCupInfos }}>
-            {props.children}
-        </CupInfoContext.Provider>
-    );
+  return (
+    <CupInfoContext.Provider value={cupContextValue}>
+      {props.children}
+    </CupInfoContext.Provider>
+  );
 };
 
 export const useCupsInfo = () => useContext(CupInfoContext).cupInfos;
 export const useSetCupsInfo = () => useContext(CupInfoContext).setCupInfos;
-

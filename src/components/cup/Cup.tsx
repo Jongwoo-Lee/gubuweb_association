@@ -16,8 +16,9 @@ import { CupDetailRecord } from "./CupDetailRecord";
 import { CupDetailResult } from "./CupDetailResult";
 import { CupDetailPlan } from "./CupDetailPlan";
 import { CupInfoProvider } from "../../context/cup/cup";
+import { useAssociationValue } from "../../context/user";
 
-export interface CupMainProps { }
+export interface CupMainProps {}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,10 +35,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Cup = (props: RouteComponentProps) => {
+  const ascData = useAssociationValue();
   return (
-
     <div>
-      <CupInfoProvider>
+      <CupInfoProvider cuplist={ascData?.cupList}>
         <Route exact path={props.match.path} component={CupComponent} />
         <Route path={ROUTES.ADD_CUP} component={AddCup} />
         <Route exact path={ROUTES.CUP_DETAIL} component={CupDetail} />

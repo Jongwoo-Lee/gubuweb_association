@@ -32,7 +32,7 @@ export class CupInfo {
     url: string | undefined,
     introduction: string | undefined,
     documents: string[] | undefined,
-    selectedTeams: string[] | undefined,
+    selectedTeams: string[] | undefined
   ) {
     this.name = name;
     this.region = region;
@@ -54,6 +54,10 @@ export class CupInfo {
   }
 }
 
+export interface CupInfoObject {
+  [uid: string]: CupInfo;
+}
+
 // Firestore data converter
 export const cupInfoConverter = {
   toFirestore: (cup: CupInfo) => {
@@ -71,7 +75,7 @@ export const cupInfoConverter = {
       [COL_CUP.URL]: cup.url,
       [COL_CUP.INTRODUCTION]: cup.introduction,
       [COL_CUP.DOCUMENTS]: cup.documents,
-      [COL_CUP.TEAMS]: cup.selectedTeams,
+      [COL_CUP.TEAMS]: cup.selectedTeams
     };
   },
   fromFirestore: (
@@ -93,7 +97,7 @@ export const cupInfoConverter = {
       data?.[COL_CUP.URL],
       data?.[COL_CUP.INTRODUCTION],
       data?.[COL_CUP.DOCUMENTS],
-      data?.[COL_CUP.TEAMS],
+      data?.[COL_CUP.TEAMS]
     );
   }
 };
@@ -116,7 +120,7 @@ export const setCupInfo = async (cup: CupInfo) => {
   batch.commit().catch(err => console.log(err));
 };
 
-// save team uid 
+// save team uid
 export const saveTeams = async (cupUID: string, teams: string[]) => {
   Firebase.firestore
     .collection(COL_CUP.CUP)
@@ -127,3 +131,10 @@ export const saveTeams = async (cupUID: string, teams: string[]) => {
     .catch(err => console.log(`saveTeams error ${err}`));
 };
 
+export const getAscCupInfos = (cuplist: string[]) => {
+  return Firebase.firestore
+    .collection(COL_CUP.CUP)
+    .where(Firebase.docID, "in", cuplist)
+    .withConverter(cupInfoConverter)
+    .get();
+};
