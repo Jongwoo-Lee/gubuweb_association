@@ -57,11 +57,11 @@ const AddMenubar: React.FC<{ route: JSX.Element }> = ({ route }) => {
   return (
     <Grid container>
       <Hidden xsDown>
-        <Grid item sm={2} md={3}>
+        <Grid item sm={2}>
           <Menubar />
         </Grid>
       </Hidden>
-      <Grid item xs={12} sm={10} md={9}>
+      <Grid item xs={12} sm={10}>
         {route}
       </Grid>
     </Grid>

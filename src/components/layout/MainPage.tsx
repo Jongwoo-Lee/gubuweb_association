@@ -11,9 +11,6 @@ import { Home } from "../Home";
 import { Cup } from "../cup/Cup";
 import { Account } from "../auth/Account";
 import { Roster } from "../roster/Roster";
-import { Grid, Hidden } from "@material-ui/core";
-import { Menubar } from "./Menubar";
-
 export interface MainPageProps {}
 
 export const MainPage: React.SFC<MainPageProps> = () => {

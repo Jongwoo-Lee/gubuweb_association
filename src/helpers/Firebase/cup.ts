@@ -54,10 +54,6 @@ export class CupInfo {
   }
 }
 
-export interface CupInfoObject {
-  [uid: string]: CupInfo;
-}
-
 // Firestore data converter
 export const cupInfoConverter = {
   toFirestore: (cup: CupInfo) => {

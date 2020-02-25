@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { CupInfoObject } from "../../helpers/Firebase/cup";
+import { CupInfo } from "../../helpers/Firebase/cup";
 import { useCupInfoList } from "../../hooks";
 
 export type ContextSetCupInfos = React.Dispatch<
@@ -10,15 +10,21 @@ export type ContextSetCupInfos = React.Dispatch<
 interface CupInfoData {
   cupInfos: CupInfoObject | undefined;
   setCupInfos: ContextSetCupInfos;
+  isLoading: boolean;
+}
+
+export interface CupInfoObject {
+  [key: string]: CupInfo;
 }
 
 export const CupInfoContext: React.Context<CupInfoData> = React.createContext<
   CupInfoData
 >({
-  cupInfos: {},
+  cupInfos: undefined,
   setCupInfos: () => {
     console.log("cup no initialize");
-  }
+  },
+  isLoading: false
 });
 
 export const CupInfoProvider = (props: {
@@ -36,3 +42,4 @@ export const CupInfoProvider = (props: {
 
 export const useCupsInfo = () => useContext(CupInfoContext).cupInfos;
 export const useSetCupsInfo = () => useContext(CupInfoContext).setCupInfos;
+export const useIsCupLoading = () => useContext(CupInfoContext).isLoading;

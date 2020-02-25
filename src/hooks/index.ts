@@ -3,7 +3,8 @@ import Firebase, { FirebaseAuth, FirebaseAsc } from "../helpers/Firebase";
 import { AUTHUSER, ASSOCIATION } from "../constants/local";
 import { ascConverter } from "../helpers/Firebase/asc";
 import { COL_ASC } from "../constants/firestore";
-import { getAscCupInfos, CupInfoObject } from "../helpers/Firebase/cup";
+import { getAscCupInfos } from "../helpers/Firebase/cup";
+import { CupInfoObject } from "../context/cup/cup";
 
 export const useFirebaseAuth = () => {
   const [authUser, setAuthUser] = useState<FirebaseAuth>(() => {
@@ -15,7 +16,7 @@ export const useFirebaseAuth = () => {
   useEffect(() => {
     const listener = Firebase.auth.onAuthStateChanged((user: FirebaseAuth) => {
       if (user !== null) {
-        console.log("GUBU firebase user: " + user.email);
+        console.log("firebase user: " + user.email);
         localStorage.setItem(AUTHUSER, JSON.stringify(user));
         setAuthUser(user);
       } else {
@@ -70,7 +71,7 @@ export const useAssociation = (ascID: string | undefined) => {
 
 export const useCupInfoList = (cuplist: string[] | undefined) => {
   const [cupInfos, setCupInfos] = useState<CupInfoObject>({});
-  const [isCupLoading, setLoading] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (cuplist === undefined) {
@@ -80,7 +81,6 @@ export const useCupInfoList = (cuplist: string[] | undefined) => {
     }
     let cupsData: CupInfoObject = {};
     const fetchData = async () => {
-      console.log("get cup list" + cuplist.length);
       setLoading(true);
       await getAscCupInfos(cuplist)
         .then(querySnapshot => {
@@ -99,7 +99,7 @@ export const useCupInfoList = (cuplist: string[] | undefined) => {
     return () => {};
   }, [cuplist]);
 
-  return { cupInfos, setCupInfos, isCupLoading };
+  return { cupInfos, setCupInfos, isLoading };
 };
 
 export const useTextInput = (initialValue: string = "") => {

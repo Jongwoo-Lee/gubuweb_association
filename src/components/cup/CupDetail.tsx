@@ -1,8 +1,12 @@
 import React from "react";
-import { Route, RouteComponentProps } from "react-router-dom";
+import { Route, RouteComponentProps, useRouteMatch } from "react-router-dom";
 
 import { ROUTES, ROUTENAMES } from "../../constants/routes";
-import { AddCup } from "./AddCup";
+import { CupDetailTeam } from "./CupDetailTeam";
+import { CupDetailTree } from "./CupDetailTree";
+import { CupDetailRecord } from "./CupDetailRecord";
+import { CupDetailResult } from "./CupDetailResult";
+import { CupDetailPlan } from "./CupDetailPlan";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { SquareRouteButton } from "../common/SquareButton";
@@ -11,7 +15,7 @@ import Trophy from "../../images/trophy_on.svg";
 import TeamIcon from "../../images/team_off.svg";
 import AddIcon from "@material-ui/icons/Add";
 
-export interface CupDetailProps {}
+export interface CupDetailProps extends RouteComponentProps {}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,8 +31,44 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const CupDetail: React.SFC<CupDetailProps> = () => {
+export const CupDetail: React.SFC<RouteComponentProps> = (
+  props: RouteComponentProps
+) => {
+  const propPath = props.match.path + "/:cupID";
+  return (
+    <div>
+      <Route exact path={propPath} component={CupDetailComponent} />
+      <Route
+        path={propPath + ROUTES.CUP_DETAIL_TEAM}
+        component={CupDetailTeam}
+      />
+      <Route
+        path={propPath + ROUTES.CUP_DETAIL_TREE}
+        component={CupDetailTree}
+      />
+      <Route
+        path={propPath + ROUTES.CUP_DETAIL_PLAN}
+        component={CupDetailPlan}
+      />
+      <Route
+        path={propPath + ROUTES.CUP_DETAIL_RECORD}
+        component={CupDetailRecord}
+      />
+      <Route
+        path={propPath + ROUTES.CUP_DETAIL_RESULT}
+        component={CupDetailResult}
+      />
+    </div>
+  );
+};
+
+export const CupDetailComponent: React.SFC<CupDetailProps> = () => {
   const classes = useStyles();
+  const match = useRouteMatch<{ cupID: string }>();
+
+  const buttonRoute = (routeName: string) => {
+    return match.url + routeName;
+  };
 
   return (
     <div className={classes.root}>
@@ -36,27 +76,27 @@ export const CupDetail: React.SFC<CupDetailProps> = () => {
       <div className={classes.cards}>
         <SquareRouteButton
           title={ROUTENAMES.CUP_DETAIL_TEAM}
-          route={ROUTES.CUP_DETAIL_TEAM}
+          route={buttonRoute(ROUTES.CUP_DETAIL_TEAM)}
           imgSrc={TeamIcon}
         />
         <SquareRouteButton
           title={ROUTENAMES.CUP_DETAIL_TREE}
-          route={ROUTES.CUP_DETAIL_TREE}
+          route={buttonRoute(ROUTES.CUP_DETAIL_TREE)}
           ImgIcon={AddIcon}
         />
         <SquareRouteButton
           title={ROUTENAMES.CUP_DETAIL_PLAN}
-          route={ROUTES.CUP_DETAIL_PLAN}
+          route={buttonRoute(ROUTES.CUP_DETAIL_PLAN)}
           ImgIcon={AddIcon}
         />
         <SquareRouteButton
           title={ROUTENAMES.CUP_DETAIL_RECORD}
-          route={ROUTES.CUP_DETAIL_RECORD}
+          route={buttonRoute(ROUTES.CUP_DETAIL_RECORD)}
           ImgIcon={AddIcon}
         />
         <SquareRouteButton
           title={ROUTENAMES.CUP_DETAIL_RESULT}
-          route={ROUTES.CUP_DETAIL_RESULT}
+          route={buttonRoute(ROUTES.CUP_DETAIL_RESULT)}
           imgSrc={Trophy}
         />
       </div>
