@@ -15,7 +15,8 @@ export const COL_ASC = {
   URL: "url",
   INTRODUCTION: "i",
   ISVERIFIED: "iv",
-  CUPLIST: "cl"
+  CUPLIST: "cl",
+  MYTEAMLIST: "tl"
 };
 
 export const COL_TEAMS = {

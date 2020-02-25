@@ -1,7 +1,8 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import Firebase, { FirebaseAuth, FirebaseAsc } from "../helpers/Firebase";
 import { AUTHUSER, ASSOCIATION } from "../constants/local";
-import { getAscData } from "../helpers/Firebase/asc";
+import { ascConverter } from "../helpers/Firebase/asc";
+import { COL_ASC } from "../constants/firestore";
 
 export const useFirebaseAuth = () => {
   const [authUser, setAuthUser] = useState<FirebaseAuth>(() => {
@@ -38,22 +39,28 @@ export const useAssociation = (ascID: string | undefined) => {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (ascID === undefined) {
-        localStorage.removeItem(ASSOCIATION);
-        setAscData(null);
-      } else {
-        const result = await getAscData(ascID);
-        localStorage.setItem(ASSOCIATION, JSON.stringify(result));
-
-        setAscData(result);
-      }
-    };
-
-    fetchData();
+    if (ascID === undefined) {
+      localStorage.removeItem(ASSOCIATION);
+      return;
+    }
+    const ascListener = Firebase.firestore
+      .collection(COL_ASC.ASSOC)
+      .doc(ascID)
+      .withConverter(ascConverter)
+      .onSnapshot(doc => {
+        const snapshotData = doc.data();
+        if (snapshotData !== undefined) {
+          localStorage.setItem(ASSOCIATION, JSON.stringify(snapshotData));
+          setAscData(snapshotData);
+        } else {
+          localStorage.removeItem(ASSOCIATION);
+          setAscData(null);
+        }
+      });
 
     return () => {
       localStorage.removeItem(ASSOCIATION);
+      ascListener();
     };
   }, [ascID]);
 

@@ -18,6 +18,8 @@ export class Association {
   phoneNumber: string | null;
   url: string | null;
   introduction: string | null;
+  myTeamList: string[] | null;
+  cupList: string[] | null;
 
   constructor(
     uid: string,
@@ -26,7 +28,9 @@ export class Association {
     isVerified: boolean,
     phoneNumber: string | undefined | null,
     url?: string | undefined | null,
-    introduction?: string | undefined | null
+    introduction?: string | undefined | null,
+    myTeamList?: string[] | null,
+    cupList?: string[] | null
   ) {
     this.name = name ?? null;
     this.uid = uid;
@@ -35,6 +39,8 @@ export class Association {
     this.phoneNumber = phoneNumber ?? null;
     this.url = url ?? null;
     this.introduction = introduction ?? null;
+    this.myTeamList = myTeamList ?? null;
+    this.cupList = cupList ?? null;
   }
 
   toString() {
@@ -66,7 +72,9 @@ export const ascConverter = {
       data?.[COL_ASC.ISVERIFIED],
       data?.[COL_ASC.PHONENUMBER],
       data?.[COL_ASC.URL],
-      data?.[COL_ASC.INTRODUCTION]
+      data?.[COL_ASC.INTRODUCTION],
+      data?.[COL_ASC.MYTEAMLIST],
+      data?.[COL_ASC.CUPLIST]
     );
   }
 };

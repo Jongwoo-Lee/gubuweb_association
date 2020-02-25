@@ -9,13 +9,14 @@ import Team from "../images/team_off.svg";
 import Setting from "../images/setting.svg";
 import { Typography } from "@material-ui/core";
 
-export interface HomeProps { }
+export interface HomeProps {}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
-      flexDirection: "column"
+      flexDirection: "column",
+      marginTop: "30px"
     },
     cards: {
       display: "flex",

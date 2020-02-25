@@ -23,6 +23,7 @@ export const TitleGoBack: React.SFC<TitleGoBackProps> = ({
     <div
       style={{
         display: "flex",
+        marginTop: "30px",
         marginLeft: "20px"
       }}
     >
