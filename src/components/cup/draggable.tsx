@@ -1,62 +1,59 @@
-import React, { useState } from "react";
+import React from "react";
 import { createStyles, makeStyles, Theme, Chip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    drag: {
-      minWidth: " 100px",
-      width: "5%",
-
-      height: "50px",
-      margin: "5px"
+    dropStack: {
+      display: "flex",
+      justifyContent: "center",
+      flexWrap: "wrap",
+      width: "80%"
+    },
+    chip: {
+      margin: "10px"
     }
   })
 );
 
-interface DraggableProps {
-  name: string;
+interface DroppableStackProps {
+  arrangeTeam: Array<string>;
+  teamList: Array<string>;
 }
 
-export const Draggable: React.FC<DraggableProps> = ({
-  name
-}: DraggableProps) => {
-  const [team, setTeam] = useState(name);
+export const DroppableStack: React.FC<DroppableStackProps> = ({
+  arrangeTeam,
+  teamList
+}: DroppableStackProps) => {
   const classes = useStyles();
-  const handleDrag = (e: any) => {
-    e.dataTransfer.setData("text/plain", team);
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
   };
 
   const handleAllowDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
-
-  const handleDrop = (e: any) => {
-    e.preventDefault();
-    const src = e.dataTransfer.getData("text/plain");
-    console.log(`src - ${src}`);
-
-    setTeam(src);
+  const handleDrag = (e: any, team: string) => {
+    e.dataTransfer.setData("text/plain", team);
   };
 
   return (
-    <Chip
-      className={classes.drag}
-      onDragOver={handleAllowDrop}
+    <div
+      className={classes.dropStack}
       onDrop={handleDrop}
-      onDragStart={handleDrag}
-      draggable="true"
-      label={team}
-      color="primary"
-    ></Chip>
-    // <div
-    //   id={id}
-    //   draggable="true"
-    //   onDragStart={handleDrag}
-    //   onDrop={handleDrop}
-    //   onDragOver={handleAllowDrop}
-    //   className={classes.drag}
-    // >
-    //   {team}
-    // </div>
+      onDragOver={handleAllowDrop}
+    >
+      {teamList.map(team => {
+        const findTeam = arrangeTeam.find(find => find === team);
+        return (
+          <Chip
+            className={classes.chip}
+            onDragStart={e => handleDrag(e, team)}
+            draggable="true"
+            color={findTeam === team ? "default" : "primary"}
+            label={team}
+          ></Chip>
+        );
+      })}
+    </div>
   );
 };

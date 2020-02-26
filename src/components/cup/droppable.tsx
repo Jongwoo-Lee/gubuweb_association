@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { createStyles, makeStyles, Theme, Chip } from "@material-ui/core";
-import { Draggable } from "./draggable";
+import React from "react";
+import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,28 +21,33 @@ interface DroppableProps {
   index: number;
   arrangeTeam: Array<string>;
   setArrageTeam: React.Dispatch<React.SetStateAction<string[]>>;
-}
-
-interface DroppableStackProps {
-  arrangeTeam: Array<string>;
-  teamList: Array<string>;
+  teamList: Array<string>; // 팀이 아닌 놈들이 드래그 앤드랍 되는 것을 막음
 }
 
 export const Droppable: React.FC<DroppableProps> = ({
   index,
   arrangeTeam,
-  setArrageTeam
+  setArrageTeam,
+  teamList
 }: DroppableProps) => {
   const classes = useStyles();
   const handleDrop = (e: any) => {
     e.preventDefault();
-    const src = e.dataTransfer.getData("text/plain"); // document.getElementById(e.dataTransfer.getData("text/plain"));
+    const src = e.dataTransfer.getData("text/plain");
+    const fIdx: number = teamList.findIndex(findTeam => findTeam === src);
 
-    console.log(`arrangeTeam[index] - ${arrangeTeam[index]}`);
-    const newArr: Array<string> = [...arrangeTeam];
-    newArr[index] = src;
+    // find current Team List
+    if (fIdx > -1) {
+      const tIdx: number = arrangeTeam.findIndex(findTeam => findTeam === src);
 
-    setArrageTeam(newArr);
+      const newArr: Array<string> = [...arrangeTeam];
+
+      newArr[index] = src;
+      console.log(`newArr - ${newArr}`);
+      if (tIdx > -1) newArr[tIdx] = "";
+
+      setArrageTeam(newArr);
+    }
   };
 
   const handleAllowDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -57,43 +61,6 @@ export const Droppable: React.FC<DroppableProps> = ({
       onDragOver={handleAllowDrop}
     >
       {arrangeTeam[index] && <div>{arrangeTeam[index]}</div>}
-    </div>
-  );
-};
-
-export const DroppableStack: React.FC<DroppableStackProps> = ({
-  arrangeTeam,
-  teamList
-}: DroppableStackProps) => {
-  const classes = useStyles();
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
-
-  const handleAllowDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
-  const handleDrag = (e: any, team: string) => {
-    e.dataTransfer.setData("text/plain", team);
-  };
-
-  return (
-    <div
-      className={classes.dropStack}
-      onDrop={handleDrop}
-      onDragOver={handleAllowDrop}
-    >
-      {teamList.map(team => {
-        const findTeam = arrangeTeam.find(find => find === team);
-        return (
-          <Chip
-            onDragStart={e => handleDrag(e, team)}
-            draggable="true"
-            color={findTeam === team ? "default" : "primary"}
-            label={team}
-          ></Chip>
-        );
-      })}
     </div>
   );
 };

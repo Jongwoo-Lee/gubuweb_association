@@ -11,9 +11,8 @@ import {
 } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { AddGroupComponent } from "./AddGroupComponent";
-import { Wrapper } from "@material-ui/pickers/wrappers/Wrapper";
-import { Draggable } from "./draggable";
-import { Droppable, DroppableStack } from "./droppable";
+import { Droppable } from "./droppable";
+import { DroppableStack as DraggableTeamList } from "./draggable";
 
 export interface CupDetailTreeProps {}
 
@@ -50,7 +49,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     final: {
       display: "flex",
-      flexDirection: "column"
+      flexDirection: "column",
+      alignItems: "center"
     },
 
     finalBtn: {
@@ -197,14 +197,15 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
               index={i}
               arrangeTeam={arrangeTeam}
               setArrageTeam={setArrangeTeam}
+              teamList={teamList}
             ></Droppable>
           ))}
         </div>
-
-        <DroppableStack
+        <br></br>
+        <DraggableTeamList
           arrangeTeam={arrangeTeam}
           teamList={teamList}
-        ></DroppableStack>
+        ></DraggableTeamList>
       </div>
     </div>
   );
