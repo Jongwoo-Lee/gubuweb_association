@@ -1,41 +1,62 @@
-import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import React, { useState } from "react";
+import { createStyles, makeStyles, Theme, Chip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     drag: {
-      margin: "8px"
+      minWidth: " 100px",
+      width: "5%",
+
+      height: "50px",
+      margin: "5px"
     }
   })
 );
 
 interface DraggableProps {
-  id: string;
-  children?: JSX.Element | JSX.Element[];
+  name: string;
 }
 
 export const Draggable: React.FC<DraggableProps> = ({
-  id,
-  children
+  name
 }: DraggableProps) => {
+  const [team, setTeam] = useState(name);
   const classes = useStyles();
   const handleDrag = (e: any) => {
-    e.dataTransfer.setData("transfer", e.target.id);
+    e.dataTransfer.setData("text/plain", team);
   };
 
   const handleAllowDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
+  const handleDrop = (e: any) => {
+    e.preventDefault();
+    const src = e.dataTransfer.getData("text/plain");
+    console.log(`src - ${src}`);
+
+    setTeam(src);
+  };
+
   return (
-    <div
-      id={id}
-      draggable="true"
-      onDragStart={handleDrag}
-      onDragOver={handleAllowDrop}
+    <Chip
       className={classes.drag}
-    >
-      {children}
-    </div>
+      onDragOver={handleAllowDrop}
+      onDrop={handleDrop}
+      onDragStart={handleDrag}
+      draggable="true"
+      label={team}
+      color="primary"
+    ></Chip>
+    // <div
+    //   id={id}
+    //   draggable="true"
+    //   onDragStart={handleDrag}
+    //   onDrop={handleDrop}
+    //   onDragOver={handleAllowDrop}
+    //   className={classes.drag}
+    // >
+    //   {team}
+    // </div>
   );
 };

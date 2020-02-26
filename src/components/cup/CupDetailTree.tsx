@@ -86,6 +86,17 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
 
   const [expanded, setExpanded] = useState(true);
   const [num, setnum] = useState(4);
+  const [arrangeTeam, setArrangeTeam] = useState(Array<string>(4));
+  const [teamList, setTeamList] = useState([
+    "test1",
+    "test2",
+    "test3",
+    "test4",
+    "test5",
+    "test6",
+    "test7",
+    "test8"
+  ]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -93,6 +104,7 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
 
   const handleTreeNum = (event: React.MouseEvent<unknown>, n: number) => {
     setnum(n);
+    setArrangeTeam(Array<string>(n));
   };
   console.log(`n - ${num}`);
 
@@ -178,18 +190,21 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
             );
           })}
         </div>
-        <div className={classes.test1}>
-          <div className={classes.dragTarget}>
-            {[...Array(num).keys()].map(i => (
-              <Droppable key={`dokey_${i}`} id={`do_${i}`}>
-                <Draggable key={`dakey_${i}`} id={`da_${i}`}>
-                  <div className={classes.test2}>Some text - {i}</div>
-                </Draggable>
-              </Droppable>
-            ))}
-          </div>
-          <DroppableStack id="dr2"></DroppableStack>
+        <div className={classes.dragTarget}>
+          {[...Array(num).keys()].map(i => (
+            <Droppable
+              key={`${i}`}
+              index={i}
+              arrangeTeam={arrangeTeam}
+              setArrageTeam={setArrangeTeam}
+            ></Droppable>
+          ))}
         </div>
+
+        <DroppableStack
+          arrangeTeam={arrangeTeam}
+          teamList={teamList}
+        ></DroppableStack>
       </div>
     </div>
   );

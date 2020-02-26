@@ -1,10 +1,11 @@
-import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import React, { useState } from "react";
+import { createStyles, makeStyles, Theme, Chip } from "@material-ui/core";
+import { Draggable } from "./draggable";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     drop: {
-      backgroundColor: "#555",
+      backgroundColor: "red",
       width: "250px",
       height: "50px",
       margin: "5px"
@@ -17,42 +18,32 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
 interface DroppableProps {
-  id: string;
-  children?: JSX.Element | JSX.Element[];
+  index: number;
+  arrangeTeam: Array<string>;
+  setArrageTeam: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+interface DroppableStackProps {
+  arrangeTeam: Array<string>;
+  teamList: Array<string>;
 }
 
 export const Droppable: React.FC<DroppableProps> = ({
-  id,
-  children
+  index,
+  arrangeTeam,
+  setArrageTeam
 }: DroppableProps) => {
   const classes = useStyles();
   const handleDrop = (e: any) => {
     e.preventDefault();
-    const src = document.getElementById(e.dataTransfer.getData("transfer"));
-    if (src) {
-      var srcParent = src.parentNode;
-      if (srcParent) {
-        var tgt = e.currentTarget.firstElementChild;
+    const src = e.dataTransfer.getData("text/plain"); // document.getElementById(e.dataTransfer.getData("text/plain"));
 
-        console.log(
-          `type ${e.currentTarget.nodeType} src ${srcParent.nodeType} getAttribute ${e.currentTarget.className}
-          srcParent ${src.className} - ${tgt}
-          `
-        );
+    console.log(`arrangeTeam[index] - ${arrangeTeam[index]}`);
+    const newArr: Array<string> = [...arrangeTeam];
+    newArr[index] = src;
 
-        if (tgt) {
-          console.log(`1`);
-          e.currentTarget.replaceChild(src, tgt);
-
-          srcParent.appendChild(tgt);
-        } else {
-          console.log(`2`);
-          e.target.appendChild(src);
-        }
-      }
-    }
+    setArrageTeam(newArr);
   };
 
   const handleAllowDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -62,38 +53,47 @@ export const Droppable: React.FC<DroppableProps> = ({
   return (
     <div
       className={classes.drop}
-      id={id}
       onDrop={event => handleDrop(event)}
       onDragOver={handleAllowDrop}
     >
-      {children}
+      {arrangeTeam[index] && <div>{arrangeTeam[index]}</div>}
     </div>
   );
 };
 
-export const DroppableStack: React.FC<DroppableProps> = ({
-  id,
-  children
-}: DroppableProps) => {
+export const DroppableStack: React.FC<DroppableStackProps> = ({
+  arrangeTeam,
+  teamList
+}: DroppableStackProps) => {
   const classes = useStyles();
-  const handleDrop = (e: any) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const src = document.getElementById(e.dataTransfer.getData("transfer"));
-    e.target.appendChild(src);
   };
 
   const handleAllowDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
+  const handleDrag = (e: any, team: string) => {
+    e.dataTransfer.setData("text/plain", team);
+  };
 
   return (
     <div
       className={classes.dropStack}
-      id={id}
       onDrop={handleDrop}
       onDragOver={handleAllowDrop}
     >
-      {children}
+      {teamList.map(team => {
+        const findTeam = arrangeTeam.find(find => find === team);
+        return (
+          <Chip
+            onDragStart={e => handleDrag(e, team)}
+            draggable="true"
+            color={findTeam === team ? "default" : "primary"}
+            label={team}
+          ></Chip>
+        );
+      })}
     </div>
   );
 };
