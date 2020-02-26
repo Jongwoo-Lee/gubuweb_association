@@ -181,22 +181,23 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
       <div className={classes.final}>
         <div className={classes.finalBtn}>
           {[...Array(5).keys()].reverse().map(i => {
-            const num: number = Math.pow(2, i + 2);
+            const num: number = Math.pow(2, i + 1);
 
             return (
               <Button onClick={event => handleTreeNum(event, num)} key={i}>
-                {num}강
+                {num * 2}강
               </Button>
             );
           })}
         </div>
+        <br />
         <DroppableWrapper
-          numOfBoxes={num}
+          numOfBoxes={num * 2}
           arrangeTeam={arrangeTeam}
           setArrageTeam={setArrangeTeam}
           teamList={teamList}
         />
-        <br></br>
+        <br />
         <DraggableTeamList
           arrangeTeam={arrangeTeam}
           teamList={teamList}

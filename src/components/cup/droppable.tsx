@@ -5,9 +5,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     drop: {
       backgroundColor: "red",
-      width: "250px",
-      height: "50px",
-      margin: "5px"
+      width: "200px",
+      height: "30px",
+      borderColor: "black"
     },
     dropStack: {
       backgroundColor: "#555",
@@ -34,13 +34,16 @@ export const DroppableWrapper: React.FC<DroppableWrapperProps> = ({
   return (
     <div>
       {[...Array(numOfBoxes).keys()].map(i => (
-        <Droppable
-          key={`${i}`}
-          index={i}
-          arrangeTeam={arrangeTeam}
-          setArrageTeam={setArrageTeam}
-          teamList={teamList}
-        ></Droppable>
+        <div>
+          <Droppable
+            key={`${i}`}
+            index={i}
+            arrangeTeam={arrangeTeam}
+            setArrageTeam={setArrageTeam}
+            teamList={teamList}
+          />
+          {i % 2 == 1 && <br />}
+        </div>
       ))}
     </div>
   );
@@ -68,11 +71,9 @@ export const Droppable: React.FC<DroppableProps> = ({
     // find current Team List
     if (fIdx > -1) {
       const tIdx: number = arrangeTeam.findIndex(findTeam => findTeam === src);
-
       const newArr: Array<string> = [...arrangeTeam];
 
       newArr[index] = src;
-      console.log(`newArr - ${newArr}`);
       if (tIdx > -1) newArr[tIdx] = "";
 
       setArrageTeam(newArr);
