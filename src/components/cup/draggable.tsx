@@ -3,14 +3,11 @@ import { createStyles, makeStyles, Theme, Chip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    dropStack: {
-      display: "flex",
-      justifyContent: "center",
-      flexWrap: "wrap",
-      width: "80%"
-    },
+    wrap: {},
+
     chip: {
-      margin: "10px"
+      margin: "15px",
+      minWidth: "70px"
     }
   })
 );
@@ -37,11 +34,7 @@ export const DroppableStack: React.FC<DroppableStackProps> = ({
   };
 
   return (
-    <div
-      className={classes.dropStack}
-      onDrop={handleDrop}
-      onDragOver={handleAllowDrop}
-    >
+    <div onDrop={handleDrop} onDragOver={handleAllowDrop}>
       {teamList.map(team => {
         const findTeam = arrangeTeam.find(find => find === team);
         return (

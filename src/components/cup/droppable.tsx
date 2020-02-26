@@ -1,10 +1,11 @@
 import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import { createStyles, makeStyles } from "@material-ui/core";
+import { BracketLine } from "./bracketLine";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     drop: {
-      backgroundColor: "red",
+      border: "1px solid black",
       width: "200px",
       height: "30px",
       borderColor: "black"
@@ -14,6 +15,12 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "250px",
       height: "400px",
       margin: "32px"
+    },
+    abs: {
+      position: "relative"
+    },
+    gap: {
+      height: "30px"
     }
   })
 );
@@ -31,10 +38,14 @@ export const DroppableWrapper: React.FC<DroppableWrapperProps> = ({
   setArrageTeam,
   teamList
 }: DroppableWrapperProps) => {
+  const classes = useStyles();
+
+  const lines: Array<JSX.Element> = makeBracketLine(numOfBoxes);
+
   return (
-    <div>
+    <div className={classes.abs}>
       {[...Array(numOfBoxes).keys()].map(i => (
-        <div>
+        <div id={`${i}`}>
           <Droppable
             key={`${i}`}
             index={i}
@@ -42,11 +53,71 @@ export const DroppableWrapper: React.FC<DroppableWrapperProps> = ({
             setArrageTeam={setArrageTeam}
             teamList={teamList}
           />
-          {i % 2 == 1 && <br />}
+          {i % 2 === 1 && <div className={classes.gap} />}
         </div>
       ))}
+      {lines}
     </div>
   );
+};
+
+interface BracketMeta {
+  left: number;
+  top: number;
+  height: number;
+}
+
+const makeBracketLine = (numOfBoxes: number): Array<JSX.Element> => {
+  const numOfLines: number = numOfBoxes / 2 - 1;
+  let order: number = Math.log2(numOfBoxes / 4);
+  let measures: Array<BracketMeta> = Array<BracketMeta>(numOfLines);
+
+  const boxWidth: number = 200;
+  const lineWidth: number = 150;
+  const boxHeight: number = 30;
+
+  console.log(`numOfBoxes - ${numOfBoxes}, order - ${order}`);
+  for (let i = order; i >= 0; i--) {
+    for (let j = Math.pow(2, i + 1) - 1; j >= Math.pow(2, i); j--) {
+      if (typeof measures[j * 2] === "undefined") {
+        if (typeof measures[j + 1] === "undefined") {
+          measures[j] = {
+            height: boxHeight * 3 + 1 + 1,
+            top: boxHeight - 1,
+            left: boxWidth
+          };
+        } else {
+          measures[j] = {
+            height: measures[j + 1].height,
+            top: measures[j + 1].top + 6 * boxHeight,
+            left: measures[j + 1].left
+          };
+        }
+      } else {
+        const standard1: BracketMeta = measures[j * 2 + 1];
+        const standard2: BracketMeta = measures[j * 2];
+        const newTop: number = standard1.top + standard1.height / 2;
+        const newBottom: number = standard2.top + standard2.height / 2;
+
+        measures[j] = {
+          height: newBottom - newTop,
+          top: newTop,
+          left: standard1.left + lineWidth
+        };
+      }
+    }
+  }
+
+  return measures.map(obj => {
+    return (
+      <BracketLine
+        height={`${obj.height}px`}
+        top={`${obj.top}px`}
+        left={`${obj.left}px`}
+        width={`${lineWidth}px`}
+      />
+    );
+  });
 };
 
 interface DroppableProps {

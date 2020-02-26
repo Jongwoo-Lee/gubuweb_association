@@ -50,33 +50,21 @@ const useStyles = makeStyles((theme: Theme) =>
     final: {
       display: "flex",
       flexDirection: "column",
-      alignItems: "center"
+      alignItems: "start",
+
+      border: "1px solid black"
     },
 
     finalBtn: {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "start"
+      margin: "15px",
+      border: "1px solid black"
     },
 
     dragTarget: {
       display: "flex",
       flexDirection: "column",
-      justifyContent: "center"
-    },
-    test1: {
-      width: "100%",
-      padding: "32px",
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "center"
-    },
-
-    test2: {
-      padding: "8px",
-      color: "#555",
-      backgroundColor: "white",
-      borderRadius: "3px"
+      justifyContent: "center",
+      margin: "15px"
     }
   })
 );
@@ -178,25 +166,31 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
       <br />
       <hr className={classes.line} />
 
-      <div className={classes.final}>
-        <div className={classes.finalBtn}>
+      <div className={classes.final} id="myPaint">
+        <div>
           {[...Array(5).keys()].reverse().map(i => {
             const num: number = Math.pow(2, i + 1);
 
             return (
-              <Button onClick={event => handleTreeNum(event, num)} key={i}>
+              <Button
+                className={classes.finalBtn}
+                onClick={event => handleTreeNum(event, num)}
+                key={i}
+              >
                 {num * 2}강
               </Button>
             );
           })}
         </div>
         <br />
-        <DroppableWrapper
-          numOfBoxes={num * 2}
-          arrangeTeam={arrangeTeam}
-          setArrageTeam={setArrangeTeam}
-          teamList={teamList}
-        />
+        <div className={classes.dragTarget}>
+          <DroppableWrapper
+            numOfBoxes={num * 2}
+            arrangeTeam={arrangeTeam}
+            setArrageTeam={setArrangeTeam}
+            teamList={teamList}
+          />
+        </div>
         <br />
         <DraggableTeamList
           arrangeTeam={arrangeTeam}
