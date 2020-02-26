@@ -17,6 +17,35 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
+
+interface DroppableWrapperProps {
+  numOfBoxes: number;
+  arrangeTeam: Array<string>;
+  setArrageTeam: React.Dispatch<React.SetStateAction<string[]>>;
+  teamList: Array<string>; // 팀이 아닌 놈들이 드래그 앤드랍 되는 것을 막음
+}
+
+export const DroppableWrapper: React.FC<DroppableWrapperProps> = ({
+  numOfBoxes,
+  arrangeTeam,
+  setArrageTeam,
+  teamList
+}: DroppableWrapperProps) => {
+  return (
+    <div>
+      {[...Array(numOfBoxes).keys()].map(i => (
+        <Droppable
+          key={`${i}`}
+          index={i}
+          arrangeTeam={arrangeTeam}
+          setArrageTeam={setArrageTeam}
+          teamList={teamList}
+        ></Droppable>
+      ))}
+    </div>
+  );
+};
+
 interface DroppableProps {
   index: number;
   arrangeTeam: Array<string>;

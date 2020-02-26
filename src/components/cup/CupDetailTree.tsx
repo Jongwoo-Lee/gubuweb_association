@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { AddGroupComponent } from "./AddGroupComponent";
-import { Droppable } from "./droppable";
+import { DroppableWrapper } from "./droppable";
 import { DroppableStack as DraggableTeamList } from "./draggable";
 
 export interface CupDetailTreeProps {}
@@ -87,7 +87,7 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
   const [expanded, setExpanded] = useState(true);
   const [num, setnum] = useState(4);
   const [arrangeTeam, setArrangeTeam] = useState(Array<string>(4));
-  const [teamList, setTeamList] = useState([
+  const teamList: string[] = [
     "test1",
     "test2",
     "test3",
@@ -96,7 +96,7 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
     "test6",
     "test7",
     "test8"
-  ]);
+  ];
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -190,17 +190,12 @@ export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
             );
           })}
         </div>
-        <div className={classes.dragTarget}>
-          {[...Array(num).keys()].map(i => (
-            <Droppable
-              key={`${i}`}
-              index={i}
-              arrangeTeam={arrangeTeam}
-              setArrageTeam={setArrangeTeam}
-              teamList={teamList}
-            ></Droppable>
-          ))}
-        </div>
+        <DroppableWrapper
+          numOfBoxes={num}
+          arrangeTeam={arrangeTeam}
+          setArrageTeam={setArrangeTeam}
+          teamList={teamList}
+        />
         <br></br>
         <DraggableTeamList
           arrangeTeam={arrangeTeam}
