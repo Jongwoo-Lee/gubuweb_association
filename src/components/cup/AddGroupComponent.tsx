@@ -94,7 +94,6 @@ export const AddGroupComponent: React.FC<AddGroupCardProps> = ({}: AddGroupCardP
   );
 
   const handleMakeCard = () => {
-    console.log(`groupCard - ${groupCard.length}`);
     setGroupCard([
       ...groupCard,
       <GroupCard

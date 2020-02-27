@@ -76,7 +76,6 @@ const makeBracketLine = (numOfBoxes: number): Array<JSX.Element> => {
   const lineWidth: number = 100;
   const boxHeight: number = 30;
 
-  console.log(`numOfBoxes - ${numOfBoxes}, order - ${order}`);
   for (let i = order; i >= 0; i--) {
     for (let j = Math.pow(2, i + 1) - 1; j >= Math.pow(2, i); j--) {
       if (typeof measures[j * 2] === "undefined") {
