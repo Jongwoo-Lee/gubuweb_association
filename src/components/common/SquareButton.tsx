@@ -1,10 +1,9 @@
 import React, { MouseEventHandler } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, CardActionArea, Dialog, DialogTitle, Button } from "@material-ui/core";
+import { Card, Typography, CardActionArea } from "@material-ui/core";
 
 import { useHistory, useLocation } from "react-router-dom";
 import { SvgIconProps } from "@material-ui/core/SvgIcon";
-import { Team } from "../../helpers/Firebase/team";
 
 const useStyles = makeStyles({
   root: {
@@ -35,12 +34,11 @@ export interface SquareRouteButtonProps {
   clickEvent?: MouseEventHandler;
 }
 
-
 export const SquareRouteButton: React.FC<SquareRouteButtonProps> = ({
   title,
   route,
   imgSrc,
-  ImgIcon,
+  ImgIcon
 }: SquareRouteButtonProps) => {
   const history = useHistory();
   const { pathname } = useLocation();
@@ -63,15 +61,14 @@ export const SquareRouteButton: React.FC<SquareRouteButtonProps> = ({
   );
 };
 
-
 export const SquareButton: React.FC<SquareButtonProps> = ({
   title,
   imgSrc,
   ImgIcon,
-  clickEvent,
+  clickEvent
 }: SquareButtonProps) => {
   const classes = useStyles();
-  const handleCardClick: MouseEventHandler = clickEvent
+  const handleCardClick: MouseEventHandler = clickEvent;
 
   return (
     <Card className={classes.root} variant="outlined">

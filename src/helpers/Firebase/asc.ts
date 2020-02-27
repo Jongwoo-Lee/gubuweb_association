@@ -1,6 +1,7 @@
 import Firebase from "../Firebase";
 import { COL_ASC } from "../../constants/firestore";
 import firebase from "firebase";
+import { teamInviteDocRef } from "./team";
 
 // interface FirestoreAsc {
 //   uid: string | null;
@@ -116,3 +117,30 @@ export const updateURL = async (uid: string, url: string) =>
     .catch(err => {
       throw err;
     });
+
+export const batchInviteTeam = (ascUID: string, teamUID: string) => {
+  const batch = Firebase.firestore.batch();
+  const invitedAt = new Date();
+
+  const ascRef = ascTeamListDocRef(ascUID, teamUID);
+  batch.set(
+    ascRef,
+    {
+      [COL_ASC.INVITEDAT]: invitedAt,
+      [COL_ASC.ISVERIFIED]: false
+    },
+    { merge: true }
+  );
+
+  const teamRef = teamInviteDocRef(teamUID);
+  batch.set(teamRef, { [ascUID]: invitedAt }, { merge: true });
+
+  return batch.commit();
+};
+
+const ascTeamListDocRef = (ascUID: string, teamUID: string) =>
+  Firebase.firestore
+    .collection(COL_ASC.ASSOC)
+    .doc(ascUID)
+    .collection(COL_ASC.MYTEAMLIST)
+    .doc(teamUID);

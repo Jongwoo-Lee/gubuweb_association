@@ -4,7 +4,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { Association, setAscData, updateURL, ascConverter } from "./asc";
+import { Association, setAscData, updateURL } from "./asc";
 import { searchTeams } from "./team";
 
 const devConfig = {

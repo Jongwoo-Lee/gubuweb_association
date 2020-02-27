@@ -13,10 +13,12 @@ export const COL_ASC = {
   DISPLAYNAME: "n",
   PHONENUMBER: "p",
   URL: "url",
+  CREATEDAT: "ca",
   INTRODUCTION: "i",
   ISVERIFIED: "iv",
   CUPLIST: "cl",
-  MYTEAMLIST: "tl"
+  MYTEAMLIST: "tl",
+  INVITEDAT: "ia"
 };
 
 export const COL_TEAMS = {
@@ -31,6 +33,9 @@ export const COL_TEAMS = {
   TEAMS_NAME: "teamname",
   TEAMS_MANAGER: "team_manager",
   TEAMS_LOGO: "team_logo",
+  TEAMS_ASC: "asc",
+  INVITE: "i",
+  INVITEDAT: "ia",
   MEMBERS: "members",
   TEMPORARIES: "team_temporaries"
 };

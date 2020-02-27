@@ -152,3 +152,10 @@ export const getAscTeams = (teamUIDList: string[]) => {
     .withConverter(teamConverter)
     .get();
 };
+
+export const teamInviteDocRef = (teamUID: string) =>
+  Firebase.firestore
+    .collection(COL_TEAMS.TEAMS_TEST4)
+    .doc(teamUID)
+    .collection(COL_TEAMS.INVITE)
+    .doc(COL_TEAMS.TEAMS_ASC);
