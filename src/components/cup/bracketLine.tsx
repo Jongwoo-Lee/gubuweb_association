@@ -19,7 +19,7 @@ interface BracketLineProps {
 }
 
 const defaultProps = {
-  bgcolor: "background.paper",
+  // bgcolor: "background.paper",
   border: 2,
   borderColor: "text.primary"
 };

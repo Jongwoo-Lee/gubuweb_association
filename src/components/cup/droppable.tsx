@@ -73,7 +73,7 @@ const makeBracketLine = (numOfBoxes: number): Array<JSX.Element> => {
   let measures: Array<BracketMeta> = Array<BracketMeta>(numOfLines);
 
   const boxWidth: number = 200;
-  const lineWidth: number = 150;
+  const lineWidth: number = 100;
   const boxHeight: number = 30;
 
   console.log(`numOfBoxes - ${numOfBoxes}, order - ${order}`);
