@@ -18,7 +18,7 @@ import {
 import { useAssociationValue } from "../../context/user";
 import { CircularProgress } from "@material-ui/core";
 
-export interface CupMainProps {}
+export interface CupMainProps { }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,16 +71,15 @@ const CupComponent: React.SFC<CupMainProps> = () => {
           route={ROUTES.ADD_CUP}
           ImgIcon={AddIcon}
         />
-        {/* {나중에 cup 로드되면 삭제할 예정임.} */}
         {isLoading ? (
           <CircularProgress className={classes.progress} />
         ) : (
-          cupsInfo !== undefined &&
-          cupsInfo !== {} &&
-          ascData?.cupList?.map(cupID => {
-            return <CupButton key={cupID} cupID={cupID} />;
-          })
-        )}
+            cupsInfo !== undefined &&
+            cupsInfo !== {} &&
+            ascData?.cupList?.map(cupID => {
+              return <CupButton key={cupID} cupID={cupID} />;
+            })
+          )}
       </div>
     </div>
   );

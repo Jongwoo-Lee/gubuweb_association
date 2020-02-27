@@ -13,8 +13,13 @@ import { ExpandMore } from "@material-ui/icons";
 import { AddGroupComponent } from "./AddGroupComponent";
 import { DroppableWrapper } from "./droppable";
 import { DroppableStack as DraggableTeamList } from "./draggable";
+import { CupInfo } from "../../helpers/Firebase/cup";
+import { RouteComponentProps } from "react-router-dom";
 
-export interface CupDetailTreeProps {}
+export interface MatchParams {
+  cupID: string;
+}
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -69,7 +74,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const CupDetailTree: React.SFC<CupDetailTreeProps> = () => {
+export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
+  props: RouteComponentProps<MatchParams>
+) => {
+  console.dir(props.match.params.cupID);
   const classes = useStyles();
 
   const [expanded, setExpanded] = useState(true);

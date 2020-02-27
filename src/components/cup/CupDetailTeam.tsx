@@ -5,8 +5,12 @@ import { TitleGoBack } from "../common/TitleGoBack";
 import { Typography, TableContainer, Table, TableRow, TableHead, TableCell, TablePagination, TableBody, Button, Grid } from "@material-ui/core";
 import { Team } from "../../helpers/Firebase/team";
 import { saveTeams } from "../../helpers/Firebase/cup";
+import { RouteComponentProps } from "react-router-dom";
 
-export interface CupDetailTeamProps { }
+export interface MatchParams {
+  cupID: string;
+}
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,10 +49,11 @@ const columns: Column[] = [
 
 
 
-export const CupDetailTeam: React.SFC<CupDetailTeamProps> = () => {
+export const CupDetailTeam: React.SFC<RouteComponentProps<MatchParams>> = (props: RouteComponentProps<MatchParams>) => {
   const classes = useStyles();
   const teams: Team[] = []; // 연맹에 가입된 팀 목록을 불러오면 될 듯 함 
   const [selectedUID, setselectedUID] = useState<Array<string>>(Array<string>());
+  const cupUID: string = props.match.params.cupID;
 
   for (let i = 0; i < 100; i++) {
     const managerObj: Object = { 'a': 'b' };
@@ -85,7 +90,7 @@ export const CupDetailTeam: React.SFC<CupDetailTeamProps> = () => {
     e.preventDefault();
 
     // {/* {나중에 cup 로드되면 삭제할 예정임.}  cup uid를 넣자 */}
-    await saveTeams('WDclQ7CvGzda7fWyL90G', selectedUID);
+    await saveTeams(cupUID, selectedUID);
     // current cup uid에 SELECTED TEAM를 보낸다. 
 
   };
