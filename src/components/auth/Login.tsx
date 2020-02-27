@@ -191,6 +191,7 @@ export const Login: React.SFC<LoginProps> = () => {
       </Fab>
       <Snackbar
         open={error?.message !== ""}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
         message={error?.message}
         autoHideDuration={6000}
         onClose={handleErrorClose}

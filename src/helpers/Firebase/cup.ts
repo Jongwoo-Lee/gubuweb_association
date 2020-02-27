@@ -98,13 +98,13 @@ export const cupInfoConverter = {
   }
 };
 
-export const setCupInfo = async (cup: CupInfo) => {
+export const batchCupInfo = (cup: CupInfo) => {
+  const batch = Firebase.firestore.batch();
+
   const cupRef = Firebase.firestore
     .collection(COL_CUP.CUP)
     .doc()
     .withConverter(cupInfoConverter);
-
-  const batch = Firebase.firestore.batch();
   batch.set(cupRef, cup);
 
   // asc 에 cup id 저장
@@ -113,7 +113,7 @@ export const setCupInfo = async (cup: CupInfo) => {
     .doc(cup.createdBy);
   batch.update(ascRef, { [COL_ASC.CUPLIST]: Firebase.arrayUnion(cupRef.id) });
 
-  batch.commit().catch(err => console.log(err));
+  return batch.commit();
 };
 
 // save team uid

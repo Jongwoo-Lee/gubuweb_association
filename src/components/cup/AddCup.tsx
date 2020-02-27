@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { CupInfo, setCupInfo } from "../../helpers/Firebase/cup";
+import { CupInfo, batchCupInfo } from "../../helpers/Firebase/cup";
 import { TitleGoBack } from "../common/TitleGoBack";
 import {
   useTextInput,
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) => {
   });
 });
 
-export interface AddCupProps { }
+export interface AddCupProps {}
 
 export const AddCup: React.SFC<AddCupProps> = () => {
   const classes = useStyles();
@@ -177,23 +177,25 @@ export const AddCup: React.SFC<AddCupProps> = () => {
       );
 
       setLoading(true);
-      await setCupInfo(newCup).then(() => {
-        setCupName({ ...cupName, value: "" });
-        setRegion({ ...region, value: "" });
-        setStartDate({ ...startDate, value: new Date() });
-        setEndDate({ ...endDate, value: new Date() });
-        setCupType({ ...cupType, value: "" });
-        setGender({ ...gender, value: "" });
-        setCupIntro({ ...cupIntro, value: "" });
-        setAthlete({ ...athlete, value: "" });
-        setAllowedRange({ ...allowedRange, value: "" });
-        setDocuments(
-          [...documents].map(doc => {
-            return { ...doc, value: "" };
-          })
-        );
-        history.goBack();
-      });
+      await batchCupInfo(newCup)
+        .then(() => {
+          setCupName({ ...cupName, value: "" });
+          setRegion({ ...region, value: "" });
+          setStartDate({ ...startDate, value: new Date() });
+          setEndDate({ ...endDate, value: new Date() });
+          setCupType({ ...cupType, value: "" });
+          setGender({ ...gender, value: "" });
+          setCupIntro({ ...cupIntro, value: "" });
+          setAthlete({ ...athlete, value: "" });
+          setAllowedRange({ ...allowedRange, value: "" });
+          setDocuments(
+            [...documents].map(doc => {
+              return { ...doc, value: "" };
+            })
+          );
+          history.goBack();
+        })
+        .catch(err => console.log(err));
       setLoading(false);
     }
   };
@@ -314,8 +316,8 @@ export const AddCup: React.SFC<AddCupProps> = () => {
             {device === "lg" ? (
               <h1 style={{ margin: "0 10px" }}>{" ~ "}</h1>
             ) : (
-                <span style={{ margin: "0 10px" }}>{" ~ "}</span>
-              )}
+              <span style={{ margin: "0 10px" }}>{" ~ "}</span>
+            )}
             <div
               style={{
                 display: "flex",
