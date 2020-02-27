@@ -15,11 +15,11 @@ import { DroppableWrapper } from "./droppable";
 import { DroppableStack as DraggableTeamList } from "./draggable";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { RouteComponentProps } from "react-router-dom";
+import { useCupsInfo } from "../../context/cup/cup";
 
 export interface MatchParams {
   cupID: string;
 }
-
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -77,8 +77,12 @@ const useStyles = makeStyles((theme: Theme) =>
 export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
   props: RouteComponentProps<MatchParams>
 ) => {
-  console.dir(props.match.params.cupID);
   const classes = useStyles();
+  const cupID: string = props.match.params.cupID;
+  const cupsInfo = useCupsInfo();
+  let cupInfo: CupInfo | undefined;
+
+  if (cupsInfo !== undefined) cupInfo = cupsInfo[cupID];
 
   const [expanded, setExpanded] = useState(true);
   const [num, setnum] = useState(4);
@@ -102,11 +106,10 @@ export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
     setnum(n);
     setArrangeTeam(Array<string>(n));
   };
-  console.log(`n - ${num}`);
 
   return (
     <div className={classes.root}>
-      <TitleGoBack title="대회 이름" />
+      <TitleGoBack title={cupInfo?.name ?? "No data"} />
       <br />
       <br />
       <Grid
