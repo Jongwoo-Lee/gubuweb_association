@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: "flex",
       flexDirection: "column"
+    },
+    title: {
+      width: "80%"
     }
   })
 );
@@ -50,6 +53,7 @@ export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
       <br />
       <br />
       <Grid
+        className={classes.title}
         container
         spacing={3}
         justify="space-between"

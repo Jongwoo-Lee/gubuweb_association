@@ -1,21 +1,16 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, IconButton } from "@material-ui/core";
+import { Card, Typography, IconButton, Grid } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
     display: "flex",
     flexDirection: "column",
     width: 520,
-    margin: "10px 10px" // top right bottom left
+    margin: "10px 10px"
   },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-
-    justifyContent: "space-between",
-    minWidth: 150
+  cardTitle: {
+    margin: "0px 10px"
   },
   items: {
     display: "flex",
@@ -33,11 +28,13 @@ const useStyles = makeStyles({
 export interface GroupCardProps {
   numOfTeams: number;
   group: number;
+  onDelete: Function;
 }
 
 export const GroupCard: React.FC<GroupCardProps> = ({
   numOfTeams,
-  group
+  group,
+  onDelete
 }: GroupCardProps) => {
   const classes = useStyles();
   const items: JSX.Element[] = Array<JSX.Element>();
@@ -46,15 +43,30 @@ export const GroupCard: React.FC<GroupCardProps> = ({
 
   return (
     <div className={classes.root}>
-      <Card className={classes.card} variant="outlined">
-        <Typography
-          className={classes.item}
-          align="center"
-          variant="body1"
-          component="span"
-        >
-          {convertString(group)}조
-        </Typography>
+      <Card variant="outlined">
+        <Grid container className={classes.cardTitle}>
+          <Grid item xs={4}>
+            {/* Intentionally Empty */}
+          </Grid>
+          <Grid container item xs={4} justify="center" alignItems="center">
+            <Typography align="center" variant="body1" component="span">
+              {convertString(group)}조
+            </Typography>
+          </Grid>
+          <Grid container item xs={4} justify="flex-end">
+            <IconButton onClick={_ => onDelete(group)}>
+              <Typography
+                className={classes.item}
+                align="center"
+                variant="body1"
+                component="span"
+              >
+                삭제
+              </Typography>
+            </IconButton>
+          </Grid>
+        </Grid>
+
         {items.length > 0 && items.map(item => item)}
       </Card>
     </div>

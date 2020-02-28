@@ -115,13 +115,26 @@ export const TreePreliminary: React.FC<PreliminaryProps> = () => {
     setExpanded(!expanded);
   };
 
+  const handleDelete = (i: number) => {
+    console.log(`1, ${groupCard} - ${groupCard.length}`);
+    const newCards: Array<JSX.Element> = [...groupCard];
+    console.log(`2,- ${newCards.length}`);
+    newCards.splice(i, 1);
+
+    setGroupCard(newCards);
+  };
+  const clearCard = () => {
+    setGroupCard([]);
+  };
   const handleMakeCard = () => {
+    console.log(`make - ${groupCard.length}`);
     setGroupCard([
       ...groupCard,
       <GroupCard
         key={groupCard.length}
         numOfTeams={numOfTeams}
         group={groupCard.length}
+        onDelete={handleDelete}
       ></GroupCard>
     ]);
   };
@@ -249,6 +262,15 @@ export const TreePreliminary: React.FC<PreliminaryProps> = () => {
           </div>
         </div>
         {groupCard.length > 0 && groupCard.map(item => item)}
+        {groupCard.length > 0 && (
+          <Grid container item xs={12} justify="flex-end">
+            <IconButton onClick={clearCard}>
+              <Typography variant="body1" component="span">
+                예선 삭제
+              </Typography>
+            </IconButton>
+          </Grid>
+        )}
       </Collapse>
     </div>
   );
