@@ -1,55 +1,73 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, Button, IconButton } from "@material-ui/core";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import {
+  Card,
+  Typography,
+  Button,
+  IconButton,
+  Grid,
+  Collapse
+} from "@material-ui/core";
 import { GroupCard } from "./GroupCard";
+import { ExpandMore } from "@material-ui/icons";
 
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  firstComponent: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-
-    justifyContent: "space-around"
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: 200,
-    minWidth: 150,
-    margin: "20px 20px"
-  },
-  title: {
-    margin: "10px 10px" // top right bottom left
-  },
-  contents: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    margin: "0px 10px"
-  },
-  setting: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: 200,
-    minWidth: 150,
-    margin: "20px 20px"
-  },
-  subItems: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: 200,
-    minWidth: 150,
-    margin: "5px 5px"
-  }
-});
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      width: "80%"
+    },
+    expand: {
+      transform: "rotate(0deg)",
+      marginLeft: "auto",
+      transition: theme.transitions.create("transform", {
+        duration: theme.transitions.duration.shortest
+      })
+    },
+    expandOpen: {
+      transform: "rotate(180deg)"
+    },
+    line: {
+      color: "black",
+      backgroundColor: "black",
+      borderColor: "black",
+      height: 1,
+      width: "100%"
+    },
+    setting: {
+      display: "flex",
+      flexDirection: "row"
+    },
+    settingItems: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      width: 250,
+      height: 220,
+      minWidth: 150,
+      margin: "10px 10px"
+    },
+    subItems: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: 200,
+      minWidth: 150,
+      margin: "5px 5px"
+    },
+    title: {
+      margin: "10px 10px" // top right bottom left
+    },
+    contents: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      margin: "0px 10px"
+    }
+  })
+);
 
 // imgSrc 나 ImgIcon 둘중 하나만 꼭 넣어야 함
 export interface AddGroupCardProps {}
@@ -85,6 +103,7 @@ const ControlComponent: React.FC<ControlProps> = ({
 
 export const AddGroupComponent: React.FC<AddGroupCardProps> = ({}: AddGroupCardProps) => {
   const classes = useStyles();
+  const [expanded, setExpanded] = useState(true);
   const [numOfTeams, setNumOfTeams] = useState(3);
   const [numOfAdvFinal, setNumOfAdvFinal] = useState(1); // Advanced to the final
   const [numOfRound, setNumOfRound] = useState(1);
@@ -92,6 +111,10 @@ export const AddGroupComponent: React.FC<AddGroupCardProps> = ({}: AddGroupCardP
   const [groupCard, setGroupCard] = useState<Array<JSX.Element>>(
     Array<JSX.Element>()
   );
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   const handleMakeCard = () => {
     setGroupCard([
@@ -106,100 +129,128 @@ export const AddGroupComponent: React.FC<AddGroupCardProps> = ({}: AddGroupCardP
 
   return (
     <div className={classes.root}>
-      <div className={classes.firstComponent}>
-        <Card className={classes.card} variant="outlined" color="red">
-          <Typography
-            className={classes.title}
-            variant="body1"
-            component="span"
-          >
-            조 추가
-          </Typography>
-          <div className={classes.subItems}>
-            <Typography
-              className={classes.contents}
-              variant="body2"
-              component="span"
-            >
-              팀 수
-            </Typography>
-            <Typography
-              className={classes.contents}
-              variant="body2"
-              component="span"
-            >
-              <ControlComponent
-                numOfItem={numOfTeams}
-                disPatchItem={setNumOfTeams}
-              />
-            </Typography>
-          </div>
-          <div className={classes.subItems}>
-            <Typography
-              className={classes.contents}
-              variant="body2"
-              component="span"
-            >
-              본선 진출 수
-            </Typography>
-            <Typography
-              className={classes.contents}
-              variant="body2"
-              component="span"
-            >
-              <ControlComponent
-                numOfItem={numOfAdvFinal}
-                disPatchItem={setNumOfAdvFinal}
-              />
-            </Typography>
-          </div>
-          <Button onClick={handleMakeCard}>확인</Button>
-        </Card>
+      <Grid
+        container
+        spacing={3}
+        justify="space-between"
+        alignItems="flex-start"
+      >
+        <Typography color="textPrimary" variant="h5">
+          예선
+        </Typography>
+        <IconButton
+          className={expanded ? classes.expandOpen : classes.expand}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMore />
+        </IconButton>
+      </Grid>
+      <br />
+      <hr className={classes.line} />
+
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <div className={classes.setting}>
-          <Typography align="center" variant="body1" component="span">
-            예선 설정
-          </Typography>
-          <div className={classes.subItems}>
+          <Card className={classes.settingItems} variant="outlined">
             <Typography
-              className={classes.contents}
-              variant="body2"
+              className={classes.title}
+              variant="body1"
               component="span"
             >
-              라운드 수
+              조 추가
             </Typography>
+            <div className={classes.subItems}>
+              <Typography
+                className={classes.contents}
+                variant="body2"
+                component="span"
+              >
+                팀 수
+              </Typography>
+              <Typography
+                className={classes.contents}
+                variant="body2"
+                component="span"
+              >
+                <ControlComponent
+                  numOfItem={numOfTeams}
+                  disPatchItem={setNumOfTeams}
+                />
+              </Typography>
+            </div>
+            <div className={classes.subItems}>
+              <Typography
+                className={classes.contents}
+                variant="body2"
+                component="span"
+              >
+                본선 진출 수
+              </Typography>
+              <Typography
+                className={classes.contents}
+                variant="body2"
+                component="span"
+              >
+                <ControlComponent
+                  numOfItem={numOfAdvFinal}
+                  disPatchItem={setNumOfAdvFinal}
+                />
+              </Typography>
+            </div>
+            <Button onClick={handleMakeCard}>확인</Button>
+          </Card>
+          <div className={classes.settingItems}>
             <Typography
-              className={classes.contents}
-              variant="body2"
+              className={classes.title}
+              align="center"
+              variant="body1"
               component="span"
             >
-              <ControlComponent
-                numOfItem={numOfRound}
-                disPatchItem={setNumOfRound}
-              />
+              예선 설정
             </Typography>
-          </div>
-          <div className={classes.subItems}>
-            <Typography
-              className={classes.contents}
-              variant="body2"
-              component="span"
-            >
-              와일드 카드
-            </Typography>
-            <Typography
-              className={classes.contents}
-              variant="body2"
-              component="span"
-            >
-              <ControlComponent
-                numOfItem={numOfWildCard}
-                disPatchItem={setNumOfWildCard}
-              />
-            </Typography>
+            <div className={classes.subItems}>
+              <Typography
+                className={classes.contents}
+                variant="body2"
+                component="span"
+              >
+                라운드 수
+              </Typography>
+              <Typography
+                className={classes.contents}
+                variant="body2"
+                component="span"
+              >
+                <ControlComponent
+                  numOfItem={numOfRound}
+                  disPatchItem={setNumOfRound}
+                />
+              </Typography>
+            </div>
+            <div className={classes.subItems}>
+              <Typography
+                className={classes.contents}
+                variant="body2"
+                component="span"
+              >
+                와일드 카드
+              </Typography>
+              <Typography
+                className={classes.contents}
+                variant="body2"
+                component="span"
+              >
+                <ControlComponent
+                  numOfItem={numOfWildCard}
+                  disPatchItem={setNumOfWildCard}
+                />
+              </Typography>
+            </div>
           </div>
         </div>
-      </div>
-      {groupCard.length > 0 && groupCard.map(item => item)}
+        {groupCard.length > 0 && groupCard.map(item => item)}
+      </Collapse>
     </div>
   );
 };

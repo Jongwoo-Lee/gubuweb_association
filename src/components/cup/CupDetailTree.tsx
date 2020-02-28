@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import { ROUTENAMES } from "../../constants/routes";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { TitleGoBack } from "../common/TitleGoBack";
-import {
-  Grid,
-  Typography,
-  Button,
-  Collapse,
-  IconButton
-} from "@material-ui/core";
+import { Grid, Typography, Button, IconButton } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { AddGroupComponent } from "./AddGroupComponent";
 import { DroppableWrapper } from "./droppable";
@@ -127,32 +121,7 @@ export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
       </Grid>
       <br />
       <br />
-      <Grid
-        container
-        spacing={3}
-        justify="space-between"
-        alignItems="flex-start"
-      >
-        <Typography color="textPrimary" variant="h5">
-          예선
-        </Typography>
-        <IconButton
-          className={expanded ? classes.expandOpen : classes.expand}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMore />
-        </IconButton>
-      </Grid>
-      <br />
-      <hr className={classes.line} />
-
-      {
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <AddGroupComponent></AddGroupComponent>
-        </Collapse>
-      }
+      <AddGroupComponent></AddGroupComponent>
 
       <br />
       <br />

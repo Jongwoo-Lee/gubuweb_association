@@ -1,25 +1,13 @@
-import React, { MouseEventHandler, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Card,
-  Typography,
-  CardActionArea,
-  Dialog,
-  DialogTitle,
-  Button,
-  IconButton
-} from "@material-ui/core";
-
-import { useHistory, useLocation } from "react-router-dom";
-import { SvgIconProps } from "@material-ui/core/SvgIcon";
-import { Team } from "../../helpers/Firebase/team";
+import { Card, Typography, IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
     display: "flex",
     flexDirection: "column",
-    width: 400,
-    minWidth: 150
+    width: 520,
+    margin: "10px 10px" // top right bottom left
   },
   card: {
     display: "flex",
@@ -27,7 +15,6 @@ const useStyles = makeStyles({
     alignItems: "center",
 
     justifyContent: "space-between",
-    width: 400,
     minWidth: 150
   },
   items: {
@@ -66,7 +53,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({
           variant="body1"
           component="span"
         >
-          {group}조
+          {convertString(group)}조
         </Typography>
         {items.length > 0 && items.map(item => item)}
       </Card>
@@ -93,16 +80,68 @@ const GroupCardItem: React.FC<GroupCardItemProps> = ({
         variant="body1"
         component="span"
       >
-        {group}조 {iter}
+        {convertString(group)}조 {iter + 1}
       </Typography>
-      <Typography
-        className={classes.item}
-        align="center"
-        variant="body1"
-        component="span"
-      >
-        <IconButton>+ 팀 추가</IconButton>
-      </Typography>
+      <IconButton>
+        <Typography
+          className={classes.item}
+          align="center"
+          variant="body1"
+          component="span"
+        >
+          + 팀 추가
+        </Typography>
+      </IconButton>
     </div>
   );
+};
+
+const convertString = (num: number): string => {
+  let cStr: string = "";
+  switch (num) {
+    case 0:
+      cStr = "A";
+      break;
+    case 1:
+      cStr = "B";
+      break;
+    case 2:
+      cStr = "C";
+      break;
+    case 3:
+      cStr = "D";
+      break;
+    case 4:
+      cStr = "E";
+      break;
+    case 5:
+      cStr = "F";
+      break;
+    case 6:
+      cStr = "G";
+      break;
+    case 7:
+      cStr = "H";
+      break;
+    case 8:
+      cStr = "I";
+      break;
+    case 9:
+      cStr = "J";
+      break;
+    case 10:
+      cStr = "K";
+      break;
+    case 11:
+      cStr = "L";
+      break;
+    case 12:
+      cStr = "M";
+      break;
+    case 13:
+      cStr = "N";
+      break;
+  }
+
+  return cStr;
 };
