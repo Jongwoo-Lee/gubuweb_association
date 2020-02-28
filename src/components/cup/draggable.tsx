@@ -12,15 +12,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface DroppableStackProps {
+interface DraggableTeamListProps {
   arrangeTeam: Array<string>;
   teamList: Array<string>;
 }
 
-export const DroppableStack: React.FC<DroppableStackProps> = ({
+export const DraggableTeamList: React.FC<DraggableTeamListProps> = ({
   arrangeTeam,
   teamList
-}: DroppableStackProps) => {
+}: DraggableTeamListProps) => {
   const classes = useStyles();
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

@@ -69,9 +69,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-// imgSrc 나 ImgIcon 둘중 하나만 꼭 넣어야 함
-export interface AddGroupCardProps {}
-
 interface ControlProps {
   numOfItem: number;
   disPatchItem: React.Dispatch<React.SetStateAction<number>>;
@@ -101,7 +98,9 @@ const ControlComponent: React.FC<ControlProps> = ({
   );
 };
 
-export const AddGroupComponent: React.FC<AddGroupCardProps> = ({}: AddGroupCardProps) => {
+export interface PreliminaryProps {}
+
+export const TreePreliminary: React.FC<PreliminaryProps> = () => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(true);
   const [numOfTeams, setNumOfTeams] = useState(3);
