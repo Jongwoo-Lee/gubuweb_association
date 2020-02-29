@@ -1,8 +1,9 @@
 import { Typography, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { TeamListDlg } from "./TeamListDlg";
 import { useTreePreTeams, useNewPreTeams } from "../../../hooks/cups";
+import { usePreTeams, useSetPreTeams } from "../../../context/cup/cupTree";
 
 const useStyles = makeStyles({
   root: {
@@ -35,22 +36,45 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   group,
   iter
 }: GroupCardItemProps) => {
-  const [team, setTeam] = useState<string | null>(null);
   const classes = useStyles();
+  const [team, setTeam] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const teams = useTreePreTeams(team);
-  const setNewPreTeams = useNewPreTeams;
+  const pTeams = usePreTeams();
+  const teams = useTreePreTeams(team, pTeams);
+  const setPTeams = useSetPreTeams();
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = (value: string | null) => {
-    setOpen(false);
-    console.log(`team-${team} value-${value}`);
-    setNewPreTeams(team, value);
-    setTeam(value);
-  };
+  const handleClose = useCallback(
+    (value: string | null) => {
+
+      let newPTeams: string[] = [...pTeams];
+      if (team === null && value === null) {
+        // do nothing
+      } else if (team === null || value === null) {
+        if (team === null && value !== null) {
+          newPTeams = [...pTeams, value];
+        } else {
+          newPTeams = pTeams.filter(x => {
+            if (x === team) return false;
+            return true;
+          });
+        }
+      } else {
+        const Temp = pTeams.filter(x => {
+          if (x === team) return false;
+          return true;
+        });
+        newPTeams = [...Temp, value];
+      }
+      setPTeams(newPTeams);
+      setOpen(false);
+      setTeam(value);
+    },
+    [open],
+  );
 
   return (
     <div className={classes.items}>

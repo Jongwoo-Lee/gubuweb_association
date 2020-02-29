@@ -7,28 +7,29 @@ import {
   useSetPreTeams
 } from "../context/cup/cupTree";
 
-export const useTreePreTeams = (team: string | null) => {
+export const useTreePreTeams = (team: string | null, pTeams: string[]) => {
   const aTeams = useAttendTeams();
-  const pTeams = usePreTeams();
   const setPTeams = useSetPreTeams();
 
   let teams = aTeams.filter(x => {
     if (pTeams.indexOf(x) !== -1) return false;
     return true;
   });
-  console.log(`treeTeam - ${team}`);
+  console.log(`pTeam - ${pTeams}  teams - ${teams}`);
 
   useEffect(() => {
-    console.log(`useEffect ${team}`);
+    let newpTeams: string[] = [...pTeams];
     if (team != null) {
-      const newpTeams: string[] = [...pTeams, team] ?? [];
-      setPTeams(newpTeams);
-    } else {
-      teams = aTeams.filter(x => {
-        if (pTeams.indexOf(x) !== -1) return false;
-        return true;
-      });
+      newpTeams.push(team);// = [...pTeams, team] ?? [];
     }
+    //  else {
+    //   newpTeams = aTeams.filter(x => {
+    //     if (pTeams.indexOf(x) !== -1) return false;
+    //     return true;
+    //   });
+    // }
+    console.log(`useEffect ${newpTeams}`);
+    setPTeams(newpTeams);
   }, [team]);
 
   return teams;
@@ -37,13 +38,15 @@ export const useTreePreTeams = (team: string | null) => {
 // 안됨
 export const useNewPreTeams = (
   preTeam: string | null,
-  newTeam: string | null
+  newTeam: string | null,
+  pTeams: string[]
 ) => {
-  const pTeams = usePreTeams();
   const setPTeams = useSetPreTeams();
 
   let newPTeams: string[] = [];
   let update: boolean = true;
+  // useEffect(() => {
+
   if (preTeam === null && newTeam === null) {
     // do nothing
     update = false;
@@ -63,5 +66,6 @@ export const useNewPreTeams = (
     });
     newPTeams = [...Temp, newTeam];
   }
-  if (update) setPTeams(newPTeams);
+  setPTeams(newPTeams);
+  // }, [])
 };
