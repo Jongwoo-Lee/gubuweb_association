@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      width: "80%"
+      width: "80%",
+      margin: "50px 0px 0px 0px",
     },
     expand: {
       transform: "rotate(0deg)",
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface FinalProps {}
+export interface FinalProps { }
 
 export const TreeFinal: React.FC<FinalProps> = () => {
   const teamList = useAttendTeams();

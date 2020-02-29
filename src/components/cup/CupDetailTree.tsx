@@ -36,10 +36,9 @@ export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
   let cupInfo: CupInfo | undefined;
   if (cupsInfo !== undefined) cupInfo = cupsInfo[cupID];
 
-  const handleOnSave = () => {};
+  const handleOnSave = () => { };
   return (
     <ModCupTreeProvider cupInfo={cupInfo}>
-      />
       <div className={classes.root}>
         <TitleGoBack title={cupInfo?.name ?? "No data"} />
         <br />
@@ -58,12 +57,7 @@ export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
             저장
           </Button>
         </Grid>
-        <br />
-        <br />
         <TreePreliminary></TreePreliminary>
-
-        <br />
-        <br />
         <TreeFinal></TreeFinal>
       </div>
     </ModCupTreeProvider>

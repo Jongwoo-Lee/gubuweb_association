@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      width: "80%"
+      width: "80%",
+      margin: "50px 0px 0px 0px",
     },
     expand: {
       transform: "rotate(0deg)",
@@ -69,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-export interface PreliminaryProps {}
+export interface PreliminaryProps { }
 
 export const TreePreliminary: React.FC<PreliminaryProps> = () => {
   const classes = useStyles();
