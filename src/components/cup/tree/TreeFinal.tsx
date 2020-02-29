@@ -8,8 +8,8 @@ import {
   Collapse
 } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
-import { DroppableWrapper } from "./droppable";
-import { DraggableTeamList } from "./draggable";
+import { DroppableWrapper } from "./Droppable";
+import { DraggableTeamList } from "./Draggable";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

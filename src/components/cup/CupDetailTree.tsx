@@ -4,11 +4,11 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { TitleGoBack } from "../common/TitleGoBack";
 import { Grid, Typography, Button } from "@material-ui/core";
 
-import { TreePreliminary } from "./TreePreliminary";
+import { TreePreliminary } from "./tree/TreePreliminary";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { RouteComponentProps } from "react-router-dom";
 import { useCupsInfo } from "../../context/cup/cup";
-import { TreeFinal } from "./TreeFinal";
+import { TreeFinal } from "./tree/TreeFinal";
 
 export interface MatchParams {
   cupID: string;

@@ -1,6 +1,7 @@
-import React from "react";
+import { Typography, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, IconButton, Grid } from "@material-ui/core";
+import React, { useState } from "react";
+import { TeamListDlg } from "./TeamListDlg";
 
 const useStyles = makeStyles({
   root: {
@@ -24,65 +25,26 @@ const useStyles = makeStyles({
   }
 });
 
-// imgSrc 나 ImgIcon 둘중 하나만 꼭 넣어야 함
-export interface GroupCardProps {
-  numOfTeams: number;
-  group: number;
-  onDelete: Function;
-}
-
-export const GroupCard: React.FC<GroupCardProps> = ({
-  numOfTeams,
-  group,
-  onDelete
-}: GroupCardProps) => {
-  const classes = useStyles();
-  const items: JSX.Element[] = Array<JSX.Element>();
-  for (let i = 0; i < numOfTeams; i++)
-    items.push(<GroupCardItem key={i} group={group} iter={i}></GroupCardItem>);
-
-  return (
-    <div className={classes.root}>
-      <Card variant="outlined">
-        <Grid container className={classes.cardTitle}>
-          <Grid item xs={4}>
-            {/* Intentionally Empty */}
-          </Grid>
-          <Grid container item xs={4} justify="center" alignItems="center">
-            <Typography align="center" variant="body1" component="span">
-              {convertString(group)}조
-            </Typography>
-          </Grid>
-          <Grid container item xs={4} justify="flex-end">
-            <IconButton onClick={_ => onDelete(group)}>
-              <Typography
-                className={classes.item}
-                align="center"
-                variant="body1"
-                component="span"
-              >
-                삭제
-              </Typography>
-            </IconButton>
-          </Grid>
-        </Grid>
-
-        {items.length > 0 && items.map(item => item)}
-      </Card>
-    </div>
-  );
-};
-
-interface GroupCardItemProps {
+export interface GroupCardItemProps {
   group: number;
   iter: number;
 }
 
-const GroupCardItem: React.FC<GroupCardItemProps> = ({
+export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   group,
   iter
 }: GroupCardItemProps) => {
   const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value: boolean) => {
+    setOpen(false);
+  };
 
   return (
     <div className={classes.items}>
@@ -94,7 +56,7 @@ const GroupCardItem: React.FC<GroupCardItemProps> = ({
       >
         {convertString(group)}조 {iter + 1}
       </Typography>
-      <IconButton>
+      <IconButton onClick={handleClickOpen}>
         <Typography
           className={classes.item}
           align="center"
@@ -104,11 +66,16 @@ const GroupCardItem: React.FC<GroupCardItemProps> = ({
           + 팀 추가
         </Typography>
       </IconButton>
+      <TeamListDlg
+        title={"팀 정보"}
+        open={open}
+        onClose={handleClose}
+      ></TeamListDlg>
     </div>
   );
 };
 
-const convertString = (num: number): string => {
+export const convertString = (num: number): string => {
   let cStr: string = "";
   switch (num) {
     case 0:

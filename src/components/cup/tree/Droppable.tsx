@@ -1,6 +1,6 @@
 import React from "react";
 import { createStyles, makeStyles } from "@material-ui/core";
-import { BracketLine } from "./bracketLine";
+import { BracketLine } from "./BracketLine";
 
 const useStyles = makeStyles(() =>
   createStyles({

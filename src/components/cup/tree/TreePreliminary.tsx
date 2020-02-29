@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import { GroupCard } from "./GroupCard";
 import { ExpandMore } from "@material-ui/icons";
+import { NumbericUpDownCtrl } from "./NumbericUpDownCtrl";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,36 +69,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
-interface ControlProps {
-  numOfItem: number;
-  disPatchItem: React.Dispatch<React.SetStateAction<number>>;
-}
-
-const ControlComponent: React.FC<ControlProps> = ({
-  numOfItem,
-  disPatchItem
-}: ControlProps) => {
-  const handleMinusValue = () => {
-    if (numOfItem > 1) {
-      const newValue: number = numOfItem - 1;
-      disPatchItem(newValue);
-    }
-  };
-  const handleAddValue = () => {
-    const newValue: number = numOfItem + 1;
-    disPatchItem(newValue);
-  };
-
-  return (
-    <div>
-      <IconButton onClick={handleMinusValue}>-</IconButton>
-      {numOfItem}
-      <IconButton onClick={handleAddValue}>+</IconButton>
-    </div>
-  );
-};
-
 export interface PreliminaryProps {}
 
 export const TreePreliminary: React.FC<PreliminaryProps> = () => {
@@ -185,7 +156,7 @@ export const TreePreliminary: React.FC<PreliminaryProps> = () => {
                 variant="body2"
                 component="span"
               >
-                <ControlComponent
+                <NumbericUpDownCtrl
                   numOfItem={numOfTeams}
                   disPatchItem={setNumOfTeams}
                 />
@@ -204,7 +175,7 @@ export const TreePreliminary: React.FC<PreliminaryProps> = () => {
                 variant="body2"
                 component="span"
               >
-                <ControlComponent
+                <NumbericUpDownCtrl
                   numOfItem={numOfAdvFinal}
                   disPatchItem={setNumOfAdvFinal}
                 />
@@ -234,7 +205,7 @@ export const TreePreliminary: React.FC<PreliminaryProps> = () => {
                 variant="body2"
                 component="span"
               >
-                <ControlComponent
+                <NumbericUpDownCtrl
                   numOfItem={numOfRound}
                   disPatchItem={setNumOfRound}
                 />
@@ -253,7 +224,7 @@ export const TreePreliminary: React.FC<PreliminaryProps> = () => {
                 variant="body2"
                 component="span"
               >
-                <ControlComponent
+                <NumbericUpDownCtrl
                   numOfItem={numOfWildCard}
                   disPatchItem={setNumOfWildCard}
                 />
