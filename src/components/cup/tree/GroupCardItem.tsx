@@ -2,6 +2,7 @@ import { Typography, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useState } from "react";
 import { TeamListDlg } from "./TeamListDlg";
+import { useTreePreTeams } from "../../../hooks/cups";
 
 const useStyles = makeStyles({
   root: {
@@ -34,16 +35,18 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   group,
   iter
 }: GroupCardItemProps) => {
+  const [team, setTeam] = useState<string | null>(null);
   const classes = useStyles();
-
   const [open, setOpen] = useState(false);
+  const teams = useTreePreTeams(team);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = (value: boolean) => {
+  const handleClose = (value: string | null) => {
     setOpen(false);
+    setTeam(value);
   };
 
   return (
@@ -63,13 +66,14 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
           variant="body1"
           component="span"
         >
-          + 팀 추가
+          {team ?? "+ 팀 추가"}
         </Typography>
       </IconButton>
       <TeamListDlg
-        title={"팀 정보"}
+        title={"팀 리스트"}
         open={open}
         onClose={handleClose}
+        teams={teams}
       ></TeamListDlg>
     </div>
   );
