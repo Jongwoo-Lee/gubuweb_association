@@ -2,7 +2,7 @@ import { Typography, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useState } from "react";
 import { TeamListDlg } from "./TeamListDlg";
-import { useTreePreTeams } from "../../../hooks/cups";
+import { useTreePreTeams, useNewPreTeams } from "../../../hooks/cups";
 
 const useStyles = makeStyles({
   root: {
@@ -39,6 +39,7 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const teams = useTreePreTeams(team);
+  const setNewPreTeams = useNewPreTeams;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,6 +47,8 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
 
   const handleClose = (value: string | null) => {
     setOpen(false);
+    console.log(`team-${team} value-${value}`);
+    setNewPreTeams(team, value);
     setTeam(value);
   };
 
@@ -74,6 +77,7 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
         open={open}
         onClose={handleClose}
         teams={teams}
+        team={team}
       ></TeamListDlg>
     </div>
   );

@@ -10,6 +10,7 @@ import {
   TableRow,
   TableCell
 } from "@material-ui/core";
+import { useNewPreTeams } from "../../../hooks/cups";
 
 const useStyles = makeStyles({
   root: {
@@ -35,13 +36,15 @@ export interface TeamListDlgProps {
   open: boolean;
   onClose: Function;
   teams: string[];
+  team: string | null;
 }
 
 export const TeamListDlg: React.FC<TeamListDlgProps> = ({
   title,
   open,
   onClose,
-  teams
+  teams,
+  team
 }: TeamListDlgProps) => {
   const classes = useStyles();
   const handleClose = () => {
