@@ -9,6 +9,7 @@ import { CupInfo } from "../../helpers/Firebase/cup";
 import { RouteComponentProps } from "react-router-dom";
 import { useCupsInfo } from "../../context/cup/cup";
 import { TreeFinal } from "./tree/TreeFinal";
+import { ModCupTreeProvider } from "../../context/cup/cupTree";
 
 export interface MatchParams {
   cupID: string;
@@ -48,31 +49,34 @@ export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
 
   const handleOnSave = () => {};
   return (
-    <div className={classes.root}>
-      <TitleGoBack title={cupInfo?.name ?? "No data"} />
-      <br />
-      <br />
-      <Grid
-        className={classes.title}
-        container
-        spacing={3}
-        justify="space-between"
-        alignItems="flex-start"
-      >
-        <Typography color="textPrimary" variant="h4">
-          {ROUTENAMES.CUP_DETAIL_TEAM}
-        </Typography>
-        <Button variant="contained" onClick={handleOnSave}>
-          저장
-        </Button>
-      </Grid>
-      <br />
-      <br />
-      <TreePreliminary></TreePreliminary>
+    <ModCupTreeProvider cupInfo={cupInfo}>
+      />
+      <div className={classes.root}>
+        <TitleGoBack title={cupInfo?.name ?? "No data"} />
+        <br />
+        <br />
+        <Grid
+          className={classes.title}
+          container
+          spacing={3}
+          justify="space-between"
+          alignItems="flex-start"
+        >
+          <Typography color="textPrimary" variant="h4">
+            {ROUTENAMES.CUP_DETAIL_TEAM}
+          </Typography>
+          <Button variant="contained" onClick={handleOnSave}>
+            저장
+          </Button>
+        </Grid>
+        <br />
+        <br />
+        <TreePreliminary></TreePreliminary>
 
-      <br />
-      <br />
-      <TreeFinal teamList={teamList}></TreeFinal>
-    </div>
+        <br />
+        <br />
+        <TreeFinal></TreeFinal>
+      </div>
+    </ModCupTreeProvider>
   );
 };

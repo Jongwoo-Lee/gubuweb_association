@@ -10,6 +10,7 @@ import {
 import { ExpandMore } from "@material-ui/icons";
 import { DroppableWrapper } from "./Droppable";
 import { DraggableTeamList } from "./Draggable";
+import { useAttendTeams } from "../../../context/cup/cupTree";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,11 +57,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface FinalProps {
-  teamList: Array<string>;
-}
+export interface FinalProps {}
 
-export const TreeFinal: React.FC<FinalProps> = ({ teamList }: FinalProps) => {
+export const TreeFinal: React.FC<FinalProps> = () => {
+  const teamList = useAttendTeams();
   const classes = useStyles();
   const [expanded, setExpanded] = useState(true);
   const [num, setnum] = useState(4);
