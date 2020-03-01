@@ -15,7 +15,7 @@ import {
   FinalDataStructure,
   useFinalTeams,
   useSetFinalTeams
-} from "../../../context/cup/cupTree";
+} from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface FinalProps {}
 
-export const TreeFinal: React.FC<FinalProps> = () => {
+export const FinalMatch: React.FC<FinalProps> = () => {
   const teamList = useAttendTeams();
   const classes = useStyles();
   const [expanded, setExpanded] = useState(true);
@@ -79,7 +79,7 @@ export const TreeFinal: React.FC<FinalProps> = () => {
     setExpanded(!expanded);
   };
 
-  const handleTreeNum = (_: React.MouseEvent<unknown>, n: number) => {
+  const handleFinalTournament = (_: React.MouseEvent<unknown>, n: number) => {
     let newPTeams: FinalDataStructure = {
       order: Array<string>(n),
       round: n
@@ -118,7 +118,7 @@ export const TreeFinal: React.FC<FinalProps> = () => {
               return (
                 <Button
                   className={classes.finalBtn}
-                  onClick={event => handleTreeNum(event, value)}
+                  onClick={event => handleFinalTournament(event, value)}
                   key={i}
                 >
                   {value}강

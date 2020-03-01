@@ -10,7 +10,7 @@ export interface FinalDataStructure {
   round: number;
 }
 
-interface CupTreeData {
+interface CupMatchData {
   teams: string[]; // team name
   preTeams: PreDataStructure; // Map<number, Map<number, string>>; // mainKey : group, subkey : order in group
   setPreTeams: Dispatch<SetStateAction<PreDataStructure>>;
@@ -20,8 +20,8 @@ interface CupTreeData {
   setFinalTeams: Dispatch<SetStateAction<FinalDataStructure>>;
 }
 
-export const ModCupTreeContext: React.Context<CupTreeData> = React.createContext<
-  CupTreeData
+export const EditCupMatchContext: React.Context<CupMatchData> = React.createContext<
+  CupMatchData
 >({
   teams: [],
   preTeams: {},
@@ -35,7 +35,7 @@ export const ModCupTreeContext: React.Context<CupTreeData> = React.createContext
   }
 });
 
-export const ModCupTreeProvider = (props: {
+export const EditCupMatchProvider = (props: {
   children: React.ReactNode;
   cupInfo: CupInfo | undefined;
 }) => {
@@ -59,17 +59,17 @@ export const ModCupTreeProvider = (props: {
   });
 
   return (
-    <ModCupTreeContext.Provider
+    <EditCupMatchContext.Provider
       value={{ teams, preTeams, setPreTeams, finalTeams, setFinalTeams }}
     >
       {props.children}
-    </ModCupTreeContext.Provider>
+    </EditCupMatchContext.Provider>
   );
 };
 
-export const useAttendTeams = () => useContext(ModCupTreeContext).teams;
-export const usePreTeams = () => useContext(ModCupTreeContext).preTeams;
-export const useSetPreTeams = () => useContext(ModCupTreeContext).setPreTeams;
-export const useFinalTeams = () => useContext(ModCupTreeContext).finalTeams;
+export const useAttendTeams = () => useContext(EditCupMatchContext).teams;
+export const usePreTeams = () => useContext(EditCupMatchContext).preTeams;
+export const useSetPreTeams = () => useContext(EditCupMatchContext).setPreTeams;
+export const useFinalTeams = () => useContext(EditCupMatchContext).finalTeams;
 export const useSetFinalTeams = () =>
-  useContext(ModCupTreeContext).setFinalTeams;
+  useContext(EditCupMatchContext).setFinalTeams;

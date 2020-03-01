@@ -7,7 +7,7 @@ import {
   usePreTeams,
   useSetPreTeams,
   PreDataStructure
-} from "../../../context/cup/cupTree";
+} from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles({
   root: {

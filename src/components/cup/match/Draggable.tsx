@@ -1,6 +1,6 @@
 import React from "react";
 import { createStyles, makeStyles, Theme, Chip } from "@material-ui/core";
-import { useFinalTeams } from "../../../context/cup/cupTree";
+import { useFinalTeams } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

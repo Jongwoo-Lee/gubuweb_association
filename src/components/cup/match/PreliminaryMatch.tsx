@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 export interface PreliminaryProps {}
 
-export const TreePreliminary: React.FC<PreliminaryProps> = () => {
+export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(true);
   const [numOfTeams, setNumOfTeams] = useState(3);

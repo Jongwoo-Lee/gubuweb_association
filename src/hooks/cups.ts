@@ -3,7 +3,7 @@ import {
   useAttendTeams,
   useSetPreTeams,
   PreDataStructure
-} from "../context/cup/cupTree";
+} from "../context/cup/cupMatch";
 
 // 예선전 팀을 제외하고 남은 팀
 export const useTeamsExceptPre = (

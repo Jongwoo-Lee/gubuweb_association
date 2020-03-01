@@ -4,12 +4,12 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { TitleGoBack } from "../common/TitleGoBack";
 import { Grid, Typography, Button } from "@material-ui/core";
 
-import { TreePreliminary } from "./tree/TreePreliminary";
+import { PreliminaryMatch } from "./match/PreliminaryMatch";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { RouteComponentProps } from "react-router-dom";
 import { useCupsInfo } from "../../context/cup/cup";
-import { TreeFinal } from "./tree/TreeFinal";
-import { ModCupTreeProvider } from "../../context/cup/cupTree";
+import { FinalMatch } from "./match/FinalMatch";
+import { EditCupMatchProvider } from "../../context/cup/cupMatch";
 
 export interface MatchParams {
   cupID: string;
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
+export const CupDetailMatch: React.SFC<RouteComponentProps<MatchParams>> = (
   props: RouteComponentProps<MatchParams>
 ) => {
   const classes = useStyles();
@@ -36,9 +36,16 @@ export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
   let cupInfo: CupInfo | undefined;
   if (cupsInfo !== undefined) cupInfo = cupsInfo[cupID];
 
-  const handleOnSave = () => { };
+  const handleOnSave = async (
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent
+  ) => {
+    e.preventDefault();
+
+    // await saveTeams(cupUID, selectedUID);
+  };
+
   return (
-    <ModCupTreeProvider cupInfo={cupInfo}>
+    <EditCupMatchProvider cupInfo={cupInfo}>
       <div className={classes.root}>
         <TitleGoBack title={cupInfo?.name ?? "No data"} />
         <br />
@@ -57,9 +64,9 @@ export const CupDetailTree: React.SFC<RouteComponentProps<MatchParams>> = (
             저장
           </Button>
         </Grid>
-        <TreePreliminary></TreePreliminary>
-        <TreeFinal></TreeFinal>
+        <PreliminaryMatch></PreliminaryMatch>
+        <FinalMatch></FinalMatch>
       </div>
-    </ModCupTreeProvider>
+    </EditCupMatchProvider>
   );
 };

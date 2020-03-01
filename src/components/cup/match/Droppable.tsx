@@ -5,7 +5,7 @@ import {
   useSetFinalTeams,
   useFinalTeams,
   FinalDataStructure
-} from "../../../context/cup/cupTree";
+} from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles(() =>
   createStyles({

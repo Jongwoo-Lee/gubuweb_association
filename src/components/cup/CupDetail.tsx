@@ -3,7 +3,7 @@ import { Route, RouteComponentProps, useRouteMatch } from "react-router-dom";
 
 import { ROUTES, ROUTENAMES } from "../../constants/routes";
 import { CupDetailTeam } from "./CupDetailTeam";
-import { CupDetailTree } from "./CupDetailTree";
+import { CupDetailMatch } from "./CupDetailMatch";
 import { CupDetailRecord } from "./CupDetailRecord";
 import { CupDetailResult } from "./CupDetailResult";
 import { CupDetailPlan } from "./CupDetailPlan";
@@ -43,8 +43,8 @@ export const CupDetail: React.SFC<RouteComponentProps> = (
         component={CupDetailTeam}
       />
       <Route
-        path={propPath + ROUTES.CUP_DETAIL_TREE}
-        component={CupDetailTree}
+        path={propPath + ROUTES.CUP_DETAIL_Match}
+        component={CupDetailMatch}
       />
       <Route
         path={propPath + ROUTES.CUP_DETAIL_PLAN}
@@ -80,8 +80,8 @@ export const CupDetailComponent: React.SFC<CupDetailProps> = () => {
           imgSrc={TeamIcon}
         />
         <SquareRouteButton
-          title={ROUTENAMES.CUP_DETAIL_TREE}
-          route={buttonRoute(ROUTES.CUP_DETAIL_TREE)}
+          title={ROUTENAMES.CUP_DETAIL_Match}
+          route={buttonRoute(ROUTES.CUP_DETAIL_Match)}
           ImgIcon={AddIcon}
         />
         <SquareRouteButton
