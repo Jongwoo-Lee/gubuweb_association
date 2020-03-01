@@ -11,6 +11,7 @@ import {
 import { GroupCard } from "./GroupCard";
 import { ExpandMore } from "@material-ui/icons";
 import { NumbericUpDownCtrl } from "./NumbericUpDownCtrl";
+import { usePreTeams, PreDataStructure } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -79,8 +80,9 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
   const [numOfAdvFinal, setNumOfAdvFinal] = useState(1); // Advanced to the final
   const [numOfRound, setNumOfRound] = useState(1);
   const [numOfWildCard, setNumOfWildCard] = useState(1);
+
   const [groupCard, setGroupCard] = useState<Array<JSX.Element>>(
-    Array<JSX.Element>()
+    initializeGroupCard(usePreTeams())
   );
 
   const handleExpandClick = () => {
@@ -246,4 +248,28 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
       </Collapse>
     </div>
   );
+};
+
+const initializeGroupCard = (preData: PreDataStructure): Array<JSX.Element> => {
+  const newArr: Array<JSX.Element> = new Array<JSX.Element>();
+  let numOfGroups: number = -1;
+  Object.keys(preData).forEach((value: string) => {
+    let temp: number = Number(value);
+    if (numOfGroups < temp) numOfGroups = temp;
+  });
+
+  //Card마다 팀 수가 다를 수 있는지 확인해봐야 함
+  for (let i = 0; i < numOfGroups; i++) {
+    // if(preData[i] !== null)
+    // {
+    //   newArr.push(
+    //   // <GroupCard
+    //   //   key={0}
+    //   //   numOfTeams={numOfTeams}
+    //   //   group={groupCard.length}
+    //   //   onDelete={null}
+    //   // />);
+    // }
+  }
+  return [];
 };

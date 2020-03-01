@@ -22,7 +22,7 @@ export const DraggableTeamList: React.FC<DraggableTeamListProps> = ({
 }: DraggableTeamListProps) => {
   const classes = useStyles();
   const final = useFinalTeams();
-  const arrangeTeam: Array<string> = final["order"];
+  const arrangeTeam: Array<string | null> = final["order"];
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

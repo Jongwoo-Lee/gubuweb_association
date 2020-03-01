@@ -173,7 +173,8 @@ export const AddCup: React.SFC<AddCupProps> = () => {
         undefined,
         cupIntro.value,
         listDocs,
-        undefined
+        undefined, // selectedTeams
+        null // matchInfo
       );
 
       setLoading(true);

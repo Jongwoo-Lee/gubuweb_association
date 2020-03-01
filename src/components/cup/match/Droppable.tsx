@@ -125,7 +125,7 @@ export const Droppable: React.FC<DroppableProps> = ({
   const classes = useStyles();
 
   const final = useFinalTeams();
-  const arrangeTeam: string[] = final["order"];
+  const arrangeTeam: Array<string | null> = final["order"];
   const setArrageTeam: Dispatch<SetStateAction<
     FinalDataStructure
   >> = useSetFinalTeams();
@@ -139,7 +139,7 @@ export const Droppable: React.FC<DroppableProps> = ({
     if (fIdx > -1) {
       let newpTeams: FinalDataStructure = JSON.parse(JSON.stringify(final));
       const tIdx: number = arrangeTeam.findIndex(findTeam => findTeam === src);
-      const newArr: Array<string> = [...arrangeTeam];
+      const newArr: Array<string | null> = [...arrangeTeam];
 
       newArr[index] = src;
       if (tIdx > -1) newArr[tIdx] = "";

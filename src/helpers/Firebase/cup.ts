@@ -4,9 +4,8 @@ import { COL_CUP, COL_ASC } from "../../constants/firestore";
 import {
   FinalDataStructure,
   PreDataStructure,
-  FinalSaveStructure
+  FirebaseSaveStructure
 } from "../../context/cup/cupMatch";
-import { stringify } from "querystring";
 
 export class CupInfo {
   name: string;
@@ -23,6 +22,7 @@ export class CupInfo {
   introduction: string | null;
   documents: string[] | null;
   selectedTeams: string[];
+  matchInfo: FirebaseSaveStructure | null;
 
   constructor(
     name: string,
@@ -38,7 +38,8 @@ export class CupInfo {
     url: string | undefined,
     introduction: string | undefined,
     documents: string[] | undefined,
-    selectedTeams: string[] | undefined
+    selectedTeams: string[] | undefined,
+    matchInfo: FirebaseSaveStructure | null
   ) {
     this.name = name;
     this.region = region;
@@ -54,6 +55,7 @@ export class CupInfo {
     this.introduction = introduction ?? null;
     this.documents = documents ?? null;
     this.selectedTeams = selectedTeams ?? Array<string>();
+    this.matchInfo = matchInfo ?? null;
   }
   toString() {
     return this.name + ", " + this.cupType;
@@ -77,7 +79,8 @@ export const cupInfoConverter = {
       [COL_CUP.URL]: cup.url,
       [COL_CUP.INTRODUCTION]: cup.introduction,
       [COL_CUP.DOCUMENTS]: cup.documents,
-      [COL_CUP.TEAMS]: cup.selectedTeams
+      [COL_CUP.TEAMS]: cup.selectedTeams,
+      [COL_CUP.MATCHINFO]: cup.matchInfo
     };
   },
   fromFirestore: (
@@ -85,6 +88,8 @@ export const cupInfoConverter = {
     options: firebase.firestore.SnapshotOptions | undefined
   ) => {
     const data = snapshot.data(options);
+    console.log(`data?.[COL_CUP.MATCHINFO] - `);
+    console.dir(data?.[COL_CUP.MATCHINFO]);
     return new CupInfo(
       data?.[COL_CUP.CUPNAME],
       data?.[COL_CUP.REGION],
@@ -99,7 +104,8 @@ export const cupInfoConverter = {
       data?.[COL_CUP.URL],
       data?.[COL_CUP.INTRODUCTION],
       data?.[COL_CUP.DOCUMENTS],
-      data?.[COL_CUP.TEAMS]
+      data?.[COL_CUP.TEAMS],
+      data?.[COL_CUP.MATCHINFO]
     );
   }
 };
@@ -146,22 +152,13 @@ export const saveCupMatch = async (
   pData: PreDataStructure,
   fData: FinalDataStructure
 ) => {
-  let newfTeams: FinalDataStructure = JSON.parse(JSON.stringify(fData));
-
-  // undefined을 저장할 수 없어서 한단계 거친다.
-  const matchArray: string[] = newfTeams["order"];
-  let saveMatchData: FinalSaveStructure = Object.assign({}, matchArray);
-
   Firebase.firestore
     .collection(COL_CUP.CUP)
     .doc(cupUID)
     .update({
       [COL_CUP.MATCHINFO]: {
         [COL_CUP.PRELIMINARY]: pData,
-        [COL_CUP.FINAL]: {
-          [COL_CUP.ORDER]: saveMatchData,
-          [COL_CUP.ROUND]: newfTeams["round"]
-        }
+        [COL_CUP.FINAL]: fData
       }
     })
     .catch(err => console.log(`save  Match error ${err}`));

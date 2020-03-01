@@ -1,16 +1,22 @@
 import React, { useContext, useState, Dispatch, SetStateAction } from "react";
 import { CupInfo } from "../../helpers/Firebase/cup";
+import { COL_CUP } from "../../constants/firestore";
+// import { COL_CUP } from "../../constants/firestore";
+
+export interface FirebaseSaveStructure {
+  // readonly [COL_CUP.FINAL]: FinalDataStructure;
+  // readonly [COL_CUP.PRELIMINARY]: PreDataStructure;
+  f: FinalDataStructure; // COL_CUP.FINAL
+  p: PreDataStructure; // COL_CUP.PRELIMINARY
+}
 
 export interface PreDataStructure {
   [group: number]: { [order: number]: string | null };
 }
 
-export interface FinalSaveStructure {
-  [order: number]: string;
-}
-
+// Object 에 저장할 때
 export interface FinalDataStructure {
-  order: Array<string>;
+  order: Array<string | null>;
   round: number;
 }
 
@@ -56,11 +62,35 @@ export const EditCupMatchProvider = (props: {
     "test8"
   ]);
 
-  const [preTeams, setPreTeams] = useState<PreDataStructure>({});
-  const [finalTeams, setFinalTeams] = useState<FinalDataStructure>({
-    order: Array<string>(8),
+  let initialPData: PreDataStructure = {};
+  let initialFData: FinalDataStructure = {
+    order: new Array<string | null>(8).fill(null),
     round: 8
-  });
+  };
+  if (typeof props.cupInfo !== "undefined") {
+    if (props.cupInfo.matchInfo !== null) {
+      const matchInfo: FirebaseSaveStructure = props.cupInfo
+        .matchInfo as FirebaseSaveStructure;
+
+      //set final data
+      if (matchInfo.f !== null) {
+        initialFData.round = matchInfo.f.round;
+        if (matchInfo.f.order !== null) {
+          initialFData.order = Array.from(matchInfo.f.order);
+        }
+      }
+
+      //set preliminary data
+      if (matchInfo.p !== null) {
+        initialPData = matchInfo.p;
+      }
+    }
+  }
+
+  const [preTeams, setPreTeams] = useState<PreDataStructure>(initialPData);
+  const [finalTeams, setFinalTeams] = useState<FinalDataStructure>(
+    initialFData
+  );
 
   return (
     <EditCupMatchContext.Provider

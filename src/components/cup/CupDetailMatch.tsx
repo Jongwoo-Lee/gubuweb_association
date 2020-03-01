@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: "column"
     },
     title: {
-      width: "80%"
+      width: "80%",
+      margin: "50px 0px 0px 0px"
     }
   })
 );
@@ -41,8 +42,6 @@ export const CupDetailMatch: React.SFC<RouteComponentProps<MatchParams>> = (
     <EditCupMatchProvider cupInfo={cupInfo}>
       <div className={classes.root}>
         <TitleGoBack title={cupInfo?.name ?? "No data"} />
-        <br />
-        <br />
         <Grid
           className={classes.title}
           container
@@ -55,8 +54,8 @@ export const CupDetailMatch: React.SFC<RouteComponentProps<MatchParams>> = (
           </Typography>
           <SaveMatchBtn cupID={cupID} />
         </Grid>
-        <PreliminaryMatch></PreliminaryMatch>
-        <FinalMatch></FinalMatch>
+        <PreliminaryMatch />
+        <FinalMatch />
       </div>
     </EditCupMatchProvider>
   );
