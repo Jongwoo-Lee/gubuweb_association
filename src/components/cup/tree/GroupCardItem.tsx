@@ -6,7 +6,7 @@ import { useTeamsExceptPre, useNewPreTeams } from "../../../hooks/cups";
 import {
   usePreTeams,
   useSetPreTeams,
-  PreTeamObject
+  PreDataStructure
 } from "../../../context/cup/cupTree";
 
 const useStyles = makeStyles({
@@ -43,7 +43,7 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   const classes = useStyles();
   const [team, setTeam] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const pTeams: PreTeamObject = usePreTeams();
+  const pTeams: PreDataStructure = usePreTeams();
   const teams = useTeamsExceptPre(team, pTeams, group, iter);
   const setPTeams = useSetPreTeams();
 
@@ -53,7 +53,7 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
 
   const handleClose = useCallback(
     (value: string | null) => {
-      let newPTeams: PreTeamObject = JSON.parse(JSON.stringify(pTeams));
+      let newPTeams: PreDataStructure = JSON.parse(JSON.stringify(pTeams));
       if (!newPTeams[group]) newPTeams[group] = {};
       newPTeams[group][iter] = value;
       setPTeams(newPTeams);

@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import {
   useAttendTeams,
   useSetPreTeams,
-  PreTeamObject
+  PreDataStructure
 } from "../context/cup/cupTree";
 
 // 예선전 팀을 제외하고 남은 팀
 export const useTeamsExceptPre = (
   team: string | null,
-  pTeams: PreTeamObject,
+  pTeams: PreDataStructure,
   group: number,
   order: number
 ) => {
@@ -29,7 +29,7 @@ export const useTeamsExceptPre = (
   // console.log(`pTeam - ${pTeams}  teams - ${teams}`);
 
   useEffect(() => {
-    let newpTeams: PreTeamObject = JSON.parse(JSON.stringify(pTeams));
+    let newpTeams: PreDataStructure = JSON.parse(JSON.stringify(pTeams));
 
     if (team != null) {
       if (!newpTeams[group]) newpTeams[group] = {};

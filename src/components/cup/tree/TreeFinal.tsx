@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import {
   Typography,
@@ -10,7 +10,12 @@ import {
 import { ExpandMore } from "@material-ui/icons";
 import { DroppableWrapper } from "./Droppable";
 import { DraggableTeamList } from "./Draggable";
-import { useAttendTeams } from "../../../context/cup/cupTree";
+import {
+  useAttendTeams,
+  FinalDataStructure,
+  useFinalTeams,
+  useSetFinalTeams
+} from "../../../context/cup/cupTree";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: "column",
       alignItems: "center",
       width: "80%",
-      margin: "50px 0px 0px 0px",
+      margin: "50px 0px 0px 0px"
     },
     expand: {
       transform: "rotate(0deg)",
@@ -58,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface FinalProps { }
+export interface FinalProps {}
 
 export const TreeFinal: React.FC<FinalProps> = () => {
   const teamList = useAttendTeams();
@@ -66,14 +71,24 @@ export const TreeFinal: React.FC<FinalProps> = () => {
   const [expanded, setExpanded] = useState(true);
   const [num, setnum] = useState(4);
   const [arrangeTeam, setArrangeTeam] = useState(Array<string>(4));
+  const setfinalData: Dispatch<SetStateAction<
+    FinalDataStructure
+  >> = useSetFinalTeams();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  console.log(`arrangeTeam - ${arrangeTeam}`);
   const handleTreeNum = (event: React.MouseEvent<unknown>, n: number) => {
+    let newPTeams: FinalDataStructure = {
+      order: Array<string>(n),
+      round: n
+    };
+
     setnum(n);
     setArrangeTeam(Array<string>(n));
+    setfinalData(newPTeams);
   };
 
   return (
@@ -102,15 +117,14 @@ export const TreeFinal: React.FC<FinalProps> = () => {
         <div className={classes.final} id="myPaint">
           <div>
             {[...Array(5).keys()].reverse().map(i => {
-              const num: number = Math.pow(2, i + 1);
-
+              const value: number = Math.pow(2, i + 2);
               return (
                 <Button
                   className={classes.finalBtn}
-                  onClick={event => handleTreeNum(event, num)}
+                  onClick={event => handleTreeNum(event, value)}
                   key={i}
                 >
-                  {num * 2}강
+                  {value}강
                 </Button>
               );
             })}
@@ -118,7 +132,7 @@ export const TreeFinal: React.FC<FinalProps> = () => {
           <br />
           <div className={classes.dragTarget}>
             <DroppableWrapper
-              numOfBoxes={num * 2}
+              numOfBoxes={num}
               arrangeTeam={arrangeTeam}
               setArrageTeam={setArrangeTeam}
               teamList={teamList}

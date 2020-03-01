@@ -1,18 +1,23 @@
 import React, { useContext, useState, Dispatch, SetStateAction } from "react";
 import { CupInfo } from "../../helpers/Firebase/cup";
 
-export interface PreTeamObject {
+export interface PreDataStructure {
   [group: number]: { [order: number]: string | null };
+}
+
+export interface FinalDataStructure {
+  order: Array<string>;
+  round: number;
 }
 
 interface CupTreeData {
   teams: string[]; // team name
-  preTeams: PreTeamObject; // Map<number, Map<number, string>>; // mainKey : group, subkey : order in group
-  setPreTeams: Dispatch<SetStateAction<PreTeamObject>>;
+  preTeams: PreDataStructure; // Map<number, Map<number, string>>; // mainKey : group, subkey : order in group
+  setPreTeams: Dispatch<SetStateAction<PreDataStructure>>;
   // setPreTeams: Dispatch<SetStateAction<Map<number, Map<number, string>>>>;
 
-  finalTeams: string[]; // team name
-  setFinalTeams: Dispatch<SetStateAction<string[]>>;
+  finalTeams: FinalDataStructure; // team name
+  setFinalTeams: Dispatch<SetStateAction<FinalDataStructure>>;
 }
 
 export const ModCupTreeContext: React.Context<CupTreeData> = React.createContext<
@@ -24,7 +29,7 @@ export const ModCupTreeContext: React.Context<CupTreeData> = React.createContext
     console.log("preTeam is not yet set");
   },
 
-  finalTeams: [],
+  finalTeams: { order: Array<string>(8), round: 8 },
   setFinalTeams: () => {
     console.log("finalTeam is not yet set");
   }
@@ -34,10 +39,6 @@ export const ModCupTreeProvider = (props: {
   children: React.ReactNode;
   cupInfo: CupInfo | undefined;
 }) => {
-  // console.log(`Poriver - ${props.cupInfo}`);
-  // console.dir(props.cupInfo);
-  // const cupContextValue = useCupInfoList(props.cupInfo);
-
   // get from cupInfo 추가해야 함
 
   const [teams, setTeams] = useState<string[]>([
@@ -51,8 +52,11 @@ export const ModCupTreeProvider = (props: {
     "test8"
   ]);
 
-  const [preTeams, setPreTeams] = useState<PreTeamObject>({});
-  const [finalTeams, setFinalTeams] = useState<string[]>([]);
+  const [preTeams, setPreTeams] = useState<PreDataStructure>({});
+  const [finalTeams, setFinalTeams] = useState<FinalDataStructure>({
+    order: Array<string>(8),
+    round: 8
+  });
 
   return (
     <ModCupTreeContext.Provider
