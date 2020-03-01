@@ -1,34 +1,41 @@
-import { useEffect, useState } from "react";
-import { Team } from "../helpers/Firebase/team";
-import Firebase from "../helpers/Firebase";
+import { useEffect } from "react";
 import {
   useAttendTeams,
-  usePreTeams,
-  useSetPreTeams
+  useSetPreTeams,
+  PreTeamObject
 } from "../context/cup/cupTree";
 
-export const useTreePreTeams = (team: string | null, pTeams: string[]) => {
+// 예선전 팀을 제외하고 남은 팀
+export const useTeamsExceptPre = (
+  team: string | null,
+  pTeams: PreTeamObject,
+  group: number,
+  order: number
+) => {
   const aTeams = useAttendTeams();
   const setPTeams = useSetPreTeams();
+  const preTeams: string[] = new Array<string>();
+
+  Object.values(pTeams).forEach((order: number, _) => {
+    Object.values(order).forEach((team: string, _) => {
+      preTeams.push(team);
+    });
+  });
 
   let teams = aTeams.filter(x => {
-    if (pTeams.indexOf(x) !== -1) return false;
+    if (preTeams.indexOf(x) !== -1) return false;
     return true;
   });
-  console.log(`pTeam - ${pTeams}  teams - ${teams}`);
+  // console.log(`pTeam - ${pTeams}  teams - ${teams}`);
 
   useEffect(() => {
-    let newpTeams: string[] = [...pTeams];
+    let newpTeams: PreTeamObject = JSON.parse(JSON.stringify(pTeams));
+
     if (team != null) {
-      newpTeams.push(team);// = [...pTeams, team] ?? [];
+      if (!newpTeams[group]) newpTeams[group] = {};
+
+      newpTeams[group][order] = team;
     }
-    //  else {
-    //   newpTeams = aTeams.filter(x => {
-    //     if (pTeams.indexOf(x) !== -1) return false;
-    //     return true;
-    //   });
-    // }
-    console.log(`useEffect ${newpTeams}`);
     setPTeams(newpTeams);
   }, [team]);
 

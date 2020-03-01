@@ -1,11 +1,17 @@
 import React, { useContext, useState, Dispatch, SetStateAction } from "react";
 import { CupInfo } from "../../helpers/Firebase/cup";
 
+export interface PreTeamObject {
+  [group: number]: { [order: number]: string | null };
+}
+
 interface CupTreeData {
   teams: string[]; // team name
-  preTeams: string[]; // team name
+  preTeams: PreTeamObject; // Map<number, Map<number, string>>; // mainKey : group, subkey : order in group
+  setPreTeams: Dispatch<SetStateAction<PreTeamObject>>;
+  // setPreTeams: Dispatch<SetStateAction<Map<number, Map<number, string>>>>;
+
   finalTeams: string[]; // team name
-  setPreTeams: Dispatch<SetStateAction<string[]>>;
   setFinalTeams: Dispatch<SetStateAction<string[]>>;
 }
 
@@ -13,7 +19,7 @@ export const ModCupTreeContext: React.Context<CupTreeData> = React.createContext
   CupTreeData
 >({
   teams: [],
-  preTeams: [],
+  preTeams: {},
   setPreTeams: () => {
     console.log("preTeam is not yet set");
   },
@@ -33,6 +39,7 @@ export const ModCupTreeProvider = (props: {
   // const cupContextValue = useCupInfoList(props.cupInfo);
 
   // get from cupInfo 추가해야 함
+
   const [teams, setTeams] = useState<string[]>([
     "test1",
     "test2",
@@ -44,7 +51,7 @@ export const ModCupTreeProvider = (props: {
     "test8"
   ]);
 
-  const [preTeams, setPreTeams] = useState<string[]>([]);
+  const [preTeams, setPreTeams] = useState<PreTeamObject>({});
   const [finalTeams, setFinalTeams] = useState<string[]>([]);
 
   return (

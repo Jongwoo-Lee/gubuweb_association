@@ -2,8 +2,12 @@ import { Typography, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useState, useCallback } from "react";
 import { TeamListDlg } from "./TeamListDlg";
-import { useTreePreTeams, useNewPreTeams } from "../../../hooks/cups";
-import { usePreTeams, useSetPreTeams } from "../../../context/cup/cupTree";
+import { useTeamsExceptPre, useNewPreTeams } from "../../../hooks/cups";
+import {
+  usePreTeams,
+  useSetPreTeams,
+  PreTeamObject
+} from "../../../context/cup/cupTree";
 
 const useStyles = makeStyles({
   root: {
@@ -39,8 +43,8 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   const classes = useStyles();
   const [team, setTeam] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const pTeams = usePreTeams();
-  const teams = useTreePreTeams(team, pTeams);
+  const pTeams: PreTeamObject = usePreTeams();
+  const teams = useTeamsExceptPre(team, pTeams, group, iter);
   const setPTeams = useSetPreTeams();
 
   const handleClickOpen = () => {
@@ -49,31 +53,15 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
 
   const handleClose = useCallback(
     (value: string | null) => {
-
-      let newPTeams: string[] = [...pTeams];
-      if (team === null && value === null) {
-        // do nothing
-      } else if (team === null || value === null) {
-        if (team === null && value !== null) {
-          newPTeams = [...pTeams, value];
-        } else {
-          newPTeams = pTeams.filter(x => {
-            if (x === team) return false;
-            return true;
-          });
-        }
-      } else {
-        const Temp = pTeams.filter(x => {
-          if (x === team) return false;
-          return true;
-        });
-        newPTeams = [...Temp, value];
-      }
+      let newPTeams: PreTeamObject = JSON.parse(JSON.stringify(pTeams));
+      if (!newPTeams[group]) newPTeams[group] = {};
+      newPTeams[group][iter] = value;
       setPTeams(newPTeams);
+      console.dir(newPTeams);
       setOpen(false);
       setTeam(value);
     },
-    [open],
+    [open]
   );
 
   return (

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: "column",
       alignItems: "center",
       width: "80%",
-      margin: "50px 0px 0px 0px",
+      margin: "50px 0px 0px 0px"
     },
     expand: {
       transform: "rotate(0deg)",
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-export interface PreliminaryProps { }
+export interface PreliminaryProps {}
 
 export const TreePreliminary: React.FC<PreliminaryProps> = () => {
   const classes = useStyles();
@@ -88,9 +88,9 @@ export const TreePreliminary: React.FC<PreliminaryProps> = () => {
   };
 
   const handleDelete = (i: number) => {
-    console.log(`1, ${groupCard} - ${groupCard.length}`);
+    // console.log(`1, ${groupCard} - ${groupCard.length}`);
     const newCards: Array<JSX.Element> = [...groupCard];
-    console.log(`2,- ${newCards.length}`);
+    // console.log(`2,- ${newCards.length}`);
     newCards.splice(i, 1);
 
     setGroupCard(newCards);
@@ -99,7 +99,7 @@ export const TreePreliminary: React.FC<PreliminaryProps> = () => {
     setGroupCard([]);
   };
   const handleMakeCard = () => {
-    console.log(`make - ${groupCard.length}`);
+    // console.log(`make - ${groupCard.length}`);
     setGroupCard([
       ...groupCard,
       <GroupCard
