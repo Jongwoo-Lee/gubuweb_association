@@ -1,6 +1,12 @@
 import Firebase from "../Firebase";
 import firebase from "firebase";
 import { COL_CUP, COL_ASC } from "../../constants/firestore";
+import {
+  FinalDataStructure,
+  PreDataStructure,
+  FinalSaveStructure
+} from "../../context/cup/cupMatch";
+import { stringify } from "querystring";
 
 export class CupInfo {
   name: string;
@@ -133,4 +139,30 @@ export const getAscCupInfos = (cuplist: string[]) => {
     .where(Firebase.docID, "in", cuplist)
     .withConverter(cupInfoConverter)
     .get();
+};
+
+export const saveCupMatch = async (
+  cupUID: string,
+  pData: PreDataStructure,
+  fData: FinalDataStructure
+) => {
+  let newfTeams: FinalDataStructure = JSON.parse(JSON.stringify(fData));
+
+  // undefined을 저장할 수 없어서 한단계 거친다.
+  const matchArray: string[] = newfTeams["order"];
+  let saveMatchData: FinalSaveStructure = Object.assign({}, matchArray);
+
+  Firebase.firestore
+    .collection(COL_CUP.CUP)
+    .doc(cupUID)
+    .update({
+      [COL_CUP.MATCHINFO]: {
+        [COL_CUP.PRELIMINARY]: pData,
+        [COL_CUP.FINAL]: {
+          [COL_CUP.ORDER]: saveMatchData,
+          [COL_CUP.ROUND]: newfTeams["round"]
+        }
+      }
+    })
+    .catch(err => console.log(`save  Match error ${err}`));
 };

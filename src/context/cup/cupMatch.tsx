@@ -5,6 +5,10 @@ export interface PreDataStructure {
   [group: number]: { [order: number]: string | null };
 }
 
+export interface FinalSaveStructure {
+  [order: number]: string;
+}
+
 export interface FinalDataStructure {
   order: Array<string>;
   round: number;

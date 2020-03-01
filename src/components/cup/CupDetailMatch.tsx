@@ -2,7 +2,7 @@ import React from "react";
 import { ROUTENAMES } from "../../constants/routes";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { TitleGoBack } from "../common/TitleGoBack";
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 
 import { PreliminaryMatch } from "./match/PreliminaryMatch";
 import { CupInfo } from "../../helpers/Firebase/cup";
@@ -10,6 +10,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { useCupsInfo } from "../../context/cup/cup";
 import { FinalMatch } from "./match/FinalMatch";
 import { EditCupMatchProvider } from "../../context/cup/cupMatch";
+import { SaveMatchBtn } from "./match/SaveMatchInfo";
 
 export interface MatchParams {
   cupID: string;
@@ -36,14 +37,6 @@ export const CupDetailMatch: React.SFC<RouteComponentProps<MatchParams>> = (
   let cupInfo: CupInfo | undefined;
   if (cupsInfo !== undefined) cupInfo = cupsInfo[cupID];
 
-  const handleOnSave = async (
-    e: React.FormEvent<HTMLFormElement> | React.MouseEvent
-  ) => {
-    e.preventDefault();
-
-    // await saveTeams(cupUID, selectedUID);
-  };
-
   return (
     <EditCupMatchProvider cupInfo={cupInfo}>
       <div className={classes.root}>
@@ -60,9 +53,7 @@ export const CupDetailMatch: React.SFC<RouteComponentProps<MatchParams>> = (
           <Typography color="textPrimary" variant="h4">
             {ROUTENAMES.CUP_DETAIL_TEAM}
           </Typography>
-          <Button variant="contained" onClick={handleOnSave}>
-            저장
-          </Button>
+          <SaveMatchBtn cupID={cupID} />
         </Grid>
         <PreliminaryMatch></PreliminaryMatch>
         <FinalMatch></FinalMatch>

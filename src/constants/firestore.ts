@@ -55,5 +55,10 @@ export const COL_CUP = {
   DOCUMENTS: "d",
   CREATEDAT: "ca",
   CREATEDBY: "cb",
-  TEAMS: "t"
+  TEAMS: "t",
+  MATCHINFO: "m",
+  FINAL: "f",
+  PRELIMINARY: "p",
+  ORDER: "o",
+  ROUND: "ro"
 };
