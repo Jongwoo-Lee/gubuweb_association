@@ -69,25 +69,22 @@ export const TreeFinal: React.FC<FinalProps> = () => {
   const teamList = useAttendTeams();
   const classes = useStyles();
   const [expanded, setExpanded] = useState(true);
-  const [num, setnum] = useState(4);
-  const [arrangeTeam, setArrangeTeam] = useState(Array<string>(4));
   const setfinalData: Dispatch<SetStateAction<
     FinalDataStructure
   >> = useSetFinalTeams();
+  const final = useFinalTeams();
+  let round: number = final["round"];
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  console.log(`arrangeTeam - ${arrangeTeam}`);
-  const handleTreeNum = (event: React.MouseEvent<unknown>, n: number) => {
+  const handleTreeNum = (_: React.MouseEvent<unknown>, n: number) => {
     let newPTeams: FinalDataStructure = {
       order: Array<string>(n),
       round: n
     };
 
-    setnum(n);
-    setArrangeTeam(Array<string>(n));
     setfinalData(newPTeams);
   };
 
@@ -131,18 +128,10 @@ export const TreeFinal: React.FC<FinalProps> = () => {
           </div>
           <br />
           <div className={classes.dragTarget}>
-            <DroppableWrapper
-              numOfBoxes={num}
-              arrangeTeam={arrangeTeam}
-              setArrageTeam={setArrangeTeam}
-              teamList={teamList}
-            />
+            <DroppableWrapper numOfBoxes={round} teamList={teamList} />
           </div>
           <br />
-          <DraggableTeamList
-            arrangeTeam={arrangeTeam}
-            teamList={teamList}
-          ></DraggableTeamList>
+          <DraggableTeamList teamList={teamList}></DraggableTeamList>
         </div>
       </Collapse>
     </div>

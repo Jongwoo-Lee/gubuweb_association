@@ -1,6 +1,11 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { createStyles, makeStyles } from "@material-ui/core";
 import { BracketLine } from "./BracketLine";
+import {
+  useSetFinalTeams,
+  useFinalTeams,
+  FinalDataStructure
+} from "../../../context/cup/cupTree";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -27,32 +32,21 @@ const useStyles = makeStyles(() =>
 
 interface DroppableWrapperProps {
   numOfBoxes: number;
-  arrangeTeam: Array<string>;
-  setArrageTeam: React.Dispatch<React.SetStateAction<string[]>>;
   teamList: Array<string>; // 팀이 아닌 놈들이 드래그 앤드랍 되는 것을 막음
 }
 
 export const DroppableWrapper: React.FC<DroppableWrapperProps> = ({
   numOfBoxes,
-  arrangeTeam,
-  setArrageTeam,
   teamList
 }: DroppableWrapperProps) => {
   const classes = useStyles();
-
   const lines: Array<JSX.Element> = makeBracketLine(numOfBoxes);
 
   return (
     <div className={classes.abs}>
       {[...Array(numOfBoxes).keys()].map(i => (
         <div id={`${i}`}>
-          <Droppable
-            key={`${i}`}
-            index={i}
-            arrangeTeam={arrangeTeam}
-            setArrageTeam={setArrageTeam}
-            teamList={teamList}
-          />
+          <Droppable key={`${i}`} index={i} teamList={teamList} />
           {i % 2 === 1 && <div className={classes.gap} />}
         </div>
       ))}
@@ -121,18 +115,21 @@ const makeBracketLine = (numOfBoxes: number): Array<JSX.Element> => {
 
 interface DroppableProps {
   index: number;
-  arrangeTeam: Array<string>;
-  setArrageTeam: React.Dispatch<React.SetStateAction<string[]>>;
   teamList: Array<string>; // 팀이 아닌 놈들이 드래그 앤드랍 되는 것을 막음
 }
 
 export const Droppable: React.FC<DroppableProps> = ({
   index,
-  arrangeTeam,
-  setArrageTeam,
   teamList
 }: DroppableProps) => {
   const classes = useStyles();
+
+  const final = useFinalTeams();
+  const arrangeTeam: string[] = final["order"];
+  const setArrageTeam: Dispatch<SetStateAction<
+    FinalDataStructure
+  >> = useSetFinalTeams();
+
   const handleDrop = (e: any) => {
     e.preventDefault();
     const src = e.dataTransfer.getData("text/plain");
@@ -140,13 +137,15 @@ export const Droppable: React.FC<DroppableProps> = ({
 
     // find current Team List
     if (fIdx > -1) {
+      let newpTeams: FinalDataStructure = JSON.parse(JSON.stringify(final));
       const tIdx: number = arrangeTeam.findIndex(findTeam => findTeam === src);
       const newArr: Array<string> = [...arrangeTeam];
 
       newArr[index] = src;
       if (tIdx > -1) newArr[tIdx] = "";
+      newpTeams["order"] = newArr;
 
-      setArrageTeam(newArr);
+      setArrageTeam(newpTeams);
     }
   };
 

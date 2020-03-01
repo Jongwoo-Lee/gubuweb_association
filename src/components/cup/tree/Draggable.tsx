@@ -1,5 +1,6 @@
 import React from "react";
 import { createStyles, makeStyles, Theme, Chip } from "@material-ui/core";
+import { useFinalTeams } from "../../../context/cup/cupTree";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -13,15 +14,16 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface DraggableTeamListProps {
-  arrangeTeam: Array<string>;
   teamList: Array<string>;
 }
 
 export const DraggableTeamList: React.FC<DraggableTeamListProps> = ({
-  arrangeTeam,
   teamList
 }: DraggableTeamListProps) => {
   const classes = useStyles();
+  const final = useFinalTeams();
+  const arrangeTeam: Array<string> = final["order"];
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
