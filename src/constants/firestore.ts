@@ -56,9 +56,25 @@ export const COL_CUP = {
   CREATEDAT: "ca",
   CREATEDBY: "cb",
   TEAMS: "t",
-  MATCHINFO: "m",
   FINAL: "f",
   PRELIMINARY: "p",
   ORDER: "o",
-  ROUND: "ro"
+  ROUND: "ro",
+  MATCHINFO: "mi",
+  MATCH: "m"
+};
+
+export const COL_GAME = {
+  GAMES: "games",
+  CREATEDAT: "createdAt",
+  CREATEDBY: "createdBy",
+  ENDTIME: "endTime",
+  GAMETYPE: "game_type",
+  LOCATION: "location",
+  QUARTER: "quarter",
+  QUARTERTIME: "quarterTime",
+  RESTTIME: "restTime",
+  STARTTIME: "startTime",
+  TEAM: "team",
+  CUPID: "ci"
 };

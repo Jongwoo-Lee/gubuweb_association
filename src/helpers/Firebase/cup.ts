@@ -1,6 +1,6 @@
 import Firebase from "../Firebase";
 import firebase from "firebase";
-import { COL_CUP, COL_ASC } from "../../constants/firestore";
+import { COL_CUP, COL_ASC, COL_GAME } from "../../constants/firestore";
 import {
   FinalDataStructure,
   PreDataStructure,
@@ -162,4 +162,57 @@ export const saveCupMatch = async (
       }
     })
     .catch(err => console.log(`save  Match error ${err}`));
+};
+
+export const makeSubGame = async (
+  cupUID: string,
+  uID: string,
+  subGameID: string
+) => {
+  Firebase.firestore
+    .collection(COL_CUP.CUP)
+    .doc(cupUID)
+    .collection(COL_GAME.GAMES)
+    .add({
+      [COL_GAME.CREATEDAT]: Firebase.field.serverTimestamp(),
+      [COL_GAME.CREATEDBY]: uID,
+      [COL_GAME.ENDTIME]: null,
+      [COL_GAME.GAMETYPE]: 2,
+      [COL_GAME.LOCATION]: null,
+      [COL_GAME.QUARTER]: 2,
+      [COL_GAME.QUARTERTIME]: 45,
+      [COL_GAME.RESTTIME]: 20,
+      [COL_GAME.STARTTIME]: null,
+      [COL_GAME.TEAM]: [],
+      [COL_GAME.CUPID]: cupUID
+    })
+    .then(
+      (
+        doc: firebase.firestore.DocumentReference<
+          firebase.firestore.DocumentData
+        >
+      ) => {
+        Firebase.firestore
+          .collection(COL_CUP.CUP)
+          .doc(cupUID)
+          .set(
+            {
+              [COL_CUP.MATCH]: {
+                [cupUID]: subGameID
+                // 여기는 생각좀 해보고 있음
+                // 1. final, predata구분 필요
+                // 2. cupUID와 subGameID 어떤 것을 key로 하는게 이득일지 고민 중 (큰 차이 없어보임)
+                // 3. 어떤 데이터가 들어갈 지, 현재는 모든 게임 결과까지 들어가도록 고민 중
+              }
+            },
+            { merge: true }
+          )
+          .catch(err =>
+            console.log(`fail to save subGame info in Cup - ${cupUID} ${err}`)
+          );
+      }
+    )
+    .catch(err =>
+      console.log(`fail to create subGame in Cup - ${cupUID} ${err}`)
+    );
 };
