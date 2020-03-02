@@ -43,7 +43,7 @@ export const CupDetail: React.SFC<RouteComponentProps> = (
         component={CupDetailTeam}
       />
       <Route
-        path={propPath + ROUTES.CUP_DETAIL_Match}
+        path={propPath + ROUTES.CUP_DETAIL_MATCH}
         component={CupDetailMatch}
       />
       <Route
@@ -80,8 +80,8 @@ export const CupDetailComponent: React.SFC<CupDetailProps> = () => {
           imgSrc={TeamIcon}
         />
         <SquareRouteButton
-          title={ROUTENAMES.CUP_DETAIL_Match}
-          route={buttonRoute(ROUTES.CUP_DETAIL_Match)}
+          title={ROUTENAMES.CUP_DETAIL_MATCH}
+          route={buttonRoute(ROUTES.CUP_DETAIL_MATCH)}
           ImgIcon={AddIcon}
         />
         <SquareRouteButton
