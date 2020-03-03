@@ -84,7 +84,8 @@ export interface PreliminaryProps {}
 interface GroupCardNumOfTeams {
   id: number;
   numOfTeams: number;
-  numOfAdvFinal: number; // Advanced to the final
+  numOfAdvFinal: number; // Advanced to the final,
+  teams: Array<string | null>;
 }
 
 export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
@@ -131,7 +132,12 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
           ) + 1;
     setcardIdList([
       ...cardObjList,
-      { id: newID, numOfTeams: numOfTeams, numOfAdvFinal: numOfAdvFinal }
+      {
+        id: newID,
+        numOfTeams: numOfTeams,
+        numOfAdvFinal: numOfAdvFinal,
+        teams: Array<string | null>(numOfTeams).fill(null)
+      }
     ]);
   };
 
@@ -267,6 +273,7 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
                 numOfAdvFinal={o.numOfAdvFinal}
                 group={index}
                 onDelete={handleDelete}
+                teams={o.teams}
               />
             );
           })}
@@ -288,16 +295,23 @@ const initializeGroupCard = (
   preData: PreDataStructure
 ): Array<GroupCardNumOfTeams> => {
   const arr: Array<GroupCardNumOfTeams> = [];
-  console.log(`initialize - ${preData}`);
   console.dir(preData);
 
   Object.keys(preData).forEach((value: string, index: number) => {
     let group: number = Number(value);
+    const numOfTeams: number = preData[group].t;
+    const teams: Array<string | null> = Array<string | null>(
+      preData[group].t
+    ).fill(null);
 
+    for (let i = 0; i < numOfTeams; i++) {
+      if (preData[group][i]) teams[i] = preData[group][i];
+    }
     arr.push({
       id: index,
-      numOfTeams: preData[group].t,
-      numOfAdvFinal: preData[group].ft
+      numOfTeams: numOfTeams,
+      numOfAdvFinal: preData[group].ft,
+      teams: teams
     });
   });
 

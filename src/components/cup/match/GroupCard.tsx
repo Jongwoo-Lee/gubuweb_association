@@ -41,6 +41,7 @@ export interface GroupCardProps {
   numOfTeams: number;
   numOfAdvFinal: number;
   group: number;
+  teams: Array<string | null>;
   onDelete: Function;
 }
 
@@ -49,6 +50,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({
   numOfTeams,
   numOfAdvFinal,
   group,
+  teams,
   onDelete
 }: GroupCardProps) => {
   const classes = useStyles();
@@ -106,6 +108,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({
               iter={i}
               numOfTeams={numOfTeams}
               numOfAdvFinal={numOfAdvFinal}
+              teamUID={teams[i]}
             ></GroupCardItem>
           ))}
       </Card>

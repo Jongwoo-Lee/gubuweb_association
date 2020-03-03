@@ -88,8 +88,6 @@ export const cupInfoConverter = {
     options: firebase.firestore.SnapshotOptions | undefined
   ) => {
     const data = snapshot.data(options);
-    console.log(`data?.[COL_CUP.MATCHINFO] - `);
-    console.dir(data?.[COL_CUP.MATCHINFO]);
     return new CupInfo(
       data?.[COL_CUP.CUPNAME],
       data?.[COL_CUP.REGION],

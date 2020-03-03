@@ -34,6 +34,7 @@ const useStyles = makeStyles({
 export interface GroupCardItemProps {
   group: number;
   iter: number;
+  teamUID: string | null;
   numOfTeams: number;
   numOfAdvFinal: number;
 }
@@ -41,11 +42,12 @@ export interface GroupCardItemProps {
 export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   group,
   iter,
+  teamUID,
   numOfTeams,
   numOfAdvFinal
 }: GroupCardItemProps) => {
   const classes = useStyles();
-  const [team, setTeam] = useState<string | null>(null);
+  const [team, setTeam] = useState<string | null>(teamUID);
   const [open, setOpen] = useState(false);
   const pTeams: PreDataStructure = usePreTeams();
   const teams = useTeamsExceptPre(team, pTeams, group, iter);
