@@ -35,12 +35,14 @@ export interface GroupCardItemProps {
   group: number;
   iter: number;
   numOfTeams: number;
+  numOfAdvFinal: number;
 }
 
 export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   group,
   iter,
-  numOfTeams
+  numOfTeams,
+  numOfAdvFinal
 }: GroupCardItemProps) => {
   const classes = useStyles();
   const [team, setTeam] = useState<string | null>(null);
@@ -56,7 +58,8 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   const handleClose = useCallback(
     (value: string | null) => {
       let newPTeams: PreDataStructure = JSON.parse(JSON.stringify(pTeams));
-      if (!newPTeams[group]) newPTeams[group] = { t: numOfTeams }; // use previous data
+      if (!newPTeams[group])
+        newPTeams[group] = { t: numOfTeams, ft: numOfAdvFinal }; // use previous data
       newPTeams[group][iter] = value;
       setPTeams(newPTeams);
       setOpen(false);

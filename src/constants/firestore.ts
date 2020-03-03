@@ -62,7 +62,8 @@ export const COL_CUP = {
   ROUND: "ro",
   MATCHINFO: "mi",
   MATCH: "m",
-  WILDCARD: "w"
+  WILDCARD: "w",
+  FINALTEAM: "fn" // 본선 진출 수
 };
 
 export const COL_GAME = {

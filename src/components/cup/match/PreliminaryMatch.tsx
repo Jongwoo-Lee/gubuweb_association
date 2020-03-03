@@ -17,7 +17,8 @@ import {
   useRound,
   useSetRound,
   useNumOfWild,
-  useSetNumOfWild
+  useSetNumOfWild,
+  usePreTeams
 } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -91,7 +92,9 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
   const [expanded, setExpanded] = useState(true);
   const [numOfTeams, setNumOfTeams] = useState(3);
   const [numOfAdvFinal, setNumOfAdvFinal] = useState(1);
-  const [cardObjList, setcardIdList] = useState<Array<GroupCardNumOfTeams>>([]);
+  const [cardObjList, setcardIdList] = useState<Array<GroupCardNumOfTeams>>(
+    initializeGroupCard(usePreTeams())
+  );
   const setPTeams = useSetPreTeams();
 
   const handleExpandClick = () => {
@@ -281,26 +284,22 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
   );
 };
 
-const initializeGroupCard = (preData: PreDataStructure): Array<JSX.Element> => {
-  const newArr: Array<JSX.Element> = new Array<JSX.Element>();
-  let numOfGroups: number = -1;
-  Object.keys(preData).forEach((value: string) => {
-    let temp: number = Number(value);
-    if (numOfGroups < temp) numOfGroups = temp;
+const initializeGroupCard = (
+  preData: PreDataStructure
+): Array<GroupCardNumOfTeams> => {
+  const arr: Array<GroupCardNumOfTeams> = [];
+  console.log(`initialize - ${preData}`);
+  console.dir(preData);
+
+  Object.keys(preData).forEach((value: string, index: number) => {
+    let group: number = Number(value);
+
+    arr.push({
+      id: index,
+      numOfTeams: preData[group].t,
+      numOfAdvFinal: preData[group].ft
+    });
   });
 
-  //Card마다 팀 수가 다를 수 있는지 확인해봐야 함
-  for (let i = 0; i < numOfGroups; i++) {
-    // if(preData[i] !== null)
-    // {
-    //   newArr.push(
-    //   // <GroupCard
-    //   //   key={0}
-    //   //   numOfTeams={numOfTeams}
-    //   //   group={groupCard.length}
-    //   //   onDelete={null}
-    //   // />);
-    // }
-  }
-  return [];
+  return arr;
 };

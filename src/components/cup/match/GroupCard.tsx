@@ -105,6 +105,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({
               group={group}
               iter={i}
               numOfTeams={numOfTeams}
+              numOfAdvFinal={numOfAdvFinal}
             ></GroupCardItem>
           ))}
       </Card>

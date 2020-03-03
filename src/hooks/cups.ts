@@ -32,7 +32,8 @@ export const useTeamsExceptPre = (
     let newpTeams: PreDataStructure = JSON.parse(JSON.stringify(pTeams));
 
     if (team != null) {
-      if (!newpTeams[group]) newpTeams[group] = { t: pTeams[group].t };
+      if (!newpTeams[group])
+        newpTeams[group] = { t: pTeams[group].t, ft: pTeams[group].ft };
 
       newpTeams[group][order] = team;
     }
