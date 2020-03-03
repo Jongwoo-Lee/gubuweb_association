@@ -11,7 +11,11 @@ import {
 import { GroupCard } from "./GroupCard";
 import { ExpandMore } from "@material-ui/icons";
 import { NumbericUpDownCtrl } from "./NumbericUpDownCtrl";
-import { usePreTeams, PreDataStructure } from "../../../context/cup/cupMatch";
+import {
+  usePreTeams,
+  PreDataStructure,
+  useSetPreTeams
+} from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -86,6 +90,7 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
   const [numOfRound, setNumOfRound] = useState(1);
   const [numOfWildCard, setNumOfWildCard] = useState(1);
   const [cardIdList, setcardIdList] = useState<Array<GroupCardNumOfTeams>>([]);
+  const setPTeams = useSetPreTeams();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -93,7 +98,6 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
 
   const handleDelete = (id: number) => {
     const newIdList: Array<GroupCardNumOfTeams> = Object.assign([], cardIdList);
-    // const newCards: Array<GroupCardNumOfTeams> = [...cardIdList];
     const idx: number = newIdList.findIndex(find => find.id === id);
     if (idx !== -1) {
       newIdList.splice(idx, 1);
@@ -104,6 +108,9 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
 
   const clearCard = () => {
     setcardIdList([]);
+
+    // initialize
+    setPTeams({});
   };
 
   const handleMakeCard = () => {
