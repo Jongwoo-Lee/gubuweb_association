@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, IconButton, Grid } from "@material-ui/core";
+import { Card, Typography, IconButton, Grid, Box } from "@material-ui/core";
 import { convertString, GroupCardItem } from "./GroupCardItem";
 import {
   PreDataStructure,
@@ -20,6 +20,18 @@ const useStyles = makeStyles({
   },
   item: {
     margin: "5px 20px"
+  },
+  gridBox: {
+    display: "flex",
+    flexDirection: "row"
+  },
+
+  box: {
+    width: "5px",
+    height: "80%",
+    backgroundColor: "red",
+    color: "red",
+    margin: "0px 3px 0px 0px"
   }
 });
 
@@ -27,6 +39,7 @@ const useStyles = makeStyles({
 export interface GroupCardProps {
   id: number;
   numOfTeams: number;
+  numOfAdvFinal: number;
   group: number;
   onDelete: Function;
 }
@@ -34,6 +47,7 @@ export interface GroupCardProps {
 export const GroupCard: React.FC<GroupCardProps> = ({
   id,
   numOfTeams,
+  numOfAdvFinal,
   group,
   onDelete
 }: GroupCardProps) => {
@@ -58,28 +72,32 @@ export const GroupCard: React.FC<GroupCardProps> = ({
   return (
     <div className={classes.root}>
       <Card variant="outlined">
-        <Grid container className={classes.cardTitle}>
-          <Grid item xs={4}>
-            {/* Intentionally Empty */}
-          </Grid>
-          <Grid container item xs={4} justify="center" alignItems="center">
-            <Typography align="center" variant="body1" component="span">
-              {convertString(group)}조
-            </Typography>
-          </Grid>
-          <Grid container item xs={4} justify="flex-end">
-            <IconButton onClick={_ => handleClose(id)}>
-              <Typography
-                className={classes.item}
-                align="center"
-                variant="body1"
-                component="span"
-              >
-                삭제
+        <Box borderBottom={1}>
+          <Grid container className={classes.cardTitle}>
+            <Grid item xs={4} className={classes.gridBox}>
+              {[...Array(numOfAdvFinal).keys()].map(_ => (
+                <Box className={classes.box} />
+              ))}
+            </Grid>
+            <Grid container item xs={4} justify="center" alignItems="center">
+              <Typography align="center" variant="body1" component="span">
+                {convertString(group)}조
               </Typography>
-            </IconButton>
+            </Grid>
+            <Grid container item xs={4} justify="flex-end">
+              <IconButton onClick={_ => handleClose(id)}>
+                <Typography
+                  className={classes.item}
+                  align="center"
+                  variant="body1"
+                  component="span"
+                >
+                  삭제
+                </Typography>
+              </IconButton>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
         {numOfTeams > 0 &&
           [...Array(numOfTeams).keys()].map(i => (
             <GroupCardItem key={i} group={group} iter={i}></GroupCardItem>

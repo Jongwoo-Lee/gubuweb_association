@@ -8,6 +8,8 @@ export interface FirebaseSaveStructure {
   // readonly [COL_CUP.PRELIMINARY]: PreDataStructure;
   f: FinalDataStructure; // COL_CUP.FINAL
   p: PreDataStructure; // COL_CUP.PRELIMINARY
+  ro: number; // COL_CUP.ROUND
+  w: number; // COL_CUP.WILDCARD
 }
 
 export interface PreDataStructure {
@@ -28,6 +30,12 @@ interface CupMatchData {
 
   finalTeams: FinalDataStructure; // team name
   setFinalTeams: Dispatch<SetStateAction<FinalDataStructure>>;
+
+  round: number;
+  setRound: Dispatch<SetStateAction<number>>;
+
+  numOfWild: number;
+  setNumOfWild: Dispatch<SetStateAction<number>>;
 }
 
 export const EditCupMatchContext: React.Context<CupMatchData> = React.createContext<
@@ -42,6 +50,14 @@ export const EditCupMatchContext: React.Context<CupMatchData> = React.createCont
   finalTeams: { order: Array<string>(8), round: 8 },
   setFinalTeams: () => {
     console.log("finalTeam is not yet set");
+  },
+  round: 1,
+  setRound: () => {
+    console.log("user for round and numOfWild");
+  },
+  numOfWild: 1,
+  setNumOfWild: () => {
+    console.log("user for round and wildCard");
   }
 });
 
@@ -62,11 +78,16 @@ export const EditCupMatchProvider = (props: {
     "test8"
   ]);
 
-  let initialPData: PreDataStructure = {};
-  let initialFData: FinalDataStructure = {
+  // initial value
+  let iPData: PreDataStructure = {};
+  let iFData: FinalDataStructure = {
     order: new Array<string | null>(8).fill(null),
     round: 8
   };
+
+  let iNumOfRound: number = 1;
+  let iNumOfWild: number = 1;
+
   if (typeof props.cupInfo !== "undefined") {
     if (props.cupInfo.matchInfo !== null) {
       const matchInfo: FirebaseSaveStructure = props.cupInfo
@@ -74,27 +95,43 @@ export const EditCupMatchProvider = (props: {
 
       //set final data
       if (matchInfo.f !== null) {
-        initialFData.round = matchInfo.f.round;
+        iFData.round = matchInfo.f.round;
         if (matchInfo.f.order !== null) {
-          initialFData.order = Array.from(matchInfo.f.order);
+          iFData.order = Array.from(matchInfo.f.order);
         }
       }
 
       //set preliminary data
       if (matchInfo.p !== null) {
-        initialPData = matchInfo.p;
+        iPData = matchInfo.p;
+      }
+      if (matchInfo.ro !== null) {
+        iNumOfRound = matchInfo.ro;
+      }
+      if (matchInfo.w !== null) {
+        iNumOfWild = matchInfo.w;
       }
     }
   }
 
-  const [preTeams, setPreTeams] = useState<PreDataStructure>(initialPData);
-  const [finalTeams, setFinalTeams] = useState<FinalDataStructure>(
-    initialFData
-  );
+  const [preTeams, setPreTeams] = useState<PreDataStructure>(iPData);
+  const [finalTeams, setFinalTeams] = useState<FinalDataStructure>(iFData);
+  const [round, setRound] = useState<number>(iNumOfRound);
+  const [numOfWild, setNumOfWild] = useState<number>(iNumOfWild);
 
   return (
     <EditCupMatchContext.Provider
-      value={{ teams, preTeams, setPreTeams, finalTeams, setFinalTeams }}
+      value={{
+        teams,
+        preTeams,
+        setPreTeams,
+        finalTeams,
+        setFinalTeams,
+        round,
+        setRound,
+        numOfWild,
+        setNumOfWild
+      }}
     >
       {props.children}
     </EditCupMatchContext.Provider>
@@ -107,3 +144,10 @@ export const useSetPreTeams = () => useContext(EditCupMatchContext).setPreTeams;
 export const useFinalTeams = () => useContext(EditCupMatchContext).finalTeams;
 export const useSetFinalTeams = () =>
   useContext(EditCupMatchContext).setFinalTeams;
+
+export const useRound = () => useContext(EditCupMatchContext).round;
+export const useSetRound = () => useContext(EditCupMatchContext).setRound;
+
+export const useNumOfWild = () => useContext(EditCupMatchContext).numOfWild;
+export const useSetNumOfWild = () =>
+  useContext(EditCupMatchContext).setNumOfWild;

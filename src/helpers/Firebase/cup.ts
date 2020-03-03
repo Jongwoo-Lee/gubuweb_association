@@ -150,7 +150,9 @@ export const getAscCupInfos = (cuplist: string[]) => {
 export const saveCupMatch = async (
   cupUID: string,
   pData: PreDataStructure,
-  fData: FinalDataStructure
+  fData: FinalDataStructure,
+  round: number,
+  numOfWild: number
 ) => {
   Firebase.firestore
     .collection(COL_CUP.CUP)
@@ -158,7 +160,9 @@ export const saveCupMatch = async (
     .update({
       [COL_CUP.MATCHINFO]: {
         [COL_CUP.PRELIMINARY]: pData,
-        [COL_CUP.FINAL]: fData
+        [COL_CUP.FINAL]: fData,
+        [COL_CUP.ROUND]: round,
+        [COL_CUP.WILDCARD]: numOfWild
       }
     })
     .catch(err => console.log(`save  Match error ${err}`));

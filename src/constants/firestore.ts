@@ -61,7 +61,8 @@ export const COL_CUP = {
   ORDER: "o",
   ROUND: "ro",
   MATCHINFO: "mi",
-  MATCH: "m"
+  MATCH: "m",
+  WILDCARD: "w"
 };
 
 export const COL_GAME = {

@@ -71,7 +71,7 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
         variant="body1"
         component="span"
       >
-        {convertString(group)}조 {iter + 1}
+        {convertString(group)} - {iter + 1}
       </Typography>
       <IconButton onClick={handleClickOpen}>
         <Typography

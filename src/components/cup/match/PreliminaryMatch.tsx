@@ -12,9 +12,12 @@ import { GroupCard } from "./GroupCard";
 import { ExpandMore } from "@material-ui/icons";
 import { NumbericUpDownCtrl } from "./NumbericUpDownCtrl";
 import {
-  usePreTeams,
   PreDataStructure,
-  useSetPreTeams
+  useSetPreTeams,
+  useRound,
+  useSetRound,
+  useNumOfWild,
+  useSetNumOfWild
 } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -80,16 +83,15 @@ export interface PreliminaryProps {}
 interface GroupCardNumOfTeams {
   id: number;
   numOfTeams: number;
+  numOfAdvFinal: number; // Advanced to the final
 }
 
 export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(true);
   const [numOfTeams, setNumOfTeams] = useState(3);
-  const [numOfAdvFinal, setNumOfAdvFinal] = useState(1); // Advanced to the final
-  const [numOfRound, setNumOfRound] = useState(1);
-  const [numOfWildCard, setNumOfWildCard] = useState(1);
-  const [cardIdList, setcardIdList] = useState<Array<GroupCardNumOfTeams>>([]);
+  const [numOfAdvFinal, setNumOfAdvFinal] = useState(1);
+  const [cardObjList, setcardIdList] = useState<Array<GroupCardNumOfTeams>>([]);
   const setPTeams = useSetPreTeams();
 
   const handleExpandClick = () => {
@@ -97,7 +99,10 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
   };
 
   const handleDelete = (id: number) => {
-    const newIdList: Array<GroupCardNumOfTeams> = Object.assign([], cardIdList);
+    const newIdList: Array<GroupCardNumOfTeams> = Object.assign(
+      [],
+      cardObjList
+    );
     const idx: number = newIdList.findIndex(find => find.id === id);
     if (idx !== -1) {
       newIdList.splice(idx, 1);
@@ -115,13 +120,16 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
 
   const handleMakeCard = () => {
     const newID: number =
-      cardIdList.length === 0
+      cardObjList.length === 0
         ? 0
         : Math.max.apply(
             Math,
-            cardIdList.map(i => i.id)
+            cardObjList.map(i => i.id)
           ) + 1;
-    setcardIdList([...cardIdList, { id: newID, numOfTeams: numOfTeams }]);
+    setcardIdList([
+      ...cardObjList,
+      { id: newID, numOfTeams: numOfTeams, numOfAdvFinal: numOfAdvFinal }
+    ]);
   };
 
   return (
@@ -220,8 +228,8 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
                 component="span"
               >
                 <NumbericUpDownCtrl
-                  numOfItem={numOfRound}
-                  disPatchItem={setNumOfRound}
+                  numOfItem={useRound()}
+                  disPatchItem={useSetRound()}
                 />
               </Typography>
             </div>
@@ -239,26 +247,27 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
                 component="span"
               >
                 <NumbericUpDownCtrl
-                  numOfItem={numOfWildCard}
-                  disPatchItem={setNumOfWildCard}
+                  numOfItem={useNumOfWild()}
+                  disPatchItem={useSetNumOfWild()}
                 />
               </Typography>
             </div>
           </div>
         </div>
-        {cardIdList.length > 0 &&
-          cardIdList.map((o: GroupCardNumOfTeams, index: number) => {
+        {cardObjList.length > 0 &&
+          cardObjList.map((o: GroupCardNumOfTeams, index: number) => {
             return (
               <GroupCard
                 id={o.id}
                 key={o.id}
                 numOfTeams={o.numOfTeams}
+                numOfAdvFinal={o.numOfAdvFinal}
                 group={index}
                 onDelete={handleDelete}
               />
             );
           })}
-        {cardIdList.length > 0 && (
+        {cardObjList.length > 0 && (
           <Grid container item xs={12} justify="flex-end">
             <IconButton onClick={clearCard}>
               <Typography variant="body1" component="span">

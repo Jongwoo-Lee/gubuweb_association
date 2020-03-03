@@ -1,6 +1,11 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { useFinalTeams, usePreTeams } from "../../../context/cup/cupMatch";
+import {
+  useFinalTeams,
+  usePreTeams,
+  useRound,
+  useNumOfWild
+} from "../../../context/cup/cupMatch";
 import { saveCupMatch } from "../../../helpers/Firebase/cup";
 
 interface SaveBtnProps {
@@ -12,12 +17,15 @@ export const SaveMatchBtn: React.FC<SaveBtnProps> = ({
 }: SaveBtnProps) => {
   const fData = useFinalTeams();
   const pData = usePreTeams();
+  const round: number = useRound();
+  const numOfRound: number = useNumOfWild();
 
   const handleOnSave = async (
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent
   ) => {
     e.preventDefault();
-    saveCupMatch(cupID, pData, fData);
+
+    saveCupMatch(cupID, pData, fData, round, numOfRound);
   };
   return (
     <Button
