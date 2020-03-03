@@ -13,7 +13,7 @@ export interface FirebaseSaveStructure {
 }
 
 export interface PreDataStructure {
-  [group: number]: { [order: number]: string | null };
+  [group: number]: { [order: number]: string | null; t: number }; // t => COL_CUP.TEAMS
 }
 
 // Object 에 저장할 때

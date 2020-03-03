@@ -100,7 +100,12 @@ export const GroupCard: React.FC<GroupCardProps> = ({
         </Box>
         {numOfTeams > 0 &&
           [...Array(numOfTeams).keys()].map(i => (
-            <GroupCardItem key={i} group={group} iter={i}></GroupCardItem>
+            <GroupCardItem
+              key={i}
+              group={group}
+              iter={i}
+              numOfTeams={numOfTeams}
+            ></GroupCardItem>
           ))}
       </Card>
     </div>

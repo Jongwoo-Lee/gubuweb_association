@@ -32,7 +32,7 @@ export const useTeamsExceptPre = (
     let newpTeams: PreDataStructure = JSON.parse(JSON.stringify(pTeams));
 
     if (team != null) {
-      if (!newpTeams[group]) newpTeams[group] = {};
+      if (!newpTeams[group]) newpTeams[group] = { t: pTeams[group].t };
 
       newpTeams[group][order] = team;
     }
@@ -40,39 +40,4 @@ export const useTeamsExceptPre = (
   }, [team]);
 
   return teams;
-};
-
-// 안됨
-export const useNewPreTeams = (
-  preTeam: string | null,
-  newTeam: string | null,
-  pTeams: string[]
-) => {
-  const setPTeams = useSetPreTeams();
-
-  let newPTeams: string[] = [];
-  let update: boolean = true;
-  // useEffect(() => {
-
-  if (preTeam === null && newTeam === null) {
-    // do nothing
-    update = false;
-  } else if (preTeam === null || newTeam === null) {
-    if (preTeam === null && newTeam !== null) {
-      newPTeams = [...pTeams, newTeam];
-    } else {
-      newPTeams = pTeams.filter(x => {
-        if (x === preTeam) return false;
-        return true;
-      });
-    }
-  } else {
-    const Temp = pTeams.filter(x => {
-      if (x === preTeam) return false;
-      return true;
-    });
-    newPTeams = [...Temp, newTeam];
-  }
-  setPTeams(newPTeams);
-  // }, [])
 };

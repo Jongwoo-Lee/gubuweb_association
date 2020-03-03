@@ -2,7 +2,7 @@ import { Typography, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useState, useCallback } from "react";
 import { TeamListDlg } from "./TeamListDlg";
-import { useTeamsExceptPre, useNewPreTeams } from "../../../hooks/cups";
+import { useTeamsExceptPre } from "../../../hooks/cups";
 import {
   usePreTeams,
   useSetPreTeams,
@@ -34,11 +34,13 @@ const useStyles = makeStyles({
 export interface GroupCardItemProps {
   group: number;
   iter: number;
+  numOfTeams: number;
 }
 
 export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   group,
-  iter
+  iter,
+  numOfTeams
 }: GroupCardItemProps) => {
   const classes = useStyles();
   const [team, setTeam] = useState<string | null>(null);
@@ -54,7 +56,7 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   const handleClose = useCallback(
     (value: string | null) => {
       let newPTeams: PreDataStructure = JSON.parse(JSON.stringify(pTeams));
-      if (!newPTeams[group]) newPTeams[group] = {};
+      if (!newPTeams[group]) newPTeams[group] = { t: numOfTeams }; // use previous data
       newPTeams[group][iter] = value;
       setPTeams(newPTeams);
       setOpen(false);

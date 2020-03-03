@@ -10,7 +10,6 @@ import {
   TableRow,
   TableCell
 } from "@material-ui/core";
-import { useNewPreTeams } from "../../../hooks/cups";
 
 const useStyles = makeStyles({
   root: {
