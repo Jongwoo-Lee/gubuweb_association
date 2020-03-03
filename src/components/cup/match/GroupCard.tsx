@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Typography, IconButton, Grid } from "@material-ui/core";
 import { convertString, GroupCardItem } from "./GroupCardItem";
+import {
+  PreDataStructure,
+  usePreTeams,
+  useSetPreTeams
+} from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles({
   root: {
@@ -33,6 +38,22 @@ export const GroupCard: React.FC<GroupCardProps> = ({
   onDelete
 }: GroupCardProps) => {
   const classes = useStyles();
+  const pTeams: PreDataStructure = usePreTeams();
+  const setPTeams = useSetPreTeams();
+
+  const handleClose = (value: number) => {
+    let newPTeams: PreDataStructure = JSON.parse(JSON.stringify(pTeams));
+    if (newPTeams[group]) {
+      // 중간에 있는 group은 앞으로 당겨져야 한다.
+      const length: number = Object.keys(newPTeams).length;
+      for (let i = group; i < length; i++) {
+        if (newPTeams[i + 1]) newPTeams[i] = newPTeams[i + 1];
+        else delete newPTeams[i];
+      }
+    }
+    setPTeams(newPTeams);
+    onDelete(value);
+  };
 
   return (
     <div className={classes.root}>
@@ -47,7 +68,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({
             </Typography>
           </Grid>
           <Grid container item xs={4} justify="flex-end">
-            <IconButton onClick={_ => onDelete(id)}>
+            <IconButton onClick={_ => handleClose(id)}>
               <Typography
                 className={classes.item}
                 align="center"
