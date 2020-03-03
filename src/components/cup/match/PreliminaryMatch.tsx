@@ -73,6 +73,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 export interface PreliminaryProps {}
 
+interface GroupCardNumOfTeams {
+  id: number;
+  numOfTeams: number;
+}
+
 export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(true);
@@ -80,28 +85,36 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
   const [numOfAdvFinal, setNumOfAdvFinal] = useState(1); // Advanced to the final
   const [numOfRound, setNumOfRound] = useState(1);
   const [numOfWildCard, setNumOfWildCard] = useState(1);
-  const [cardIdList, setcardIdList] = useState<Array<number>>([]);
+  const [cardIdList, setcardIdList] = useState<Array<GroupCardNumOfTeams>>([]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
   const handleDelete = (id: number) => {
-    const newCards: Array<number> = [...cardIdList];
-    const idx: number = newCards.findIndex(find => find === id);
+    const newIdList: Array<GroupCardNumOfTeams> = Object.assign([], cardIdList);
+    // const newCards: Array<GroupCardNumOfTeams> = [...cardIdList];
+    const idx: number = newIdList.findIndex(find => find.id === id);
     if (idx !== -1) {
-      newCards.splice(idx, 1);
+      newIdList.splice(idx, 1);
     }
 
-    setcardIdList(newCards);
+    setcardIdList(newIdList);
   };
 
   const clearCard = () => {
     setcardIdList([]);
   };
+
   const handleMakeCard = () => {
     const newID: number =
-      cardIdList.length === 0 ? 0 : Math.max(...cardIdList) + 1;
-    setcardIdList([...cardIdList, newID]);
+      cardIdList.length === 0
+        ? 0
+        : Math.max.apply(
+            Math,
+            cardIdList.map(i => i.id)
+          ) + 1;
+    setcardIdList([...cardIdList, { id: newID, numOfTeams: numOfTeams }]);
   };
 
   return (
@@ -227,12 +240,12 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
           </div>
         </div>
         {cardIdList.length > 0 &&
-          cardIdList.map((id: number, index: number) => {
+          cardIdList.map((o: GroupCardNumOfTeams, index: number) => {
             return (
               <GroupCard
-                id={id}
-                key={id}
-                numOfTeams={numOfTeams}
+                id={o.id}
+                key={o.id}
+                numOfTeams={o.numOfTeams}
                 group={index}
                 onDelete={handleDelete}
               />

@@ -57,7 +57,6 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
       if (!newPTeams[group]) newPTeams[group] = {};
       newPTeams[group][iter] = value;
       setPTeams(newPTeams);
-      console.dir(newPTeams);
       setOpen(false);
       setTeam(value);
     },

@@ -33,9 +33,6 @@ export const GroupCard: React.FC<GroupCardProps> = ({
   onDelete
 }: GroupCardProps) => {
   const classes = useStyles();
-  const items: JSX.Element[] = Array<JSX.Element>();
-  for (let i = 0; i < numOfTeams; i++)
-    items.push(<GroupCardItem key={i} group={group} iter={i}></GroupCardItem>);
 
   return (
     <div className={classes.root}>
@@ -62,8 +59,10 @@ export const GroupCard: React.FC<GroupCardProps> = ({
             </IconButton>
           </Grid>
         </Grid>
-
-        {items.length > 0 && items.map(item => item)}
+        {numOfTeams > 0 &&
+          [...Array(numOfTeams).keys()].map(i => (
+            <GroupCardItem key={i} group={group} iter={i}></GroupCardItem>
+          ))}
       </Card>
     </div>
   );
