@@ -80,37 +80,28 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
   const [numOfAdvFinal, setNumOfAdvFinal] = useState(1); // Advanced to the final
   const [numOfRound, setNumOfRound] = useState(1);
   const [numOfWildCard, setNumOfWildCard] = useState(1);
-
-  const [groupCard, setGroupCard] = useState<Array<JSX.Element>>(
-    initializeGroupCard(usePreTeams())
-  );
+  const [cardIdList, setcardIdList] = useState<Array<number>>([]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const handleDelete = (id: number) => {
+    const newCards: Array<number> = [...cardIdList];
+    const idx: number = newCards.findIndex(find => find === id);
+    if (idx !== -1) {
+      newCards.splice(idx, 1);
+    }
 
-  const handleDelete = (i: number) => {
-    // console.log(`1, ${groupCard} - ${groupCard.length}`);
-    const newCards: Array<JSX.Element> = [...groupCard];
-    // console.log(`2,- ${newCards.length}`);
-    newCards.splice(i, 1);
-
-    setGroupCard(newCards);
+    setcardIdList(newCards);
   };
+
   const clearCard = () => {
-    setGroupCard([]);
+    setcardIdList([]);
   };
   const handleMakeCard = () => {
-    // console.log(`make - ${groupCard.length}`);
-    setGroupCard([
-      ...groupCard,
-      <GroupCard
-        key={groupCard.length}
-        numOfTeams={numOfTeams}
-        group={groupCard.length}
-        onDelete={handleDelete}
-      ></GroupCard>
-    ]);
+    const newID: number =
+      cardIdList.length === 0 ? 0 : Math.max(...cardIdList) + 1;
+    setcardIdList([...cardIdList, newID]);
   };
 
   return (
@@ -235,8 +226,19 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
             </div>
           </div>
         </div>
-        {groupCard.length > 0 && groupCard.map(item => item)}
-        {groupCard.length > 0 && (
+        {cardIdList.length > 0 &&
+          cardIdList.map((id: number, index: number) => {
+            return (
+              <GroupCard
+                id={id}
+                key={id}
+                numOfTeams={numOfTeams}
+                group={index}
+                onDelete={handleDelete}
+              />
+            );
+          })}
+        {cardIdList.length > 0 && (
           <Grid container item xs={12} justify="flex-end">
             <IconButton onClick={clearCard}>
               <Typography variant="body1" component="span">

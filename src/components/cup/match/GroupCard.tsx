@@ -20,12 +20,14 @@ const useStyles = makeStyles({
 
 // imgSrc 나 ImgIcon 둘중 하나만 꼭 넣어야 함
 export interface GroupCardProps {
+  id: number;
   numOfTeams: number;
   group: number;
   onDelete: Function;
 }
 
 export const GroupCard: React.FC<GroupCardProps> = ({
+  id,
   numOfTeams,
   group,
   onDelete
@@ -48,7 +50,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({
             </Typography>
           </Grid>
           <Grid container item xs={4} justify="flex-end">
-            <IconButton onClick={_ => onDelete(group)}>
+            <IconButton onClick={_ => onDelete(id)}>
               <Typography
                 className={classes.item}
                 align="center"
