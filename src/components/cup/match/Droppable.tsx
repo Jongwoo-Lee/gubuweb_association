@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { createStyles, makeStyles } from "@material-ui/core";
+import { createStyles, makeStyles, Typography, Grid } from "@material-ui/core";
 import { BracketLine } from "./BracketLine";
 import {
   useSetFinalTeams,
@@ -10,6 +10,10 @@ import {
 const useStyles = makeStyles(() =>
   createStyles({
     drop: {
+
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
       border: "1px solid black",
       width: "200px",
       height: "30px",
@@ -143,7 +147,7 @@ export const Droppable: React.FC<DroppableProps> = ({
 
       newArr[index] = src;
       if (tIdx > -1) newArr[tIdx] = "";
-      newpTeams["order"] = newArr;
+      newpTeams.order = newArr;
 
       setArrageTeam(newpTeams);
     }
@@ -159,7 +163,7 @@ export const Droppable: React.FC<DroppableProps> = ({
       onDrop={event => handleDrop(event)}
       onDragOver={handleAllowDrop}
     >
-      {arrangeTeam[index] && <div>{arrangeTeam[index]}</div>}
+      {arrangeTeam[index] && <Typography align="center" variant="body1" component="span">{arrangeTeam[index]}</Typography>}
     </div>
   );
 };
