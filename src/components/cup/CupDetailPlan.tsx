@@ -8,8 +8,10 @@ import { RouteComponentProps } from "react-router-dom";
 import { MatchParams } from "./CupDetailTeam";
 import { useCupsInfo } from "../../context/cup/cup";
 import { CupInfo } from "../../helpers/Firebase/cup";
+import { PreliminaryPlan } from "./plan/PreliminaryPlan";
+import { FinalPlan } from "./plan/FinalPlan";
 
-export interface CupDetailPlanProps {}
+export interface CupDetailPlanProps { }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,6 +58,8 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
           저장
         </Button>
       </Grid>
+      <PreliminaryPlan></PreliminaryPlan>
+      <FinalPlan></FinalPlan>
     </div>
   );
 };

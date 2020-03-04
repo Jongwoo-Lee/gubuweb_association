@@ -161,7 +161,8 @@ export const saveCupMatch = async (
         [COL_CUP.FINAL]: fData,
         [COL_CUP.ROUND]: round,
         [COL_CUP.WILDCARD]: numOfWild
-      }
+      },
+
     })
     .catch(err => console.log(`save  Match error ${err}`));
 };
@@ -201,6 +202,29 @@ export const makeSubGame = async (
             {
               [COL_CUP.MATCH]: {
                 [cupUID]: subGameID
+                /*
+                 m: {
+                   p: {
+                     0 : {
+                       // round robin
+                       0-1 vs 0-2 ( uid ) : {
+                         location:
+                         team?:
+                         time
+                         result
+                       }
+                       0-1 vs 0-3
+                       0-2 vs 0-3
+                     }
+                     1: {
+
+                     }
+                   }
+                   f: {
+                     16 -> 8 -> 4 ->  final, 3,4
+                   }
+                 }
+                 */
                 // 여기는 생각좀 해보고 있음
                 // 1. final, predata구분 필요
                 // 2. cupUID와 subGameID 어떤 것을 key로 하는게 이득일지 고민 중 (큰 차이 없어보임)
