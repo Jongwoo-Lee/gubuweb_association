@@ -10,6 +10,8 @@ import {
 } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { CupMatchInfo, PreDataStructure } from "../../../context/cup/cupMatch";
+import { GroupSubGames, SubGameInfo } from "../../../context/cup/cup";
+import { PlanCard } from "./PlanCard";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,7 +54,7 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
     setExpanded(!expanded);
   };
   let groups: GroupSubGames | undefined;
-  if (props.matchInfo) initializeGroup(props.matchInfo);
+  if (props.matchInfo) groups = initializeGroup(props.matchInfo);
 
   return (
     <div className={classes.root}>
@@ -77,20 +79,12 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
       <br />
       <hr className={classes.line} />
 
-      <Collapse in={expanded} timeout="auto" unmountOnExit></Collapse>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        {groups && <PlanCard groups={groups} />}
+      </Collapse>
     </div>
   );
 };
-
-interface GroupSubGames {
-  [group: number]: Array<SubGameInfo>;
-}
-
-interface SubGameInfo {
-  team1: string | null;
-  team2: string | null;
-  location?: string;
-}
 
 const initializeGroup = (matchInfo: CupMatchInfo): GroupSubGames => {
   const preliminaryMatch: PreDataStructure = matchInfo.p;
@@ -110,6 +104,7 @@ const initializeGroup = (matchInfo: CupMatchInfo): GroupSubGames => {
     }
     preliminaryGroup[group] = arr;
   });
+  console.dir(preliminaryGroup);
 
   return preliminaryGroup;
 };

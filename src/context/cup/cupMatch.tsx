@@ -158,3 +158,53 @@ export const useSetRound = () => useContext(EditCupMatchContext).setRound;
 export const useNumOfWild = () => useContext(EditCupMatchContext).numOfWild;
 export const useSetNumOfWild = () =>
   useContext(EditCupMatchContext).setNumOfWild;
+
+export const convertString = (num: number): string => {
+  let cStr: string = "";
+  switch (num) {
+    case 0:
+      cStr = "A";
+      break;
+    case 1:
+      cStr = "B";
+      break;
+    case 2:
+      cStr = "C";
+      break;
+    case 3:
+      cStr = "D";
+      break;
+    case 4:
+      cStr = "E";
+      break;
+    case 5:
+      cStr = "F";
+      break;
+    case 6:
+      cStr = "G";
+      break;
+    case 7:
+      cStr = "H";
+      break;
+    case 8:
+      cStr = "I";
+      break;
+    case 9:
+      cStr = "J";
+      break;
+    case 10:
+      cStr = "K";
+      break;
+    case 11:
+      cStr = "L";
+      break;
+    case 12:
+      cStr = "M";
+      break;
+    case 13:
+      cStr = "N";
+      break;
+  }
+
+  return cStr;
+};

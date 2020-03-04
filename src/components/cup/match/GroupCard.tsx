@@ -1,11 +1,12 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Typography, IconButton, Grid, Box } from "@material-ui/core";
-import { convertString, GroupCardItem } from "./GroupCardItem";
+import { GroupCardItem } from "./GroupCardItem";
 import {
   PreDataStructure,
   usePreTeams,
-  useSetPreTeams
+  useSetPreTeams,
+  convertString
 } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles({

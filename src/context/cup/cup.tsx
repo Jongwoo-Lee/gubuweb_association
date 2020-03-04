@@ -2,6 +2,16 @@ import React, { useContext } from "react";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { useCupInfoList } from "../../hooks";
 
+export interface GroupSubGames {
+  [group: number]: Array<SubGameInfo>;
+}
+
+export interface SubGameInfo {
+  team1: string | null;
+  team2: string | null;
+  location?: string;
+}
+
 export type ContextSetCupInfos = React.Dispatch<
   React.SetStateAction<CupInfoObject>
 >;
