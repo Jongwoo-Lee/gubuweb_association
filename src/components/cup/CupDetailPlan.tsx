@@ -10,8 +10,9 @@ import { useCupsInfo } from "../../context/cup/cup";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { PreliminaryPlan } from "./plan/PreliminaryPlan";
 import { FinalPlan } from "./plan/FinalPlan";
+import { CupMatchInfo, fromMatchInfo } from "../../context/cup/cupMatch";
 
-export interface CupDetailPlanProps { }
+export interface CupDetailPlanProps {}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,7 +34,12 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
   const cupID: string = props.match.params.cupID;
   const cupsInfo = useCupsInfo();
   let cupInfo: CupInfo | undefined;
-  if (cupsInfo !== undefined) cupInfo = cupsInfo[cupID];
+  let matchInfo: CupMatchInfo | undefined;
+  if (cupsInfo !== undefined) {
+    cupInfo = cupsInfo[cupID];
+    if (cupInfo?.matchInfo ?? false)
+      matchInfo = fromMatchInfo(cupInfo?.matchInfo ?? undefined);
+  }
 
   const handleOnSave = async (
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent
@@ -58,8 +64,14 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
           저장
         </Button>
       </Grid>
-      <PreliminaryPlan></PreliminaryPlan>
-      <FinalPlan></FinalPlan>
+      {matchInfo ? (
+        <PreliminaryPlan matchInfo={matchInfo} />
+      ) : (
+        <Typography color="textPrimary" variant="h4">
+          예선전 정보가 없습니다.
+        </Typography>
+      )}
+      <FinalPlan />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { CupInfo } from "../../helpers/Firebase/cup";
 import { COL_CUP } from "../../constants/firestore";
 // import { COL_CUP } from "../../constants/firestore";
 
-export interface FirebaseSaveStructure {
+export interface CupMatchInfo {
   // readonly [COL_CUP.FINAL]: FinalDataStructure;
   // readonly [COL_CUP.PRELIMINARY]: PreDataStructure;
   f: FinalDataStructure; // COL_CUP.FINAL
@@ -61,9 +61,7 @@ export const EditCupMatchContext: React.Context<CupMatchData> = React.createCont
   }
 });
 
-export const fromMatchInfo = (
-  matchInfo?: FirebaseSaveStructure
-): FirebaseSaveStructure => {
+export const fromMatchInfo = (matchInfo?: CupMatchInfo): CupMatchInfo => {
   let iPData: PreDataStructure = {};
   let iFData: FinalDataStructure = {
     order: new Array<string | null>(8).fill(null),
@@ -116,8 +114,7 @@ export const EditCupMatchProvider = (props: {
 
   if (typeof props.cupInfo !== "undefined") {
     if (props.cupInfo.matchInfo !== null) {
-      const saves: FirebaseSaveStructure = props.cupInfo
-        .matchInfo as FirebaseSaveStructure;
+      const saves: CupMatchInfo = props.cupInfo.matchInfo as CupMatchInfo;
 
       // load things
       matchInfo = fromMatchInfo(saves);

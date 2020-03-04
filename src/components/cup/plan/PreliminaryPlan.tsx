@@ -1,109 +1,115 @@
 import React, { useState } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import {
-    Card,
-    Typography,
-    Button,
-    IconButton,
-    Grid,
-    Collapse
+  Card,
+  Typography,
+  Button,
+  IconButton,
+  Grid,
+  Collapse
 } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
+import { CupMatchInfo, PreDataStructure } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "80%",
-            margin: "50px 0px 0px 0px"
-        },
-        expand: {
-            transform: "rotate(0deg)",
-            marginLeft: "auto",
-            transition: theme.transitions.create("transform", {
-                duration: theme.transitions.duration.shortest
-            })
-        },
-        expandOpen: {
-            transform: "rotate(180deg)"
-        },
-        line: {
-            color: "black",
-            backgroundColor: "black",
-            borderColor: "black",
-            height: 1,
-            width: "100%"
-        },
-        setting: {
-            display: "flex",
-            flexDirection: "row"
-        },
-        settingItems: {
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: 250,
-            height: 220,
-            minWidth: 150,
-            margin: "10px 10px"
-        },
-        subItems: {
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            width: 200,
-            minWidth: 150,
-            margin: "5px 5px"
-        },
-        title: {
-            margin: "10px 10px" // top right bottom left
-        },
-        contents: {
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            margin: "0px 10px"
-        }
-    })
+  createStyles({
+    root: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      width: "80%",
+      margin: "50px 0px 0px 0px"
+    },
+    expand: {
+      transform: "rotate(0deg)",
+      marginLeft: "auto",
+      transition: theme.transitions.create("transform", {
+        duration: theme.transitions.duration.shortest
+      })
+    },
+    expandOpen: {
+      transform: "rotate(180deg)"
+    },
+    line: {
+      color: "black",
+      backgroundColor: "black",
+      borderColor: "black",
+      height: 1,
+      width: "100%"
+    }
+  })
 );
-export interface PreliminaryProps { }
+export interface PreliminaryProps {
+  matchInfo: CupMatchInfo;
+}
 
-export const PreliminaryPlan: React.FC<PreliminaryProps> = () => {
-    const classes = useStyles();
-    const [expanded, setExpanded] = useState(true);
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+export const PreliminaryPlan: React.FC<PreliminaryProps> = (
+  props: PreliminaryProps
+) => {
+  const classes = useStyles();
+  const [expanded, setExpanded] = useState(true);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+  let groups: GroupSubGames | undefined;
+  if (props.matchInfo) initializeGroup(props.matchInfo);
 
-
-    return (
-        <div className={classes.root}>
-            <Grid
-                container
-                spacing={3}
-                justify="space-between"
-                alignItems="flex-start"
-            >
-                <Typography color="textPrimary" variant="h5">
-                    예선
+  return (
+    <div className={classes.root}>
+      <Grid
+        container
+        spacing={3}
+        justify="space-between"
+        alignItems="flex-start"
+      >
+        <Typography color="textPrimary" variant="h5">
+          예선
         </Typography>
-                <IconButton
-                    className={expanded ? classes.expandOpen : classes.expand}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMore />
-                </IconButton>
-            </Grid>
-            <br />
-            <hr className={classes.line} />
+        <IconButton
+          className={expanded ? classes.expandOpen : classes.expand}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMore />
+        </IconButton>
+      </Grid>
+      <br />
+      <hr className={classes.line} />
 
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse in={expanded} timeout="auto" unmountOnExit></Collapse>
+    </div>
+  );
+};
 
-            </Collapse>
-        </div>
-    );
+interface GroupSubGames {
+  [group: number]: Array<SubGameInfo>;
+}
+
+interface SubGameInfo {
+  team1: string | null;
+  team2: string | null;
+  location?: string;
+}
+
+const initializeGroup = (matchInfo: CupMatchInfo): GroupSubGames => {
+  const preliminaryMatch: PreDataStructure = matchInfo.p;
+  const preliminaryGroup: GroupSubGames = {};
+
+  Object.keys(preliminaryMatch).forEach((value: string) => {
+    let group: number = Number(value);
+    const numOfTeams = preliminaryMatch[group].t; // group에 참여한 팀 수
+    const arr: Array<SubGameInfo> = [];
+    for (let i = 0; i < numOfTeams - 1; i++) {
+      for (let j = i + 1; j < numOfTeams; j++) {
+        arr.push({
+          team1: preliminaryMatch[group][i] ?? null,
+          team2: preliminaryMatch[group][j] ?? null
+        });
+      }
+    }
+    preliminaryGroup[group] = arr;
+  });
+
+  return preliminaryGroup;
 };

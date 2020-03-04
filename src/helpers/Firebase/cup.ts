@@ -4,7 +4,7 @@ import { COL_CUP, COL_ASC, COL_GAME } from "../../constants/firestore";
 import {
   FinalDataStructure,
   PreDataStructure,
-  FirebaseSaveStructure
+  CupMatchInfo
 } from "../../context/cup/cupMatch";
 
 export class CupInfo {
@@ -22,7 +22,7 @@ export class CupInfo {
   introduction: string | null;
   documents: string[] | null;
   selectedTeams: string[];
-  matchInfo: FirebaseSaveStructure | null;
+  matchInfo: CupMatchInfo | null;
 
   constructor(
     name: string,
@@ -39,7 +39,7 @@ export class CupInfo {
     introduction: string | undefined,
     documents: string[] | undefined,
     selectedTeams: string[] | undefined,
-    matchInfo: FirebaseSaveStructure | null
+    matchInfo: CupMatchInfo | null
   ) {
     this.name = name;
     this.region = region;
@@ -161,8 +161,7 @@ export const saveCupMatch = async (
         [COL_CUP.FINAL]: fData,
         [COL_CUP.ROUND]: round,
         [COL_CUP.WILDCARD]: numOfWild
-      },
-
+      }
     })
     .catch(err => console.log(`save  Match error ${err}`));
 };
