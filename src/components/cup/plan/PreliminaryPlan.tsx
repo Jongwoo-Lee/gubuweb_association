@@ -41,6 +41,11 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
+interface PreData {
+  groups: GroupSubGames;
+  round: number;
+}
+
 export interface PreliminaryProps {
   matchInfo: CupMatchInfo;
 }
@@ -53,8 +58,8 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  let groups: GroupSubGames | undefined;
-  if (props.matchInfo) groups = initializeGroup(props.matchInfo);
+  let preData: PreData | undefined;
+  if (props.matchInfo) preData = initializeGroup(props.matchInfo);
 
   return (
     <div className={classes.root}>
@@ -80,13 +85,13 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
       <hr className={classes.line} />
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        {groups && <PlanCard groups={groups} />}
+        {preData && <PlanCard groups={preData.groups} round={preData.round} />}
       </Collapse>
     </div>
   );
 };
 
-const initializeGroup = (matchInfo: CupMatchInfo): GroupSubGames => {
+const initializeGroup = (matchInfo: CupMatchInfo): PreData => {
   const preliminaryMatch: PreDataStructure = matchInfo.p;
   const preliminaryGroup: GroupSubGames = {};
 
@@ -104,7 +109,6 @@ const initializeGroup = (matchInfo: CupMatchInfo): GroupSubGames => {
     }
     preliminaryGroup[group] = arr;
   });
-  console.dir(preliminaryGroup);
 
-  return preliminaryGroup;
+  return { groups: preliminaryGroup, round: matchInfo.ro };
 };
