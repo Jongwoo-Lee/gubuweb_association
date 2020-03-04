@@ -8,7 +8,8 @@ import {
   Table,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
+  Typography
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -62,15 +63,17 @@ export const TeamListDlg: React.FC<TeamListDlgProps> = ({
       <DialogTitle id="teaminfo-dialog-title">{title}</DialogTitle>
       <Card className={classes.root} variant="outlined">
         <CardContent>
-          <Table className={classes.table}>
-            <TableBody>
-              {teams.map((team: string, index: number) => (
-                <TableRow key={index} onClick={_ => handleRowClick(team)}>
-                  <TableCell align="center">{team}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          {
+            teams.length > 0 ?
+              <Table className={classes.table}>
+                <TableBody>
+                  {teams.map((team: string, index: number) => (
+                    <TableRow key={index} onClick={_ => handleRowClick(team)}>
+                      <TableCell align="center">{team}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table> : <Typography align="center" variant="body1" component="span"> 추가 가능한 팀이 없습니다</Typography>}
         </CardContent>
       </Card>
     </Dialog>

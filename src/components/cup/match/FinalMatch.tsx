@@ -14,7 +14,8 @@ import {
   useAttendTeams,
   FinalDataStructure,
   useFinalTeams,
-  useSetFinalTeams
+  useSetFinalTeams,
+  useNumOfWild
 } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -63,17 +64,17 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface FinalProps {}
+export interface FinalProps { }
 
 export const FinalMatch: React.FC<FinalProps> = () => {
-  const teamList = useAttendTeams();
+  const teamList = teamsWithWildCard(useAttendTeams(), useNumOfWild());
   const classes = useStyles();
   const [expanded, setExpanded] = useState(true);
   const setfinalData: Dispatch<SetStateAction<
     FinalDataStructure
   >> = useSetFinalTeams();
   const final = useFinalTeams();
-  let round: number = final["round"];
+  let round: number = final.round;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -137,3 +138,12 @@ export const FinalMatch: React.FC<FinalProps> = () => {
     </div>
   );
 };
+
+const teamsWithWildCard = (teamList: Array<string>, numOfWild: number): Array<string> => {
+  const teams: Array<string> = [...teamList]
+  for (let i = 0; i < numOfWild; i++)
+    teams.push(`WildCard${i}`)
+
+  return teams;
+
+}
