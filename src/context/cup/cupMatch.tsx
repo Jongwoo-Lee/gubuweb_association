@@ -61,6 +61,39 @@ export const EditCupMatchContext: React.Context<CupMatchData> = React.createCont
   }
 });
 
+export const fromMatchInfo = (
+  matchInfo?: FirebaseSaveStructure
+): FirebaseSaveStructure => {
+  let iPData: PreDataStructure = {};
+  let iFData: FinalDataStructure = {
+    order: new Array<string | null>(8).fill(null),
+    round: 8
+  };
+  let iNumOfRound: number = 1;
+  let iNumOfWild: number = 1;
+  if (matchInfo) {
+    if (matchInfo.f !== null) {
+      iFData.round = matchInfo.f.round;
+      if (matchInfo.f.order !== null) {
+        iFData.order = Array.from(matchInfo.f.order);
+      }
+    }
+
+    //set preliminary data
+    if (matchInfo.p !== null) {
+      iPData = matchInfo.p;
+    }
+    if (matchInfo.ro !== null) {
+      iNumOfRound = matchInfo.ro;
+    }
+    if (matchInfo.w !== null) {
+      iNumOfWild = matchInfo.w;
+    }
+  }
+
+  return { p: iPData, f: iFData, ro: iNumOfRound, w: iNumOfWild };
+};
+
 export const EditCupMatchProvider = (props: {
   children: React.ReactNode;
   cupInfo: CupInfo | undefined;
@@ -78,46 +111,23 @@ export const EditCupMatchProvider = (props: {
     "test8"
   ]);
 
-  // initial value
-  let iPData: PreDataStructure = {};
-  let iFData: FinalDataStructure = {
-    order: new Array<string | null>(8).fill(null),
-    round: 8
-  };
-
-  let iNumOfRound: number = 1;
-  let iNumOfWild: number = 1;
+  // initial value with undefined
+  let matchInfo = fromMatchInfo();
 
   if (typeof props.cupInfo !== "undefined") {
     if (props.cupInfo.matchInfo !== null) {
-      const matchInfo: FirebaseSaveStructure = props.cupInfo
+      const saves: FirebaseSaveStructure = props.cupInfo
         .matchInfo as FirebaseSaveStructure;
 
-      //set final data
-      if (matchInfo.f !== null) {
-        iFData.round = matchInfo.f.round;
-        if (matchInfo.f.order !== null) {
-          iFData.order = Array.from(matchInfo.f.order);
-        }
-      }
-
-      //set preliminary data
-      if (matchInfo.p !== null) {
-        iPData = matchInfo.p;
-      }
-      if (matchInfo.ro !== null) {
-        iNumOfRound = matchInfo.ro;
-      }
-      if (matchInfo.w !== null) {
-        iNumOfWild = matchInfo.w;
-      }
+      // load things
+      matchInfo = fromMatchInfo(saves);
     }
   }
 
-  const [preTeams, setPreTeams] = useState<PreDataStructure>(iPData);
-  const [finalTeams, setFinalTeams] = useState<FinalDataStructure>(iFData);
-  const [round, setRound] = useState<number>(iNumOfRound);
-  const [numOfWild, setNumOfWild] = useState<number>(iNumOfWild);
+  const [preTeams, setPreTeams] = useState<PreDataStructure>(matchInfo.p);
+  const [finalTeams, setFinalTeams] = useState<FinalDataStructure>(matchInfo.f);
+  const [round, setRound] = useState<number>(matchInfo.ro);
+  const [numOfWild, setNumOfWild] = useState<number>(matchInfo.w);
 
   return (
     <EditCupMatchContext.Provider
