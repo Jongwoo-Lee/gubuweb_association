@@ -10,7 +10,7 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails
 } from "@material-ui/core";
-import { convertString } from "../../../context/cup/cupMatch";
+import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
 import { SubGameInfo } from "../../../context/cup/cup";
 
 const useStyles = makeStyles({
@@ -33,7 +33,8 @@ const useStyles = makeStyles({
   summary: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "center",
+    margin: "10px"
   },
 
   detail: {
@@ -45,21 +46,21 @@ const useStyles = makeStyles({
 
 // imgSrc 나 ImgIcon 둘중 하나만 꼭 넣어야 함
 export interface PlanCardProps {
-  // groups: GroupSubGames;
   group: number;
-  subGames: Array<SubGameInfo>;
+  preliminaryData: PreDataStructure;
   round: number;
 }
 
 export const PlanCard: React.FC<PlanCardProps> = ({
   // groups,
   group,
-  subGames,
+  preliminaryData,
   round
 }: PlanCardProps) => {
   const classes = useStyles();
+  const numOfTeams: number = preliminaryData[group].t; // n(n-1) / 2
   const [location, setLocation] = useState<Array<string>>(
-    Array<string>(subGames.length).fill("")
+    Array<string>((numOfTeams * (numOfTeams - 1)) / 2).fill("")
   );
 
   const handleLocation = (
@@ -71,6 +72,21 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     newLocation[id] = event.target.value;
 
     setLocation(newLocation);
+  };
+
+  const createCard = () => {
+    const arr: Array<SubGameInfo> = [];
+    for (let i: number = 0; i < numOfTeams - 1; i++) {
+      for (let j: number = i + 1; j < numOfTeams; j++) {
+        arr.push({
+          team1: preliminaryData[group][i] ?? null,
+          team1No: i + 1,
+          team2: preliminaryData[group][j] ?? null,
+          team2No: j + 1
+        });
+      }
+    }
+    return arr;
   };
 
   return (
@@ -86,7 +102,8 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             {convertString(group)}조
           </Typography>
         </ExpansionPanelSummary>
-        {subGames.map((value: SubGameInfo, index: number) => {
+
+        {createCard().map((value: SubGameInfo, index: number) => {
           return (
             <ExpansionPanelDetails className={classes.detail}>
               <Card variant="outlined" key={index} className={classes.card}>
@@ -101,7 +118,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                         align="center"
                         variant="subtitle1"
                         component="span"
-                      >{`${convertString(group)} - 1`}</Typography>
+                      >{`${convertString(group)} - ${
+                        value.team1No
+                      }`}</Typography>
                     </Grid>
                     <Grid item xs={6} className={classes.paper}>
                       <Input
@@ -120,7 +139,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                         align="center"
                         variant="subtitle1"
                         component="span"
-                      >{`${convertString(group)} - 2`}</Typography>
+                      >{`${convertString(group)} - ${
+                        value.team2No
+                      }`}</Typography>
                     </Grid>
                   </Grid>
                   <br />

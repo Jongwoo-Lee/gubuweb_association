@@ -1,21 +1,8 @@
 import React from "react";
-import {
-  makeStyles,
-  createStyles,
-  Theme,
-  withStyles
-} from "@material-ui/core/styles";
-import {
-  Card,
-  Typography,
-  Button,
-  IconButton,
-  Grid,
-  Collapse
-} from "@material-ui/core";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { CupMatchInfo, PreDataStructure } from "../../../context/cup/cupMatch";
-import { GroupSubGames, SubGameInfo } from "../../../context/cup/cup";
 import { PlanCard } from "./PlanCard";
 import {
   CustomExPanel,
@@ -39,11 +26,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-interface PreData {
-  groups: GroupSubGames;
-  round: number;
-}
-
 export interface PreliminaryProps {
   matchInfo: CupMatchInfo;
 }
@@ -52,8 +34,7 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
   props: PreliminaryProps
 ) => {
   const classes = useStyles();
-  let preData: PreData | undefined;
-  if (props.matchInfo) preData = initializeGroup(props.matchInfo);
+  let matchInfo: CupMatchInfo = props.matchInfo;
 
   return (
     <div className={classes.root}>
@@ -68,16 +49,18 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
           </Typography>
         </CustomExPanelSummary>
         <CustomExPanelDetails className={classes.card}>
-          {preData &&
-            Object.keys(preData.groups).map((value: string, index: number) => {
+          {matchInfo &&
+            Object.keys(matchInfo.p).map((value: string, index: number) => {
               let group: number = Number(value);
 
               // 위에서 걸러주는데 타입스크립트 IDE 버그인듯
-              return preData !== undefined ? (
+              return matchInfo !== undefined ? (
                 <PlanCard
                   group={group}
-                  subGames={preData.groups[group]}
-                  round={preData.round}
+                  // preliminaryData={preData.groups[group]}
+                  preliminaryData={matchInfo.p}
+                  round={1}
+                  key={index}
                 />
               ) : (
                 <div></div>
@@ -87,26 +70,4 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
       </CustomExPanel>
     </div>
   );
-};
-
-const initializeGroup = (matchInfo: CupMatchInfo): PreData => {
-  const preliminaryMatch: PreDataStructure = matchInfo.p;
-  const preliminaryGroup: GroupSubGames = {};
-
-  Object.keys(preliminaryMatch).forEach((value: string) => {
-    let group: number = Number(value);
-    const numOfTeams = preliminaryMatch[group].t; // group에 참여한 팀 수
-    const arr: Array<SubGameInfo> = [];
-    for (let i = 0; i < numOfTeams - 1; i++) {
-      for (let j = i + 1; j < numOfTeams; j++) {
-        arr.push({
-          team1: preliminaryMatch[group][i] ?? null,
-          team2: preliminaryMatch[group][j] ?? null
-        });
-      }
-    }
-    preliminaryGroup[group] = arr;
-  });
-
-  return { groups: preliminaryGroup, round: matchInfo.ro };
 };
