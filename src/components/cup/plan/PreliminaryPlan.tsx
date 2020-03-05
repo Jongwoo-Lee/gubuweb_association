@@ -29,14 +29,13 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       margin: "50px 0px 0px 0px",
-      width: "80%",
-      minWidth: "50%"
+      width: "80%"
     },
     card: {
       display: "flex",
       flexDirection: "column",
-
-      minWidth: "800px"
+      width: "800px" // expansionPanel width가 변하는 것 -> flex Grow와 관게 있는 듯 찾아봐서 고정시킬 것..
+      // flexGrow: 1
     }
   })
 );

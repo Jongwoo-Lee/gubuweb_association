@@ -6,6 +6,9 @@ import MuiExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
 export const CustomExPanel = withStyles({
   root: {
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
     border: "none",
     boxShadow: "none",
     "&:not(:last-child)": {
@@ -40,6 +43,7 @@ export const CustomExPanelSummary = withStyles({
 
 export const CustomExPanelDetails = withStyles(theme => ({
   root: {
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    flexGrow: 1
   }
 }))(MuiExpansionPanelDetails);

@@ -60,7 +60,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 }: PlanCardProps) => {
   const classes = useStyles();
   const [keyList, setKeyList] = useState<Array<number>>([]);
-  const [location, setLocation] = useState<Array<string>>([]);
+  const [location, setLocation] = useState<Array<string>>(
+    Array<string>(subGames.length).fill("")
+  );
 
   const handleLocation = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -88,9 +90,10 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 
   return (
     <div>
-      {subGames.map((value: SubGameInfo) => {
+      {subGames.map((value: SubGameInfo, index: number) => {
+        const loc: string = location[index];
         return (
-          <Card variant="outlined">
+          <Card variant="outlined" key={index}>
             <Grid container className={classes.cardTitle}>
               <Typography align="center" variant="h6" component="span">
                 장소
@@ -105,16 +108,16 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                   >{`${convertString(group)} - 1`}</Typography>
                 </Grid>
                 <Grid item xs={6} className={classes.paper}>
-                  {/* <Input
+                  <Input
                     name="location"
                     type="text"
-                    id="location"
-                    value={location.value}
-                    onChange={handleLocation}
+                    id={`${index}`}
+                    value={loc}
+                    onChange={e => handleLocation(e, index)}
                     autoFocus
                     autoComplete="location"
                     aria-describedby="component-location"
-                  /> */}
+                  />
                 </Grid>
                 <Grid item xs className={classes.paper}>
                   <Typography
