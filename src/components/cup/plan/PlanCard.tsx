@@ -22,23 +22,16 @@ const useStyles = makeStyles({
     flexDirection: "column",
     minWidth: "800px"
   },
-  cardTitle: {
+  card: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+
+    margin: "0px 0px 15px 0px"
+  },
+  cardTitle: {
     justifyContent: "center",
-    minHeight: "50px",
-    alignContent: "center",
     margin: "10px"
   },
-  line: {
-    color: "black",
-    backgroundColor: "black",
-    borderColor: "black",
-    height: 1,
-    width: "100%"
-  },
-
   paper: {
     textAlign: "center"
   }
@@ -59,7 +52,6 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   round
 }: PlanCardProps) => {
   const classes = useStyles();
-  const [keyList, setKeyList] = useState<Array<number>>([]);
   const [location, setLocation] = useState<Array<string>>(
     Array<string>(subGames.length).fill("")
   );
@@ -75,25 +67,11 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     setLocation(newLocation);
   };
 
-  const handleCollapse = (key: number) => {
-    const newKeyList: Array<number> = [...keyList];
-    const fIdx: number = newKeyList.findIndex(i => key === i);
-    if (fIdx !== -1) {
-      newKeyList.splice(fIdx, 1);
-    } else {
-      newKeyList.push(key);
-    }
-
-    console.log(`newKeyList - ${newKeyList}`);
-    setKeyList(newKeyList);
-  };
-
   return (
     <div>
       {subGames.map((value: SubGameInfo, index: number) => {
-        const loc: string = location[index];
         return (
-          <Card variant="outlined" key={index}>
+          <Card variant="outlined" key={index} className={classes.card}>
             <Grid container className={classes.cardTitle}>
               <Typography align="center" variant="h6" component="span">
                 장소
@@ -112,7 +90,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                     name="location"
                     type="text"
                     id={`${index}`}
-                    value={loc}
+                    value={location[index]}
                     onChange={e => handleLocation(e, index)}
                     autoFocus
                     autoComplete="location"
