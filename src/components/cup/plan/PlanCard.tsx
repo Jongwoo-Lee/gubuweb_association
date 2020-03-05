@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
 import { PlanPreliminary } from "../../../context/cup/cup";
+import { DatePickerDlg } from "./DatePickerDlg";
 
 interface SubGameInfo {
   // [No: number]: string | null; // 4조(group) - 1 (No)
@@ -73,7 +74,19 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   setPlanPre
 }: PlanCardProps) => {
   const classes = useStyles();
-  const numOfTeams: number = preliminaryData[group].t; // n(n-1) / 2
+  const numOfTeams: number = preliminaryData[group].t;
+  const [open, setOpen] = useState(false);
+
+  const handleClose = useCallback(
+    (date: Date | null) => {
+      console.log(`open - ${date}`);
+      setOpen(false);
+    },
+    [open]
+  );
+  const handlePopDlg = () => {
+    setOpen(true);
+  };
 
   const handleLocation = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -206,7 +219,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                   <br />
 
                   <Grid container className={classes.cardTitle}>
-                    <Button variant="contained">
+                    <Button variant="contained" onClick={handlePopDlg}>
                       {value.kickOffTime ?? "시간 설정"}
                     </Button>
                   </Grid>
@@ -216,6 +229,11 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           );
         })}
       </ExpansionPanel>
+      <DatePickerDlg
+        title={"예선 시간 선택"}
+        open={open}
+        onClose={handleClose}
+      />
     </div>
   );
 };
