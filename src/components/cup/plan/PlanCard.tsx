@@ -3,18 +3,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
   Typography,
-  IconButton,
   Grid,
-  Box,
-  Collapse,
-  CardActionArea,
-  Paper,
   Button,
-  Input
+  Input,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails
 } from "@material-ui/core";
 import { convertString } from "../../../context/cup/cupMatch";
-import { SubGameInfo, GroupSubGames } from "../../../context/cup/cup";
-import { useTextInput } from "../../../hooks";
+import { SubGameInfo } from "../../../context/cup/cup";
 
 const useStyles = makeStyles({
   root: {
@@ -24,9 +21,7 @@ const useStyles = makeStyles({
   },
   card: {
     display: "flex",
-    flexDirection: "column",
-
-    margin: "0px 0px 15px 0px"
+    flexDirection: "column"
   },
   cardTitle: {
     justifyContent: "center",
@@ -34,6 +29,17 @@ const useStyles = makeStyles({
   },
   paper: {
     textAlign: "center"
+  },
+  summary: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
+  },
+
+  detail: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
   }
 });
 
@@ -69,79 +75,93 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 
   return (
     <div>
-      {subGames.map((value: SubGameInfo, index: number) => {
-        return (
-          <Card variant="outlined" key={index} className={classes.card}>
-            <Grid container className={classes.cardTitle}>
-              <Typography align="center" variant="h6" component="span">
-                장소
-              </Typography>
-              <br />
-              <Grid container spacing={3}>
-                <Grid item xs className={classes.paper}>
-                  <Typography
-                    align="center"
-                    variant="subtitle1"
-                    component="span"
-                  >{`${convertString(group)} - 1`}</Typography>
-                </Grid>
-                <Grid item xs={6} className={classes.paper}>
-                  <Input
-                    name="location"
-                    type="text"
-                    id={`${index}`}
-                    value={location[index]}
-                    onChange={e => handleLocation(e, index)}
-                    autoFocus
-                    autoComplete="location"
-                    aria-describedby="component-location"
-                  />
-                </Grid>
-                <Grid item xs className={classes.paper}>
-                  <Typography
-                    align="center"
-                    variant="subtitle1"
-                    component="span"
-                  >{`${convertString(group)} - 2`}</Typography>
-                </Grid>
-              </Grid>
-              <br />
-              <Grid container spacing={3}>
-                <Grid item xs className={classes.paper}>
-                  <Typography
-                    align="center"
-                    variant="subtitle1"
-                    component="span"
-                  >
-                    {value.team1}
-                  </Typography>
-                </Grid>
-                <Grid item xs={6} className={classes.paper}>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          // expandIcon={<ExpandMore />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+          className={classes.summary}
+        >
+          <Typography align="center" color="textPrimary" variant="h6">
+            {convertString(group)}조
+          </Typography>
+        </ExpansionPanelSummary>
+        {subGames.map((value: SubGameInfo, index: number) => {
+          return (
+            <ExpansionPanelDetails className={classes.detail}>
+              <Card variant="outlined" key={index} className={classes.card}>
+                <Grid container className={classes.cardTitle}>
                   <Typography align="center" variant="h6" component="span">
-                    킥오프
+                    장소
                   </Typography>
-                </Grid>
-                <Grid item xs className={classes.paper}>
-                  <Typography
-                    align="center"
-                    variant="subtitle1"
-                    component="span"
-                  >
-                    {value.team2}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <br />
+                  <br />
+                  <Grid container spacing={3}>
+                    <Grid item xs className={classes.paper}>
+                      <Typography
+                        align="center"
+                        variant="subtitle1"
+                        component="span"
+                      >{`${convertString(group)} - 1`}</Typography>
+                    </Grid>
+                    <Grid item xs={6} className={classes.paper}>
+                      <Input
+                        name="location"
+                        type="text"
+                        id={`${index}`}
+                        value={location[index]}
+                        onChange={e => handleLocation(e, index)}
+                        autoFocus
+                        autoComplete="location"
+                        aria-describedby="component-location"
+                      />
+                    </Grid>
+                    <Grid item xs className={classes.paper}>
+                      <Typography
+                        align="center"
+                        variant="subtitle1"
+                        component="span"
+                      >{`${convertString(group)} - 2`}</Typography>
+                    </Grid>
+                  </Grid>
+                  <br />
+                  <Grid container spacing={3}>
+                    <Grid item xs className={classes.paper}>
+                      <Typography
+                        align="center"
+                        variant="subtitle1"
+                        component="span"
+                      >
+                        {value.team1}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} className={classes.paper}>
+                      <Typography align="center" variant="h6" component="span">
+                        킥오프
+                      </Typography>
+                    </Grid>
+                    <Grid item xs className={classes.paper}>
+                      <Typography
+                        align="center"
+                        variant="subtitle1"
+                        component="span"
+                      >
+                        {value.team2}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <br />
 
-              <Grid container className={classes.cardTitle}>
-                <Button variant="contained">
-                  {value.kickOffTime ?? "시간 설정"}
-                </Button>
-              </Grid>
-            </Grid>
-          </Card>
-        );
-      })}
+                  <Grid container className={classes.cardTitle}>
+                    <Button variant="contained">
+                      {value.kickOffTime ?? "시간 설정"}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Card>
+            </ExpansionPanelDetails>
+          );
+        })}
+      </ExpansionPanel>
     </div>
   );
 };
