@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
 import { PlanPreliminary } from "../../../context/cup/cup";
-import { DatePickerDlg } from "./DatePickerDlg";
+import { DatePickerDlg, ExitWithID, convertKoTime } from "./DatePickerDlg";
 
 interface SubGameInfo {
   // [No: number]: string | null; // 4조(group) - 1 (No)
@@ -21,7 +21,7 @@ interface SubGameInfo {
   team2: string | null;
   team2No: number;
   location?: string;
-  kickOffTime?: Date;
+  kickOffTime?: string;
   id: number;
 }
 
@@ -75,17 +75,23 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 }: PlanCardProps) => {
   const classes = useStyles();
   const numOfTeams: number = preliminaryData[group].t;
-  const [open, setOpen] = useState(false);
+  const [selectedID, setSelectedID] = useState(-1); //=> -1이면 no
 
-  const handleClose = useCallback(
-    (date: Date | null) => {
-      console.log(`open - ${date}`);
-      setOpen(false);
-    },
-    [open]
-  );
-  const handlePopDlg = () => {
-    setOpen(true);
+  const handleClose = (obj: ExitWithID) => {
+    const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
+
+    if (!newPlan[group]) newPlan[group] = {};
+    if (!newPlan[group][obj.id])
+      newPlan[group][obj.id] = { kt: null, lo: null };
+
+    newPlan[group][obj.id].kt = obj.date?.toJSON() ?? null;
+
+    setPlanPre(newPlan);
+    setSelectedID(-1);
+  };
+
+  const handlePopDlg = (id: number) => {
+    setSelectedID(id);
   };
 
   const handleLocation = (
@@ -98,7 +104,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     if (!newPlan[group]) newPlan[group] = {};
     if (!newPlan[group][id]) newPlan[group][id] = { kt: null, lo: null };
     newPlan[group][id].lo = event.target.value;
-    console.dir(newPlan);
+
     setPlanPre(newPlan);
   };
 
@@ -114,13 +120,21 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
             : "";
 
+        const time: string | null =
+          planPre[group] &&
+          planPre[group][subGameId] &&
+          planPre[group][subGameId].kt
+            ? planPre[group][subGameId].kt ?? null
+            : null;
+
         arr.push({
           team1: preliminaryData[group][i] ?? null,
           team1No: i + 1,
           team2: preliminaryData[group][j] ?? null,
           team2No: j + 1,
           id: subGameId,
-          location: location
+          location: location,
+          kickOffTime: time ?? undefined
         });
         subGameId++;
       }
@@ -143,6 +157,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         </ExpansionPanelSummary>
 
         {createCard().map((value: SubGameInfo, index: number) => {
+          let time: string = value?.kickOffTime
+            ? convertKoTime(value?.kickOffTime)
+            : "시간 설정";
           const location: string =
             planPre[group] &&
             planPre[group][value.id] &&
@@ -219,8 +236,11 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                   <br />
 
                   <Grid container className={classes.cardTitle}>
-                    <Button variant="contained" onClick={handlePopDlg}>
-                      {value.kickOffTime ?? "시간 설정"}
+                    <Button
+                      variant="contained"
+                      onClick={() => handlePopDlg(value.id)}
+                    >
+                      {time}
                     </Button>
                   </Grid>
                 </Grid>
@@ -231,7 +251,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
       </ExpansionPanel>
       <DatePickerDlg
         title={"예선 시간 선택"}
-        open={open}
+        parentID={selectedID}
         onClose={handleClose}
       />
     </div>

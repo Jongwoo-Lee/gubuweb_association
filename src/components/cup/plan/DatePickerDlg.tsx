@@ -32,15 +32,20 @@ const useStyles = makeStyles({
   }
 });
 
+export interface ExitWithID {
+  date: Date;
+  id: number;
+}
+
 export interface DatePickerDlgProps {
   title: string;
-  open: boolean;
+  parentID: number;
   onClose: Function;
 }
 
 export const DatePickerDlg: React.FC<DatePickerDlgProps> = ({
   title,
-  open,
+  parentID,
   onClose
 }: DatePickerDlgProps) => {
   const classes = useStyles();
@@ -52,18 +57,18 @@ export const DatePickerDlg: React.FC<DatePickerDlgProps> = ({
   } = useDateInput(new Date());
 
   const handleClose = () => {
-    onClose(null);
+    onClose({ date: null, id: parentID });
   };
 
   const handleOk = () => {
-    onClose(startDate.value);
+    onClose({ date: startDate.value, id: parentID });
   };
 
   return (
     <Dialog
       onClose={handleClose}
       aria-labelledby="datepicker-dialog-title"
-      open={open}
+      open={-1 !== parentID}
       fullWidth={true}
       maxWidth={"md"}
     >
@@ -124,12 +129,16 @@ export const DatePickerDlg: React.FC<DatePickerDlgProps> = ({
   );
 };
 
-const convertKoTime = (date: Date) => {
-  const hours: number = date.getHours();
+export const convertKoTime = (date: Date | string) => {
+  let newDate: Date;
+  if (typeof date === "string") newDate = new Date(date);
+  else newDate = date;
+
+  const hours: number = newDate.getHours();
   let hourStr: string =
     hours >= 12 ? `오후 ${hours - 12}시` : `오전 ${hours}시`;
   let day: string = "";
-  switch (date.getDay()) {
+  switch (newDate.getDay()) {
     case 0:
       day = "(일)";
       break;
@@ -152,6 +161,6 @@ const convertKoTime = (date: Date) => {
       day = "(토)";
       break;
   }
-  return `${date.getFullYear()}년 ${date.getMonth() +
-    1}월 ${date.getDate()}일 ${day} ${hourStr} ${date.getMinutes()}분`;
+  return `${newDate.getFullYear()}년 ${newDate.getMonth() +
+    1}월 ${newDate.getDate()}일 ${day} ${hourStr} ${newDate.getMinutes()}분`;
 };

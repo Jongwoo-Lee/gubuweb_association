@@ -12,7 +12,7 @@ export interface CupPlanDataStructure {
 
 export interface PlanPreliminary {
   [group: number]: {
-    [id: number]: { lo: string | null; kt: Date | null };
+    [id: number]: { lo: string | null; kt: string | null }; // kt: toJson,
   }; // lo -> lOCATION, kt => KICKOFFTIME
 }
 
