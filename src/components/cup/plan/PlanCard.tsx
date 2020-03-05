@@ -9,17 +9,19 @@ import {
   Collapse,
   CardActionArea,
   Paper,
-  Button
+  Button,
+  Input
 } from "@material-ui/core";
 import { convertString } from "../../../context/cup/cupMatch";
 import { SubGameInfo, GroupSubGames } from "../../../context/cup/cup";
+import { useTextInput } from "../../../hooks";
 
 const useStyles = makeStyles({
   root: {
     display: "flex",
     flexDirection: "column",
 
-    minWidth: "700px",
+    width: "100%",
     margin: "10px 10px"
   },
   cardTitle: {
@@ -70,8 +72,12 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   round
 }: PlanCardProps) => {
   const classes = useStyles();
-
   const [keyList, setKeyList] = useState<Array<number>>([]);
+  const {
+    value: location,
+    setValue: setLocation,
+    onChange: handleLocation
+  } = useTextInput();
 
   const handleCollapse = (key: number) => {
     const newKeyList: Array<number> = [...keyList];
@@ -134,12 +140,16 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                           >{`${convertString(group)} - 1`}</Typography>
                         </Grid>
                         <Grid item xs={6} className={classes.paper}>
-                          <Typography
-                            align="center"
-                            variant="subtitle1"
-                            component="span"
-
-                          >우리집</Typography>
+                          <Input
+                            name="location"
+                            type="text"
+                            id="location"
+                            value={location.value}
+                            onChange={handleLocation}
+                            autoFocus
+                            autoComplete="location"
+                            aria-describedby="component-location"
+                          />
                         </Grid>
                         <Grid item xs className={classes.paper}>
                           <Typography
@@ -183,8 +193,8 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 
 
                         <Button variant="contained">
-                          시간 설정
-        </Button>
+                          {value.kickOffTime ?? "시간 설정"}
+                        </Button>
                       </Grid>
                     </Grid>
                   </Card>

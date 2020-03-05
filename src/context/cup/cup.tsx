@@ -10,6 +10,7 @@ export interface SubGameInfo {
   team1: string | null;
   team2: string | null;
   location?: string;
+  kickOffTime?: Date;
 }
 
 export type ContextSetCupInfos = React.Dispatch<

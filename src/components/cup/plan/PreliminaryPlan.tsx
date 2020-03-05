@@ -1,43 +1,77 @@
 import React, { useState } from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles, createStyles, Theme, withStyles } from "@material-ui/core/styles";
 import {
   Card,
   Typography,
   Button,
   IconButton,
   Grid,
-  Collapse
+  Collapse,
 } from "@material-ui/core";
+import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { ExpandMore } from "@material-ui/icons";
 import { CupMatchInfo, PreDataStructure } from "../../../context/cup/cupMatch";
 import { GroupSubGames, SubGameInfo } from "../../../context/cup/cup";
 import { PlanCard } from "./PlanCard";
+
+const ExpansionPanel = withStyles({
+  root: {
+    border: 'none',
+    boxShadow: 'none',
+    '&:not(:last-child)': {
+      borderBottom: 0,
+    },
+    '&:before': {
+      display: 'none',
+    },
+    '&$expanded': {
+      margin: 'auto',
+    },
+  },
+  expanded: {},
+})(MuiExpansionPanel);
+const ExpansionPanelSummary = withStyles({
+  root: {
+    backgroundColor: 'rgba(0, 0, 0, .03)',
+    borderBottom: '1px solid rgba(0, 0, 0, .125)',
+    marginBottom: -1,
+    minHeight: 56,
+    '&$expanded': {
+      minHeight: 56,
+    },
+  },
+  content: {
+    '&$expanded': {
+      margin: '12px 0',
+    },
+  },
+  expanded: {},
+})(MuiExpansionPanelSummary);
+
+const ExpansionPanelDetails = withStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiExpansionPanelDetails);
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
+      // alignItems: "start",
+      margin: "50px 0px 0px 0px",
+      // alignContent: "start",
+
       width: "80%",
-      margin: "50px 0px 0px 0px"
     },
-    expand: {
-      transform: "rotate(0deg)",
-      marginLeft: "auto",
-      transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shortest
-      })
-    },
-    expandOpen: {
-      transform: "rotate(180deg)"
-    },
+    // -webkit-box-shadow: none;
+    // -moz-box-shadow: none;
+    // box-shadow: none;
     line: {
-      color: "black",
-      backgroundColor: "black",
-      borderColor: "black",
-      height: 1,
-      width: "100%"
+      justifyContent: "center",
     }
   })
 );
@@ -54,39 +88,25 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
   props: PreliminaryProps
 ) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(true);
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
   let preData: PreData | undefined;
   if (props.matchInfo) preData = initializeGroup(props.matchInfo);
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        spacing={3}
-        justify="space-between"
-        alignItems="flex-start"
-      >
-        <Typography color="textPrimary" variant="h5">
-          예선
-        </Typography>
-        <IconButton
-          className={expanded ? classes.expandOpen : classes.expand}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMore />
-        </IconButton>
-      </Grid>
-      <br />
-      <hr className={classes.line} />
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMore />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
 
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        {preData && <PlanCard groups={preData.groups} round={preData.round} />}
-      </Collapse>
+        >
+          <Typography color="textPrimary" variant="h5">예선</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.line}>
+          {preData &&
+            <PlanCard groups={preData.groups} round={preData.round} />}
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
     </div>
   );
 };
