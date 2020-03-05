@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ROUTENAMES } from "../../constants/routes";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { TitleGoBack } from "../common/TitleGoBack";
@@ -6,7 +6,7 @@ import { Grid, Typography, Button } from "@material-ui/core";
 import { SaveMatchBtn } from "./match/SaveMatchInfo";
 import { RouteComponentProps } from "react-router-dom";
 import { MatchParams } from "./CupDetailTeam";
-import { useCupsInfo } from "../../context/cup/cup";
+import { useCupsInfo, PlanPreliminary } from "../../context/cup/cup";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { PreliminaryPlan } from "./plan/PreliminaryPlan";
 import { FinalPlan } from "./plan/FinalPlan";
@@ -35,6 +35,7 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
   const cupsInfo = useCupsInfo();
   let cupInfo: CupInfo | undefined;
   let matchInfo: CupMatchInfo | undefined;
+  const [planPre, setPlanPre] = useState<PlanPreliminary>({});
   if (cupsInfo !== undefined) {
     cupInfo = cupsInfo[cupID];
     if (cupInfo?.matchInfo ?? false)
@@ -65,7 +66,11 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
         </Button>
       </Grid>
       {matchInfo ? (
-        <PreliminaryPlan matchInfo={matchInfo} />
+        <PreliminaryPlan
+          matchInfo={matchInfo}
+          planPre={planPre}
+          setPlanPre={setPlanPre}
+        />
       ) : (
         <Typography color="textPrimary" variant="h4">
           예선전 정보가 없습니다.

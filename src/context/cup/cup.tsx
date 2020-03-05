@@ -2,19 +2,19 @@ import React, { useContext } from "react";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { useCupInfoList } from "../../hooks";
 
-export interface SubGameInfo {
-  // [No: number]: string | null; // 4조(group) - 1 (No)
-  team1: string | null;
-  team1No: number;
-  team2: string | null;
-  team2No: number;
-  location?: string;
-  kickOffTime?: Date;
-}
-
 export type ContextSetCupInfos = React.Dispatch<
   React.SetStateAction<CupInfoObject>
 >;
+
+export interface CupPlanDataStructure {
+  p: PlanPreliminary;
+}
+
+export interface PlanPreliminary {
+  [group: number]: {
+    [id: number]: { lo: string | null; kt: Date | null };
+  }; // lo -> lOCATION, kt => KICKOFFTIME
+}
 
 /// Firebase Auth User Context
 interface CupInfoData {

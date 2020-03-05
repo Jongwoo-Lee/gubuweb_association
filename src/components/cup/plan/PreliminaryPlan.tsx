@@ -9,6 +9,7 @@ import {
   CustomExPanelSummary,
   CustomExPanelDetails
 } from "../CustomExPanel";
+import { PlanPreliminary } from "../../../context/cup/cup";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,6 +29,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 export interface PreliminaryProps {
   matchInfo: CupMatchInfo;
+  planPre: PlanPreliminary;
+  setPlanPre: React.Dispatch<React.SetStateAction<PlanPreliminary>>;
 }
 
 export const PreliminaryPlan: React.FC<PreliminaryProps> = (
@@ -61,6 +64,8 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
                   preliminaryData={matchInfo.p}
                   round={1}
                   key={index}
+                  setPlanPre={props.setPlanPre}
+                  planPre={props.planPre}
                 />
               ) : (
                 <div></div>

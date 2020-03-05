@@ -11,7 +11,18 @@ import {
   ExpansionPanelDetails
 } from "@material-ui/core";
 import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
-import { SubGameInfo } from "../../../context/cup/cup";
+import { PlanPreliminary } from "../../../context/cup/cup";
+
+interface SubGameInfo {
+  // [No: number]: string | null; // 4조(group) - 1 (No)
+  team1: string | null;
+  team1No: number;
+  team2: string | null;
+  team2No: number;
+  location?: string;
+  kickOffTime?: Date;
+  id: number;
+}
 
 const useStyles = makeStyles({
   root: {
@@ -49,41 +60,56 @@ export interface PlanCardProps {
   group: number;
   preliminaryData: PreDataStructure;
   round: number;
+  planPre: PlanPreliminary;
+  setPlanPre: React.Dispatch<React.SetStateAction<PlanPreliminary>>;
 }
 
 export const PlanCard: React.FC<PlanCardProps> = ({
   // groups,
   group,
   preliminaryData,
-  round
+  round,
+  planPre,
+  setPlanPre
 }: PlanCardProps) => {
   const classes = useStyles();
   const numOfTeams: number = preliminaryData[group].t; // n(n-1) / 2
-  const [location, setLocation] = useState<Array<string>>(
-    Array<string>((numOfTeams * (numOfTeams - 1)) / 2).fill("")
-  );
 
   const handleLocation = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     id: number
   ) => {
     event.preventDefault();
-    const newLocation: Array<string> = [...location];
-    newLocation[id] = event.target.value;
 
-    setLocation(newLocation);
+    const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
+    if (!newPlan[group]) newPlan[group] = {};
+    if (!newPlan[group][id]) newPlan[group][id] = { kt: null, lo: null };
+    newPlan[group][id].lo = event.target.value;
+    console.dir(newPlan);
+    setPlanPre(newPlan);
   };
 
   const createCard = () => {
     const arr: Array<SubGameInfo> = [];
+    let subGameId = 0;
     for (let i: number = 0; i < numOfTeams - 1; i++) {
       for (let j: number = i + 1; j < numOfTeams; j++) {
+        const location: string =
+          planPre[group] &&
+          planPre[group][subGameId] &&
+          planPre[group][subGameId].lo
+            ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
+            : "";
+
         arr.push({
           team1: preliminaryData[group][i] ?? null,
           team1No: i + 1,
           team2: preliminaryData[group][j] ?? null,
-          team2No: j + 1
+          team2No: j + 1,
+          id: subGameId,
+          location: location
         });
+        subGameId++;
       }
     }
     return arr;
@@ -104,6 +130,13 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         </ExpansionPanelSummary>
 
         {createCard().map((value: SubGameInfo, index: number) => {
+          const location: string =
+            planPre[group] &&
+            planPre[group][value.id] &&
+            planPre[group][value.id].lo
+              ? planPre[group][value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
+              : "";
+
           return (
             <ExpansionPanelDetails className={classes.detail}>
               <Card variant="outlined" key={index} className={classes.card}>
@@ -126,9 +159,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                       <Input
                         name="location"
                         type="text"
-                        id={`${index}`}
-                        value={location[index]}
-                        onChange={e => handleLocation(e, index)}
+                        id={`${group} - ${index}`}
+                        value={location}
+                        onChange={e => handleLocation(e, value.id)}
                         autoFocus
                         autoComplete="location"
                         aria-describedby="component-location"
