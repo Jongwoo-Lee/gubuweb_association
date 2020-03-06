@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import { useFinalTeams } from "../../../context/cup/cupMatch";
 import { useTextInput } from "../../../hooks";
+import { PlanPreliminary } from "../../../context/cup/cup";
 
 const useStyles = makeStyles({
   root: {
@@ -33,22 +34,34 @@ const useStyles = makeStyles({
 });
 
 interface GameInfoInputProps {
-  //   numOfQuarter: number;
-  //   quarterTime: number;
-  //   restTime: number;
+  plan: PlanPreliminary;
+  setPlan: React.Dispatch<React.SetStateAction<PlanPreliminary>>;
 }
 
-export const GameInfoInput: React.FC<GameInfoInputProps> = ({}: //   numOfQuarter,
-//   quarterTime,
-//   restTime
-GameInfoInputProps) => {
-  const test: number = 2;
+export const GameInfoInput: React.FC<GameInfoInputProps> = ({
+  plan,
+  setPlan
+}: GameInfoInputProps) => {
   const classes = useStyles();
-  const [name, setName] = React.useState<number>(test);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(`change - ${event.target.value}`);
-    setName(Number(event.target.value));
+  const handleQuarter = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(plan));
+    newPlan.gameInfo.numOfQuarter = Number(event.target.value);
+
+    setPlan(newPlan);
+  };
+  const handleGameTime = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(plan));
+    newPlan.gameInfo.gameTime = Number(event.target.value);
+
+    setPlan(newPlan);
+  };
+
+  const handleRestTime = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(plan));
+    newPlan.gameInfo.restTime = Number(event.target.value);
+
+    setPlan(newPlan);
   };
 
   return (
@@ -72,8 +85,8 @@ GameInfoInputProps) => {
               <Input
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
                 id="component-simple"
-                value={name}
-                onChange={handleChange}
+                value={plan.gameInfo.numOfQuarter}
+                onChange={handleQuarter}
                 type="number"
               />
             </FormControl>
@@ -92,8 +105,8 @@ GameInfoInputProps) => {
                 }
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
                 id="component-game-time"
-                value={name}
-                onChange={handleChange}
+                value={plan.gameInfo.gameTime}
+                onChange={handleGameTime}
                 type="number"
               />
             </FormControl>
@@ -112,8 +125,8 @@ GameInfoInputProps) => {
                 }
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
                 id="component-rest-time"
-                value={name}
-                onChange={handleChange}
+                value={plan.gameInfo.restTime}
+                onChange={handleRestTime}
                 type="number"
               />
             </FormControl>

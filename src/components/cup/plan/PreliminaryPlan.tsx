@@ -53,7 +53,9 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
           </Typography>
         </CustomExPanelSummary>
         <CustomExPanelDetails className={classes.card}>
-          {matchInfo && <GameInfoInput />}
+          {matchInfo && (
+            <GameInfoInput setPlan={props.setPlanPre} plan={props.planPre} />
+          )}
           {matchInfo &&
             Object.keys(matchInfo.p).map((value: string, index: number) => {
               let group: number = Number(value);

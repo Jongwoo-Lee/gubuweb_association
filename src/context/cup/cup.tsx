@@ -6,6 +6,12 @@ export type ContextSetCupInfos = React.Dispatch<
   React.SetStateAction<CupInfoObject>
 >;
 
+export interface GameInfo {
+  numOfQuarter: number;
+  gameTime: number; // 단위: 분
+  restTime: number; // 단위: 분
+}
+
 export interface CupPlanDataStructure {
   p: PlanPreliminary;
 }
@@ -14,6 +20,7 @@ export interface PlanPreliminary {
   [group: number]: {
     [id: number]: { lo: string | null; kt: string | null }; // kt: toJson,
   }; // lo -> lOCATION, kt => KICKOFFTIME
+  gameInfo: GameInfo;
 }
 
 /// Firebase Auth User Context

@@ -35,7 +35,9 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
   const cupsInfo = useCupsInfo();
   let cupInfo: CupInfo | undefined;
   let matchInfo: CupMatchInfo | undefined;
-  const [planPre, setPlanPre] = useState<PlanPreliminary>({});
+  const [planPre, setPlanPre] = useState<PlanPreliminary>({
+    gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
+  });
   if (cupsInfo !== undefined) {
     cupInfo = cupsInfo[cupID];
     if (cupInfo?.matchInfo ?? false)
