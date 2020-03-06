@@ -12,7 +12,7 @@ import {
 import { PlanPreliminary } from "../../../context/cup/cup";
 import { GameInfoInput } from "./GameInfoInput";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",

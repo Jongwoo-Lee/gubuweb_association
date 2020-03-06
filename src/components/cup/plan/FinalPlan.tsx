@@ -6,60 +6,48 @@ import {
     Grid,
     Collapse
 } from "@material-ui/core";
+import { CupMatchInfo, PreDataStructure } from "../../../context/cup/cupMatch";
+import {
+    CustomExPanel,
+    CustomExPanelSummary,
+    CustomExPanelDetails
+} from "../CustomExPanel";
 import { ExpandMore } from "@material-ui/icons";
 import {
     useFinalTeams,
 } from "../../../context/cup/cupMatch";
+import { PlanFinal } from "../../../context/cup/cup";
+import { GameInfoInput } from "./GameInfoInput";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
+
         root: {
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            width: "80%",
-            margin: "50px 0px 0px 0px"
+            margin: "50px 0px 0px 0px",
+            width: "80%"
         },
-        expand: {
-            transform: "rotate(0deg)",
-            marginLeft: "auto",
-            transition: theme.transitions.create("transform", {
-                duration: theme.transitions.duration.shortest
-            })
-        },
-        expandOpen: {
-            transform: "rotate(180deg)"
-        },
-        line: {
-            color: "black",
-            backgroundColor: "black",
-            borderColor: "black",
-            height: 1,
-            width: "100%"
-        },
-        final: {
+        card: {
             display: "flex",
             flexDirection: "column",
-            alignItems: "start",
-
-            border: "1px solid black"
-        },
-        finalBtn: {
-            margin: "15px",
-            border: "1px solid black"
-        },
-        dragTarget: {
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            margin: "15px"
+            width: "800px", // expansionPanel width가 변하는 것 -> flex Grow와 관게 있는 듯 찾아봐서 고정시킬 것..
+            alignItems: "center"
         }
     })
 );
 
-export interface FinalProps { }
+export interface FinalProps {
+    matchInfo: CupMatchInfo;
+    planFinal: PlanFinal;
+    setPlanFinal: React.Dispatch<React.SetStateAction<PlanFinal>>;
+}
 
-export const FinalPlan: React.FC<FinalProps> = () => {
+export const FinalPlan: React.FC<FinalProps> = (
+    { matchInfo,
+        planFinal,
+        setPlanFinal }: FinalProps
+) => {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(true);
     const final = useFinalTeams();
@@ -68,31 +56,46 @@ export const FinalPlan: React.FC<FinalProps> = () => {
         setExpanded(!expanded);
     };
 
+    console.dir(matchInfo)
+
 
     return (
         <div className={classes.root}>
-            <Grid
-                container
-                spacing={3}
-                justify="space-between"
-                alignItems="flex-start"
-            >
-                <Typography color="textPrimary" variant="h5">
-                    본선
-        </Typography>
-                <IconButton
-                    className={expanded ? classes.expandOpen : classes.expand}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
+            <CustomExPanel>
+                <CustomExPanelSummary
+                    expandIcon={<ExpandMore />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
                 >
-                    <ExpandMore />
-                </IconButton>
-            </Grid>
-            <br />
-            <hr className={classes.line} />
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-            </Collapse>
+                    <Typography color="textPrimary" variant="h5">
+                        본선
+            </Typography>
+                </CustomExPanelSummary>
+                <CustomExPanelDetails className={classes.card}>
+                    {/* {matchInfo && (
+              <GameInfoInput setPlan={setPlanFinal} plan={planFinal} />
+            )} */}
+                    {/* matchInfo &&
+              Object.keys(matchInfo.p).map((value: string, index: number) => {
+                let group: number = Number(value);
+  
+                // 위에서 걸러주는데 타입스크립트 IDE 버그인듯
+                return matchInfo !== undefined ? (
+                  <PlanPreliminaryCards
+                    group={group}
+                    // preliminaryData={preData.groups[group]}
+                    preliminaryData={matchInfo.p}
+                    round={1}
+                    key={index}
+                    setPlanPre={props.setPlanPre}
+                    planPre={props.planPre}
+                  />
+                ) : (
+                    <div></div>
+                  );
+              })} */}
+                </CustomExPanelDetails>
+            </CustomExPanel>
         </div>
     );
 };

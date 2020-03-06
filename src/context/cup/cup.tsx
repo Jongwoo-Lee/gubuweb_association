@@ -14,12 +14,19 @@ export interface GameInfo {
 
 export interface CupPlanDataStructure {
   p: PlanPreliminary;
+  f: PlanFinal;
 }
 
 export interface PlanPreliminary {
   [group: number]: {
     [id: number]: { lo: string | null; kt: string | null }; // kt: toJson,
   }; // lo -> lOCATION, kt => KICKOFFTIME
+  gameInfo: GameInfo;
+}
+
+export interface PlanFinal {
+  [id: number]: { lo: string | null; kt: string | null }; // kt: toJson,
+  // lo -> lOCATION, kt => KICKOFFTIME
   gameInfo: GameInfo;
 }
 

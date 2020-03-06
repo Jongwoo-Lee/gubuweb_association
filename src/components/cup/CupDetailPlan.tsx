@@ -6,13 +6,13 @@ import { Grid, Typography, Button } from "@material-ui/core";
 import { SaveMatchBtn } from "./match/SaveMatchInfo";
 import { RouteComponentProps } from "react-router-dom";
 import { MatchParams } from "./CupDetailTeam";
-import { useCupsInfo, PlanPreliminary } from "../../context/cup/cup";
+import { useCupsInfo, PlanPreliminary, PlanFinal } from "../../context/cup/cup";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { PreliminaryPlan } from "./plan/PreliminaryPlan";
 import { FinalPlan } from "./plan/FinalPlan";
 import { CupMatchInfo, fromMatchInfo } from "../../context/cup/cupMatch";
 
-export interface CupDetailPlanProps {}
+export interface CupDetailPlanProps { }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,6 +36,9 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
   let cupInfo: CupInfo | undefined;
   let matchInfo: CupMatchInfo | undefined;
   const [planPre, setPlanPre] = useState<PlanPreliminary>({
+    gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
+  });
+  const [planFinal, setPlanFinal] = useState<PlanFinal>({
     gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
   });
   if (cupsInfo !== undefined) {
@@ -74,11 +77,21 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
           setPlanPre={setPlanPre}
         />
       ) : (
-        <Typography color="textPrimary" variant="h4">
-          예선전 정보가 없습니다.
-        </Typography>
-      )}
-      <FinalPlan />
+          <Typography color="textPrimary" variant="h4">
+            예선경기 정보가 없습니다.
+          </Typography>
+        )}
+        {matchInfo ? (
+          <FinalPlan
+        matchInfo={matchInfo}
+        planFinal={planFinal}
+        setPlanFinal={setPlanFinal} />
+        ) : (
+            <Typography color="textPrimary" variant="h4">
+              본선경기 정보가 없습니다.
+            </Typography>
+          )}
+      
     </div>
   );
 };
