@@ -3,7 +3,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { CupMatchInfo, PreDataStructure } from "../../../context/cup/cupMatch";
-import { PlanPreliminaryCard } from "./PlanPreliminaryCard";
+import { PlanPreliminaryCards } from "./PlanPreliminaryCards";
 import {
   CustomExPanel,
   CustomExPanelSummary,
@@ -62,7 +62,7 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
 
               // 위에서 걸러주는데 타입스크립트 IDE 버그인듯
               return matchInfo !== undefined ? (
-                <PlanPreliminaryCard
+                <PlanPreliminaryCards
                   group={group}
                   // preliminaryData={preData.groups[group]}
                   preliminaryData={matchInfo.p}
