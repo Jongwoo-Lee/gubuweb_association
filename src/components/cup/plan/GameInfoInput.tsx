@@ -1,19 +1,12 @@
 import React from "react";
 import {
-  createStyles,
   makeStyles,
-  Theme,
-  Chip,
-  Typography,
-  TextField,
   FormControl,
   InputLabel,
   Input,
   InputAdornment,
   Grid
 } from "@material-ui/core";
-import { useFinalTeams } from "../../../context/cup/cupMatch";
-import { useTextInput } from "../../../hooks";
 import { PlanPreliminary } from "../../../context/cup/cup";
 
 const useStyles = makeStyles({

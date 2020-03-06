@@ -3,7 +3,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { CupMatchInfo, PreDataStructure } from "../../../context/cup/cupMatch";
-import { PlanCard } from "./PlanCard";
+import { PlanPreliminaryCard } from "./PlanPreliminaryCard";
 import {
   CustomExPanel,
   CustomExPanelSummary,
@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme: Theme) =>
     card: {
       display: "flex",
       flexDirection: "column",
-      width: "800px" // expansionPanel width가 변하는 것 -> flex Grow와 관게 있는 듯 찾아봐서 고정시킬 것..
-      // flexGrow: 1
+      width: "800px", // expansionPanel width가 변하는 것 -> flex Grow와 관게 있는 듯 찾아봐서 고정시킬 것..
+      alignItems: "center"
     }
   })
 );
@@ -62,7 +62,7 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
 
               // 위에서 걸러주는데 타입스크립트 IDE 버그인듯
               return matchInfo !== undefined ? (
-                <PlanCard
+                <PlanPreliminaryCard
                   group={group}
                   // preliminaryData={preData.groups[group]}
                   preliminaryData={matchInfo.p}
@@ -72,8 +72,8 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
                   planPre={props.planPre}
                 />
               ) : (
-                <div></div>
-              );
+                  <div></div>
+                );
             })}
         </CustomExPanelDetails>
       </CustomExPanel>

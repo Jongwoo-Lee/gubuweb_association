@@ -56,7 +56,7 @@ const useStyles = makeStyles({
   }
 });
 
-export interface PlanCardProps {
+export interface PlanPreliminaryCardProps {
   group: number;
   preliminaryData: PreDataStructure;
   round: number;
@@ -64,14 +64,14 @@ export interface PlanCardProps {
   setPlanPre: React.Dispatch<React.SetStateAction<PlanPreliminary>>;
 }
 
-export const PlanCard: React.FC<PlanCardProps> = ({
+export const PlanPreliminaryCard: React.FC<PlanPreliminaryCardProps> = ({
   // groups,
   group,
   preliminaryData,
   round,
   planPre,
   setPlanPre
-}: PlanCardProps) => {
+}: PlanPreliminaryCardProps) => {
   const classes = useStyles();
   const numOfTeams: number = preliminaryData[group].t;
   const [selectedID, setSelectedID] = useState(-1); //=> -1이면 no
@@ -114,15 +114,15 @@ export const PlanCard: React.FC<PlanCardProps> = ({
       for (let j: number = i + 1; j < numOfTeams; j++) {
         const location: string =
           planPre[group] &&
-          planPre[group][subGameId] &&
-          planPre[group][subGameId].lo
+            planPre[group][subGameId] &&
+            planPre[group][subGameId].lo
             ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
             : "";
 
         const time: string | null =
           planPre[group] &&
-          planPre[group][subGameId] &&
-          planPre[group][subGameId].kt
+            planPre[group][subGameId] &&
+            planPre[group][subGameId].kt
             ? planPre[group][subGameId].kt ?? null
             : null;
 
@@ -161,8 +161,8 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             : "시간 설정";
           const location: string =
             planPre[group] &&
-            planPre[group][value.id] &&
-            planPre[group][value.id].lo
+              planPre[group][value.id] &&
+              planPre[group][value.id].lo
               ? planPre[group][value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
               : "";
 
@@ -182,7 +182,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                         component="span"
                       >{`${convertString(group)} - ${
                         value.team1No
-                      }`}</Typography>
+                        }`}</Typography>
                     </Grid>
                     <Grid item xs={6} className={classes.paper}>
                       <Input
@@ -203,7 +203,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                         component="span"
                       >{`${convertString(group)} - ${
                         value.team2No
-                      }`}</Typography>
+                        }`}</Typography>
                     </Grid>
                   </Grid>
                   <br />
