@@ -295,7 +295,6 @@ const initializeGroupCard = (
   preData: PreDataStructure
 ): Array<GroupCardNumOfTeams> => {
   const arr: Array<GroupCardNumOfTeams> = [];
-  console.dir(preData);
 
   Object.keys(preData).forEach((value: string, index: number) => {
     let group: number = Number(value);

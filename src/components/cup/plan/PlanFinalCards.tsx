@@ -83,6 +83,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
     const arr: Array<SubGameInfo> = [];
     let subGameId: number = title;
     let findTeam = Math.pow(2, cardId + 2);
+    // console.dir(planFinal);
     for (let i = 0; i < Math.pow(2, cardId); i++) {
       let team1: string = "";
       let team2: string = "";
@@ -115,7 +116,6 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
 
     return arr;
   };
-  console.dir(planFinal);
 
   return (
     <div>
