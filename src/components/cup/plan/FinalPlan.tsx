@@ -11,6 +11,7 @@ import { ExpandMore } from "@material-ui/icons";
 import { useFinalTeams } from "../../../context/cup/cupMatch";
 import { PlanFinal } from "../../../context/cup/cup";
 import { GameInfoInput } from "./GameInfoInput";
+import { PlanFinalCards } from "./PlanFinalCards";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -66,7 +67,21 @@ export const FinalPlan: React.FC<FinalProps> = ({
           {matchInfo && (
             <GameInfoInput setPlan={setPlanFinal} plan={planFinal} />
           )}
-          {/* matchInfo &&
+          {matchInfo &&
+            [...Array<number>(Math.log2(Number(matchInfo.f.round))).keys()]
+              .reverse()
+              .map((value: number) => {
+                return (
+                  <PlanFinalCards
+                    cardId={value}
+                    finalData={matchInfo.f}
+                    setPlanFinal={setPlanFinal}
+                    planFinal={planFinal}
+                  />
+                );
+              })
+
+          /* matchInfo &&
               Object.keys(matchInfo.p).map((value: string, index: number) => {
                 let group: number = Number(value);
   
@@ -84,7 +99,8 @@ export const FinalPlan: React.FC<FinalProps> = ({
                 ) : (
                     <div></div>
                   );
-              })} */}
+              })} */
+          }
         </CustomExPanelDetails>
       </CustomExPanel>
     </div>

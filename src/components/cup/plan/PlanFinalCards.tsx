@@ -10,17 +10,21 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails
 } from "@material-ui/core";
-import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
-import { PlanPreliminary } from "../../../context/cup/cup";
+import {
+  convertString,
+  PreDataStructure,
+  FinalDataStructure
+} from "../../../context/cup/cupMatch";
+import { PlanPreliminary, PlanFinal } from "../../../context/cup/cup";
 import { DatePickerDlg, ExitWithID, convertKoTime } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
 
 interface SubGameInfo {
   // [No: number]: string | null; // 4조(group) - 1 (No)
   team1: string | null;
-  team1No: number;
   team2: string | null;
-  team2No: number;
+  // team1No: number;
+  // team2No: number;
   location?: string;
   kickOffTime?: string;
   id: number;
@@ -36,78 +40,82 @@ const useStyles = makeStyles({
 });
 
 export interface PlanFinalCardProps {
-  group: number;
-  preliminaryData: PreDataStructure;
-  round: number;
-  planPre: PlanPreliminary;
-  setPlanPre: React.Dispatch<React.SetStateAction<PlanPreliminary>>;
+  cardId: number;
+  finalData: FinalDataStructure;
+  planFinal: PlanFinal;
+  setPlanFinal: React.Dispatch<React.SetStateAction<PlanFinal>>;
 }
 
 export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
-  // groups,
-  group,
-  preliminaryData,
-  round,
-  planPre,
-  setPlanPre
+  cardId,
+  finalData,
+
+  planFinal,
+  setPlanFinal
 }: PlanFinalCardProps) => {
   const classes = useStyles();
-  const numOfTeams: number = preliminaryData[group].t;
+  const title: number = Math.pow(2, cardId + 1);
+  // const numOfTeams: number = preliminaryData[group].t;
 
   const setClose = (obj: ExitWithID) => {
-    const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
+    let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
 
-    if (!newPlan[group]) newPlan[group] = {};
-    if (!newPlan[group][obj.id])
-      newPlan[group][obj.id] = { kt: null, lo: null };
+    if (!newPlan)
+      newPlan = { gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 } };
+    if (!newPlan[obj.id]) newPlan[obj.id] = { kt: null, lo: null };
 
-    newPlan[group][obj.id].kt = obj.date?.toJSON() ?? null;
+    newPlan[obj.id].kt = obj.date?.toJSON() ?? null;
 
-    setPlanPre(newPlan);
+    setPlanFinal(newPlan);
   };
 
   const setLocation = (location: string, id: number) => {
-    const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
-    if (!newPlan[group]) newPlan[group] = {};
-    if (!newPlan[group][id]) newPlan[group][id] = { kt: null, lo: null };
-    newPlan[group][id].lo = location;
+    let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
+    if (!newPlan)
+      newPlan = { gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 } };
+    if (!newPlan[id]) newPlan[id] = { kt: null, lo: null };
+    newPlan[id].lo = location;
 
-    setPlanPre(newPlan);
+    setPlanFinal(newPlan);
   };
 
   const createCard = () => {
     const arr: Array<SubGameInfo> = [];
-    let subGameId = 0;
-    for (let i: number = 0; i < numOfTeams - 1; i++) {
-      for (let j: number = i + 1; j < numOfTeams; j++) {
-        const location: string =
-          planPre[group] &&
-          planPre[group][subGameId] &&
-          planPre[group][subGameId].lo
-            ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
-            : "";
-
-        const time: string | null =
-          planPre[group] &&
-          planPre[group][subGameId] &&
-          planPre[group][subGameId].kt
-            ? planPre[group][subGameId].kt ?? null
-            : null;
-
-        arr.push({
-          team1: preliminaryData[group][i] ?? null,
-          team1No: i + 1,
-          team2: preliminaryData[group][j] ?? null,
-          team2No: j + 1,
-          id: subGameId,
-          location: location,
-          kickOffTime: time ?? undefined
-        });
-        subGameId++;
+    let subGameId: number = title;
+    let findTeam = Math.pow(2, cardId + 2);
+    for (let i = 0; i < Math.pow(2, cardId); i++) {
+      let team1: string = "";
+      let team2: string = "";
+      if (planFinal.t) {
+        team1 = planFinal.t[findTeam--];
+        team2 = planFinal.t[findTeam--];
+      } else {
+        findTeam -= 2;
       }
+
+      const location: string =
+        planFinal[subGameId] && planFinal[subGameId].lo
+          ? planFinal[subGameId].lo ?? ""
+          : "";
+
+      const time: string | null =
+        planFinal[subGameId] && planFinal[subGameId].kt
+          ? planFinal[subGameId].kt ?? null
+          : null;
+
+      arr.push({
+        team1: team1,
+        team2: team2,
+        id: subGameId,
+        location: location,
+        kickOffTime: time ?? undefined
+      });
+      subGameId--;
     }
+
     return arr;
   };
+  console.dir(planFinal);
 
   return (
     <div>
@@ -119,7 +127,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
           className={classes.summary}
         >
           <Typography align="center" color="textPrimary" variant="h6">
-            {convertString(group)}조
+            {title >= 4 ? `${title}강` : "결승전"}
           </Typography>
         </ExpansionPanelSummary>
 
@@ -128,17 +136,13 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
             ? convertKoTime(value?.kickOffTime)
             : "시간 설정";
           const location: string =
-            planPre[group] &&
-            planPre[group][value.id] &&
-            planPre[group][value.id].lo
-              ? planPre[group][value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
+            planFinal && planFinal[value.id] && planFinal[value.id].lo
+              ? planFinal[value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
               : "";
 
           return (
             <PlanCard
               id={value.id}
-              team1Group={`${convertString(group)} - ${value.team1No}`}
-              team2Group={`${convertString(group)} - ${value.team2No}`}
               team1UID={value.team1}
               team2UID={value.team2}
               location={location}

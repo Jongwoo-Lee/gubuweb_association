@@ -28,9 +28,24 @@ export interface PlanPreliminary extends CupPlan {
 }
 
 export interface PlanFinal extends CupPlan {
-  [id: number]: { lo: string | null; kt: string | null }; // kt: toJson,
+  [id: number]: { lo: string | null; kt: string | null }; // kt: toJson
   // lo -> lOCATION, kt => KICKOFFTIME
+  t?: { [team: number]: string }; // 4강 => 8팀
 }
+/* 4강 예시
+8번 자리에 있는 사람이 우승한다면 8: uid, 4:uid, 0:uid가 적힘
+7번 자리에 있는 사람이 3위한다면 7:uid, 2:uid 에만 적힘 
+
+
+   4강          결승            우승자 2위  3위 4위
+    8
+           4 (7 vs 8 승자)        0     1   2   3
+    7
+
+    6
+           3 (5 vs 6 승자)    
+    5
+ */
 
 /// Firebase Auth User Context
 interface CupInfoData {
