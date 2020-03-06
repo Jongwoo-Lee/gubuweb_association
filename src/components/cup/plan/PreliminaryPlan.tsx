@@ -1,8 +1,8 @@
 import React from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
-import { CupMatchInfo, PreDataStructure } from "../../../context/cup/cupMatch";
+import { CupMatchInfo } from "../../../context/cup/cupMatch";
 import { PlanPreliminaryCards } from "./PlanPreliminaryCards";
 import {
   CustomExPanel,
@@ -72,8 +72,8 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
                   planPre={props.planPre}
                 />
               ) : (
-                  <div></div>
-                );
+                <div></div>
+              );
             })}
         </CustomExPanelDetails>
       </CustomExPanel>

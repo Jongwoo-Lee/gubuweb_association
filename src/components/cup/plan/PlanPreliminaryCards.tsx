@@ -1,18 +1,13 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Card,
   Typography,
-  Grid,
-  Button,
-  Input,
   ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails
+  ExpansionPanelSummary
 } from "@material-ui/core";
 import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
 import { PlanPreliminary } from "../../../context/cup/cup";
-import { DatePickerDlg, ExitWithID, convertKoTime } from "./DatePickerDlg";
+import { ExitWithID, convertKoTime } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
 
 interface SubGameInfo {
@@ -32,7 +27,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     justifyContent: "center",
     margin: "10px"
-  },
+  }
 });
 
 export interface PlanPreliminaryCardProps {
@@ -44,7 +39,6 @@ export interface PlanPreliminaryCardProps {
 }
 
 export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
-  // groups,
   group,
   preliminaryData,
   round,
@@ -66,10 +60,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
     setPlanPre(newPlan);
   };
 
-
-  const setLocation = (
-    location: string, id: number
-  ) => {
+  const setLocation = (location: string, id: number) => {
     const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
     if (!newPlan[group]) newPlan[group] = {};
     if (!newPlan[group][id]) newPlan[group][id] = { kt: null, lo: null };
@@ -85,15 +76,15 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
       for (let j: number = i + 1; j < numOfTeams; j++) {
         const location: string =
           planPre[group] &&
-            planPre[group][subGameId] &&
-            planPre[group][subGameId].lo
+          planPre[group][subGameId] &&
+          planPre[group][subGameId].lo
             ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
             : "";
 
         const time: string | null =
           planPre[group] &&
-            planPre[group][subGameId] &&
-            planPre[group][subGameId].kt
+          planPre[group][subGameId] &&
+          planPre[group][subGameId].kt
             ? planPre[group][subGameId].kt ?? null
             : null;
 
@@ -132,20 +123,16 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
             : "시간 설정";
           const location: string =
             planPre[group] &&
-              planPre[group][value.id] &&
-              planPre[group][value.id].lo
+            planPre[group][value.id] &&
+            planPre[group][value.id].lo
               ? planPre[group][value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
               : "";
 
           return (
             <PlanCard
               id={value.id}
-              team1Group={`${convertString(group)} - ${
-                value.team1No
-                }`}
-              team2Group={`${convertString(group)} - ${
-                value.team2No
-                }`}
+              team1Group={`${convertString(group)} - ${value.team1No}`}
+              team2Group={`${convertString(group)} - ${value.team2No}`}
               team1UID={value.team1}
               team2UID={value.team2}
               location={location}

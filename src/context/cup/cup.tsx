@@ -17,17 +17,19 @@ export interface CupPlanDataStructure {
   f: PlanFinal;
 }
 
-export interface PlanPreliminary {
-  [group: number]: {
-    [id: number]: { lo: string | null; kt: string | null }; // kt: toJson,
-  }; // lo -> lOCATION, kt => KICKOFFTIME
+export interface CupPlan {
   gameInfo: GameInfo;
 }
 
-export interface PlanFinal {
+export interface PlanPreliminary extends CupPlan {
+  [group: number]: {
+    [id: number]: { lo: string | null; kt: string | null }; // kt: toJson,
+  }; // lo -> lOCATION, kt => KICKOFFTIME
+}
+
+export interface PlanFinal extends CupPlan {
   [id: number]: { lo: string | null; kt: string | null }; // kt: toJson,
   // lo -> lOCATION, kt => KICKOFFTIME
-  gameInfo: GameInfo;
 }
 
 /// Firebase Auth User Context

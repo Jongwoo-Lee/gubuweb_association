@@ -12,7 +12,7 @@ import { PreliminaryPlan } from "./plan/PreliminaryPlan";
 import { FinalPlan } from "./plan/FinalPlan";
 import { CupMatchInfo, fromMatchInfo } from "../../context/cup/cupMatch";
 
-export interface CupDetailPlanProps { }
+export interface CupDetailPlanProps {}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -77,21 +77,21 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
           setPlanPre={setPlanPre}
         />
       ) : (
-          <Typography color="textPrimary" variant="h4">
-            예선경기 정보가 없습니다.
-          </Typography>
-        )}
-        {matchInfo ? (
-          <FinalPlan
-        matchInfo={matchInfo}
-        planFinal={planFinal}
-        setPlanFinal={setPlanFinal} />
-        ) : (
-            <Typography color="textPrimary" variant="h4">
-              본선경기 정보가 없습니다.
-            </Typography>
-          )}
-      
+        <Typography color="textPrimary" variant="h4">
+          예선경기 정보가 없습니다.
+        </Typography>
+      )}
+      {matchInfo ? (
+        <FinalPlan
+          matchInfo={matchInfo}
+          planFinal={planFinal}
+          setPlanFinal={setPlanFinal}
+        />
+      ) : (
+        <Typography color="textPrimary" variant="h4">
+          본선경기 정보가 없습니다.
+        </Typography>
+      )}
     </div>
   );
 };
