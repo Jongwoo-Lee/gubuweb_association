@@ -42,14 +42,6 @@ export const FinalPlan: React.FC<FinalProps> = ({
   setPlanFinal
 }: FinalProps) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(true);
-  const final = useFinalTeams();
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  console.dir(matchInfo);
 
   return (
     <div className={classes.root}>
@@ -79,28 +71,7 @@ export const FinalPlan: React.FC<FinalProps> = ({
                     planFinal={planFinal}
                   />
                 );
-              })
-
-          /* matchInfo &&
-              Object.keys(matchInfo.p).map((value: string, index: number) => {
-                let group: number = Number(value);
-  
-                // 위에서 걸러주는데 타입스크립트 IDE 버그인듯
-                return matchInfo !== undefined ? (
-                  <PlanPreliminaryCards
-                    group={group}
-                    // preliminaryData={preData.groups[group]}
-                    preliminaryData={matchInfo.p}
-                    round={1}
-                    key={index}
-                    setPlanPre={props.setPlanPre}
-                    planPre={props.planPre}
-                  />
-                ) : (
-                    <div></div>
-                  );
-              })} */
-          }
+              })}
         </CustomExPanelDetails>
       </CustomExPanel>
     </div>

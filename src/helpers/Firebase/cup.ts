@@ -6,6 +6,11 @@ import {
   PreDataStructure,
   CupMatchInfo
 } from "../../context/cup/cupMatch";
+import {
+  CupPlanDataStructure,
+  PlanPreliminary,
+  PlanFinal
+} from "../../context/cup/cup";
 
 export class CupInfo {
   name: string;
@@ -23,6 +28,7 @@ export class CupInfo {
   documents: string[] | null;
   selectedTeams: string[];
   matchInfo: CupMatchInfo | null;
+  matchPlan: CupPlanDataStructure | null;
 
   constructor(
     name: string,
@@ -39,7 +45,8 @@ export class CupInfo {
     introduction: string | undefined,
     documents: string[] | undefined,
     selectedTeams: string[] | undefined,
-    matchInfo: CupMatchInfo | null
+    matchInfo: CupMatchInfo | null,
+    matchPlan: CupPlanDataStructure | null
   ) {
     this.name = name;
     this.region = region;
@@ -56,6 +63,7 @@ export class CupInfo {
     this.documents = documents ?? null;
     this.selectedTeams = selectedTeams ?? Array<string>();
     this.matchInfo = matchInfo ?? null;
+    this.matchPlan = matchPlan ?? null;
   }
   toString() {
     return this.name + ", " + this.cupType;
@@ -80,7 +88,8 @@ export const cupInfoConverter = {
       [COL_CUP.INTRODUCTION]: cup.introduction,
       [COL_CUP.DOCUMENTS]: cup.documents,
       [COL_CUP.TEAMS]: cup.selectedTeams,
-      [COL_CUP.MATCHINFO]: cup.matchInfo
+      [COL_CUP.MATCHINFO]: cup.matchInfo,
+      [COL_CUP.MATCH]: cup.matchPlan
     };
   },
   fromFirestore: (
@@ -103,7 +112,8 @@ export const cupInfoConverter = {
       data?.[COL_CUP.INTRODUCTION],
       data?.[COL_CUP.DOCUMENTS],
       data?.[COL_CUP.TEAMS],
-      data?.[COL_CUP.MATCHINFO]
+      data?.[COL_CUP.MATCHINFO],
+      data?.[COL_CUP.MATCH]
     );
   }
 };
@@ -240,4 +250,21 @@ export const makeSubGame = async (
     .catch(err =>
       console.log(`fail to create subGame in Cup - ${cupUID} ${err}`)
     );
+};
+
+export const saveCupPlan = async (
+  cupUID: string,
+  pData: PlanPreliminary,
+  fData: PlanFinal
+) => {
+  Firebase.firestore
+    .collection(COL_CUP.CUP)
+    .doc(cupUID)
+    .update({
+      [COL_CUP.MATCH]: {
+        [COL_CUP.PRELIMINARY]: pData,
+        [COL_CUP.FINAL]: fData
+      }
+    })
+    .catch(err => console.log(`save  Plan error ${err}`));
 };

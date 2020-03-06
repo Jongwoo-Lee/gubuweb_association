@@ -7,7 +7,7 @@ import { SaveMatchBtn } from "./match/SaveMatchInfo";
 import { RouteComponentProps } from "react-router-dom";
 import { MatchParams } from "./CupDetailTeam";
 import { useCupsInfo, PlanPreliminary, PlanFinal } from "../../context/cup/cup";
-import { CupInfo } from "../../helpers/Firebase/cup";
+import { CupInfo, saveCupPlan } from "../../helpers/Firebase/cup";
 import { PreliminaryPlan } from "./plan/PreliminaryPlan";
 import { FinalPlan } from "./plan/FinalPlan";
 import { CupMatchInfo, fromMatchInfo } from "../../context/cup/cupMatch";
@@ -33,24 +33,28 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
   const classes = useStyles();
   const cupID: string = props.match.params.cupID;
   const cupsInfo = useCupsInfo();
-  let cupInfo: CupInfo | undefined;
-  let matchInfo: CupMatchInfo | undefined;
-  const [planPre, setPlanPre] = useState<PlanPreliminary>({
-    gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
-  });
-  const [planFinal, setPlanFinal] = useState<PlanFinal>({
-    gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
-  });
-  if (cupsInfo !== undefined) {
-    cupInfo = cupsInfo[cupID];
-    if (cupInfo?.matchInfo ?? false)
-      matchInfo = fromMatchInfo(cupInfo?.matchInfo ?? undefined);
-  }
+  let cupInfo: CupInfo | undefined = cupsInfo ? cupsInfo[cupID] : undefined;
+
+  let matchInfo: CupMatchInfo =
+    cupInfo?.matchInfo ?? false
+      ? fromMatchInfo(cupInfo?.matchInfo ?? undefined) // cupInfo?.matchInfo <-- ? 없앨수 없는 버그
+      : fromMatchInfo();
+  const [planPre, setPlanPre] = useState<PlanPreliminary>(
+    cupInfo?.matchPlan?.p ?? {
+      gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
+    }
+  );
+  const [planFinal, setPlanFinal] = useState<PlanFinal>(
+    cupInfo?.matchPlan?.f ?? {
+      gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
+    }
+  );
 
   const handleOnSave = async (
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent
   ) => {
     e.preventDefault();
+    saveCupPlan(cupID, planPre, planFinal);
   };
 
   return (
