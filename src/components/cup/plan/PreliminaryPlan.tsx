@@ -10,6 +10,7 @@ import {
   CustomExPanelDetails
 } from "../CustomExPanel";
 import { PlanPreliminary } from "../../../context/cup/cup";
+import { GameInfoInput } from "./GameInfoInput";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,6 +53,7 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
           </Typography>
         </CustomExPanelSummary>
         <CustomExPanelDetails className={classes.card}>
+          {matchInfo && <GameInfoInput />}
           {matchInfo &&
             Object.keys(matchInfo.p).map((value: string, index: number) => {
               let group: number = Number(value);

@@ -56,7 +56,6 @@ const useStyles = makeStyles({
   }
 });
 
-// imgSrc 나 ImgIcon 둘중 하나만 꼭 넣어야 함
 export interface PlanCardProps {
   group: number;
   preliminaryData: PreDataStructure;
