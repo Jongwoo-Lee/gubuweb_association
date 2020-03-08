@@ -5,7 +5,6 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails
-
 } from "@material-ui/core";
 import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
 import { PlanPreliminary } from "../../../context/cup/cup";
@@ -25,8 +24,9 @@ interface SubGameInfo {
 
 const useStyles = makeStyles({
   panel: {
-    margin: "10px",
-  },
+    width: "90%",
+    margin: "10px"
+  }
 });
 
 export interface PlanPreliminaryCardProps {
@@ -75,15 +75,15 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
       for (let j: number = i + 1; j < numOfTeams; j++) {
         const location: string =
           planPre[group] &&
-            planPre[group][subGameId] &&
-            planPre[group][subGameId].lo
+          planPre[group][subGameId] &&
+          planPre[group][subGameId].lo
             ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
             : "";
 
         const time: string | null =
           planPre[group] &&
-            planPre[group][subGameId] &&
-            planPre[group][subGameId].kt
+          planPre[group][subGameId] &&
+          planPre[group][subGameId].kt
             ? planPre[group][subGameId].kt ?? null
             : null;
 
@@ -103,8 +103,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
   };
 
   return (
-    <ExpansionPanel
-      className={classes.panel}>
+    <ExpansionPanel className={classes.panel}>
       <ExpansionPanelSummary
         // expandIcon={<ExpandMore />}
         aria-controls="panel1a-content"
@@ -112,7 +111,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
       >
         <Typography align="center" color="textPrimary" variant="h6">
           {convertString(group)}조
-          </Typography>
+        </Typography>
       </ExpansionPanelSummary>
 
       {createCard().map((value: SubGameInfo, index: number) => {
@@ -121,8 +120,8 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
           : "시간 설정";
         const location: string =
           planPre[group] &&
-            planPre[group][value.id] &&
-            planPre[group][value.id].lo
+          planPre[group][value.id] &&
+          planPre[group][value.id].lo
             ? planPre[group][value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
             : "";
 
@@ -140,7 +139,6 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
             kickOffTime={time}
             handleOnLocation={setLocation}
             handleOnClose={setClose}
-
           />
         );
       })}
