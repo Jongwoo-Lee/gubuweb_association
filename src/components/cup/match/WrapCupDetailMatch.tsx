@@ -44,7 +44,7 @@ export const WrapCupDetailMatch: React.FC<WrapCupDetailPlanProps> = ({
           alignItems="flex-start"
         >
           <Typography color="textPrimary" variant="h4">
-            {ROUTENAMES.CUP_DETAIL_TEAM}
+            {ROUTENAMES.CUP_DETAIL_MATCH}
           </Typography>
           <SaveMatchBtn cupID={cupID} />
         </Grid>

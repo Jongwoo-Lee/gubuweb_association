@@ -62,7 +62,7 @@ export const WrapCupDetailPlans: React.FC<WrapCupDetailPlanProps> = ({
         alignItems="flex-start"
       >
         <Typography color="textPrimary" variant="h4">
-          {ROUTENAMES.CUP_DETAIL_TEAM}
+          {ROUTENAMES.CUP_DETAIL_PLAN}
         </Typography>
         <Button variant="contained" onClick={handleOnSave}>
           저장
