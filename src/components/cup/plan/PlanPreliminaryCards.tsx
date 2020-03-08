@@ -3,8 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
   ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails
+  ExpansionPanelSummary
 } from "@material-ui/core";
 import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
 import { PlanPreliminary } from "../../../context/cup/cup";

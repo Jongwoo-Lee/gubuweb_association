@@ -5,7 +5,6 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary
 } from "@material-ui/core";
-import { FinalDataStructure } from "../../../context/cup/cupMatch";
 import { PlanFinal } from "../../../context/cup/cup";
 import { ExitWithID, convertKoTime } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
