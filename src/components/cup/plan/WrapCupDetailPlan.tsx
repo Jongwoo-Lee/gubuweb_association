@@ -13,19 +13,18 @@ import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
 import { PreliminaryPlan } from "./PreliminaryPlan";
 import { FinalPlan } from "./FinalPlan";
-export interface CupDetailPlanProps {}
+export interface CupDetailPlanProps { }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      display: "flex",
-      flexDirection: "column"
-    },
-    title: {
-      width: "80%",
-      margin: "50px 0px 0px 0px"
-    }
-  })
+const useStyles = makeStyles({
+  root: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  title: {
+    width: "80%",
+    margin: "50px 0px 0px 0px"
+  }
+}
 );
 
 export interface WrapCupDetailPlanProps {
@@ -83,10 +82,10 @@ export const WrapCupDetailPlans: React.FC<WrapCupDetailPlanProps> = ({
           setPlanPre={setPlanPre}
         />
       ) : (
-        <Typography color="textPrimary" variant="h4">
-          예선경기 정보가 없습니다.
-        </Typography>
-      )}
+          <Typography color="textPrimary" variant="h4">
+            예선경기 정보가 없습니다.
+          </Typography>
+        )}
       {matchInfo ? (
         <FinalPlan
           matchInfo={matchInfo}
@@ -94,10 +93,10 @@ export const WrapCupDetailPlans: React.FC<WrapCupDetailPlanProps> = ({
           setPlanFinal={setPlanFinal}
         />
       ) : (
-        <Typography color="textPrimary" variant="h4">
-          본선경기 정보가 없습니다.
-        </Typography>
-      )}
+          <Typography color="textPrimary" variant="h4">
+            본선경기 정보가 없습니다.
+          </Typography>
+        )}
     </div>
   );
 };

@@ -12,21 +12,18 @@ import {
 import { PlanPreliminary } from "../../../context/cup/cup";
 import { GameInfoInput } from "./GameInfoInput";
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      display: "flex",
-      flexDirection: "column",
-      margin: "50px 0px 0px 0px",
-      width: "80%"
-    },
-    card: {
-      display: "flex",
-      flexDirection: "column",
-      width: "800px", // expansionPanel width가 변하는 것 -> flex Grow와 관게 있는 듯 찾아봐서 고정시킬 것..
-      alignItems: "center"
-    }
-  })
+const useStyles = makeStyles({
+  root: {
+    width: "80%",
+    margin: "50px 0px 0px 0px",
+  },
+  card: {
+    display: "flex",
+    flexDirection: "column",
+    // width: "800px", // expansionPanel width가 변하는 것 -> flex Grow와 관게 있는 듯 찾아봐서 고정시킬 것..
+    alignItems: "center"
+  }
+}
 );
 export interface PreliminaryProps {
   matchInfo: CupMatchInfo;
@@ -64,7 +61,6 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
               return matchInfo !== undefined ? (
                 <PlanPreliminaryCards
                   group={group}
-                  // preliminaryData={preData.groups[group]}
                   preliminaryData={matchInfo.p}
                   round={1}
                   key={index}
@@ -72,8 +68,8 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
                   planPre={props.planPre}
                 />
               ) : (
-                <div></div>
-              );
+                  <div></div>
+                );
             })}
         </CustomExPanelDetails>
       </CustomExPanel>

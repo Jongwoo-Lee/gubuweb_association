@@ -6,7 +6,7 @@ import { useCupsInfo } from "../../context/cup/cup";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { WrapCupDetailPlans } from "./plan/WrapCupDetailPlan";
 
-export interface CupDetailPlanProps {}
+export interface CupDetailPlanProps { }
 
 export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
   props: RouteComponentProps<MatchParams>
@@ -17,8 +17,6 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
   return cupInfo ? (
     <WrapCupDetailPlans cupID={cupID} cupInfo={cupInfo} />
   ) : (
-    <Typography color="textPrimary" variant="h2">
-      Cup 정보가 없습니다.
-    </Typography>
-  );
+      <div></div>
+    );
 };

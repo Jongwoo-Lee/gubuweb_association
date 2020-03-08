@@ -13,21 +13,17 @@ import { PlanFinal } from "../../../context/cup/cup";
 import { GameInfoInput } from "./GameInfoInput";
 import { PlanFinalCards } from "./PlanFinalCards";
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      display: "flex",
-      flexDirection: "column",
-      margin: "50px 0px 0px 0px",
-      width: "80%"
-    },
-    card: {
-      display: "flex",
-      flexDirection: "column",
-      width: "800px", // expansionPanel width가 변하는 것 -> flex Grow와 관게 있는 듯 찾아봐서 고정시킬 것..
-      alignItems: "center"
-    }
-  })
+const useStyles = makeStyles({
+  root: {
+    margin: "50px 0px 0px 0px",
+    width: "80%"
+  },
+  card: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  }
+}
 );
 
 export interface FinalProps {
