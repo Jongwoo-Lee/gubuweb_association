@@ -60,7 +60,7 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
                 <PlanPreliminaryCards
                   group={group}
                   preliminaryData={matchInfo.p}
-                  round={1}
+                  round={matchInfo.ro}
                   key={index}
                   setPlanPre={props.setPlanPre}
                   planPre={props.planPre}

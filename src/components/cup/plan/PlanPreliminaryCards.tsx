@@ -70,34 +70,35 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
   const createCard = () => {
     const arr: Array<SubGameInfo> = [];
     let subGameId = 0;
-    for (let i: number = 0; i < numOfTeams - 1; i++) {
-      for (let j: number = i + 1; j < numOfTeams; j++) {
-        const location: string =
-          planPre[group] &&
-          planPre[group][subGameId] &&
-          planPre[group][subGameId].lo
-            ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
-            : "";
+    for (let ro: number = 0; ro < round; ro++)
+      for (let i: number = 0; i < numOfTeams - 1; i++) {
+        for (let j: number = i + 1; j < numOfTeams; j++) {
+          const location: string =
+            planPre[group] &&
+            planPre[group][subGameId] &&
+            planPre[group][subGameId].lo
+              ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
+              : "";
 
-        const time: string | null =
-          planPre[group] &&
-          planPre[group][subGameId] &&
-          planPre[group][subGameId].kt
-            ? planPre[group][subGameId].kt ?? null
-            : null;
+          const time: string | null =
+            planPre[group] &&
+            planPre[group][subGameId] &&
+            planPre[group][subGameId].kt
+              ? planPre[group][subGameId].kt ?? null
+              : null;
 
-        arr.push({
-          team1: preliminaryData[group][i] ?? null,
-          team1No: i + 1,
-          team2: preliminaryData[group][j] ?? null,
-          team2No: j + 1,
-          id: subGameId,
-          location: location,
-          kickOffTime: time ?? undefined
-        });
-        subGameId++;
+          arr.push({
+            team1: preliminaryData[group][i] ?? null,
+            team1No: i + 1,
+            team2: preliminaryData[group][j] ?? null,
+            team2No: j + 1,
+            id: subGameId,
+            location: location,
+            kickOffTime: time ?? undefined
+          });
+          subGameId++;
+        }
       }
-    }
     return arr;
   };
 
