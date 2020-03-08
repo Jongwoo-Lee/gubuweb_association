@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     margin: "50px 0px 0px 0px",
     width: "80%"
   },
-  card: {
+  detail: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -41,7 +41,7 @@ export const FinalPlan: React.FC<FinalProps> = ({
 
   return (
     <div className={classes.root}>
-      <CustomExPanel>
+      <CustomExPanel defaultExpanded={true}>
         <CustomExPanelSummary
           expandIcon={<ExpandMore />}
           aria-controls="panel1a-content"
@@ -51,7 +51,7 @@ export const FinalPlan: React.FC<FinalProps> = ({
             본선
           </Typography>
         </CustomExPanelSummary>
-        <CustomExPanelDetails className={classes.card}>
+        <CustomExPanelDetails className={classes.detail}>
           {matchInfo && (
             <GameInfoInput setPlan={setPlanFinal} plan={planFinal} />
           )}
@@ -62,7 +62,6 @@ export const FinalPlan: React.FC<FinalProps> = ({
                 return (
                   <PlanFinalCards
                     cardId={value}
-                    finalData={matchInfo.f}
                     setPlanFinal={setPlanFinal}
                     planFinal={planFinal}
                   />

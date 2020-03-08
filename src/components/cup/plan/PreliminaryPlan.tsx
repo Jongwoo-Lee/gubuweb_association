@@ -39,7 +39,7 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
 
   return (
     <div className={classes.root}>
-      <CustomExPanel>
+      <CustomExPanel defaultExpanded={true}>
         <CustomExPanelSummary
           expandIcon={<ExpandMore />}
           aria-controls="panel1a-content"

@@ -3,7 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
   ExpansionPanel,
-  ExpansionPanelSummary
+  ExpansionPanelSummary,
+  ExpansionPanelDetails
+
 } from "@material-ui/core";
 import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
 import { PlanPreliminary } from "../../../context/cup/cup";
@@ -22,12 +24,9 @@ interface SubGameInfo {
 }
 
 const useStyles = makeStyles({
-  summary: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    margin: "10px"
-  }
+  panel: {
+    margin: "10px",
+  },
 });
 
 export interface PlanPreliminaryCardProps {
@@ -76,15 +75,15 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
       for (let j: number = i + 1; j < numOfTeams; j++) {
         const location: string =
           planPre[group] &&
-          planPre[group][subGameId] &&
-          planPre[group][subGameId].lo
+            planPre[group][subGameId] &&
+            planPre[group][subGameId].lo
             ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
             : "";
 
         const time: string | null =
           planPre[group] &&
-          planPre[group][subGameId] &&
-          planPre[group][subGameId].kt
+            planPre[group][subGameId] &&
+            planPre[group][subGameId].kt
             ? planPre[group][subGameId].kt ?? null
             : null;
 
@@ -104,48 +103,47 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
   };
 
   return (
-    <div>
-      <ExpansionPanel>
-        <ExpansionPanelSummary
-          // expandIcon={<ExpandMore />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-          className={classes.summary}
-        >
-          <Typography align="center" color="textPrimary" variant="h6">
-            {convertString(group)}조
+    <ExpansionPanel
+      className={classes.panel}>
+      <ExpansionPanelSummary
+        // expandIcon={<ExpandMore />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+      >
+        <Typography align="center" color="textPrimary" variant="h6">
+          {convertString(group)}조
           </Typography>
-        </ExpansionPanelSummary>
+      </ExpansionPanelSummary>
 
-        {createCard().map((value: SubGameInfo, index: number) => {
-          let time: string = value?.kickOffTime
-            ? convertKoTime(value?.kickOffTime)
-            : "시간 설정";
-          const location: string =
-            planPre[group] &&
+      {createCard().map((value: SubGameInfo, index: number) => {
+        let time: string = value?.kickOffTime
+          ? convertKoTime(value?.kickOffTime)
+          : "시간 설정";
+        const location: string =
+          planPre[group] &&
             planPre[group][value.id] &&
             planPre[group][value.id].lo
-              ? planPre[group][value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
-              : "";
+            ? planPre[group][value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
+            : "";
 
-          return (
-            <PlanCard
-              key={`${convertString(group)} - ${value.team1No} ${convertString(
-                group
-              )} - ${value.team2No}`}
-              id={value.id}
-              team1Group={`${convertString(group)} - ${value.team1No}`}
-              team2Group={`${convertString(group)} - ${value.team2No}`}
-              team1UID={value.team1}
-              team2UID={value.team2}
-              location={location}
-              kickOffTime={time}
-              handleOnLocation={setLocation}
-              handleOnClose={setClose}
-            />
-          );
-        })}
-      </ExpansionPanel>
-    </div>
+        return (
+          <PlanCard
+            key={`${convertString(group)} - ${value.team1No} ${convertString(
+              group
+            )} - ${value.team2No}`}
+            id={value.id}
+            team1Group={`${convertString(group)} - ${value.team1No}`}
+            team2Group={`${convertString(group)} - ${value.team2No}`}
+            team1UID={value.team1}
+            team2UID={value.team2}
+            location={location}
+            kickOffTime={time}
+            handleOnLocation={setLocation}
+            handleOnClose={setClose}
+
+          />
+        );
+      })}
+    </ExpansionPanel>
   );
 };

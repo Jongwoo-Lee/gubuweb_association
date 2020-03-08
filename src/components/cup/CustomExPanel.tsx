@@ -44,6 +44,5 @@ export const CustomExPanelSummary = withStyles({
 export const CustomExPanelDetails = withStyles(theme => ({
   root: {
     padding: theme.spacing(2),
-    flexGrow: 1
   }
 }))(MuiExpansionPanelDetails);

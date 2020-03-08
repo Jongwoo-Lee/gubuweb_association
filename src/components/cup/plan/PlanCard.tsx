@@ -11,13 +11,13 @@ import {
 import { DatePickerDlg, ExitWithID } from "./DatePickerDlg";
 
 const useStyles = makeStyles({
-  card: {
+  root: {
     display: "flex",
-    flexDirection: "column"
-  },
-  cardTitle: {
-    justifyContent: "center",
+    flexDirection: "column",
     margin: "10px"
+  },
+  card: {
+    justifyContent: "center"
   },
   paper: {
     textAlign: "center"
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   detail: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center"
+    margin: "10px"
   }
 });
 
@@ -73,71 +73,67 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   };
 
   return (
-    <div>
-      <ExpansionPanelDetails className={classes.detail}>
-        <Card variant="outlined" className={classes.card}>
-          <Grid container className={classes.cardTitle}>
-            <Typography align="center" variant="h6" component="span">
-              장소
+    <Card variant="outlined" className={classes.root} >
+      <Grid container className={classes.card}>
+        <Typography align="center" variant="h6" component="span">
+          장소
             </Typography>
-            <br />
-            <Grid container spacing={3}>
-              <Grid item xs className={classes.paper}>
-                <Typography align="center" variant="subtitle1" component="span">
-                  {team1Group}
-                </Typography>
-              </Grid>
-              <Grid item xs={6} className={classes.paper}>
-                <Input
-                  name="location"
-                  type="text"
-                  id={`${team1Group} - ${team2Group}`}
-                  value={location}
-                  onChange={e => handleLocation(e, id)}
-                  autoFocus
-                  autoComplete="location"
-                  aria-describedby="component-location"
-                />
-              </Grid>
-              <Grid item xs className={classes.paper}>
-                <Typography align="center" variant="subtitle1" component="span">
-                  {team2Group}
-                </Typography>
-              </Grid>
-            </Grid>
-            <br />
-            <Grid container spacing={3}>
-              <Grid item xs className={classes.paper}>
-                <Typography align="center" variant="subtitle1" component="span">
-                  {team1UID}
-                </Typography>
-              </Grid>
-              <Grid item xs={6} className={classes.paper}>
-                <Typography align="center" variant="h6" component="span">
-                  킥오프
-                </Typography>
-              </Grid>
-              <Grid item xs className={classes.paper}>
-                <Typography align="center" variant="subtitle1" component="span">
-                  {team2UID}
-                </Typography>
-              </Grid>
-            </Grid>
-            <br />
-
-            <Grid container className={classes.cardTitle}>
-              <Button variant="contained" onClick={() => handlePopDlg(id)}>
-                {kickOffTime}
-              </Button>
-            </Grid>
+        <br />
+        <Grid container spacing={3}>
+          <Grid item xs className={classes.paper}>
+            <Typography align="center" variant="subtitle1" component="span">
+              {team1Group}
+            </Typography>
           </Grid>
-        </Card>
-      </ExpansionPanelDetails>
+          <Grid item xs={6} className={classes.paper}>
+            <Input
+              name="location"
+              type="text"
+              id={`${team1Group} - ${team2Group}`}
+              value={location}
+              onChange={e => handleLocation(e, id)}
+              autoFocus
+              autoComplete="location"
+              aria-describedby="component-location"
+            />
+          </Grid>
+          <Grid item xs className={classes.paper}>
+            <Typography align="center" variant="subtitle1" component="span">
+              {team2Group}
+            </Typography>
+          </Grid>
+        </Grid>
+        <br />
+        <Grid container spacing={3}>
+          <Grid item xs className={classes.paper}>
+            <Typography align="center" variant="subtitle1" component="span">
+              {team1UID}
+            </Typography>
+          </Grid>
+          <Grid item xs={6} className={classes.paper}>
+            <Typography align="center" variant="h6" component="span">
+              킥오프
+                </Typography>
+          </Grid>
+          <Grid item xs className={classes.paper}>
+            <Typography align="center" variant="subtitle1" component="span">
+              {team2UID}
+            </Typography>
+          </Grid>
+        </Grid>
+        <br />
+
+        <Grid container className={classes.card}>
+          <Button variant="contained" onClick={() => handlePopDlg(id)}>
+            {kickOffTime}
+          </Button>
+        </Grid>
+      </Grid>
       <DatePickerDlg
         title={"예선 시간 선택"}
         parentID={selectedID}
         onClose={handleClose}
       />
-    </div>
+    </Card>
   );
 };
