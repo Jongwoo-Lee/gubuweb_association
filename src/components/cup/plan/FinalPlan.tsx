@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { Typography, IconButton, Grid, Collapse } from "@material-ui/core";
-import { CupMatchInfo, PreDataStructure } from "../../../context/cup/cupMatch";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
+import { CupMatchInfo } from "../../../context/cup/cupMatch";
 import {
   CustomExPanel,
   CustomExPanelSummary,

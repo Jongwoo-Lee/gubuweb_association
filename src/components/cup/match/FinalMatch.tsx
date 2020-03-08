@@ -1,12 +1,6 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import {
-  Typography,
-  Button,
-  IconButton,
-  Grid,
-  Collapse
-} from "@material-ui/core";
+import React, { Dispatch, SetStateAction } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Typography, Button } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { DroppableWrapper } from "./Droppable";
 import { DraggableTeamList } from "./Draggable";
@@ -23,36 +17,34 @@ import {
   CustomExPanelDetails
 } from "../CustomExPanel";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      margin: "50px 0px 0px 0px",
-      width: "80%"
-    },
-    detail: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center"
-    },
-    final: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "start",
+const useStyles = makeStyles({
+  root: {
+    margin: "50px 0px 0px 0px",
+    width: "80%"
+  },
+  detail: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  final: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "start",
 
-      border: "1px solid black"
-    },
-    finalBtn: {
-      margin: "15px",
-      border: "1px solid black"
-    },
-    dragTarget: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      margin: "15px"
-    }
-  })
-);
+    border: "1px solid black"
+  },
+  finalBtn: {
+    margin: "15px",
+    border: "1px solid black"
+  },
+  dragTarget: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    margin: "15px"
+  }
+});
 
 export interface FinalProps {}
 

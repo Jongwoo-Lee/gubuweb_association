@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Card, Typography, Button, IconButton, Grid } from "@material-ui/core";
 import { GroupCard } from "./GroupCard";
 import { ExpandMore } from "@material-ui/icons";
