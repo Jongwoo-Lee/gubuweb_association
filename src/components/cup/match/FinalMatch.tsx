@@ -17,32 +17,22 @@ import {
   useSetFinalTeams,
   useNumOfWild
 } from "../../../context/cup/cupMatch";
+import {
+  CustomExPanel,
+  CustomExPanelSummary,
+  CustomExPanelDetails
+} from "../CustomExPanel";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      margin: "50px 0px 0px 0px",
+      width: "80%"
+    },
+    detail: {
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
-      width: "80%",
-      margin: "50px 0px 0px 0px"
-    },
-    expand: {
-      transform: "rotate(0deg)",
-      marginLeft: "auto",
-      transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shortest
-      })
-    },
-    expandOpen: {
-      transform: "rotate(180deg)"
-    },
-    line: {
-      color: "black",
-      backgroundColor: "black",
-      borderColor: "black",
-      height: 1,
-      width: "100%"
+      alignItems: "center"
     },
     final: {
       display: "flex",
@@ -64,22 +54,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface FinalProps { }
+export interface FinalProps {}
 
 export const FinalMatch: React.FC<FinalProps> = () => {
   const teamList = teamsWithWildCard(useAttendTeams(), useNumOfWild());
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(true);
   const setfinalData: Dispatch<SetStateAction<
     FinalDataStructure
   >> = useSetFinalTeams();
   const final = useFinalTeams();
   let round: number = final.round;
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
   const handleFinalTournament = (_: React.MouseEvent<unknown>, n: number) => {
     let newPTeams: FinalDataStructure = {
       order: Array<string>(n),
@@ -91,59 +75,52 @@ export const FinalMatch: React.FC<FinalProps> = () => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        spacing={3}
-        justify="space-between"
-        alignItems="flex-start"
-      >
-        <Typography color="textPrimary" variant="h5">
-          본선
-        </Typography>
-        <IconButton
-          className={expanded ? classes.expandOpen : classes.expand}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
+      <CustomExPanel defaultExpanded={true}>
+        <CustomExPanelSummary
+          expandIcon={<ExpandMore />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
         >
-          <ExpandMore />
-        </IconButton>
-      </Grid>
-      <br />
-      <hr className={classes.line} />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <div className={classes.final} id="myPaint">
-          <div>
-            {[...Array(5).keys()].reverse().map(i => {
-              const value: number = Math.pow(2, i + 2);
-              return (
-                <Button
-                  className={classes.finalBtn}
-                  onClick={event => handleFinalTournament(event, value)}
-                  key={i}
-                >
-                  {value}강
-                </Button>
-              );
-            })}
+          <Typography color="textPrimary" variant="h5">
+            본선
+          </Typography>
+        </CustomExPanelSummary>
+
+        <CustomExPanelDetails className={classes.detail}>
+          <div className={classes.final} id="myPaint">
+            <div>
+              {[...Array(5).keys()].reverse().map(i => {
+                const value: number = Math.pow(2, i + 2);
+                return (
+                  <Button
+                    className={classes.finalBtn}
+                    onClick={event => handleFinalTournament(event, value)}
+                    key={i}
+                  >
+                    {value}강
+                  </Button>
+                );
+              })}
+            </div>
+            <br />
+            <div className={classes.dragTarget}>
+              <DroppableWrapper numOfBoxes={round} teamList={teamList} />
+            </div>
+            <br />
+            <DraggableTeamList teamList={teamList}></DraggableTeamList>
           </div>
-          <br />
-          <div className={classes.dragTarget}>
-            <DroppableWrapper numOfBoxes={round} teamList={teamList} />
-          </div>
-          <br />
-          <DraggableTeamList teamList={teamList}></DraggableTeamList>
-        </div>
-      </Collapse>
+        </CustomExPanelDetails>
+      </CustomExPanel>
     </div>
   );
 };
 
-const teamsWithWildCard = (teamList: Array<string>, numOfWild: number): Array<string> => {
-  const teams: Array<string> = [...teamList]
-  for (let i = 0; i < numOfWild; i++)
-    teams.push(`WildCard${i}`)
+const teamsWithWildCard = (
+  teamList: Array<string>,
+  numOfWild: number
+): Array<string> => {
+  const teams: Array<string> = [...teamList];
+  for (let i = 0; i < numOfWild; i++) teams.push(`WildCard${i}`);
 
   return teams;
-
-}
+};

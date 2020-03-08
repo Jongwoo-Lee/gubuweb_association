@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import { CupMatchInfo } from "../../../context/cup/cupMatch";
@@ -15,16 +15,14 @@ import { GameInfoInput } from "./GameInfoInput";
 const useStyles = makeStyles({
   root: {
     width: "80%",
-    margin: "50px 0px 0px 0px",
+    margin: "50px 0px 0px 0px"
   },
   card: {
     display: "flex",
     flexDirection: "column",
-    // width: "800px", // expansionPanel width가 변하는 것 -> flex Grow와 관게 있는 듯 찾아봐서 고정시킬 것..
     alignItems: "center"
   }
-}
-);
+});
 export interface PreliminaryProps {
   matchInfo: CupMatchInfo;
   planPre: PlanPreliminary;
@@ -68,8 +66,8 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
                   planPre={props.planPre}
                 />
               ) : (
-                  <div></div>
-                );
+                <div></div>
+              );
             })}
         </CustomExPanelDetails>
       </CustomExPanel>

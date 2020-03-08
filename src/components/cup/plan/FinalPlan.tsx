@@ -8,7 +8,6 @@ import {
   CustomExPanelDetails
 } from "../CustomExPanel";
 import { ExpandMore } from "@material-ui/icons";
-import { useFinalTeams } from "../../../context/cup/cupMatch";
 import { PlanFinal } from "../../../context/cup/cup";
 import { GameInfoInput } from "./GameInfoInput";
 import { PlanFinalCards } from "./PlanFinalCards";
@@ -23,8 +22,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center"
   }
-}
-);
+});
 
 export interface FinalProps {
   matchInfo: CupMatchInfo;
