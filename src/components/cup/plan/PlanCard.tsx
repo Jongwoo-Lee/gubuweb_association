@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Card,
-  Typography,
-  Grid,
-  Button,
-  Input,
-  ExpansionPanelDetails
-} from "@material-ui/core";
+import { Card, Typography, Grid, Button, Input } from "@material-ui/core";
 import { DatePickerDlg, ExitWithID } from "./DatePickerDlg";
 
 const useStyles = makeStyles({
@@ -17,7 +10,8 @@ const useStyles = makeStyles({
     margin: "10px"
   },
   card: {
-    justifyContent: "center"
+    justifyContent: "center",
+    margin: "10px 0px 10px 0px"
   },
   paper: {
     textAlign: "center"
@@ -73,11 +67,11 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   };
 
   return (
-    <Card variant="outlined" className={classes.root} >
+    <Card variant="outlined" className={classes.root}>
       <Grid container className={classes.card}>
         <Typography align="center" variant="h6" component="span">
           장소
-            </Typography>
+        </Typography>
         <br />
         <Grid container spacing={3}>
           <Grid item xs className={classes.paper}>
@@ -113,7 +107,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           <Grid item xs={6} className={classes.paper}>
             <Typography align="center" variant="h6" component="span">
               킥오프
-                </Typography>
+            </Typography>
           </Grid>
           <Grid item xs className={classes.paper}>
             <Typography align="center" variant="subtitle1" component="span">
@@ -121,7 +115,6 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             </Typography>
           </Grid>
         </Grid>
-        <br />
 
         <Grid container className={classes.card}>
           <Button variant="contained" onClick={() => handlePopDlg(id)}>
