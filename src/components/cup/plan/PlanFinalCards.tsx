@@ -124,6 +124,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
 
         return (
           <PlanCard
+            title={`${title} - ${index + 1}경기`}
             id={value.id}
             team1UID={value.team1}
             team2UID={value.team2}

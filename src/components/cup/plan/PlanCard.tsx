@@ -5,26 +5,29 @@ import { DatePickerDlg, ExitWithID } from "./DatePickerDlg";
 
 const useStyles = makeStyles({
   root: {
-    display: "flex",
-    flexDirection: "column",
-    margin: "10px"
+    margin: "15px 0px 15px 0px"
   },
   card: {
-    justifyContent: "center",
-    margin: "10px 0px 10px 0px"
+    padding: "30px 30px 30px 30px",
+    minWidth: "600px"
   },
-  paper: {
-    textAlign: "center"
-  },
-  detail: {
-    display: "flex",
-    flexDirection: "column",
+  cardItems: {
     margin: "10px"
+  },
+  textField: {
+    minWidth: "300px"
+  },
+  fixWidth: {
+    minWidth: "120px"
+  },
+  fixWidth2: {
+    minWidth: "100px"
   }
 });
 
 export interface PlanCardProps {
   id: number;
+  title: string;
   team1Group?: string;
   team2Group?: string;
   team1UID: string | null;
@@ -37,6 +40,7 @@ export interface PlanCardProps {
 
 export const PlanCard: React.FC<PlanCardProps> = ({
   id,
+  title,
   team1Group,
   team2Group,
   team1UID,
@@ -67,66 +71,171 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   };
 
   return (
-    <Card variant="outlined" className={classes.root}>
-      <Grid container className={classes.card}>
-        <Typography align="center" variant="h6" component="span">
-          장소
-        </Typography>
-        <br />
-        <Grid container spacing={3}>
-          <Grid item xs className={classes.paper}>
-            <Typography align="center" variant="subtitle1" component="span">
+    <div>
+      <Card variant="outlined" className={classes.root}>
+        <Grid container className={classes.card}>
+          <Grid item xs={12} alignItems="flex-start">
+            <Typography align="left" variant="h6" component="span">
+              {title}
+            </Typography>
+          </Grid>
+          <br />
+
+          <Grid item xs={12} className={classes.cardItems}>
+            <Grid container justify="center" spacing={5}>
+              <Grid item className={classes.fixWidth}>
+                <Typography variant="subtitle1" component="span">
+                  경기 시간
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Input
+                  className={classes.textField}
+                  onClick={() => handlePopDlg(id)}
+                  disabled
+                  name="selTime"
+                  type="text"
+                  id={`time`}
+                  value={kickOffTime}
+                  aria-describedby="component-selTime"
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} className={classes.cardItems}>
+            <Grid container justify="center" spacing={5}>
+              <Grid item className={classes.fixWidth}>
+                <Typography variant="subtitle1" component="span">
+                  장소
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Input
+                  className={classes.textField}
+                  name="location"
+                  type="text"
+                  id={`location`}
+                  value={location}
+                  onChange={e => handleLocation(e, id)}
+                  aria-describedby="component-location"
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            direction="row"
+            justify="space-evenly"
+            alignItems="baseline"
+            className={classes.cardItems}
+          >
+            <Typography
+              align="center"
+              variant="subtitle1"
+              component="span"
+              className={classes.fixWidth2}
+            >
+              Home
+            </Typography>
+            <Typography
+              align="center"
+              variant="subtitle1"
+              className={classes.fixWidth2}
+            >
               {team1Group}
             </Typography>
-          </Grid>
-          <Grid item xs={6} className={classes.paper}>
-            <Input
-              name="location"
-              type="text"
-              id={`${team1Group} - ${team2Group}`}
-              value={location}
-              onChange={e => handleLocation(e, id)}
-              autoFocus
-              autoComplete="location"
-              aria-describedby="component-location"
-            />
-          </Grid>
-          <Grid item xs className={classes.paper}>
-            <Typography align="center" variant="subtitle1" component="span">
+            <Typography
+              align="center"
+              variant="subtitle1"
+              className={classes.fixWidth2}
+            >
+              VS
+            </Typography>
+            <Typography
+              align="center"
+              variant="subtitle1"
+              className={classes.fixWidth2}
+            >
               {team2Group}
             </Typography>
+            <Typography
+              align="center"
+              variant="subtitle1"
+              className={classes.fixWidth2}
+            >
+              Away
+            </Typography>
           </Grid>
-        </Grid>
-        <br />
-        <Grid container spacing={3}>
-          <Grid item xs className={classes.paper}>
-            <Typography align="center" variant="subtitle1" component="span">
+          <Grid
+            container
+            direction="row"
+            justify="space-evenly"
+            alignItems="baseline"
+            className={classes.cardItems}
+          >
+            <Typography
+              align="center"
+              variant="subtitle1"
+              component="span"
+              className={classes.fixWidth2}
+            >
               {team1UID}
             </Typography>
-          </Grid>
-          <Grid item xs={6} className={classes.paper}>
-            <Typography align="center" variant="h6" component="span">
-              킥오프
-            </Typography>
-          </Grid>
-          <Grid item xs className={classes.paper}>
-            <Typography align="center" variant="subtitle1" component="span">
+            <Typography className={classes.fixWidth2} />
+            <Typography className={classes.fixWidth2} />
+            <Typography className={classes.fixWidth2} />
+            <Typography
+              align="center"
+              variant="subtitle1"
+              component="span"
+              className={classes.fixWidth2}
+            >
               {team2UID}
             </Typography>
           </Grid>
-        </Grid>
+          <Grid
+            container
+            direction="row"
+            justify="space-evenly"
+            alignItems="baseline"
+            className={classes.cardItems}
+          >
+            <Typography
+              align="center"
+              variant="subtitle1"
+              component="span"
+              className={classes.fixWidth2}
+            >
+              0
+            </Typography>
+            <Typography className={classes.fixWidth2} />
 
-        <Grid container className={classes.card}>
-          <Button variant="contained" onClick={() => handlePopDlg(id)}>
-            {kickOffTime}
-          </Button>
+            <Button
+              variant="contained"
+              onClick={() => {}}
+              className={classes.fixWidth2}
+            >
+              기록
+            </Button>
+
+            <Typography className={classes.fixWidth2} />
+            <Typography
+              align="center"
+              variant="subtitle1"
+              component="span"
+              className={classes.fixWidth2}
+            >
+              0
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
-      <DatePickerDlg
-        title={"예선 시간 선택"}
-        parentID={selectedID}
-        onClose={handleClose}
-      />
-    </Card>
+        <DatePickerDlg
+          title={"예선 시간 선택"}
+          parentID={selectedID}
+          onClose={handleClose}
+        />
+      </Card>
+    </div>
   );
 };

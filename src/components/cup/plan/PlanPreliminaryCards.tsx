@@ -119,9 +119,8 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
 
         return (
           <PlanCard
-            key={`${convertString(group)} - ${value.team1No} ${convertString(
-              group
-            )} - ${value.team2No}`}
+            title={`${convertString(group)}조 - ${index + 1}경기`}
+            key={`${group}- ${index}`}
             id={value.id}
             team1Group={`${convertString(group)} - ${value.team1No}`}
             team2Group={`${convertString(group)} - ${value.team2No}`}
