@@ -9,6 +9,7 @@ import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
 import { PlanPreliminary } from "../../../context/cup/cup";
 import { ExitWithID, convertKoTime } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
+import { PreGroupTable } from "./preliminaryGroupTable";
 
 interface SubGameInfo {
   // [No: number]: string | null; // 4조(group) - 1 (No)
@@ -22,9 +23,8 @@ interface SubGameInfo {
 }
 
 const useStyles = makeStyles({
-  panel: {
-    width: "90%",
-    margin: "10px"
+  item: {
+    width: "60%"
   }
 });
 
@@ -103,11 +103,8 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
   };
 
   return (
-    <div className={classes.panel}>
-        <Typography align="center" color="textPrimary" variant="h6">
-          {convertString(group)}조
-        </Typography>
-      
+    <div className={classes.item}>
+      <PreGroupTable group={group} data={preliminaryData} />
 
       {createCard().map((value: SubGameInfo, index: number) => {
         let time: string = value?.kickOffTime
