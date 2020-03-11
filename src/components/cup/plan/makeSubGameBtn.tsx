@@ -8,8 +8,9 @@ import { useAssociationValue } from "../../../context/user";
 
 interface MakeSubGameBtnProps {
   group?: number;
-  round: number;
+  id: number;
   subGameID?: string;
+  setGameUID: Function;
 }
 
 const useStyles = makeStyles({
@@ -20,8 +21,9 @@ const useStyles = makeStyles({
 
 export const MakeSubGameBtn: React.FC<MakeSubGameBtnProps> = ({
   group,
-  round,
-  subGameID
+  id,
+  subGameID,
+  setGameUID
 }: MakeSubGameBtnProps) => {
   const classes = useStyles();
   const history = useHistory();
@@ -34,7 +36,8 @@ export const MakeSubGameBtn: React.FC<MakeSubGameBtnProps> = ({
     let gameUID: string | null | undefined = subGameID;
     if (typeof gameUID === "undefined")
       if (ascData && cupID) {
-        gameUID = await makeSubGame(cupID, ascData.uid, round, group);
+        gameUID = await makeSubGame(cupID, ascData.uid, id, group);
+        setGameUID(gameUID, id);
       }
 
     // game 생성 or 이미 있는 game 으로 이동

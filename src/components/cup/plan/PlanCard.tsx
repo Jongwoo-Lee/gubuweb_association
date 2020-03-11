@@ -37,6 +37,7 @@ export interface PlanCardProps {
   kickOffTime: string;
   handleOnLocation: Function;
   handleOnClose: Function;
+  handleOnSetGameUID: Function;
   group?: number;
   round: number;
 }
@@ -52,6 +53,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   kickOffTime,
   handleOnLocation,
   handleOnClose,
+  handleOnSetGameUID,
   group,
   round
 }: PlanCardProps) => {
@@ -74,6 +76,15 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     event.preventDefault();
     handleOnLocation(event.target.value, id);
   };
+
+  const homeAwayList = () => [
+    "HOME",
+    `${team1Group}`,
+    "VS",
+    `${team2Group}`,
+    "AWAY"
+  ];
+  const teamNameList = () => [`${team1UID}`, "", "", "", `${team2UID}`];
 
   return (
     <div>
@@ -135,42 +146,14 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             alignItems="baseline"
             className={classes.cardItems}
           >
-            <Typography
+            {homeAwayList().map((item: string) => <Typography
               align="center"
               variant="subtitle1"
               component="span"
               className={classes.fixWidth2}
             >
-              Home
-            </Typography>
-            <Typography
-              align="center"
-              variant="subtitle1"
-              className={classes.fixWidth2}
-            >
-              {team1Group}
-            </Typography>
-            <Typography
-              align="center"
-              variant="subtitle1"
-              className={classes.fixWidth2}
-            >
-              VS
-            </Typography>
-            <Typography
-              align="center"
-              variant="subtitle1"
-              className={classes.fixWidth2}
-            >
-              {team2Group}
-            </Typography>
-            <Typography
-              align="center"
-              variant="subtitle1"
-              className={classes.fixWidth2}
-            >
-              Away
-            </Typography>
+              item
+            </Typography>)}
           </Grid>
           <Grid
             container
@@ -179,25 +162,15 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             alignItems="baseline"
             className={classes.cardItems}
           >
-            <Typography
+             {teamNameList().map((item: string) => <Typography
               align="center"
               variant="subtitle1"
               component="span"
               className={classes.fixWidth2}
             >
-              {team1UID}
-            </Typography>
-            <Typography className={classes.fixWidth2} />
-            <Typography className={classes.fixWidth2} />
-            <Typography className={classes.fixWidth2} />
-            <Typography
-              align="center"
-              variant="subtitle1"
-              component="span"
-              className={classes.fixWidth2}
-            >
-              {team2UID}
-            </Typography>
+              item
+            </Typography>)}
+            
           </Grid>
           <Grid
             container
@@ -216,7 +189,11 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             </Typography>
             <Typography className={classes.fixWidth2} />
 
-            <MakeSubGameBtn group={group} round={round} />
+            <MakeSubGameBtn
+              group={group}
+              id={round}
+              setGameUID={handleOnSetGameUID}
+            />
 
             <Typography className={classes.fixWidth2} />
             <Typography

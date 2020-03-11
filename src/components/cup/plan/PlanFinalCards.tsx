@@ -63,6 +63,18 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
     setPlanFinal(newPlan);
   };
 
+  // 요건 자동 저장한다.
+  const setGameUID = (gameUID: string, id: number) => {
+    let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
+
+    if (!newPlan)
+      newPlan = { gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 } };
+    if (!newPlan[id]) newPlan[id] = { kt: null, lo: null, gid: gameUID };
+    newPlan[id].gid = gameUID;
+
+    setPlanFinal(newPlan);
+  };
+
   const createCard = () => {
     const arr: Array<SubGameInfo> = [];
     let subGameId: number = title;
@@ -132,6 +144,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
             kickOffTime={time}
             handleOnLocation={setLocation}
             handleOnClose={setClose}
+            handleOnSetGameUID={setGameUID}
             round={value.id}
           />
         );
