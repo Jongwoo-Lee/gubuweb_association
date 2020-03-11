@@ -1,7 +1,7 @@
 import Firebase from "../Firebase";
-import { COL_ASC } from "../../constants/firestore";
+import { COL_ASC, COL_TEAMS } from "../../constants/firestore";
 import firebase from "firebase";
-import { teamInviteDocRef } from "./team";
+import { teamInviteDocRef, Team, ascTeamConverter } from "./team";
 
 // interface FirestoreAsc {
 //   uid: string | null;
@@ -33,8 +33,8 @@ export class Association {
     myTeamList?: string[] | undefined,
     cupList?: string[] | undefined
   ) {
-    this.name = name ?? null;
     this.uid = uid;
+    this.name = name ?? null;
     this.email = email;
     this.isVerified = isVerified ?? false;
     this.phoneNumber = phoneNumber ?? null;
@@ -118,29 +118,42 @@ export const updateURL = async (uid: string, url: string) =>
       throw err;
     });
 
-export const batchInviteTeam = (ascUID: string, teamUID: string) => {
+export const batchInviteTeam = (ascUID: string, team: Team) => {
   const batch = Firebase.firestore.batch();
   const invitedAt = new Date();
+  team.invitedAt = invitedAt;
+  team.isVerified = team.isVerified ?? false;
 
-  const ascRef = ascTeamListDocRef(ascUID, teamUID);
+  const ascRef = ascTeamListDocRef(ascUID, team.uid);
   batch.set(
     ascRef,
-    {
-      [COL_ASC.INVITEDAT]: invitedAt,
-      [COL_ASC.ISVERIFIED]: false
-    },
+    team,
     { merge: true }
+    // {
+    //   [COL_ASC.INVITEDAT]: invitedAt,
+    //   [COL_ASC.ISVERIFIED]: false,
+    //   [COL_TEAMS.TEAMS_LOGO]: team.logo,
+    //   [COL_TEAMS.TEAMS_NAME]: team.name,
+    //   [COL_TEAMS.TEAMS_AGE]: team.age,
+    //   [COL_TEAMS.TEAMS_GENDER]: team.gender,
+    //   [COL_TEAMS.TEAMS_MANAGER]: team.manager,
+    //   [COL_TEAMS.TEAMS_REGION]: team.region,
+    //   [COL_TEAMS.TEAMS_INITIAL]: team.initial
+    // },
   );
 
-  const teamRef = teamInviteDocRef(teamUID);
+  const teamRef = teamInviteDocRef(team.uid);
   batch.set(teamRef, { [ascUID]: invitedAt }, { merge: true });
 
   return batch.commit();
 };
 
-const ascTeamListDocRef = (ascUID: string, teamUID: string) =>
+export const ascTeamListColRef = (ascUID: string) =>
   Firebase.firestore
     .collection(COL_ASC.ASSOC)
     .doc(ascUID)
     .collection(COL_ASC.MYTEAMLIST)
-    .doc(teamUID);
+    .withConverter(ascTeamConverter);
+
+const ascTeamListDocRef = (ascUID: string, teamUID: string) =>
+  ascTeamListColRef(ascUID).doc(teamUID);

@@ -17,6 +17,10 @@ export const customTheme = createMuiTheme({
     text: {
       primary: "#333333",
       secondary: "#ffffff"
+    },
+    background: {
+      default: "#ffffff",
+      paper: "#ffffff"
     }
   }
 });
