@@ -40,7 +40,7 @@ export const useLoadTeam = (ascData: FirebaseAsc) => {
     return () => {
       listener();
     };
-  });
+  }, [ascData]);
 
   return { teams, setTeams };
 };

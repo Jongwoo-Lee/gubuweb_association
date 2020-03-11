@@ -121,13 +121,15 @@ export const updateURL = async (uid: string, url: string) =>
 export const batchInviteTeam = (ascUID: string, team: Team) => {
   const batch = Firebase.firestore.batch();
   const invitedAt = new Date();
-  team.invitedAt = invitedAt;
-  team.isVerified = team.isVerified ?? false;
 
-  const ascRef = ascTeamListDocRef(ascUID, team.uid);
+  const batchTeam = Team.fromTeam(team);
+  batchTeam.invitedAt = invitedAt;
+  batchTeam.isVerified = batchTeam.isVerified ?? false;
+
+  const ascRef = ascTeamListDocRef(ascUID, batchTeam.uid);
   batch.set(
     ascRef,
-    team,
+    batchTeam,
     { merge: true }
     // {
     //   [COL_ASC.INVITEDAT]: invitedAt,
@@ -142,10 +144,14 @@ export const batchInviteTeam = (ascUID: string, team: Team) => {
     // },
   );
 
-  const teamRef = teamInviteDocRef(team.uid);
+  const teamRef = teamInviteDocRef(batchTeam.uid);
   batch.set(teamRef, { [ascUID]: invitedAt }, { merge: true });
 
   return batch.commit();
+};
+
+export const batchDeleteInviteTeam = (ascUID: string, team: Team) => {
+  const batch = Firebase.firestore.batch();
 };
 
 export const ascTeamListColRef = (ascUID: string) =>

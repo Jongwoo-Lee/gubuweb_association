@@ -4,19 +4,22 @@ import { batchInviteTeam } from "../../helpers/Firebase/asc";
 import { Dialog, DialogTitle, Button, Snackbar } from "@material-ui/core";
 import { TeamInfo } from "../common/TeamInfo";
 import { useAssociationValue } from "../../context/user";
+import { FORMTEXT } from "../../constants/texts";
 
 export interface TeamInviteDlgProps {
   title: string;
   open: boolean;
   team: Team;
   onClose: Function;
+  isDelete?: boolean;
 }
 
 export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
   title,
   open,
   team,
-  onClose
+  onClose,
+  isDelete
 }: TeamInviteDlgProps) => {
   const ascData = useAssociationValue();
   const [isLoading, setLoading] = useState(false);
@@ -30,16 +33,18 @@ export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
     setLoading(true);
 
     if (ascData !== null) {
-      await batchInviteTeam(ascData.uid, team)
-        .then(() => {
-          setLoading(false);
-          onClose(true);
-        })
-        .catch(err => {
-          setLoading(false);
-          setFailure(true);
-          console.log(err);
-        });
+      isDelete
+        ? onClose(true)
+        : await batchInviteTeam(ascData.uid, team)
+            .then(() => {
+              setLoading(false);
+              onClose(true);
+            })
+            .catch(err => {
+              setLoading(false);
+              setFailure(true);
+              console.log(err);
+            });
     }
     if (isLoading === true) setLoading(false);
   };
@@ -47,6 +52,7 @@ export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
   const handleSnackBarClose = (e: React.SyntheticEvent) => {
     e && e.preventDefault();
     setFailure(false);
+    setLoading(false);
   };
 
   return (
@@ -58,13 +64,13 @@ export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
       <DialogTitle id="teaminfo-dialog-title">{title}</DialogTitle>
       <TeamInfo team={team} />
       <Button onClick={handleInvite} disabled={isLoading}>
-        초대
+        {isDelete ? "초대 취소" : "초대"}
       </Button>
       <Snackbar
         open={isFailure}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        message="초대가 실패했습니다."
-        autoHideDuration={6000}
+        message={isDelete ? FORMTEXT.DELETE_INVITE_FAIL : FORMTEXT.INVITE_FAIL}
+        autoHideDuration={5000}
         onClose={handleSnackBarClose}
       />
     </Dialog>

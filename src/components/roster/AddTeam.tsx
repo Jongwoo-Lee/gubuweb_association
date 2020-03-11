@@ -53,34 +53,32 @@ export const AddTeam: React.FC<AddTeamProps> = () => {
 
   return (
     <div className={classes.root}>
-      <SendBooleanProvider>
-        <TitleGoBack title="팀 추가" />
-        <br />
-        <Typography className={classes.title} variant="body1">
-          {FORMTEXT.ADD_TEAM_PLHD}
-        </Typography>
-        <FormControl
-          className={classes.formControl}
-          error={searchTeam.error !== undefined && searchTeam.error.length > 0}
-        >
-          <Input
-            name="name"
-            type="text"
-            id="name"
-            value={searchTeam.value}
-            onChange={handleSearchTeam}
-            autoFocus
-            autoComplete="current-team"
-            aria-describedby="component-add-team-text"
-          />
-          <FormHelperText id="component-add-team-text">
-            {searchTeam.error !== undefined &&
-              searchTeam.error.length > 0 &&
-              searchTeam.error}
-          </FormHelperText>
-        </FormControl>
-        <SearchTeams teams={teams} />
-      </SendBooleanProvider>
+      <TitleGoBack title={FORMTEXT.ADD_TEAM} />
+      <br />
+      <Typography className={classes.title} variant="body1">
+        {FORMTEXT.ADD_TEAM_PLHD}
+      </Typography>
+      <FormControl
+        className={classes.formControl}
+        error={searchTeam.error !== undefined && searchTeam.error.length > 0}
+      >
+        <Input
+          name="name"
+          type="text"
+          id="name"
+          value={searchTeam.value}
+          onChange={handleSearchTeam}
+          autoFocus
+          autoComplete="current-team"
+          aria-describedby="component-add-team-text"
+        />
+        <FormHelperText id="component-add-team-text">
+          {searchTeam.error !== undefined &&
+            searchTeam.error.length > 0 &&
+            searchTeam.error}
+        </FormHelperText>
+      </FormControl>
+      <SearchTeams teams={teams} />
     </div>
   );
 };

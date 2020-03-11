@@ -4,11 +4,13 @@ import { RouteComponentProps, Route } from "react-router-dom";
 import { TitleGoBack } from "../common/TitleGoBack";
 import { ROUTENAMES, ROUTES } from "../../constants/routes";
 import { SquareRouteButton } from "../common/SquareButton";
+import { TeamRouteButton } from "./TeamRouteButton";
 import AddIcon from "@material-ui/icons/Add";
 import { AddTeam } from "./AddTeam";
 import { Team } from "../../helpers/Firebase/team";
 import TeamIcon from "../../images/team_off.svg";
 import { TeamProvider, useTeams } from "../../context/team/team";
+import { SendBooleanProvider } from "../../context/common/commonContext";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,24 +47,21 @@ export const RosterComponent: React.FC<RosterProps> = () => {
 
   return (
     <div className={classes.root}>
-      <TitleGoBack title={ROUTENAMES.ROSTER} />
-      <div className={classes.cards}>
-        <SquareRouteButton
-          title={ROUTENAMES.ADD_TEAM}
-          route={ROUTES.ADD_ROSTER}
-          ImgIcon={AddIcon}
-        />
-        {teams && (teams.length > 0) &&
-          teams.map((team: Team) =>
-            <SquareRouteButton
-              key={team.name}
-              title={team.name}
-              route={team.name}
-              imgSrc={team.logo ?? TeamIcon}
-            />
-          )
-        }
-      </div>
+      <SendBooleanProvider>
+        <TitleGoBack title={ROUTENAMES.ROSTER} />
+        <div className={classes.cards}>
+          <SquareRouteButton
+            title={ROUTENAMES.ADD_TEAM}
+            route={ROUTES.ADD_ROSTER}
+            ImgIcon={AddIcon}
+          />
+          {teams &&
+            teams.length > 0 &&
+            teams.map((team: Team) => (
+              <TeamRouteButton key={team.uid} team={team} />
+            ))}
+        </div>
+      </SendBooleanProvider>
     </div>
   );
 };

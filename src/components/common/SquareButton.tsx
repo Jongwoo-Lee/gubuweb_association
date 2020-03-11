@@ -24,6 +24,7 @@ export interface SquareButtonProps {
   imgSrc?: string;
   ImgIcon?(icon: SvgIconProps): JSX.Element;
   clickEvent: MouseEventHandler;
+  isVerified?: boolean;
 }
 
 export interface SquareRouteButtonProps {
@@ -65,7 +66,8 @@ export const SquareButton: React.FC<SquareButtonProps> = ({
   title,
   imgSrc,
   ImgIcon,
-  clickEvent
+  clickEvent,
+  isVerified
 }: SquareButtonProps) => {
   const classes = useStyles();
   const handleCardClick: MouseEventHandler = clickEvent;
@@ -84,6 +86,8 @@ export const SquareButton: React.FC<SquareButtonProps> = ({
         {ImgIcon !== undefined && <ImgIcon style={{ fontSize: "150px" }} />}
 
         <br />
+        {isVerified === true && "승인"}
+        {isVerified === false && "승인대기"}
         <Typography align="center" variant="body1" component="span">
           {title}
         </Typography>

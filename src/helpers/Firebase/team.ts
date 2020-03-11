@@ -40,6 +40,17 @@ export class Team {
     this.isVerified = info.isVerified ?? undefined;
   }
 
+  static fromTeam(team: Team) {
+    return new Team(team.uid, team.name, team.initial, team.manager, {
+      region: team.region,
+      gender: team.gender,
+      age: team.age,
+      logo: team.logo,
+      invitedAt: team.invitedAt,
+      isVerified: team.isVerified
+    });
+  }
+
   parseValue(value: string): string | string[] {
     let returnV: string | string[];
     switch (value) {
@@ -72,26 +83,32 @@ export class Team {
 
 export const getTeamInfo = (team: Team) => {
   const teamScope: string[] = [
-    "매니저",
     "팀 이름",
+    "매니저",
     "활동 지역",
-    "팀 연령",
-    "팀 성별"
+    "연령대",
+    "성별"
   ];
-  const managers: string[] = Object.values(team.manager);
-  const teamValue = [
-    managers.join(","),
-    team.name,
-    team.region,
-    "10대", //team.age,
-    team.gender
-  ];
-  let teamInfo: Map<string, string> = new Map<string, string>();
+  // const managers: string[] = Object.values(team.manager);
+  // const teamValue = [
+  //   team.name,
+  //   managers.join(","),
+  //   team.region,
+  //   team.age?.toString(),
+  //   team.gender
+  // ];
+  // let teamInfo: Map<string, string> = new Map<string, string>();
 
-  for (let i = 0; i < teamScope.length; i++)
-    teamInfo.set(teamScope[i], teamValue[i] ?? "");
+  // for (let i = 0; i < teamScope.length; i++)
+  //   teamInfo.set(teamScope[i], teamValue[i] ?? "");
 
-  return teamInfo;
+  return {
+    "팀 이름": team.name,
+    매니저: Object.values(team.manager).join(","),
+    "활동 지역": team.region,
+    연령대: team.age?.toString(),
+    성별: team.gender
+  };
 };
 
 export const ascTeamConverter = {
@@ -100,12 +117,12 @@ export const ascTeamConverter = {
       [COL_TEAMS.TEAMS_NAME]: team.name,
       [COL_TEAMS.TEAMS_MANAGER]: team.manager,
       [COL_TEAMS.TEAMS_INITIAL]: team.initial,
-      [COL_TEAMS.TEAMS_LOGO]: team.logo ?? "",
+      [COL_TEAMS.TEAMS_LOGO]: team.logo ?? null,
       [COL_TEAMS.TEAMS_AGE]: team.age ?? [],
-      [COL_TEAMS.TEAMS_REGION]: team.region ?? "",
-      [COL_TEAMS.TEAMS_GENDER]: team.gender ?? "",
+      [COL_TEAMS.TEAMS_REGION]: team.region ?? null,
+      [COL_TEAMS.TEAMS_GENDER]: team.gender ?? null,
       [COL_ASC.INVITEDAT]: team.invitedAt,
-      [COL_ASC.ISVERIFIED]: team.isVerified
+      [COL_ASC.ISVERIFIED]: team.isVerified ?? false
     };
   },
   fromFirestore: (

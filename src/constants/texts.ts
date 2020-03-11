@@ -66,7 +66,11 @@ export const FORMTEXT = {
   ALLOWED: "허용",
   ALLOWEDRANGE: "허용 선수 범위",
   DOCUMENTS_NEEDED: "필요 제출 서류",
-  DOCUMENTS_INFO: "(문서, 사진 파일. 최대 3개)"
+  DOCUMENTS_INFO: "(문서, 사진 파일. 최대 3개)",
+  INVITE_SUCCESS: "초대를 성공적으로 보냈습니다",
+  INVITE_FAIL: "초대가 실패했습니다",
+  DELETE_INVITE_SUCCESS: "초대를 취소했습니다",
+  DELETE_INVITE_FAIL: "초대 취소가 실패했습니다"
 };
 
 export const ERROR = {

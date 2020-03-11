@@ -36,37 +36,48 @@ export interface TeamInfoProps {
 
 export const TeamInfo: React.FC<TeamInfoProps> = ({ team }: TeamInfoProps) => {
   const classes = useStyles();
-  const teamInfo: Map<string, string> = getTeamInfo(team);
-
-  const tableComponent: JSX.Element[] = new Array<JSX.Element>();
-  teamInfo.forEach((value: string, key: string, _: Map<string, string>) => {
-    tableComponent.push(
-      <TableRow key={key}>
-        <TableCell>{key}</TableCell>
-        <TableCell align="center">{value}</TableCell>
-      </TableRow>
-    );
-  });
 
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent className={classes.logo}>
-        {team.logo !== undefined && (
-          <img
-            alt="teamlogo"
-            src={team.logo ?? TeamIcon}
-            style={{ width: "100px", height: "100px" }}
-          />
-        )}
+        <img
+          alt="teamlogo"
+          src={team.logo ?? TeamIcon}
+          style={{ width: "100px", height: "100px" }}
+        />
       </CardContent>
       <CardContent>
         <Table className={classes.table}>
           <TableBody>
-            {tableComponent.length > 0 &&
-              tableComponent.map((e: JSX.Element) => e)}
+            {teamTableCells(team)}
+            {/* {tableComponent.length > 0 &&
+              tableComponent.map((e: JSX.Element) => e)} */}
           </TableBody>
         </Table>
       </CardContent>
     </Card>
   );
 };
+
+// Object entries Map
+const teamTableCells = (team: Team) => {
+  return Object.entries(getTeamInfo(team)).map(([key, value]) => {
+    return (
+      <TableRow key={key}>
+        <TableCell>{key}</TableCell>
+        <TableCell align="center">{value}</TableCell>
+      </TableRow>
+    );
+  });
+};
+
+// const teamInfo: Map<string, string> = getTeamInfo(team);
+// const tableComponent: JSX.Element[] = new Array<JSX.Element>();
+
+// teamInfo.forEach((value: string, key: string, _: Map<string, string>) => {
+//   tableComponent.push(
+//     <TableRow key={key}>
+//       <TableCell>{key}</TableCell>
+//       <TableCell align="center">{value}</TableCell>
+//     </TableRow>
+//   );
