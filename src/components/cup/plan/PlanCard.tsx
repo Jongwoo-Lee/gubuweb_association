@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Typography, Grid, Button, Input } from "@material-ui/core";
 import { DatePickerDlg, ExitWithID } from "./DatePickerDlg";
+import { useHistory, useLocation } from "react-router-dom";
+import { ROUTES } from "../../../constants/routes";
 
 const useStyles = makeStyles({
   root: {
@@ -50,6 +52,8 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   handleOnLocation,
   handleOnClose
 }: PlanCardProps) => {
+  const history = useHistory();
+  const { pathname } = useLocation();
   const classes = useStyles();
   const [selectedID, setSelectedID] = useState(-1); //=> -1이면 no
 
@@ -68,6 +72,13 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   ) => {
     event.preventDefault();
     handleOnLocation(event.target.value, id);
+  };
+
+  const handleRecordClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // game 생성 or 이미 있는 game 으로 이동
+
+    history.push(pathname + ROUTES.CUP_DETAIL_RECORD);
   };
 
   return (
@@ -213,7 +224,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 
             <Button
               variant="contained"
-              onClick={() => {}}
+              onClick={handleRecordClick}
               className={classes.fixWidth2}
             >
               기록
