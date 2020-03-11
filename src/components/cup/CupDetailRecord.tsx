@@ -1,22 +1,10 @@
 import React from "react";
-import { ROUTENAMES } from "../../constants/routes";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { TitleGoBack } from "../common/TitleGoBack";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, Route } from "react-router-dom";
+import { CupInfo } from "../../helpers/Firebase/cup";
+import { useCupsInfo, useCurCupID } from "../../context/cup/cup";
+import { WrapCupDetailRecord } from "./record/WrapCupDetailRecord";
 
 export interface CupDetailRecordProps {}
-
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  cards: {
-    display: "flex",
-    marginTop: "40px",
-    flexWrap: "wrap"
-  }
-});
 
 interface MatchRecordParams {
   gameID: string;
@@ -27,18 +15,27 @@ interface MatchRecordParams {
 export const CupDetailRecord: React.FC<RouteComponentProps<
   MatchRecordParams
 >> = (props: RouteComponentProps<MatchRecordParams>) => {
-  const classes = useStyles();
-
   const gameID: string = props.match.params.gameID;
   const id: string = props.match.params.id;
   const group: string = props.match.params.group;
 
-  console.log(`gameID - ${gameID} id - ${id} group - ${group}`);
+  const cupID = useCurCupID();
+  const cupsInfo = useCupsInfo();
+  let cupInfo: CupInfo | undefined =
+    cupsInfo && cupID ? cupsInfo[cupID] : undefined;
 
-  return (
-    <div className={classes.root}>
-      <TitleGoBack title={ROUTENAMES.CUP_DETAIL_RECORD} />
-      <div className={classes.cards}>{ROUTENAMES.CUP_DETAIL_RECORD}</div>
+  return cupInfo ? (
+    <div>
+      <Route exact path={props.match.path}>
+        <WrapCupDetailRecord
+          cupInfo={cupInfo}
+          gameID={gameID}
+          id={Number(id)}
+          group={Number(group)}
+        />
+      </Route>
     </div>
+  ) : (
+    <div></div>
   );
 };

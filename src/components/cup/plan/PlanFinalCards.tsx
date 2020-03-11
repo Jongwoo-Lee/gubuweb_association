@@ -8,17 +8,8 @@ import {
 import { PlanFinal } from "../../../context/cup/cup";
 import { ExitWithID, convertKoTime } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
-
-interface SubGameInfo {
-  // [No: number]: string | null; // 4조(group) - 1 (No)
-  team1: string | null;
-  team2: string | null;
-  // team1No: number;
-  // team2No: number;
-  location?: string;
-  kickOffTime?: string;
-  id: number;
-}
+import { SubGameInfo } from "../../../context/game/game";
+import { firestore } from "firebase";
 
 const useStyles = makeStyles({
   panel: {
@@ -46,9 +37,11 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
 
     if (!newPlan)
       newPlan = { gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 } };
-    if (!newPlan[obj.id]) newPlan[obj.id] = { kt: null, lo: null };
+    if (!newPlan[obj.id]) newPlan[obj.id] = {};
 
-    newPlan[obj.id].kt = obj.date?.toJSON() ?? null;
+    newPlan[obj.id].kt = firestore.Timestamp.fromDate(
+      new Date(obj.date.toJSON())
+    );
 
     setPlanFinal(newPlan);
   };
@@ -57,7 +50,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
     let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
     if (!newPlan)
       newPlan = { gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 } };
-    if (!newPlan[id]) newPlan[id] = { kt: null, lo: null };
+    if (!newPlan[id]) newPlan[id] = {};
     newPlan[id].lo = location;
 
     setPlanFinal(newPlan);
@@ -69,7 +62,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
 
     if (!newPlan)
       newPlan = { gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 } };
-    if (!newPlan[id]) newPlan[id] = { kt: null, lo: null, gid: gameUID };
+    if (!newPlan[id]) newPlan[id] = { gid: gameUID };
     newPlan[id].gid = gameUID;
 
     setPlanFinal(newPlan);
@@ -95,17 +88,17 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
           ? planFinal[subGameId].lo ?? ""
           : "";
 
-      const time: string | null =
+      const time: firestore.Timestamp | undefined =
         planFinal[subGameId] && planFinal[subGameId].kt
-          ? planFinal[subGameId].kt ?? null
-          : null;
+          ? planFinal[subGameId].kt ?? undefined
+          : undefined;
 
       arr.push({
         team1: team1,
         team2: team2,
         id: subGameId,
         location: location,
-        kickOffTime: time ?? undefined
+        kickOffTime: time
       });
       subGameId--;
     }
@@ -126,9 +119,16 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
       </ExpansionPanelSummary>
 
       {createCard().map((value: SubGameInfo, index: number) => {
-        let time: string = value?.kickOffTime
-          ? convertKoTime(value?.kickOffTime)
-          : "시간 설정";
+        let time: string = "";
+        // TypeScript에서 firebase timeStamp와 Date 타입체크 버그가 있고
+        // 자바스크립트로 오브젝트의 타입이 timeStamp인지 Date인지 체크가 안됨.... 음..
+        // if (typeof value?.kickOffTime !== "undefined") {
+        if (
+          (value?.kickOffTime ?? false) &&
+          typeof value?.kickOffTime !== "undefined"
+        ) {
+          time = convertKoTime(value?.kickOffTime.toDate());
+        }
         const location: string =
           planFinal && planFinal[value.id] && planFinal[value.id].lo
             ? planFinal[value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯

@@ -10,17 +10,8 @@ import { PlanPreliminary } from "../../../context/cup/cup";
 import { ExitWithID, convertKoTime } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
 import { PreGroupTable } from "./preliminaryGroupTable";
-
-interface SubGameInfo {
-  // [No: number]: string | null; // 4조(group) - 1 (No)
-  team1: string | null;
-  team1No: number;
-  team2: string | null;
-  team2No: number;
-  location?: string;
-  kickOffTime?: string;
-  id: number;
-}
+import { SubGameInfo } from "../../../context/game/game";
+import { firestore } from "firebase";
 
 const useStyles = makeStyles({
   item: {
@@ -50,10 +41,11 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
     const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
 
     if (!newPlan[group]) newPlan[group] = {};
-    if (!newPlan[group][obj.id])
-      newPlan[group][obj.id] = { kt: null, lo: null };
+    if (!newPlan[group][obj.id]) newPlan[group][obj.id] = {};
 
-    newPlan[group][obj.id].kt = obj.date?.toJSON() ?? null;
+    newPlan[group][obj.id].kt = firestore.Timestamp.fromDate(
+      new Date(obj.date.toJSON())
+    );
 
     setPlanPre(newPlan);
   };
@@ -61,7 +53,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
   const setLocation = (location: string, id: number) => {
     const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
     if (!newPlan[group]) newPlan[group] = {};
-    if (!newPlan[group][id]) newPlan[group][id] = { kt: null, lo: null };
+    if (!newPlan[group][id]) newPlan[group][id] = {};
     newPlan[group][id].lo = location;
 
     setPlanPre(newPlan);
@@ -71,8 +63,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
   const setGameUID = (gameUID: string, id: number) => {
     const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
     if (!newPlan[group]) newPlan[group] = {};
-    if (!newPlan[group][id])
-      newPlan[group][id] = { kt: null, lo: null, gid: gameUID };
+    if (!newPlan[group][id]) newPlan[group][id] = { gid: gameUID };
     newPlan[group][id].gid = gameUID;
 
     setPlanPre(newPlan);
@@ -91,12 +82,12 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
               ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
               : "";
 
-          const time: string | null =
+          const time: firestore.Timestamp | undefined =
             planPre[group] &&
             planPre[group][subGameId] &&
             planPre[group][subGameId].kt
-              ? planPre[group][subGameId].kt ?? null
-              : null;
+              ? planPre[group][subGameId].kt ?? undefined
+              : undefined;
 
           arr.push({
             team1: preliminaryData[group][i] ?? null,
@@ -105,7 +96,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
             team2No: j + 1,
             id: subGameId,
             location: location,
-            kickOffTime: time ?? undefined
+            kickOffTime: time
           });
           subGameId++;
         }
@@ -118,9 +109,13 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
       <PreGroupTable group={group} data={preliminaryData} />
 
       {createCard().map((value: SubGameInfo, index: number) => {
-        let time: string = value?.kickOffTime
-          ? convertKoTime(value?.kickOffTime)
-          : "시간 설정";
+        let time: string = "";
+        if (
+          (value?.kickOffTime ?? false) &&
+          typeof value?.kickOffTime !== "undefined"
+        ) {
+          time = convertKoTime(value?.kickOffTime.toDate());
+        }
         const location: string =
           planPre[group] &&
           planPre[group][value.id] &&

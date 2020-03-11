@@ -35,7 +35,7 @@ export const WrapCupDetailPlans: React.FC<WrapCupDetailPlanProps> = ({
       ? fromMatchInfo(cupInfo?.matchInfo ?? undefined) // cupInfo?.matchInfo <-- ? 없앨수 없는 버그
       : fromMatchInfo();
   const [planPre, setPlanPre] = useState<PlanPreliminary>(
-    cupInfo?.matchPlan?.p ?? {
+    cupInfo.matchPlan?.p ?? {
       gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
     }
   );
@@ -95,20 +95,16 @@ export const WrapCupDetailPlans: React.FC<WrapCupDetailPlanProps> = ({
 };
 
 const remakeFinalPlan = (
-  cupInfo: CupInfo | undefined,
+  cupInfo: CupInfo,
   matchInfo: CupMatchInfo
 ): PlanFinal => {
-  if (typeof cupInfo === "undefined") {
-    return {
-      gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
-    };
-  }
   let finalPlan: PlanFinal = {
     gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
   };
 
-  if (cupInfo && cupInfo.matchPlan) {
+  if (cupInfo.matchPlan) {
     finalPlan = cupInfo.matchPlan.f;
+
     if (finalPlan.t) {
       const round: number = Number(matchInfo.f.round);
 

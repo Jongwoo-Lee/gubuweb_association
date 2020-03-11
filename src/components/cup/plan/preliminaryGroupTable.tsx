@@ -60,7 +60,6 @@ export const PreGroupTable: React.FC<PreGroupTableProps> = ({
   data
 }: PreGroupTableProps) => {
   const classes = useStyles();
-  console.dir(data);
   const numOfTeams: number = data[group].t;
 
   return (

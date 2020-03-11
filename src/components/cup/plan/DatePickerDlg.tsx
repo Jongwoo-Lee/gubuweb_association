@@ -129,11 +129,8 @@ export const DatePickerDlg: React.FC<DatePickerDlgProps> = ({
   );
 };
 
-export const convertKoTime = (date: Date | string) => {
-  let newDate: Date;
-  if (typeof date === "string") newDate = new Date(date);
-  else newDate = date;
-
+export const convertKoTime = (date: Date) => {
+  let newDate: Date = new Date(date);
   const hours: number = newDate.getHours();
   let hourStr: string =
     hours >= 12 ? `오후 ${hours - 12}시` : `오전 ${hours}시`;

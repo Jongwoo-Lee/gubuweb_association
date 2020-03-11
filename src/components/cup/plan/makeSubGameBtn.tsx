@@ -3,7 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { ROUTES } from "../../../constants/routes";
 import React from "react";
 import { useCurCupID, useCupsInfo } from "../../../context/cup/cup";
-import { makeSubGame } from "../../../helpers/Firebase/cup";
+import { makeSubGame } from "../../../helpers/Firebase/game";
 import { useAssociationValue } from "../../../context/user";
 
 interface MakeSubGameBtnProps {

@@ -146,14 +146,16 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             alignItems="baseline"
             className={classes.cardItems}
           >
-            {homeAwayList().map((item: string) => <Typography
-              align="center"
-              variant="subtitle1"
-              component="span"
-              className={classes.fixWidth2}
-            >
-              item
-            </Typography>)}
+            {homeAwayList().map((item: string) => (
+              <Typography
+                align="center"
+                variant="subtitle1"
+                component="span"
+                className={classes.fixWidth2}
+              >
+                {item}
+              </Typography>
+            ))}
           </Grid>
           <Grid
             container
@@ -162,15 +164,16 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             alignItems="baseline"
             className={classes.cardItems}
           >
-             {teamNameList().map((item: string) => <Typography
-              align="center"
-              variant="subtitle1"
-              component="span"
-              className={classes.fixWidth2}
-            >
-              item
-            </Typography>)}
-            
+            {teamNameList().map((item: string) => (
+              <Typography
+                align="center"
+                variant="subtitle1"
+                component="span"
+                className={classes.fixWidth2}
+              >
+                {item ?? ""}
+              </Typography>
+            ))}
           </Grid>
           <Grid
             container

@@ -20,8 +20,8 @@ export interface CupPlan {
 }
 
 interface GameDetailInfo {
-  lo: string | null; // lo -> lOCATION
-  kt: string | null; // kt => KICKOFFTIME
+  lo?: string; // lo -> lOCATION
+  kt?: firebase.firestore.Timestamp | null; // kt => KICKOFFTIME, Save할 때는 Date
   gid?: string; // gid => Game UID
 }
 
