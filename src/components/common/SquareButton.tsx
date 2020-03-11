@@ -32,20 +32,22 @@ export interface SquareRouteButtonProps {
   title: string;
   imgSrc?: string;
   ImgIcon?(icon: SvgIconProps): JSX.Element;
-  clickEvent?: MouseEventHandler;
+  clickEvent?: Function;
 }
 
 export const SquareRouteButton: React.FC<SquareRouteButtonProps> = ({
   title,
   route,
   imgSrc,
-  ImgIcon
+  ImgIcon,
+  clickEvent
 }: SquareRouteButtonProps) => {
   const history = useHistory();
   const { pathname } = useLocation();
 
   const handleCardClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (clickEvent) clickEvent();
     if (pathname === route) {
     } else {
       history.push(route);

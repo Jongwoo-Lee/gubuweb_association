@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, Dispatch, SetStateAction } from "react";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { useCupInfoList } from "../../hooks";
 
-export type ContextSetCupInfos = React.Dispatch<
-  React.SetStateAction<CupInfoObject>
->;
+export type ContextSetCupInfos = Dispatch<SetStateAction<CupInfoObject>>;
 
 export interface GameInfo {
   numOfQuarter: number;
@@ -21,15 +19,20 @@ export interface CupPlan {
   gameInfo: GameInfo;
 }
 
+interface GameDetailInfo {
+  lo: string | null; // lo -> lOCATION
+  kt: string | null; // kt => KICKOFFTIME
+  gid?: string; // gid => Game UID
+}
+
 export interface PlanPreliminary extends CupPlan {
   [group: number]: {
-    [id: number]: { lo: string | null; kt: string | null }; // kt: toJson,
-  }; // lo -> lOCATION, kt => KICKOFFTIME
+    [id: number]: GameDetailInfo; // kt: toJson,
+  };
 }
 
 export interface PlanFinal extends CupPlan {
-  [id: number]: { lo: string | null; kt: string | null }; // kt: toJson
-  // lo -> lOCATION, kt => KICKOFFTIME
+  [id: number]: GameDetailInfo;
   t?: { [team: number]: string }; // 4강 => 8팀
 }
 /* 4강 예시
@@ -52,6 +55,8 @@ interface CupInfoData {
   cupInfos: CupInfoObject | undefined;
   setCupInfos: ContextSetCupInfos;
   isLoading: boolean;
+  curCupID: string | undefined;
+  setCurCupID: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export interface CupInfoObject {
@@ -65,7 +70,11 @@ export const CupInfoContext: React.Context<CupInfoData> = React.createContext<
   setCupInfos: () => {
     console.log("cup no initialize");
   },
-  isLoading: false
+  isLoading: false,
+  curCupID: undefined,
+  setCurCupID: () => {
+    console.log("set curID is not initialized");
+  }
 });
 
 export const CupInfoProvider = (props: {
@@ -84,3 +93,6 @@ export const CupInfoProvider = (props: {
 export const useCupsInfo = () => useContext(CupInfoContext).cupInfos;
 export const useSetCupsInfo = () => useContext(CupInfoContext).setCupInfos;
 export const useIsCupLoading = () => useContext(CupInfoContext).isLoading;
+
+export const useCurCupID = () => useContext(CupInfoContext).curCupID;
+export const useSetCurCupID = () => useContext(CupInfoContext).setCurCupID;

@@ -130,6 +130,8 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
             kickOffTime={time}
             handleOnLocation={setLocation}
             handleOnClose={setClose}
+            group={group}
+            round={value.id}
           />
         );
       })}

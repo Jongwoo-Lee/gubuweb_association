@@ -29,6 +29,7 @@ export const ROUTES = {
   CUP_DETAIL_TEAM: "/team",
   CUP_DETAIL_MATCH: "/match",
   CUP_DETAIL_PLAN: "/plan",
+  CUP_DETAIL_RECORD: "/record",
   CUP_DETAIL_RESULT: "/result",
   ROSTER: "/roster",
   ADD_ROSTER: "/roster/add",
@@ -52,6 +53,7 @@ export const ROUTENAMES = {
   CUP_DETAIL_TEAM: "참가팀",
   CUP_DETAIL_MATCH: "대진",
   CUP_DETAIL_PLAN: "일정 / 기록",
+  CUP_DETAIL_RECORD: "기록",
   CUP_DETAIL_RESULT: "결과",
   ADD_TEAM: "팀 추가"
 };

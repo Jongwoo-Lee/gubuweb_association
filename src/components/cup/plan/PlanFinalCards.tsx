@@ -132,6 +132,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
             kickOffTime={time}
             handleOnLocation={setLocation}
             handleOnClose={setClose}
+            round={value.id}
           />
         );
       })}

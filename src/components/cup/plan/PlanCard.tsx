@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, Grid, Button, Input } from "@material-ui/core";
+import { Card, Typography, Grid, Input } from "@material-ui/core";
 import { DatePickerDlg, ExitWithID } from "./DatePickerDlg";
+import { MakeSubGameBtn } from "./makeSubGameBtn";
 
 const useStyles = makeStyles({
   root: {
@@ -36,6 +37,8 @@ export interface PlanCardProps {
   kickOffTime: string;
   handleOnLocation: Function;
   handleOnClose: Function;
+  group?: number;
+  round: number;
 }
 
 export const PlanCard: React.FC<PlanCardProps> = ({
@@ -48,7 +51,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   location,
   kickOffTime,
   handleOnLocation,
-  handleOnClose
+  handleOnClose,
+  group,
+  round
 }: PlanCardProps) => {
   const classes = useStyles();
   const [selectedID, setSelectedID] = useState(-1); //=> -1이면 no
@@ -211,13 +216,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             </Typography>
             <Typography className={classes.fixWidth2} />
 
-            <Button
-              variant="contained"
-              onClick={() => {}}
-              className={classes.fixWidth2}
-            >
-              기록
-            </Button>
+            <MakeSubGameBtn group={group} round={round} />
 
             <Typography className={classes.fixWidth2} />
             <Typography
