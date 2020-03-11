@@ -4,7 +4,7 @@ import { useCupsInfo } from "../../context/cup/cup";
 import { WrapCupDetailTeam } from "./team/WrapCupDetailTeam";
 import { CupInfo } from "../../helpers/Firebase/cup";
 
-export interface MatchParams {
+interface MatchParams {
   cupID: string;
 }
 
