@@ -1,5 +1,5 @@
 import Firebase from ".";
-import { COL_TEAMS } from "../../constants/firestore";
+import { COL_TEAMS, COL_ASC } from "../../constants/firestore";
 import { firestore } from "firebase";
 
 export class Team {
@@ -7,29 +7,37 @@ export class Team {
   name: string;
   initial: string;
   manager: Object; // key: uid, value: name
-  region: string | null;
-  gender: string | null;
-  age: string | null;
-  logo: string | null;
+  region: string | undefined;
+  gender: string | undefined;
+  age: string[] | undefined;
+  logo: string | undefined;
+  invitedAt: Date | undefined;
+  isVerified: boolean | undefined;
 
   constructor(
     teamUID: string,
     teamName: string,
     teamInitial: string,
     manager: Object,
-    region: string | null | undefined,
-    gender: string | null | undefined,
-    age: string | null | undefined,
-    logo: string | null | undefined
+    info: {
+      region?: string;
+      gender?: string;
+      age?: string[];
+      logo?: string;
+      invitedAt?: Date;
+      isVerified?: boolean;
+    }
   ) {
     this.uid = teamUID;
     this.name = teamName;
     this.initial = teamInitial;
     this.manager = manager;
-    this.region = region ?? null;
-    this.gender = gender ?? null;
-    this.age = age ?? null;
-    this.logo = logo ?? null;
+    this.region = info.region ?? undefined;
+    this.gender = info.gender ?? undefined;
+    this.age = info.age ?? undefined;
+    this.logo = info.logo ?? undefined;
+    this.invitedAt = info.invitedAt ?? undefined;
+    this.isVerified = info.isVerified ?? undefined;
   }
 
   parseValue(value: string): string | string[] {
@@ -62,7 +70,7 @@ export class Team {
   }
 }
 
-export const getTeamInfo = (team: Team): Map<string, string> => {
+export const getTeamInfo = (team: Team) => {
   const teamScope: string[] = [
     "매니저",
     "팀 이름",
@@ -71,11 +79,11 @@ export const getTeamInfo = (team: Team): Map<string, string> => {
     "팀 성별"
   ];
   const managers: string[] = Object.values(team.manager);
-  const teamValue: (string | null)[] = [
+  const teamValue = [
     managers.join(","),
     team.name,
     team.region,
-    team.age,
+    "10대", //team.age,
     team.gender
   ];
   let teamInfo: Map<string, string> = new Map<string, string>();
@@ -86,9 +94,19 @@ export const getTeamInfo = (team: Team): Map<string, string> => {
   return teamInfo;
 };
 
-export const teamConverter = {
+export const ascTeamConverter = {
   toFirestore: (team: Team) => {
-    return {};
+    return {
+      [COL_TEAMS.TEAMS_NAME]: team.name,
+      [COL_TEAMS.TEAMS_MANAGER]: team.manager,
+      [COL_TEAMS.TEAMS_INITIAL]: team.initial,
+      [COL_TEAMS.TEAMS_LOGO]: team.logo ?? "",
+      [COL_TEAMS.TEAMS_AGE]: team.age ?? [],
+      [COL_TEAMS.TEAMS_REGION]: team.region ?? "",
+      [COL_TEAMS.TEAMS_GENDER]: team.gender ?? "",
+      [COL_ASC.INVITEDAT]: team.invitedAt,
+      [COL_ASC.ISVERIFIED]: team.isVerified
+    };
   },
   fromFirestore: (
     snapshot: firebase.firestore.DocumentSnapshot,
@@ -100,10 +118,14 @@ export const teamConverter = {
       data?.[COL_TEAMS.TEAMS_NAME],
       data?.[COL_TEAMS.TEAMS_INITIAL],
       data?.[COL_TEAMS.TEAMS_MANAGER],
-      data?.[COL_TEAMS.TEAMS_REGION],
-      data?.[COL_TEAMS.TEAMS_GENDER],
-      data?.[COL_TEAMS.TEAMS_AGE],
-      data?.[COL_TEAMS.TEAMS_LOGO]
+      {
+        region: data?.[COL_TEAMS.TEAMS_REGION],
+        gender: data?.[COL_TEAMS.TEAMS_GENDER],
+        age: data?.[COL_TEAMS.TEAMS_AGE],
+        logo: data?.[COL_TEAMS.TEAMS_LOGO],
+        invitedAt: data?.[COL_ASC.INVITEDAT],
+        isVerified: data?.[COL_ASC.ISVERIFIED]
+      }
     );
   }
 };
@@ -118,10 +140,14 @@ const makeTeamfromDoc = (
     data[COL_TEAMS.TEAMS_NAME],
     data[COL_TEAMS.TEAMS_INITIAL],
     data[COL_TEAMS.TEAMS_MANAGER],
-    data[COL_TEAMS.TEAMS_REGION],
-    data[COL_TEAMS.TEAMS_GENDER],
-    data[COL_TEAMS.TEAMS_AGE],
-    data[COL_TEAMS.TEAMS_LOGO]
+    {
+      region: data?.[COL_TEAMS.TEAMS_REGION],
+      gender: data?.[COL_TEAMS.TEAMS_GENDER],
+      age: data?.[COL_TEAMS.TEAMS_AGE],
+      logo: data?.[COL_TEAMS.TEAMS_LOGO],
+      invitedAt: data?.[COL_ASC.INVITEDAT],
+      isVerified: data?.[COL_ASC.ISVERIFIED]
+    }
   );
 };
 
@@ -149,7 +175,7 @@ export const getAscTeams = (teamUIDList: string[]) => {
   Firebase.firestore
     .collection(COL_TEAMS.TEAMS_TEST4)
     .where("id", "in", teamUIDList)
-    .withConverter(teamConverter)
+    .withConverter(ascTeamConverter)
     .get();
 };
 

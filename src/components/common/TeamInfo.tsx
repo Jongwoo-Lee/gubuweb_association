@@ -53,6 +53,7 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({ team }: TeamInfoProps) => {
       <CardContent className={classes.logo}>
         {team.logo !== undefined && (
           <img
+            alt="teamlogo"
             src={team.logo ?? TeamIcon}
             style={{ width: "100px", height: "100px" }}
           />

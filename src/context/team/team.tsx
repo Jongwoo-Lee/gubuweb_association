@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Team } from "../../helpers/Firebase/team";
 import { useLoadTeam } from "../../hooks/team";
+import { useAssociationValue } from "../user";
 
 export type ContextSetTeams = React.Dispatch<React.SetStateAction<Team[]>>;
 
@@ -18,7 +19,8 @@ const TeamContext: React.Context<TempData> = React.createContext<TempData>({
 });
 
 export const TeamProvider = (props: { children: React.ReactNode }) => {
-  const { teams, setTeams } = useLoadTeam();
+  const ascData = useAssociationValue();
+  const { teams, setTeams } = useLoadTeam(ascData);
 
   return (
     <TeamContext.Provider value={{ teams, setTeams }}>

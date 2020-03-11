@@ -30,7 +30,7 @@ export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
     setLoading(true);
 
     if (ascData !== null) {
-      await batchInviteTeam(ascData.uid, team.uid)
+      await batchInviteTeam(ascData.uid, team)
         .then(() => {
           setLoading(false);
           onClose(true);

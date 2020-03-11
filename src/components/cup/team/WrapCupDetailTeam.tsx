@@ -71,16 +71,12 @@ export const WrapCupDetailTeam: React.FC<WrapCupDetailTeamProps> = ({
   for (let i = 0; i < 100; i++) {
     const managerObj: Object = { a: "b" };
     teams.push(
-      new Team(
-        `uid${i}`,
-        `tempTeam + ${i}`,
-        "tsx",
-        managerObj,
-        `${i}`,
-        `${i}`,
-        `${i}`,
-        `${i}`
-      )
+      new Team(`uid${i}`, `tempTeam + ${i}`, "tsx", managerObj, {
+        region: `${i}`,
+        gender: `${i}`,
+        age: [`${i}`],
+        logo: `${i}`
+      })
     );
   }
 

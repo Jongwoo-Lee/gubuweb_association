@@ -25,7 +25,7 @@ export const useFirebaseAuth = () => {
       }
     });
     return () => {
-      localStorage.removeItem(AUTHUSER);
+      // localStorage.removeItem(AUTHUSER);
       listener();
     };
   }, []);
@@ -43,6 +43,7 @@ export const useAssociation = (ascID: string | undefined) => {
   useEffect(() => {
     if (ascID === undefined) {
       localStorage.removeItem(ASSOCIATION);
+      setAscData(null);
       return;
     }
     const ascListener = Firebase.firestore
@@ -61,7 +62,8 @@ export const useAssociation = (ascID: string | undefined) => {
       });
 
     return () => {
-      localStorage.removeItem(ASSOCIATION);
+      // localStorage.removeItem(ASSOCIATION);
+      // setAscData(null);
       ascListener();
     };
   }, [ascID]);
