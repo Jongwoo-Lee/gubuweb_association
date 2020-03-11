@@ -179,9 +179,22 @@ export const saveCupMatch = async (
 export const makeSubGame = async (
   cupUID: string,
   uID: string,
-  subGameID: string
+  round: number, // ex) A조 1경기, 2경기 3경기, or 8강 1경기 2경기 3경기 4경기
+  group?: number // ex) A조 B조 C조 D조
 ) => {
-  Firebase.firestore
+  let returnGameID: string | null = "";
+  let makeData: any;
+  if (group === undefined) {
+    makeData = (gameUID: string) => {
+      return { f: { [`${round}`]: { gid: gameUID } } };
+    };
+  } else {
+    makeData = (gameUID: string) => {
+      return { p: { [`${group}`]: { [`${round}`]: { gid: gameUID } } } };
+    };
+  }
+
+  await Firebase.firestore
     .collection(COL_CUP.CUP)
     .doc(cupUID)
     .collection(COL_GAME.GAMES)
@@ -199,57 +212,34 @@ export const makeSubGame = async (
       [COL_GAME.CUPID]: cupUID
     })
     .then(
-      (
+      async (
         doc: firebase.firestore.DocumentReference<
           firebase.firestore.DocumentData
         >
       ) => {
-        Firebase.firestore
+        const saveData: Object = makeData(doc.id);
+        returnGameID = doc.id;
+        await Firebase.firestore
           .collection(COL_CUP.CUP)
           .doc(cupUID)
           .set(
             {
-              [COL_CUP.MATCH]: {
-                [cupUID]: subGameID
-                /*
-                 m: {
-                   p: {
-                     0 : {
-                       // round robin
-                       0-1 vs 0-2 ( uid ) : {
-                         location:
-                         team?:
-                         time
-                         result
-                       }
-                       0-1 vs 0-3
-                       0-2 vs 0-3
-                     }
-                     1: {
-
-                     }
-                   }
-                   f: {
-                     16 -> 8 -> 4 ->  final, 3,4
-                   }
-                 }
-                 */
-                // 여기는 생각좀 해보고 있음
-                // 1. final, predata구분 필요
-                // 2. cupUID와 subGameID 어떤 것을 key로 하는게 이득일지 고민 중 (큰 차이 없어보임)
-                // 3. 어떤 데이터가 들어갈 지, 현재는 모든 게임 결과까지 들어가도록 고민 중
-              }
+              [COL_CUP.MATCH]: saveData
             },
             { merge: true }
           )
-          .catch(err =>
-            console.log(`fail to save subGame info in Cup - ${cupUID} ${err}`)
-          );
+          .catch(err => {
+            console.log(`fail to save subGame info in Cup - ${cupUID} ${err}`);
+            returnGameID = null;
+          });
       }
     )
-    .catch(err =>
-      console.log(`fail to create subGame in Cup - ${cupUID} ${err}`)
-    );
+    .catch(err => {
+      console.log(`fail to create subGame in Cup - ${cupUID} ${err}`);
+      returnGameID = null;
+    });
+
+  return returnGameID;
 };
 
 export const saveCupPlan = async (

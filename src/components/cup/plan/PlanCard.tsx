@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, Grid, Button, Input } from "@material-ui/core";
+import { Card, Typography, Grid, Input } from "@material-ui/core";
 import { DatePickerDlg, ExitWithID } from "./DatePickerDlg";
-import { useHistory, useLocation } from "react-router-dom";
-import { ROUTES } from "../../../constants/routes";
+import { MakeSubGameBtn } from "./makeSubGameBtn";
 
 const useStyles = makeStyles({
   root: {
@@ -38,6 +37,8 @@ export interface PlanCardProps {
   kickOffTime: string;
   handleOnLocation: Function;
   handleOnClose: Function;
+  group?: number;
+  round: number;
 }
 
 export const PlanCard: React.FC<PlanCardProps> = ({
@@ -50,10 +51,10 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   location,
   kickOffTime,
   handleOnLocation,
-  handleOnClose
+  handleOnClose,
+  group,
+  round
 }: PlanCardProps) => {
-  const history = useHistory();
-  const { pathname } = useLocation();
   const classes = useStyles();
   const [selectedID, setSelectedID] = useState(-1); //=> -1이면 no
 
@@ -72,13 +73,6 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   ) => {
     event.preventDefault();
     handleOnLocation(event.target.value, id);
-  };
-
-  const handleRecordClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    // game 생성 or 이미 있는 game 으로 이동
-
-    history.push(pathname + ROUTES.CUP_DETAIL_RECORD);
   };
 
   return (
@@ -222,13 +216,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             </Typography>
             <Typography className={classes.fixWidth2} />
 
-            <Button
-              variant="contained"
-              onClick={handleRecordClick}
-              className={classes.fixWidth2}
-            >
-              기록
-            </Button>
+            <MakeSubGameBtn group={group} round={round} />
 
             <Typography className={classes.fixWidth2} />
             <Typography

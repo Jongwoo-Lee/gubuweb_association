@@ -13,12 +13,13 @@ import { CupDetail } from "./CupDetail";
 import {
   CupInfoProvider,
   useCupsInfo,
-  useIsCupLoading
+  useIsCupLoading,
+  useSetCurCupID
 } from "../../context/cup/cup";
 import { useAssociationValue } from "../../context/user";
 import { CircularProgress } from "@material-ui/core";
 
-export interface CupMainProps { }
+export interface CupMainProps {}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,12 +75,12 @@ const CupComponent: React.SFC<CupMainProps> = () => {
         {isLoading ? (
           <CircularProgress className={classes.progress} />
         ) : (
-            cupsInfo !== undefined &&
-            cupsInfo !== {} &&
-            ascData?.cupList?.map(cupID => {
-              return <CupButton key={cupID} cupID={cupID} />;
-            })
-          )}
+          cupsInfo !== undefined &&
+          cupsInfo !== {} &&
+          ascData?.cupList?.map(cupID => {
+            return <CupButton key={cupID} cupID={cupID} />;
+          })
+        )}
       </div>
     </div>
   );
@@ -88,6 +89,11 @@ const CupComponent: React.SFC<CupMainProps> = () => {
 const CupButton: React.SFC<{ cupID: string }> = ({ cupID }) => {
   const cupsInfo = useCupsInfo();
   const match = useRouteMatch();
+  const setCurCupID = useSetCurCupID();
+
+  const clickEvent = () => {
+    setCurCupID(cupID);
+  };
 
   if (cupsInfo !== undefined) {
     const cupInfo = cupsInfo[cupID];
@@ -97,6 +103,7 @@ const CupButton: React.SFC<{ cupID: string }> = ({ cupID }) => {
         title={cupInfo?.name ?? "No data"}
         route={`${match.path}${ROUTES.CUP_DETAIL}/${cupID}`}
         imgSrc={Trophy}
+        clickEvent={clickEvent}
       />
     );
   } else return <div></div>;

@@ -74,11 +74,13 @@ export const useAssociation = (ascID: string | undefined) => {
 export const useCupInfoList = (cuplist: string[] | undefined) => {
   const [cupInfos, setCupInfos] = useState<CupInfoObject>({});
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [curCupID, setCurCupID] = useState<string>();
 
   useEffect(() => {
     if (cuplist === undefined) {
       setCupInfos({});
       setLoading(false);
+      setCurCupID(undefined);
       return;
     }
     let cupsData: CupInfoObject = {};
@@ -101,7 +103,7 @@ export const useCupInfoList = (cuplist: string[] | undefined) => {
     return () => {};
   }, [cuplist]);
 
-  return { cupInfos, setCupInfos, isLoading };
+  return { cupInfos, setCupInfos, isLoading, curCupID, setCurCupID };
 };
 
 export const useTextInput = (initialValue: string = "") => {
