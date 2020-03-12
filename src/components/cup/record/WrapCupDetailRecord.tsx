@@ -6,7 +6,8 @@ import {
   Typography,
   Button,
   Icon,
-  Paper
+  Paper,
+  Slider
 } from "@material-ui/core";
 import {
   CupMatchInfo,
@@ -20,6 +21,8 @@ import { SubGameInfo } from "../../../context/game/game";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { convertKoTime } from "../plan/DatePickerDlg";
+import { CustomSlider } from "./CustomSlider";
+import { useConvertTimeStr, convertTimeString } from "../../../hooks/cups";
 
 export interface CupDetailPlanProps {}
 
@@ -56,6 +59,8 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
 }: WrapCupDetailRecordProps) => {
   const classes = useStyles();
   let matchPlan: CupPlanDataStructure | null = cupInfo.matchPlan;
+  const { value: time, onChange: handleChange } = useConvertTimeStr(0);
+
   const title: string =
     gameInfo.group === undefined
       ? `${convertFinalString(gameInfo.id)}`
@@ -158,6 +163,11 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
           </Paper>
         </Grid>
       </Grid>
+      <CustomSlider
+        curTime={time}
+        gameTime={convertTimeString(45 * 60)}
+        handleChange={handleChange}
+      />
 
       {
         //   matchInfo ? (

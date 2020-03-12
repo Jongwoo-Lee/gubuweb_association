@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   useAttendTeams,
   useSetPreTeams,
@@ -41,4 +41,31 @@ export const useTeamsExceptPre = (
   }, [team]);
 
   return teams;
+};
+
+export const convertTimeString = (seconds: number): string => {
+  let min: string = "00";
+  let sec: string = "00";
+
+  min = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, "0");
+  sec = (seconds % 60).toString().padStart(2, "0");
+
+  return `${min}:${sec}`;
+};
+
+export const useConvertTimeStr = (initialValue: number = 0) => {
+  const [value, setValue] = useState<string>(convertTimeString(0));
+
+  return {
+    value,
+    onChange: (event: React.ChangeEvent<{}>, value: number | number[]) => {
+      let time: string = "00:00"; // <-이런식으로 나옴
+      if (!Array.isArray(value)) {
+        time = convertTimeString(value);
+      }
+      setValue(time);
+    }
+  };
 };
