@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     login: {
       display: "flex",
       flexDirection: "column",
-      width: "100%",
+      width: "80vw",
       alignItems: "center",
       textAlign: "center",
 

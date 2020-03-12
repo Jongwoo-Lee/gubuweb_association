@@ -118,6 +118,8 @@ export const updateURL = async (uid: string, url: string) =>
       throw err;
     });
 
+// 1. ASC-tl 에 팀 정보 저장
+// 2. Team-i-asc 에 초대 정보 저장
 export const batchInviteTeam = (ascUID: string, team: Team) => {
   const batch = Firebase.firestore.batch();
   const invitedAt = new Date();
@@ -150,8 +152,17 @@ export const batchInviteTeam = (ascUID: string, team: Team) => {
   return batch.commit();
 };
 
+// 1. ASC-tl 에서 팀 삭제
+// 2. Team-i-asc 에 초대 정보 삭제
 export const batchDeleteInviteTeam = (ascUID: string, team: Team) => {
   const batch = Firebase.firestore.batch();
+
+  const ascRef = ascTeamListDocRef(ascUID, team.uid);
+  batch.delete(ascRef);
+
+  const teamRef = teamInviteDocRef(team.uid);
+  batch.update(teamRef, { [ascUID]: Firebase.field.delete() });
+  return batch.commit();
 };
 
 export const ascTeamListColRef = (ascUID: string) =>

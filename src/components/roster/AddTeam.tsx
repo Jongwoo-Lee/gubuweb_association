@@ -12,7 +12,6 @@ import { FORMTEXT } from "../../constants/texts";
 import { Team } from "../../helpers/Firebase/team";
 import { useSearchTeam } from "../../hooks/team";
 import { SearchTeams } from "./SearchTeams";
-import { SendBooleanProvider } from "../../context/common/commonContext";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
