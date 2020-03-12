@@ -5,8 +5,13 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary
 } from "@material-ui/core";
-import { PlanFinal } from "../../../context/cup/cup";
-import { ExitWithID, convertKoTime } from "./DatePickerDlg";
+import {
+  PlanFinal,
+  parseLocation,
+  parseGameUID,
+  parseTimeStamp
+} from "../../../context/cup/cup";
+import { ExitWithID } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
 import { SubGameInfo } from "../../../context/game/game";
 import { firestore } from "firebase";
@@ -83,22 +88,21 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
         findTeam -= 2;
       }
 
-      const location: string =
-        planFinal[subGameId] && planFinal[subGameId].lo
-          ? planFinal[subGameId].lo ?? ""
-          : "";
-
-      const time: firestore.Timestamp | undefined =
-        planFinal[subGameId] && planFinal[subGameId].kt
-          ? planFinal[subGameId].kt ?? undefined
-          : undefined;
+      const location: string = parseLocation(planFinal, subGameId);
+      const gameUID: string | undefined = parseGameUID(planFinal, subGameId);
+      const time: firestore.Timestamp | undefined = parseTimeStamp(
+        planFinal,
+        subGameId
+      );
 
       arr.push({
         team1: team1,
         team2: team2,
         id: subGameId,
         location: location,
-        kickOffTime: time
+        kickOffTime: time,
+        gid: gameUID,
+        isFinal: true
       });
       subGameId--;
     }
@@ -119,33 +123,23 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
       </ExpansionPanelSummary>
 
       {createCard().map((value: SubGameInfo, index: number) => {
-        let time: string = "";
         // TypeScript에서 firebase timeStamp와 Date 타입체크 버그가 있고
         // 자바스크립트로 오브젝트의 타입이 timeStamp인지 Date인지 체크가 안됨.... 음..
         // if (typeof value?.kickOffTime !== "undefined") {
-        if (
-          (value?.kickOffTime ?? false) &&
-          typeof value?.kickOffTime !== "undefined"
-        ) {
-          time = convertKoTime(value?.kickOffTime.toDate());
-        }
-        const location: string =
-          planFinal && planFinal[value.id] && planFinal[value.id].lo
-            ? planFinal[value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
-            : "";
+        // if (
+        //   (value?.kickOffTime ?? false) &&
+        //   typeof value?.kickOffTime !== "undefined"
+        // ) {
+        //   time = convertKoTime(value?.kickOffTime.toDate());
+        // }
 
         return (
           <PlanCard
             title={`${title} - ${index + 1}경기`}
-            id={value.id}
-            team1UID={value.team1}
-            team2UID={value.team2}
-            location={location}
-            kickOffTime={time}
             handleOnLocation={setLocation}
             handleOnClose={setClose}
             handleOnSetGameUID={setGameUID}
-            round={value.id}
+            gameInfo={value}
           />
         );
       })}

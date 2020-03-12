@@ -7,4 +7,6 @@ export interface SubGameInfo {
   location?: string;
   kickOffTime?: firebase.firestore.Timestamp;
   id: number;
+  gid?: string;
+  isFinal: boolean;
 }

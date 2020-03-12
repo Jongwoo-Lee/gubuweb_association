@@ -50,6 +50,28 @@ export interface PlanFinal extends CupPlan {
     5
  */
 
+export const parseLocation = (
+  plan: { [id: number]: GameDetailInfo },
+  subGameId: number
+): string =>
+  plan[subGameId] && plan[subGameId].lo ? plan[subGameId].lo ?? "" : "";
+
+export const parseGameUID = (
+  plan: { [id: number]: GameDetailInfo },
+  subGameId: number
+): string | undefined =>
+  plan[subGameId] && plan[subGameId].gid
+    ? plan[subGameId].gid ?? undefined
+    : undefined;
+
+export const parseTimeStamp = (
+  plan: { [id: number]: GameDetailInfo },
+  subGameId: number
+): firebase.firestore.Timestamp | undefined =>
+  plan[subGameId] && plan[subGameId].kt
+    ? plan[subGameId].kt ?? undefined
+    : undefined;
+
 /// Firebase Auth User Context
 interface CupInfoData {
   cupInfos: CupInfoObject | undefined;

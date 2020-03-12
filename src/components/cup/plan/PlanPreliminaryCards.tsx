@@ -6,8 +6,13 @@ import {
   ExpansionPanelSummary
 } from "@material-ui/core";
 import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
-import { PlanPreliminary } from "../../../context/cup/cup";
-import { ExitWithID, convertKoTime } from "./DatePickerDlg";
+import {
+  PlanPreliminary,
+  parseLocation,
+  parseTimeStamp,
+  parseGameUID
+} from "../../../context/cup/cup";
+import { ExitWithID } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
 import { PreGroupTable } from "./preliminaryGroupTable";
 import { SubGameInfo } from "../../../context/game/game";
@@ -76,18 +81,15 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
       for (let i: number = 0; i < numOfTeams - 1; i++) {
         for (let j: number = i + 1; j < numOfTeams; j++) {
           const location: string =
-            planPre[group] &&
-            planPre[group][subGameId] &&
-            planPre[group][subGameId].lo
-              ? planPre[group][subGameId].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
-              : "";
+            planPre[group] && parseLocation(planPre[group], subGameId);
+
+          const gameUID: string | undefined = parseGameUID(
+            planPre[group],
+            subGameId
+          );
 
           const time: firestore.Timestamp | undefined =
-            planPre[group] &&
-            planPre[group][subGameId] &&
-            planPre[group][subGameId].kt
-              ? planPre[group][subGameId].kt ?? undefined
-              : undefined;
+            planPre[group] && parseTimeStamp(planPre[group], subGameId);
 
           arr.push({
             team1: preliminaryData[group][i] ?? null,
@@ -96,7 +98,9 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
             team2No: j + 1,
             id: subGameId,
             location: location,
-            kickOffTime: time
+            kickOffTime: time,
+            gid: gameUID,
+            isFinal: false
           });
           subGameId++;
         }
@@ -109,36 +113,15 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
       <PreGroupTable group={group} data={preliminaryData} />
 
       {createCard().map((value: SubGameInfo, index: number) => {
-        let time: string = "";
-        if (
-          (value?.kickOffTime ?? false) &&
-          typeof value?.kickOffTime !== "undefined"
-        ) {
-          time = convertKoTime(value?.kickOffTime.toDate());
-        }
-        const location: string =
-          planPre[group] &&
-          planPre[group][value.id] &&
-          planPre[group][value.id].lo
-            ? planPre[group][value.id].lo ?? "" // 위에서 null check가 원래는 되야 하는데 typescript 빈틈인듯
-            : "";
-
         return (
           <PlanCard
             title={`${convertString(group)}조 - ${index + 1}경기`}
             key={`${group}- ${index}`}
-            id={value.id}
-            team1Group={`${convertString(group)} - ${value.team1No}`}
-            team2Group={`${convertString(group)} - ${value.team2No}`}
-            team1UID={value.team1}
-            team2UID={value.team2}
-            location={location}
-            kickOffTime={time}
             handleOnLocation={setLocation}
             handleOnClose={setClose}
             handleOnSetGameUID={setGameUID}
             group={group}
-            round={value.id}
+            gameInfo={value}
           />
         );
       })}
