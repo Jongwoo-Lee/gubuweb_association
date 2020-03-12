@@ -3,8 +3,7 @@ import { Team } from "../../helpers/Firebase/team";
 import { SquareButton } from "../common/SquareButton";
 import TeamIcon from "../../images/team_off.svg";
 import { TeamInviteDlg } from "./TeamInviteDlg";
-import { Snackbar } from "@material-ui/core";
-import { FORMTEXT } from "../../constants/texts";
+import { useSendBoolean } from "../../context/common";
 
 export interface SquarePopDlgButtonProps {
   team: Team;
@@ -15,22 +14,16 @@ export const SquarePopDlgButton: React.FC<SquarePopDlgButtonProps> = ({
   team,
   isDelete
 }: SquarePopDlgButtonProps) => {
-  const [barOpen, setBarOpen] = useState(false);
+  const { setTrue } = useSendBoolean();
   const [dlgOpen, setDlgOpen] = useState(false);
-  // const update: ContextSetTeams = usePushTeam();
-  // const preTeams: Team[] | null = useTeams();
 
   const handleClickOpen = () => {
     setDlgOpen(true);
   };
 
   const handleClose = (value: boolean) => {
-    setBarOpen(value);
+    setTrue(value);
     setDlgOpen(false);
-  };
-  const handleSnackBarClose = (e: React.SyntheticEvent) => {
-    e && e.preventDefault();
-    setBarOpen(false);
   };
   return (
     <div>
@@ -46,15 +39,6 @@ export const SquarePopDlgButton: React.FC<SquarePopDlgButtonProps> = ({
         open={dlgOpen}
         onClose={handleClose}
         isDelete={isDelete}
-      />
-      <Snackbar
-        open={barOpen}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        message={
-          isDelete ? FORMTEXT.DELETE_INVITE_SUCCESS : FORMTEXT.INVITE_SUCCESS
-        }
-        autoHideDuration={6000}
-        onClose={handleSnackBarClose}
       />
     </div>
   );

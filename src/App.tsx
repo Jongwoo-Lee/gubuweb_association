@@ -12,7 +12,10 @@ import { MainPage } from "./components/layout/MainPage";
 
 export const App: React.FC = () => {
   return (
-    <div className="App" style={{ display: "flex", flexDirection: "column" }}>
+    <div
+      className="App"
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
       <CssBaseline />
       <MuiThemeProvider theme={customTheme}>
         <AuthContextProvider>

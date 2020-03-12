@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core";
+import { makeStyles, createStyles, Theme, Snackbar } from "@material-ui/core";
 import { RouteComponentProps, Route } from "react-router-dom";
 import { TitleGoBack } from "../common/TitleGoBack";
 import { ROUTENAMES, ROUTES } from "../../constants/routes";
@@ -8,9 +8,11 @@ import { TeamRouteButton } from "./TeamRouteButton";
 import AddIcon from "@material-ui/icons/Add";
 import { AddTeam } from "./AddTeam";
 import { Team } from "../../helpers/Firebase/team";
-import TeamIcon from "../../images/team_off.svg";
+
 import { TeamProvider, useTeams } from "../../context/team/team";
-import { SendBooleanProvider } from "../../context/common/commonContext";
+import { SendBooleanProvider } from "../../context/common";
+import { FORMTEXT } from "../../constants/texts";
+import { CommonSnackbar } from "../common/CommonSnackbar";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -60,6 +62,7 @@ export const RosterComponent: React.FC<RosterProps> = () => {
             teams.map((team: Team) => (
               <TeamRouteButton key={team.uid} team={team} />
             ))}
+          <CommonSnackbar message={FORMTEXT.DELETE_INVITE_SUCCESS} />
         </div>
       </SendBooleanProvider>
     </div>

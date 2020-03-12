@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Team } from "../../helpers/Firebase/team";
-import { batchInviteTeam } from "../../helpers/Firebase/asc";
+import {
+  batchInviteTeam,
+  batchDeleteInviteTeam
+} from "../../helpers/Firebase/asc";
 import { Dialog, DialogTitle, Button, Snackbar } from "@material-ui/core";
 import { TeamInfo } from "../common/TeamInfo";
 import { useAssociationValue } from "../../context/user";
 import { FORMTEXT } from "../../constants/texts";
+import { useSendBoolean } from "../../context/common";
 
 export interface TeamInviteDlgProps {
   title: string;
@@ -24,6 +28,7 @@ export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
   const ascData = useAssociationValue();
   const [isLoading, setLoading] = useState(false);
   const [isFailure, setFailure] = useState();
+  const { setTrue } = useSendBoolean();
 
   const handleClose = () => {
     onClose(false);
@@ -33,8 +38,28 @@ export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
     setLoading(true);
 
     if (ascData !== null) {
+      // const inviteFunction = isDelete ? batchDeleteInviteTeam : batchInviteTeam;
+      // await inviteFunction(ascData.uid, team)
+      //   .then(() => {
+      //     if (!isDelete) {
+      //       setLoading(false);
+      //       onClose(true);
+      //     }
+      //   })
+      //   .catch(err => {
+      //     setLoading(false);
+      //     setFailure(true);
+      //     console.log(err);
+      //   });
       isDelete
-        ? onClose(true)
+        ? // delete invite team 은 정상 동작시 Button 삭제되기 때문에 상단 component 에 boolean 보내야 됨
+          await batchDeleteInviteTeam(ascData.uid, team)
+            .then(() => setTrue(true))
+            .catch(err => {
+              setLoading(false);
+              setFailure(true);
+              console.log(err);
+            })
         : await batchInviteTeam(ascData.uid, team)
             .then(() => {
               setLoading(false);
