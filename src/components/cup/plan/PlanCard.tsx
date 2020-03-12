@@ -193,9 +193,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             <Typography className={classes.fixWidth2} />
 
             <MakeSubGameBtn
-              group={gameInfo.group}
-              id={gameInfo.id}
-              subGameID={gameInfo.gid}
+              subGameInfo={gameInfo}
               setGameUID={handleOnSetGameUID}
             />
 

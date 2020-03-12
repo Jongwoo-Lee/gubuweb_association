@@ -5,11 +5,10 @@ import React from "react";
 import { useCurCupID, useCupsInfo } from "../../../context/cup/cup";
 import { makeSubGame } from "../../../helpers/Firebase/game";
 import { useAssociationValue } from "../../../context/user";
+import { SubGameInfo } from "../../../context/game/game";
 
 interface MakeSubGameBtnProps {
-  group?: number;
-  id: number;
-  subGameID?: string;
+  subGameInfo: SubGameInfo;
   setGameUID: Function;
 }
 
@@ -20,9 +19,7 @@ const useStyles = makeStyles({
 });
 
 export const MakeSubGameBtn: React.FC<MakeSubGameBtnProps> = ({
-  group,
-  id,
-  subGameID,
+  subGameInfo,
   setGameUID
 }: MakeSubGameBtnProps) => {
   const classes = useStyles();
@@ -30,6 +27,10 @@ export const MakeSubGameBtn: React.FC<MakeSubGameBtnProps> = ({
   const { pathname } = useLocation();
   const cupID = useCurCupID();
   const ascData = useAssociationValue();
+
+  const group: number | undefined = subGameInfo.group;
+  const id: number = subGameInfo.id;
+  const subGameID: string | undefined = subGameInfo.gid;
 
   const handleRecordClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -41,7 +42,10 @@ export const MakeSubGameBtn: React.FC<MakeSubGameBtnProps> = ({
       }
 
     // game 생성 or 이미 있는 game 으로 이동
-    if (gameUID) history.push(pathname + `/${gameUID}/${id}/${group ?? -1}`);
+    if (gameUID)
+      history.push(pathname + `/${gameUID}/${id}/${group ?? -1}`, {
+        gameInfo: subGameInfo
+      });
   };
 
   return (

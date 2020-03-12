@@ -5,6 +5,7 @@ import { CupMatchInfo } from "../../../context/cup/cupMatch";
 import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
 import { CupPlanDataStructure } from "../../../context/cup/cup";
+import { SubGameInfo } from "../../../context/game/game";
 export interface CupDetailPlanProps {}
 
 const useStyles = makeStyles({
@@ -20,21 +21,17 @@ const useStyles = makeStyles({
 
 export interface WrapCupDetailRecordProps {
   cupInfo: CupInfo;
-  gameID: string;
-  id: number;
-  group: number;
+  gameInfo: SubGameInfo;
 }
 
 export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
   cupInfo,
-  gameID,
-  id,
-  group
+  gameInfo
 }: WrapCupDetailRecordProps) => {
   const classes = useStyles();
   let matchPlan: CupPlanDataStructure | null = cupInfo.matchPlan;
-  console.log(`${gameID} - ${id} - ${group}`);
-  console.dir(matchPlan);
+  console.log("hahahaha");
+  console.dir(gameInfo);
   return (
     <div className={classes.root}>
       <TitleGoBack title={cupInfo?.name ?? "No data"} />
