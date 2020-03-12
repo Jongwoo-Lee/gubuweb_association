@@ -33,7 +33,6 @@ export interface PlanCardProps {
   handleOnClose: Function;
   handleOnSetGameUID: Function;
   gameInfo: SubGameInfo;
-  group?: number;
 }
 
 export const PlanCard: React.FC<PlanCardProps> = ({
@@ -41,8 +40,6 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   handleOnLocation,
   handleOnClose,
   handleOnSetGameUID,
-  group,
-
   gameInfo
 }: PlanCardProps) => {
   const classes = useStyles();
@@ -196,7 +193,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             <Typography className={classes.fixWidth2} />
 
             <MakeSubGameBtn
-              group={group}
+              group={gameInfo.group}
               id={gameInfo.id}
               subGameID={gameInfo.gid}
               setGameUID={handleOnSetGameUID}

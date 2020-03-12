@@ -1,10 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Typography,
-  ExpansionPanel,
-  ExpansionPanelSummary
-} from "@material-ui/core";
 import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
 import {
   PlanPreliminary,
@@ -100,7 +95,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
             location: location,
             kickOffTime: time,
             gid: gameUID,
-            isFinal: false
+            group: group
           });
           subGameId++;
         }
@@ -120,7 +115,6 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
             handleOnLocation={setLocation}
             handleOnClose={setClose}
             handleOnSetGameUID={setGameUID}
-            group={group}
             gameInfo={value}
           />
         );

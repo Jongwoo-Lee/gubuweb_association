@@ -8,5 +8,5 @@ export interface SubGameInfo {
   kickOffTime?: firebase.firestore.Timestamp;
   id: number;
   gid?: string;
-  isFinal: boolean;
+  group?: number; // final에는 없다.
 }

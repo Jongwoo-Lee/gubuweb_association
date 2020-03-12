@@ -101,8 +101,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
         id: subGameId,
         location: location,
         kickOffTime: time,
-        gid: gameUID,
-        isFinal: true
+        gid: gameUID
       });
       subGameId--;
     }
