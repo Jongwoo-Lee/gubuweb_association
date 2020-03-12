@@ -53,7 +53,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   ) {
     console.log(`gameInfo - ${gameInfo}`);
     console.dir(gameInfo);
-    // kickOffTime = convertKoTime(gameInfo?.kickOffTime.toDate());
+    kickOffTime = convertKoTime(gameInfo?.kickOffTime.toDate());
   }
 
   const handleClose = (obj: ExitWithID) => {
