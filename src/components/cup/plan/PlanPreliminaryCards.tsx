@@ -111,7 +111,6 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
       {createCard().map((value: SubGameInfo, index: number) => {
         return (
           <PlanCard
-            title={`${convertGroupString(group)}조 - ${index + 1}경기`}
             key={`${group}- ${index}`}
             handleOnLocation={setLocation}
             handleOnClose={setClose}

@@ -3,7 +3,8 @@ import { CupInfo } from "../../../helpers/Firebase/cup";
 import { makeStyles, Grid, Typography, Button } from "@material-ui/core";
 import {
   CupMatchInfo,
-  convertGroupString
+  convertGroupString,
+  convertFinalString
 } from "../../../context/cup/cupMatch";
 import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
@@ -35,10 +36,10 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
   let matchPlan: CupPlanDataStructure | null = cupInfo.matchPlan;
   const title: string =
     gameInfo.group === undefined
-      ? `${gameInfo.id}`
+      ? `${convertFinalString(gameInfo.id)}`
       : `${convertGroupString(gameInfo.group)}조 - ${gameInfo.id + 1}경기`;
   console.log("hahahaha");
-  console.dir(gameInfo);
+  console.dir(gameInfo.id);
   return (
     <div className={classes.root}>
       <TitleGoBack title={cupInfo?.name ?? "No data"} />

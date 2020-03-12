@@ -4,6 +4,10 @@ import { Card, Typography, Grid, Input } from "@material-ui/core";
 import { DatePickerDlg, ExitWithID, convertKoTime } from "./DatePickerDlg";
 import { MakeSubGameBtn } from "./makeSubGameBtn";
 import { SubGameInfo } from "../../../context/game/game";
+import {
+  convertGroupString,
+  convertFinalString
+} from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles({
   root: {
@@ -28,7 +32,6 @@ const useStyles = makeStyles({
 });
 
 export interface PlanCardProps {
-  title: string;
   handleOnLocation: Function;
   handleOnClose: Function;
   handleOnSetGameUID: Function;
@@ -36,7 +39,6 @@ export interface PlanCardProps {
 }
 
 export const PlanCard: React.FC<PlanCardProps> = ({
-  title,
   handleOnLocation,
   handleOnClose,
   handleOnSetGameUID,
@@ -94,7 +96,10 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         <Grid container className={classes.card}>
           <Grid item xs={12} alignItems="flex-start">
             <Typography align="left" variant="h6" component="span">
-              {title}
+              {gameInfo.group !== undefined
+                ? `${convertGroupString(gameInfo.group)}조 - ${gameInfo.id +
+                    1}경기`
+                : convertFinalString(gameInfo.id)}
             </Typography>
           </Grid>
           <br />

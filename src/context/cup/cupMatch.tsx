@@ -208,3 +208,48 @@ export const convertGroupString = (num: number): string => {
 
   return cStr;
 };
+
+export const convertFinalString = (id: number): string => {
+  let cStr: string = "";
+  if (id < 2) {
+    if (id === 0) cStr = "결승전";
+    else cStr = "3, 4위전";
+  } else {
+    let find = 0;
+
+    while (!(Math.pow(2, find) < id && Math.pow(2, find + 1) >= id)) {
+      find++;
+      if (find > 7) {
+        cStr = "";
+        break;
+      }
+    }
+    const findGame = (find: number, id: number): string =>
+      `${Math.pow(2, find + 1) - id + 1}경기`;
+    // find == 0 (1 2) -> id 2
+    // find == 1 (2 4)-> id 3 4
+    // find == 2 (4 8)-> id 5 6 7 8
+    switch (find) {
+      case 0:
+        cStr = "준결승";
+        break;
+      case 1:
+        cStr = `4강 - ${findGame(find, id)}`;
+        break;
+      case 2:
+        cStr = `8강 - ${findGame(find, id)}`;
+        break;
+      case 3:
+        cStr = `16강 - ${findGame(find, id)}`;
+        break;
+      case 4:
+        cStr = `32강 - ${findGame(find, id)}`;
+        break;
+      case 5:
+        cStr = `64강 - ${findGame(find, id)}`;
+        break;
+    }
+  }
+
+  return cStr;
+};

@@ -134,7 +134,6 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
 
         return (
           <PlanCard
-            title={`${title} - ${index + 1}경기`}
             key={index}
             handleOnLocation={setLocation}
             handleOnClose={setClose}
