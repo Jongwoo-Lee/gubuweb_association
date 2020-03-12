@@ -15,7 +15,7 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
   const cupID: string = props.match.params.cupID;
   const cupsInfo = useCupsInfo();
   let cupInfo: CupInfo | undefined = cupsInfo ? cupsInfo[cupID] : undefined;
-  const path: string = props.match.path + "/:gameID/:id/:group";
+  const path: string = props.match.path + "/:gameUID";
 
   return cupInfo ? (
     <div>

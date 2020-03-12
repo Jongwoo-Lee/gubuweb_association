@@ -1,6 +1,13 @@
 import React from "react";
 import { CupInfo } from "../../../helpers/Firebase/cup";
-import { makeStyles, Grid, Typography, Button } from "@material-ui/core";
+import {
+  makeStyles,
+  Grid,
+  Typography,
+  Button,
+  Icon,
+  Paper
+} from "@material-ui/core";
 import {
   CupMatchInfo,
   convertGroupString,
@@ -10,16 +17,31 @@ import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
 import { CupPlanDataStructure } from "../../../context/cup/cup";
 import { SubGameInfo } from "../../../context/game/game";
+import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { convertKoTime } from "../plan/DatePickerDlg";
+
 export interface CupDetailPlanProps {}
 
 const useStyles = makeStyles({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    width: "80%"
   },
   title: {
-    width: "80%",
     margin: "50px 0px 0px 0px"
+  },
+  row: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  icon: {
+    margin: "10px 10px 0px 0px"
+  },
+
+  paper: {
+    padding: "15px 0px 15px 0px"
   }
 });
 
@@ -38,8 +60,7 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
     gameInfo.group === undefined
       ? `${convertFinalString(gameInfo.id)}`
       : `${convertGroupString(gameInfo.group)}조 - ${gameInfo.id + 1}경기`;
-  console.log("hahahaha");
-  console.dir(gameInfo.id);
+
   return (
     <div className={classes.root}>
       <TitleGoBack title={cupInfo?.name ?? "No data"} />
@@ -55,9 +76,88 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
         </Typography>
         <Button variant="contained">저장</Button>
       </Grid>
-      <Typography color="textPrimary" variant="h4">
+      <Typography align="center" color="textPrimary" variant="h4">
         {title}
       </Typography>
+
+      <div className={classes.row}>
+        <LocationOnIcon className={classes.icon} />
+        <Typography align="left" color="textPrimary" variant="h6">
+          {"location"}
+        </Typography>
+      </div>
+
+      <div className={classes.row}>
+        <CalendarTodayIcon className={classes.icon} />
+        <Typography align="left" color="textPrimary" variant="h6">
+          {gameInfo?.kickOffTime
+            ? convertKoTime(gameInfo?.kickOffTime.toDate())
+            : ""}
+        </Typography>
+      </div>
+      <br />
+      <Grid container spacing={3}>
+        <Grid item xs>
+          <Typography align="center" color="textPrimary" variant="h4">
+            {gameInfo.team1}
+          </Typography>
+        </Grid>
+        <Grid item xs />
+
+        <Grid item xs>
+          <Typography align="center" color="textPrimary" variant="h4">
+            {gameInfo.team2}
+          </Typography>
+        </Grid>
+      </Grid>
+      <br />
+      <Grid container spacing={3}>
+        <Grid item xs>
+          <Paper className={classes.paper}>
+            <Typography align="center" color="textPrimary" variant="h4">
+              Home
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs>
+          <Typography align="center" color="textPrimary" variant="h4">
+            score
+          </Typography>
+        </Grid>
+
+        <Grid item xs>
+          <Paper className={classes.paper}>
+            <Typography align="center" color="textPrimary" variant="h4">
+              Away
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
+      <br />
+      <Grid container spacing={3}>
+        <Grid item xs>
+          <Paper className={classes.paper}>
+            <Typography align="center" color="textPrimary" variant="h4">
+              참석 명단
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs>
+          <Paper className={classes.paper}>
+            <Typography align="center" color="textPrimary" variant="h4">
+              경기 기록
+            </Typography>
+          </Paper>
+        </Grid>
+
+        <Grid item xs>
+          <Paper className={classes.paper}>
+            <Typography align="center" color="textPrimary" variant="h4">
+              경기 결과
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
 
       {
         //   matchInfo ? (

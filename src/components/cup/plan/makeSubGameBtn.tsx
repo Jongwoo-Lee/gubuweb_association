@@ -43,7 +43,7 @@ export const MakeSubGameBtn: React.FC<MakeSubGameBtnProps> = ({
 
     // game 생성 or 이미 있는 game 으로 이동
     if (gameUID)
-      history.push(pathname + `/${gameUID}/${id}/${group ?? -1}`, {
+      history.push(pathname + `/${gameUID}`, {
         gameInfo: subGameInfo
       });
   };

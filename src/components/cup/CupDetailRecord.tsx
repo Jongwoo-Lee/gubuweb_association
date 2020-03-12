@@ -19,11 +19,7 @@ export const CupDetailRecord: React.FC<RouteComponentProps<
     cupsInfo && cupID ? cupsInfo[cupID] : undefined;
 
   return cupInfo ? (
-    <div>
-      <Route exact path={props.match.path}>
-        <WrapCupDetailRecord cupInfo={cupInfo} gameInfo={data.gameInfo} />
-      </Route>
-    </div>
+    <WrapCupDetailRecord cupInfo={cupInfo} gameInfo={data.gameInfo} />
   ) : (
     <div></div>
   );
