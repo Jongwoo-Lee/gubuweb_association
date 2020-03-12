@@ -6,7 +6,7 @@ import {
   PreDataStructure,
   usePreTeams,
   useSetPreTeams,
-  convertString
+  convertGroupString
 } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles({
@@ -83,7 +83,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({
             </Grid>
             <Grid container item xs={4} justify="center" alignItems="center">
               <Typography align="center" variant="body1" component="span">
-                {convertString(group)}조
+                {convertGroupString(group)}조
               </Typography>
             </Grid>
             <Grid container item xs={4} justify="flex-end">

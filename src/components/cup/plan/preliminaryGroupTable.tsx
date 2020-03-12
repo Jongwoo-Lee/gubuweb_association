@@ -15,7 +15,10 @@ import {
   Paper
 } from "@material-ui/core";
 import { DatePickerDlg, ExitWithID } from "./DatePickerDlg";
-import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
+import {
+  convertGroupString,
+  PreDataStructure
+} from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles({
   table: {
@@ -75,7 +78,7 @@ export const PreGroupTable: React.FC<PreGroupTableProps> = ({
               ) : (
                 <TableCell key={column.id} className={classes.header}>
                   {index === 0
-                    ? `${convertString(group)}조`
+                    ? `${convertGroupString(group)}조`
                     : `${column.label}`}
                 </TableCell>
               )

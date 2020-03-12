@@ -1,6 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { convertString, PreDataStructure } from "../../../context/cup/cupMatch";
+import {
+  convertGroupString,
+  PreDataStructure
+} from "../../../context/cup/cupMatch";
 import {
   PlanPreliminary,
   parseLocation,
@@ -78,10 +81,8 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
           const location: string =
             planPre[group] && parseLocation(planPre[group], subGameId);
 
-          const gameUID: string | undefined = parseGameUID(
-            planPre[group],
-            subGameId
-          );
+          const gameUID: string | undefined =
+            planPre[group] && parseGameUID(planPre[group], subGameId);
 
           const time: firestore.Timestamp | undefined =
             planPre[group] && parseTimeStamp(planPre[group], subGameId);
@@ -110,7 +111,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
       {createCard().map((value: SubGameInfo, index: number) => {
         return (
           <PlanCard
-            title={`${convertString(group)}조 - ${index + 1}경기`}
+            title={`${convertGroupString(group)}조 - ${index + 1}경기`}
             key={`${group}- ${index}`}
             handleOnLocation={setLocation}
             handleOnClose={setClose}

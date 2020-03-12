@@ -159,7 +159,7 @@ export const useNumOfWild = () => useContext(EditCupMatchContext).numOfWild;
 export const useSetNumOfWild = () =>
   useContext(EditCupMatchContext).setNumOfWild;
 
-export const convertString = (num: number): string => {
+export const convertGroupString = (num: number): string => {
   let cStr: string = "";
   switch (num) {
     case 0:

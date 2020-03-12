@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
 import { ExpandMore, ExpandLessRounded } from "@material-ui/icons";
-import { CupMatchInfo, convertString } from "../../../context/cup/cupMatch";
+import {
+  CupMatchInfo,
+  convertGroupString
+} from "../../../context/cup/cupMatch";
 import { PlanPreliminaryCards } from "./PlanPreliminaryCards";
 import {
   CustomExPanel,
@@ -85,7 +88,7 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
                     className={classes.btn}
                     onClick={e => handleChange({ group: group, id: index })}
                   >
-                    {convertString(group)}조
+                    {convertGroupString(group)}조
                   </Button>
                 ) : (
                   <div></div>

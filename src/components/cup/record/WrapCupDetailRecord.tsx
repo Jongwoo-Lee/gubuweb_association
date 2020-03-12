@@ -1,7 +1,10 @@
 import React from "react";
 import { CupInfo } from "../../../helpers/Firebase/cup";
 import { makeStyles, Grid, Typography, Button } from "@material-ui/core";
-import { CupMatchInfo } from "../../../context/cup/cupMatch";
+import {
+  CupMatchInfo,
+  convertGroupString
+} from "../../../context/cup/cupMatch";
 import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
 import { CupPlanDataStructure } from "../../../context/cup/cup";
@@ -30,6 +33,10 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
 }: WrapCupDetailRecordProps) => {
   const classes = useStyles();
   let matchPlan: CupPlanDataStructure | null = cupInfo.matchPlan;
+  const title: string =
+    gameInfo.group === undefined
+      ? `${gameInfo.id}`
+      : `${convertGroupString(gameInfo.group)}조 - ${gameInfo.id + 1}경기`;
   console.log("hahahaha");
   console.dir(gameInfo);
   return (
@@ -43,10 +50,14 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
         alignItems="flex-start"
       >
         <Typography color="textPrimary" variant="h4">
-          {ROUTENAMES.CUP_DETAIL_PLAN}
+          {ROUTENAMES.CUP_DETAIL_RECORD}
         </Typography>
         <Button variant="contained">저장</Button>
       </Grid>
+      <Typography color="textPrimary" variant="h4">
+        {title}
+      </Typography>
+
       {
         //   matchInfo ? (
         //     <PreliminaryPlan

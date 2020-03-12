@@ -51,7 +51,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     (gameInfo?.kickOffTime ?? false) &&
     typeof gameInfo?.kickOffTime !== "undefined"
   ) {
-    kickOffTime = convertKoTime(gameInfo?.kickOffTime.toDate());
+    console.log(`gameInfo - ${gameInfo}`);
+    console.dir(gameInfo);
+    // kickOffTime = convertKoTime(gameInfo?.kickOffTime.toDate());
   }
 
   const handleClose = (obj: ExitWithID) => {

@@ -7,7 +7,7 @@ import {
   usePreTeams,
   useSetPreTeams,
   PreDataStructure,
-  convertString
+  convertGroupString
 } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles({
@@ -79,7 +79,7 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
         variant="body1"
         component="span"
       >
-        {convertString(group)} - {iter + 1}
+        {convertGroupString(group)} - {iter + 1}
       </Typography>
       <IconButton onClick={handleClickOpen}>
         <Typography
