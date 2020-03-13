@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, Grid, Input } from "@material-ui/core";
+import { Card, Typography, Grid, Input, Button } from "@material-ui/core";
 import { DatePickerDlg, ExitWithID, convertKoTime } from "./DatePickerDlg";
 import { MakeSubGameBtn } from "./makeSubGameBtn";
 import { SubGameInfo } from "../../../context/game/game";
@@ -11,13 +11,13 @@ import {
 
 const useStyles = makeStyles({
   root: {
-    margin: "15px 0px 15px 0px"
+    margin: "15px 0px 15px 0px",
+    width: "100%"
   },
   card: {
-    padding: "30px 30px 30px 30px",
-    minWidth: "600px"
+    padding: "30px 30px 30px 30px"
   },
-  cardItems: {
+  margin: {
     margin: "10px"
   },
   textField: {
@@ -25,9 +25,6 @@ const useStyles = makeStyles({
   },
   fixWidth: {
     minWidth: "120px"
-  },
-  fixWidth2: {
-    minWidth: "100px"
   }
 });
 
@@ -104,7 +101,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           </Grid>
           <br />
 
-          <Grid item xs={12} className={classes.cardItems}>
+          <Grid item xs={12} className={classes.margin}>
             <Grid container justify="center" spacing={5}>
               <Grid item className={classes.fixWidth}>
                 <Typography variant="subtitle1" component="span">
@@ -125,7 +122,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} className={classes.cardItems}>
+          <Grid item xs={12} className={classes.margin}>
             <Grid container justify="center" spacing={5}>
               <Grid item className={classes.fixWidth}>
                 <Typography variant="subtitle1" component="span">
@@ -149,70 +146,50 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           <Grid
             container
             direction="row"
-            justify="space-evenly"
-            alignItems="baseline"
-            className={classes.cardItems}
+            className={classes.margin}
+            alignItems="center"
           >
-            {homeAwayList().map((item: string) => (
-              <Typography
-                align="center"
-                variant="subtitle1"
-                component="span"
-                className={classes.fixWidth2}
-              >
-                {item}
-              </Typography>
+            {homeAwayList().map((item: string, index: number) => (
+              <Grid item xs={index === 2 ? 4 : 2}>
+                <Typography align="center" variant="subtitle1">
+                  {item}
+                </Typography>
+              </Grid>
             ))}
           </Grid>
           <Grid
             container
             direction="row"
-            justify="space-evenly"
             alignItems="baseline"
-            className={classes.cardItems}
+            className={classes.margin}
           >
-            {teamNameList().map((item: string) => (
-              <Typography
-                align="center"
-                variant="subtitle1"
-                component="span"
-                className={classes.fixWidth2}
-              >
-                {item ?? ""}
-              </Typography>
+            {teamNameList().map((item: string, index: number) => (
+              <Grid item xs={index === 2 ? 4 : 2}>
+                <Typography align="center" variant="subtitle1">
+                  {item ?? ""}
+                </Typography>
+              </Grid>
             ))}
           </Grid>
-          <Grid
-            container
-            direction="row"
-            justify="space-evenly"
-            alignItems="baseline"
-            className={classes.cardItems}
-          >
-            <Typography
-              align="center"
-              variant="subtitle1"
-              component="span"
-              className={classes.fixWidth2}
-            >
-              0
-            </Typography>
-            <Typography className={classes.fixWidth2} />
-
-            <MakeSubGameBtn
-              subGameInfo={gameInfo}
-              setGameUID={handleOnSetGameUID}
-            />
-
-            <Typography className={classes.fixWidth2} />
-            <Typography
-              align="center"
-              variant="subtitle1"
-              component="span"
-              className={classes.fixWidth2}
-            >
-              0
-            </Typography>
+          <Grid container direction="row" className={classes.margin}>
+            <Grid item xs={2}>
+              <Typography align="center" variant="subtitle1">
+                0
+              </Typography>
+            </Grid>
+            <Grid item xs={1} />
+            <Grid item xs={6}>
+              <MakeSubGameBtn
+                subGameInfo={gameInfo}
+                setGameUID={handleOnSetGameUID}
+              />
+            </Grid>
+            <Grid item xs={1} />
+            <Grid item xs={2}>
+              <Typography align="center" variant="subtitle1">
+                0
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
         <DatePickerDlg

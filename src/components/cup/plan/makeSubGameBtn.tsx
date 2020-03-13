@@ -12,11 +12,7 @@ interface MakeSubGameBtnProps {
   setGameUID: Function;
 }
 
-const useStyles = makeStyles({
-  fixWidth2: {
-    minWidth: "100px"
-  }
-});
+const useStyles = makeStyles({});
 
 export const MakeSubGameBtn: React.FC<MakeSubGameBtnProps> = ({
   subGameInfo,
@@ -49,11 +45,7 @@ export const MakeSubGameBtn: React.FC<MakeSubGameBtnProps> = ({
   };
 
   return (
-    <Button
-      variant="contained"
-      onClick={handleRecordClick}
-      className={classes.fixWidth2}
-    >
+    <Button variant="contained" onClick={handleRecordClick} fullWidth>
       기록
     </Button>
   );

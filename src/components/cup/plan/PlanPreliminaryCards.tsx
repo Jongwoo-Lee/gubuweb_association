@@ -18,7 +18,7 @@ import { firestore } from "firebase";
 
 const useStyles = makeStyles({
   item: {
-    width: "60%"
+    width: "70%"
   }
 });
 

@@ -38,19 +38,6 @@ export const WrapCupDetailPlans: React.FC<WrapCupDetailPlanProps> = ({
     setPlanFinal,
     matchInfo
   } = useGamePlan(cupInfo);
-  // let matchInfo: CupMatchInfo =
-  //   cupInfo.matchInfo ?? false
-  //     ? fromMatchInfo(cupInfo?.matchInfo ?? undefined) // cupInfo?.matchInfo <-- ? 없앨수 없는 버그
-  //     : fromMatchInfo();
-  // const [planPre, setPlanPre] = useState<PlanPreliminary>(
-  //   cupInfo.matchPlan?.p ?? {
-  //     gI: { nQ: 2, gT: 45, rT: 15 }
-  //   }
-  // );
-
-  // const [planFinal, setPlanFinal] = useState<PlanFinal>(
-  //   remakeFinalPlan(cupInfo, matchInfo)
-  // );
 
   const handleOnSave = async (
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent
