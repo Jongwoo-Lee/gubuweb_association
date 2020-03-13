@@ -1,4 +1,4 @@
-import { Typography, IconButton } from "@material-ui/core";
+import { Typography, IconButton, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useState, useCallback } from "react";
 import { TeamListDlg } from "./TeamListDlg";
@@ -11,24 +11,9 @@ import {
 } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    width: 520,
-    margin: "10px 10px"
-  },
-  cardTitle: {
-    margin: "0px 10px"
-  },
   items: {
     display: "flex",
-    flexDirection: "row",
-    width: 400,
-    alignItems: "center",
-    justifyContent: "space-between"
-  },
-  item: {
-    margin: "5px 20px"
+    justifyContent: "center"
   }
 });
 
@@ -72,25 +57,19 @@ export const GroupCardItem: React.FC<GroupCardItemProps> = ({
   );
 
   return (
-    <div className={classes.items}>
-      <Typography
-        className={classes.item}
-        align="center"
-        variant="body1"
-        component="span"
-      >
-        {convertGroupString(group)} - {iter + 1}
-      </Typography>
-      <IconButton onClick={handleClickOpen}>
-        <Typography
-          className={classes.item}
-          align="center"
-          variant="body1"
-          component="span"
-        >
-          {team ?? "+ 팀 추가"}
-        </Typography>
-      </IconButton>
+    <div>
+      <Grid container alignItems="center">
+        <Grid item xs className={classes.items}>
+          <Typography variant="body1">
+            {convertGroupString(group)} - {iter + 1}
+          </Typography>
+        </Grid>
+        <Grid item xs className={classes.items}>
+          <IconButton onClick={handleClickOpen}>
+            <Typography variant="body1">{team ?? "+ 팀 추가"}</Typography>
+          </IconButton>
+        </Grid>
+      </Grid>
       <TeamListDlg
         title={"팀 리스트"}
         open={open}

@@ -11,10 +11,8 @@ import {
 
 const useStyles = makeStyles({
   root: {
-    display: "flex",
-    flexDirection: "column",
-    width: 520,
-    margin: "10px 10px"
+    width: "60%",
+    marginBottom: "10px"
   },
   cardTitle: {
     margin: "0px 10px"
