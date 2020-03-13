@@ -23,8 +23,7 @@ import { convertKoTime } from "../plan/DatePickerDlg";
 import { CustomSlider } from "./CustomSlider";
 import { convertTimeString, fromGameInfo } from "../../../hooks/cups";
 import { ChangeQaurter } from "./ChangeQuarter";
-
-export interface CupDetailPlanProps {}
+import { RecordComponents } from "./RecordComponents";
 
 const useStyles = makeStyles({
   root: {
@@ -165,19 +164,7 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
       </Grid>
       <CustomSlider gameTime={convertTimeString(gameTime * 60)} />
       <ChangeQaurter numOfQuarter={numOfQuarter} />
-
-      {
-        //   matchInfo ? (
-        //     <PreliminaryPlan
-        //       matchInfo={matchInfo}
-        //       planPre={planPre}
-        //       setPlanPre={setPlanPre}
-        //     />
-        //   ) :
-        <Typography color="textPrimary" variant="h4">
-          예선경기 정보가 없습니다.
-        </Typography>
-      }
+      <RecordComponents />
     </div>
   );
 };

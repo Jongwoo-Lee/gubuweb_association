@@ -13,8 +13,6 @@ import {
   useRecordTime
 } from "../../../context/cup/cupRecord";
 
-export interface CupDetailPlanProps {}
-
 const useStyles = makeStyles({
   margin: {
     margin: "20px 0px 0px 0px"
