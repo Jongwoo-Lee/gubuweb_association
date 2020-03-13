@@ -80,5 +80,11 @@ export const COL_GAME = {
   RESTTIME: "restTime",
   STARTTIME: "startTime",
   TEAM: "team",
-  CUPID: "ci"
+  CUPID: "ci",
+  DETAIL: "detail",
+  REAL_ATTENDANCE: "real_attendance",
+  SCORE: "score",
+  SUBSTITUTION: "substitution",
+  HOME: "h",
+  AWAY: "a"
 };

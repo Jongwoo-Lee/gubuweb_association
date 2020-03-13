@@ -4,6 +4,7 @@ import { CupInfo } from "../../helpers/Firebase/cup";
 import { useCupsInfo, useCurCupID } from "../../context/cup/cup";
 import { WrapCupDetailRecord } from "./record/WrapCupDetailRecord";
 import { SubGameInfo } from "../../context/game/game";
+import { CupRecordProvider } from "../../context/cup/cupRecord";
 
 interface MatchRecordParams {}
 
@@ -18,8 +19,12 @@ export const CupDetailRecord: React.FC<RouteComponentProps<
   let cupInfo: CupInfo | undefined =
     cupsInfo && cupID ? cupsInfo[cupID] : undefined;
 
-  return cupInfo ? (
-    <WrapCupDetailRecord cupInfo={cupInfo} gameInfo={data.gameInfo} />
+  // Typescript error, cupInfo가 있으려면 cupID가 필요한데 걸러주지를 못한다
+  // return cupInfo ? (
+  return cupInfo && cupID && data.gameInfo.gid ? (
+    <CupRecordProvider cupID={cupID} gameID={data.gameInfo.gid}>
+      <WrapCupDetailRecord cupInfo={cupInfo} gameInfo={data.gameInfo} />
+    </CupRecordProvider>
   ) : (
     <div></div>
   );

@@ -1,6 +1,71 @@
 import Firebase from ".";
 import { COL_CUP, COL_GAME } from "../../constants/firestore";
 
+export interface Log {
+  createdBy: string;
+  timeStamp: firebase.firestore.Timestamp;
+}
+
+export interface Substitution {
+  [quarter: string]: {
+    log: Log;
+    player_curPosition: {
+      [uid: string]: number;
+    };
+  };
+}
+
+export interface Score {
+  userUID: string;
+  assist_userUID: string;
+  timeStamp: number; // milliseconds
+  quarter: number; // quarterIndex, curQuarter * 2 - 1
+  goal_type: number;
+  log: Log;
+}
+
+export class Record {
+  score: Score[];
+  substitution: Substitution[];
+  real_attendance: string[];
+
+  constructor(
+    score?: Score[],
+    substitution?: Substitution[],
+    real_attendance?: string[]
+  ) {
+    this.score = score ?? [];
+    this.substitution = substitution ?? [];
+    this.real_attendance = real_attendance ?? [];
+  }
+}
+
+export class TeamsRecord {
+  h: Record;
+  a: Record;
+
+  constructor(home?: Record, away?: Record) {
+    this.h = home ?? new Record();
+    this.a = away ?? new Record();
+  }
+}
+
+export const recordConverter = {
+  toFirestore: (record: TeamsRecord) => {
+    return {
+      [COL_GAME.HOME]: record.h,
+      [COL_GAME.AWAY]: record.a
+    };
+  },
+  fromFirestore: (
+    snapshot: firebase.firestore.DocumentSnapshot,
+    options: firebase.firestore.SnapshotOptions | undefined
+  ) => {
+    const data = snapshot.data(options);
+    return new TeamsRecord(data?.[COL_GAME.HOME], data?.[COL_GAME.AWAY]);
+  }
+};
+
 export const makeSubGame = async (
   cupUID: string,
   uID: string,
@@ -66,3 +131,14 @@ export const makeSubGame = async (
 
   return returnGameID;
 };
+
+export const getGameRecord = (cupID: string, gameID: string) =>
+  Firebase.firestore
+    .collection(COL_CUP.CUP)
+    .doc(cupID)
+    .collection(COL_GAME.GAMES)
+    .doc(gameID)
+    .collection(COL_GAME.DETAIL)
+    .doc(COL_GAME.DETAIL)
+    .withConverter(recordConverter)
+    .get();

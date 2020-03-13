@@ -7,6 +7,7 @@ import {
 import { CupInfo } from "../helpers/Firebase/cup";
 import { SubGameInfo } from "../context/game/game";
 import { CupPlanDataStructure } from "../context/cup/cup";
+import { getGameRecord, TeamsRecord } from "../helpers/Firebase/game";
 
 // 예선전 팀을 제외하고 남은 팀
 export const useTeamsExceptPre = (
@@ -91,4 +92,37 @@ export const fromGameInfo = (
     }
   }
   return { gameTime, numOfQuarter };
+};
+
+export const useLoadCupRecord = (cupID: string, gameID: string) => {
+  const [loading, setLoading] = useState(false);
+  const [teamsRecord, setTeamsRecord] = useState<TeamsRecord>(
+    new TeamsRecord()
+  );
+
+  useEffect(
+    () => {
+      const loadRecord = async () => {
+        setLoading(true);
+
+        let record: TeamsRecord = new TeamsRecord();
+        await getGameRecord(cupID, gameID)
+          .then(querySnapshot => {
+            const temp: TeamsRecord | undefined = querySnapshot.data();
+            if (typeof temp !== "undefined") record = temp;
+          })
+          .catch(err => console.log(err));
+        setLoading(false);
+        setTeamsRecord(record);
+      };
+      loadRecord();
+
+      setLoading(false);
+    },
+    [
+      /* 처음만 로딩 */
+    ]
+  );
+
+  return { teamsRecord, loading };
 };

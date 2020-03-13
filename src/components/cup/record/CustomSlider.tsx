@@ -1,8 +1,20 @@
-import { withStyles, Slider, Grid, Typography } from "@material-ui/core";
+import {
+  withStyles,
+  Slider,
+  Grid,
+  Typography,
+  makeStyles
+} from "@material-ui/core";
 import React from "react";
 import { useConvertTimeStr, convertTimeString } from "../../../hooks/cups";
 
 export interface CupDetailPlanProps {}
+
+const useStyles = makeStyles({
+  margin: {
+    margin: "20px 0px 0px 0px"
+  }
+});
 
 const PrettoSlider = withStyles({
   root: {
@@ -50,8 +62,9 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
   gameTime,
   handleChange
 }: CustomSliderProps) => {
+  const classes = useStyles();
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} className={classes.margin}>
       <Grid item xs>
         <Typography color="textPrimary" variant="h4" align="center">
           {curTime}
