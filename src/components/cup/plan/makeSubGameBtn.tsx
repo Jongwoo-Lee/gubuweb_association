@@ -1,8 +1,7 @@
-import { makeStyles, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { useHistory, useLocation } from "react-router-dom";
-import { ROUTES } from "../../../constants/routes";
 import React from "react";
-import { useCurCupID, useCupsInfo } from "../../../context/cup/cup";
+import { useCurCupID } from "../../../context/cup/cup";
 import { makeSubGame } from "../../../helpers/Firebase/game";
 import { useAssociationValue } from "../../../context/user";
 import { SubGameInfo } from "../../../context/game/game";
@@ -12,13 +11,10 @@ interface MakeSubGameBtnProps {
   setGameUID: Function;
 }
 
-const useStyles = makeStyles({});
-
 export const MakeSubGameBtn: React.FC<MakeSubGameBtnProps> = ({
   subGameInfo,
   setGameUID
 }: MakeSubGameBtnProps) => {
-  const classes = useStyles();
   const history = useHistory();
   const { pathname } = useLocation();
   const cupID = useCurCupID();

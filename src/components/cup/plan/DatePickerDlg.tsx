@@ -13,6 +13,7 @@ import { DatePicker, TimePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { useDateInput } from "../../../hooks";
+import { firestore } from "firebase";
 
 const useStyles = makeStyles({
   root: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
 });
 
 export interface ExitWithID {
-  date: Date;
+  date: firebase.firestore.Timestamp;
   id: number;
 }
 
@@ -61,7 +62,11 @@ export const DatePickerDlg: React.FC<DatePickerDlgProps> = ({
   };
 
   const handleOk = () => {
-    onClose({ date: startDate.value, id: parentID });
+    if (startDate.value)
+      onClose({
+        date: firestore.Timestamp.fromDate(startDate.value),
+        id: parentID
+      });
   };
 
   return (

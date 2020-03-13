@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
-import { CupMatchInfo } from "../../../context/cup/cupMatch";
+import { Typography, Button } from "@material-ui/core";
+import {
+  CupMatchInfo,
+  convertFinalCardString
+} from "../../../context/cup/cupMatch";
 import {
   CustomExPanel,
   CustomExPanelSummary,
@@ -21,6 +24,9 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
+  },
+  btn: {
+    margin: "0px 10px 0px 10px"
   }
 });
 
@@ -36,6 +42,20 @@ export const FinalPlan: React.FC<FinalProps> = ({
   setPlanFinal
 }: FinalProps) => {
   const classes = useStyles();
+  const arr: Array<number> = readyArray(matchInfo);
+
+  const [expandedID, setExpandedID] = useState<number>(-1);
+
+  const handleChange = (e: number) => {
+    if (expandedID === -1) setExpandedID(e);
+    else {
+      if (expandedID === e) {
+        setExpandedID(-1);
+      } else {
+        setExpandedID(e);
+      }
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -53,20 +73,42 @@ export const FinalPlan: React.FC<FinalProps> = ({
           {matchInfo && (
             <GameInfoInput setPlan={setPlanFinal} plan={planFinal} />
           )}
-          {matchInfo &&
-            [...Array<number>(Math.log2(Number(matchInfo.f.round))).keys()]
-              .reverse()
-              .map((value: number) => {
+          <div>
+            {matchInfo &&
+              arr.reverse().map((value: number) => {
                 return (
-                  <PlanFinalCards
-                    cardId={value}
-                    setPlanFinal={setPlanFinal}
-                    planFinal={planFinal}
-                  />
+                  <Button
+                    variant="contained"
+                    color={expandedID === value ? "primary" : undefined}
+                    className={classes.btn}
+                    onClick={e => handleChange(value)}
+                  >
+                    {convertFinalCardString(Math.pow(2, value))}
+                  </Button>
                 );
               })}
+          </div>
+          {expandedID !== -1 && (
+            <PlanFinalCards
+              cardId={expandedID}
+              setPlanFinal={setPlanFinal}
+              planFinal={planFinal}
+            />
+          )}
         </CustomExPanelDetails>
       </CustomExPanel>
     </div>
   );
+};
+
+const readyArray = (matchInfo: CupMatchInfo): Array<number> => {
+  const arr: Array<number> = [
+    ...Array<number>(Math.log2(Number(matchInfo.f.round)) + 1).keys()
+  ];
+
+  // 결승전, 3,4위전 switch
+  arr[0] = 1;
+  arr[1] = 0;
+
+  return arr;
 };

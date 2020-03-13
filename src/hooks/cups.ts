@@ -176,34 +176,34 @@ const remakeFinalPlan = (
 
   if (cupInfo.matchPlan) {
     finalPlan = cupInfo.matchPlan.f;
+  }
 
-    if (finalPlan.t) {
-      const round: number = Number(matchInfo.f.round);
+  if (finalPlan.t) {
+    const round: number = Number(matchInfo.f.round);
 
-      let j: number = 0;
-      for (let i = round * 2; i > round; i--) {
-        let team: string = "";
-        if (matchInfo.f.order[j]) team = matchInfo.f.order[j] ?? "";
+    let j: number = 0;
+    for (let i = round * 2; i > round; i--) {
+      let team: string = "";
+      if (matchInfo.f.order[j]) team = matchInfo.f.order[j] ?? "";
 
-        // finalPlan데이터가 있으면 그것을 우선 사용한다.
-        if (finalPlan.t[i] && finalPlan.t[i] === "") {
-          console.log(`finalPlan.t[i] 만드는 중 `);
-          console.dir(finalPlan.t[i]);
-          finalPlan.t[i] = team;
-        }
-        j++;
-      }
-    } else {
-      finalPlan.t = {};
-      const round: number = Number(matchInfo.f.round);
-
-      let j: number = 0;
-      for (let i = round * 2; i > round; i--) {
-        let team: string = "";
-        if (matchInfo.f.order[j]) team = matchInfo.f.order[j] ?? "";
+      // finalPlan데이터가 있으면 그것을 우선 사용한다.
+      if (finalPlan.t[i] && finalPlan.t[i] === "") {
+        console.log(`finalPlan.t[i] 만드는 중 `);
+        console.dir(finalPlan.t[i]);
         finalPlan.t[i] = team;
-        j++;
       }
+      j++;
+    }
+  } else {
+    finalPlan.t = {};
+    const round: number = Number(matchInfo.f.round);
+
+    let j: number = 0;
+    for (let i = round * 2; i > round; i--) {
+      let team: string = "";
+      if (matchInfo.f.order[j]) team = matchInfo.f.order[j] ?? "";
+      finalPlan.t[i] = team;
+      j++;
     }
   }
 

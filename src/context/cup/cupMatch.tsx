@@ -209,10 +209,25 @@ export const convertGroupString = (num: number): string => {
   return cStr;
 };
 
-export const convertFinalString = (id: number): string => {
+// 4강 기준으로 토너먼트 규칙 정리
+
+// Card id 규칙 정리
+// id == 1 => 3,4위전 2 ^ 0
+// id == 2 => 결승    2 ^ 1
+// id == 3,4 => 준결승2 ^ 1 ~ 2 ^ 2
+
+// 토너먼트에 팀 배치 규칙 정리
+// id == 8,7 ==> Card 4에 배치, 승자를 id == 4에 저장, 패자를 id == 2에 저장
+// id == 6,5 ==> Card 3에 배치, 승자를 id == 3에 저장, 패자를 id == 1에 저장
+// id == 4,3 ==> Card 2에 배치(결승)
+// id == 2,1 ==> Card 1에 배치(3,4위)
+// 결과는 따른곳에 저장..
+// 2위와 4위 등은 결승 혹은 준결승에서 패배자가 자동으로 되는 것임
+
+export const convertFinalCardString = (id: number): string => {
   let cStr: string = "";
-  if (id < 2) {
-    if (id === 0) cStr = "결승전";
+  if (id < 3) {
+    if (id === 2) cStr = "결승전";
     else cStr = "3, 4위전";
   } else {
     let find = 0;
@@ -230,9 +245,6 @@ export const convertFinalString = (id: number): string => {
     // find == 1 (2 4)-> id 3 4
     // find == 2 (4 8)-> id 5 6 7 8
     switch (find) {
-      case 0:
-        cStr = "준결승";
-        break;
       case 1:
         cStr = `4강 - ${findGame(find, id)}`;
         break;

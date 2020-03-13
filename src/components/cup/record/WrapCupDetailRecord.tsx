@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import {
   convertGroupString,
-  convertFinalString
+  convertFinalCardString
 } from "../../../context/cup/cupMatch";
 import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
@@ -69,7 +69,7 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
 
   const title: string =
     gameInfo.group === undefined
-      ? `${convertFinalString(gameInfo.id)}`
+      ? `${convertFinalCardString(gameInfo.id)}`
       : `${convertGroupString(gameInfo.group)}조 - ${gameInfo.id + 1}경기`;
 
   return loading ? (

@@ -6,7 +6,7 @@ import { MakeSubGameBtn } from "./makeSubGameBtn";
 import { SubGameInfo } from "../../../context/game/game";
 import {
   convertGroupString,
-  convertFinalString
+  convertFinalCardString
 } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles({
@@ -50,9 +50,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     (gameInfo?.kickOffTime ?? false) &&
     typeof gameInfo?.kickOffTime !== "undefined"
   ) {
-    console.log(`gameInfo - ${gameInfo}`);
-    console.dir(gameInfo);
-    kickOffTime = convertKoTime(gameInfo?.kickOffTime.toDate());
+    // deep copy시 Type을 잃어버리네
+    const time: firebase.firestore.Timestamp = gameInfo?.kickOffTime as firebase.firestore.Timestamp;
+    kickOffTime = convertKoTime(time.toDate());
   }
 
   const handleClose = (obj: ExitWithID) => {
@@ -96,7 +96,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               {gameInfo.group !== undefined
                 ? `${convertGroupString(gameInfo.group)}조 - ${gameInfo.id +
                     1}경기`
-                : convertFinalString(gameInfo.id)}
+                : convertFinalCardString(gameInfo.id)}
             </Typography>
           </Grid>
           <br />

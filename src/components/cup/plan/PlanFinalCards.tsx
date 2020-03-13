@@ -20,6 +20,9 @@ const useStyles = makeStyles({
   panel: {
     width: "90%",
     margin: "10px"
+  },
+  item: {
+    width: "70%"
   }
 });
 
@@ -35,7 +38,6 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
   setPlanFinal
 }: PlanFinalCardProps) => {
   const classes = useStyles();
-  const title: number = Math.pow(2, cardId + 1);
 
   const setClose = (obj: ExitWithID) => {
     let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
@@ -43,8 +45,8 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
     if (!newPlan) newPlan = { gI: { nQ: 2, gT: 45, rT: 15 } };
     if (!newPlan[obj.id]) newPlan[obj.id] = {};
 
-    newPlan[obj.id].kt = firestore.Timestamp.fromDate(
-      new Date(obj.date.toJSON())
+    newPlan[obj.id].kt = firestore.Timestamp.fromMillis(
+      obj.date.seconds * 1000
     );
 
     setPlanFinal(newPlan);
@@ -72,17 +74,42 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
 
   const createCard = () => {
     const arr: Array<SubGameInfo> = [];
-    let subGameId: number = title;
-    let findTeam = Math.pow(2, cardId + 2);
-    // console.dir(planFinal);
-    for (let i = 0; i < Math.pow(2, cardId); i++) {
+    let subGameId: number = Math.pow(2, cardId);
+    if (cardId !== 0) {
+      const next: number = Math.pow(2, cardId - 1); //
+      for (let i = subGameId; i > next; i--) {
+        let team1: string = "";
+        let team2: string = "";
+        if (planFinal.t) {
+          team1 = planFinal.t[i * 2];
+          team2 = planFinal.t[i * 2 - 1];
+        }
+
+        const location: string = parseLocation(planFinal, i);
+        const gameUID: string | undefined = parseGameUID(planFinal, i);
+        const time: firestore.Timestamp | undefined = parseTimeStamp(
+          planFinal,
+          i
+        );
+
+        arr.push({
+          team1: team1,
+          team2: team2,
+          id: i,
+          location: location,
+          kickOffTime: time
+            ? firestore.Timestamp.fromMillis(time.seconds * 1000)
+            : time,
+          gid: gameUID
+        });
+      }
+    } else {
+      // 3,4위전 카드 생성
       let team1: string = "";
       let team2: string = "";
       if (planFinal.t) {
-        team1 = planFinal.t[findTeam--];
-        team2 = planFinal.t[findTeam--];
-      } else {
-        findTeam -= 2;
+        team1 = planFinal.t[2] ?? "";
+        team2 = planFinal.t[1] ?? "";
       }
 
       const location: string = parseLocation(planFinal, subGameId);
@@ -97,27 +124,18 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
         team2: team2,
         id: subGameId,
         location: location,
-        kickOffTime: time,
+        kickOffTime: time
+          ? firestore.Timestamp.fromMillis(time.seconds * 1000)
+          : time,
         gid: gameUID
       });
-      subGameId--;
     }
 
     return arr;
   };
 
   return (
-    <ExpansionPanel className={classes.panel}>
-      <ExpansionPanelSummary
-        // expandIcon={<ExpandMore />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
-        <Typography align="center" color="textPrimary" variant="h6">
-          {title >= 4 ? `${title}강` : "결승전"}
-        </Typography>
-      </ExpansionPanelSummary>
-
+    <div className={classes.item}>
       {createCard().map((value: SubGameInfo, index: number) => {
         // TypeScript에서 firebase timeStamp와 Date 타입체크 버그가 있고
         // 자바스크립트로 오브젝트의 타입이 timeStamp인지 Date인지 체크가 안됨.... 음..
@@ -139,6 +157,6 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
           />
         );
       })}
-    </ExpansionPanel>
+    </div>
   );
 };

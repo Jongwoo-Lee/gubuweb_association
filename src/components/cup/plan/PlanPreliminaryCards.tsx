@@ -46,8 +46,8 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
     if (!newPlan[group]) newPlan[group] = {};
     if (!newPlan[group][obj.id]) newPlan[group][obj.id] = {};
 
-    newPlan[group][obj.id].kt = firestore.Timestamp.fromDate(
-      new Date(obj.date.toJSON())
+    newPlan[group][obj.id].kt = firestore.Timestamp.fromMillis(
+      obj.date.seconds * 1000
     );
 
     setPlanPre(newPlan);
@@ -94,7 +94,9 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
             team2No: j + 1,
             id: subGameId,
             location: location,
-            kickOffTime: time,
+            kickOffTime: time
+              ? firestore.Timestamp.fromMillis(time.seconds * 1000)
+              : time,
             gid: gameUID,
             group: group
           });
