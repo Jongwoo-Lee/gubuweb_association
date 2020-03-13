@@ -1,4 +1,4 @@
-import { IconButton } from "@material-ui/core";
+import { IconButton, makeStyles } from "@material-ui/core";
 import React from "react";
 
 interface ControlProps {
@@ -6,10 +6,19 @@ interface ControlProps {
   disPatchItem: React.Dispatch<React.SetStateAction<number>>;
 }
 
+const useStyles = makeStyles({
+  root: {
+    display: "flex",
+    flexDirection: "row",
+
+    alignItems: "center"
+  }
+});
 export const NumbericUpDownCtrl: React.FC<ControlProps> = ({
   numOfItem,
   disPatchItem
 }: ControlProps) => {
+  const classes = useStyles();
   const handleMinusValue = () => {
     if (numOfItem > 1) {
       const newValue: number = numOfItem - 1;
@@ -22,7 +31,7 @@ export const NumbericUpDownCtrl: React.FC<ControlProps> = ({
   };
 
   return (
-    <div>
+    <div className={classes.root}>
       <IconButton onClick={handleMinusValue}>-</IconButton>
       {numOfItem}
       <IconButton onClick={handleAddValue}>+</IconButton>

@@ -24,10 +24,12 @@ const useStyles = makeStyles({
     width: "80%",
     margin: "50px 0px 0px 0px"
   },
-  roots: {
-    flexGrow: 1
-  },
 
+  detail: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
   card: {
     display: "flex",
     flexDirection: "column",
@@ -38,22 +40,6 @@ const useStyles = makeStyles({
   setting: {
     display: "flex",
     flexDirection: "row"
-  },
-  settingItems: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "80%",
-    height: 220,
-    margin: "10px 10px"
-  },
-  subItems: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: 200,
-    minWidth: 150,
-    margin: "5px 5px"
   },
   title: {
     margin: "10px 10px" // top right bottom left
@@ -134,7 +120,7 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
             예선
           </Typography>
         </CustomExPanelSummary>
-        <CustomExPanelDetails className={classes.card}>
+        <CustomExPanelDetails className={classes.detail}>
           <div className={classes.setting}>
             <Grid container spacing={3} justify="center">
               <Card className={classes.card} variant="outlined">
@@ -152,20 +138,12 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
                   spacing={3}
                 >
                   <Grid item xs>
-                    <Typography
-                      className={classes.contents}
-                      variant="caption"
-                      component="span"
-                    >
+                    <Typography className={classes.contents} variant="body2">
                       팀 수
                     </Typography>
                   </Grid>
                   <Grid item xs>
-                    <Typography
-                      className={classes.contents}
-                      variant="body2"
-                      component="span"
-                    >
+                    <Typography className={classes.contents} variant="body2">
                       <NumbericUpDownCtrl
                         numOfItem={numOfTeams}
                         disPatchItem={setNumOfTeams}
@@ -180,20 +158,12 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
                   spacing={3}
                 >
                   <Grid item xs>
-                    <Typography
-                      className={classes.contents}
-                      variant="caption"
-                      component="span"
-                    >
+                    <Typography className={classes.contents} variant="body2">
                       본선 진출 수
                     </Typography>
                   </Grid>
                   <Grid item xs>
-                    <Typography
-                      className={classes.contents}
-                      variant="body2"
-                      component="span"
-                    >
+                    <Typography className={classes.contents} variant="body2">
                       <NumbericUpDownCtrl
                         numOfItem={numOfAdvFinal}
                         disPatchItem={setNumOfAdvFinal}
@@ -270,7 +240,6 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
                     </Typography>
                   </Grid>
                 </Grid>
-                <Button onClick={handleMakeCard}>확인</Button>
               </div>
             </Grid>
           </div>
