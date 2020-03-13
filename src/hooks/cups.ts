@@ -2,11 +2,17 @@ import { useEffect, useState } from "react";
 import {
   useAttendTeams,
   useSetPreTeams,
-  PreDataStructure
+  PreDataStructure,
+  CupMatchInfo,
+  FinalDataStructure
 } from "../context/cup/cupMatch";
 import { CupInfo } from "../helpers/Firebase/cup";
 import { SubGameInfo } from "../context/game/game";
-import { CupPlanDataStructure } from "../context/cup/cup";
+import {
+  CupPlanDataStructure,
+  PlanPreliminary,
+  PlanFinal
+} from "../context/cup/cup";
 import { getGameRecord, TeamsRecord } from "../helpers/Firebase/game";
 
 // 예선전 팀을 제외하고 남은 팀
@@ -59,21 +65,6 @@ export const convertTimeString = (seconds: number): string => {
   return `${min}:${sec}`;
 };
 
-// export const useConvertTimeStr = (initialValue: number = 0) => {
-//   const [value, setValue] = useState<string>(convertTimeString(0));
-
-//   return {
-//     value,
-//     onChange: (event: React.ChangeEvent<{}>, value: number | number[]) => {
-//       let time: string = "00:00"; // <-이런식으로 나옴
-//       if (!Array.isArray(value)) {
-//         time = convertTimeString(value);
-//       }
-//       setValue(time);
-//     }
-//   };
-// };
-
 export const fromGameInfo = (
   plan: CupPlanDataStructure | null,
   gameInfo: SubGameInfo
@@ -84,11 +75,11 @@ export const fromGameInfo = (
   // final
   if (plan !== null) {
     if (gameInfo.group === undefined) {
-      gameTime = plan.f.gameInfo.gameTime;
-      numOfQuarter = plan.f.gameInfo.numOfQuarter;
+      gameTime = plan.f.gI.gT;
+      numOfQuarter = plan.f.gI.nQ;
     } else {
-      gameTime = plan.p.gameInfo.gameTime;
-      numOfQuarter = plan.p.gameInfo.numOfQuarter;
+      gameTime = plan.p.gI.gT;
+      numOfQuarter = plan.p.gI.nQ;
     }
   }
   return { gameTime, numOfQuarter };
@@ -125,4 +116,96 @@ export const useLoadCupRecord = (cupID: string, gameID: string) => {
   );
 
   return { teamsRecord, loading };
+};
+
+// Game Plan을 얻어내는 hook...
+export const useGamePlan = (cupInfo: CupInfo) => {
+  let matchInfo: CupMatchInfo = fromMatchInfo(cupInfo.matchInfo ?? undefined);
+  const [planPre, setPlanPre] = useState<PlanPreliminary>(
+    cupInfo.matchPlan?.p ?? {
+      gI: { nQ: 2, gT: 45, rT: 15 }
+    }
+  );
+
+  const [planFinal, setPlanFinal] = useState<PlanFinal>(
+    remakeFinalPlan(cupInfo, matchInfo)
+  );
+
+  return { planPre, setPlanPre, planFinal, setPlanFinal, matchInfo };
+};
+
+// plan을 Match Info에서 가져와서 만든다.
+const fromMatchInfo = (matchInfo?: CupMatchInfo): CupMatchInfo => {
+  let iPData: PreDataStructure = {};
+  let iFData: FinalDataStructure = {
+    order: new Array<string | null>(8).fill(null),
+    round: 8
+  };
+  let iNumOfRound: number = 1;
+  let iNumOfWild: number = 1;
+  if (matchInfo) {
+    if (matchInfo.f !== null) {
+      iFData.round = matchInfo.f.round;
+      if (matchInfo.f.order !== null) {
+        iFData.order = Array.from(matchInfo.f.order);
+      }
+    }
+
+    //set preliminary data
+    if (matchInfo.p !== null) {
+      iPData = matchInfo.p;
+    }
+    if (matchInfo.ro !== null) {
+      iNumOfRound = matchInfo.ro;
+    }
+    if (matchInfo.w !== null) {
+      iNumOfWild = matchInfo.w;
+    }
+  }
+
+  return { p: iPData, f: iFData, ro: iNumOfRound, w: iNumOfWild };
+};
+
+const remakeFinalPlan = (
+  cupInfo: CupInfo,
+  matchInfo: CupMatchInfo
+): PlanFinal => {
+  let finalPlan: PlanFinal = {
+    gI: { nQ: 2, gT: 45, rT: 15 }
+  };
+
+  if (cupInfo.matchPlan) {
+    finalPlan = cupInfo.matchPlan.f;
+
+    if (finalPlan.t) {
+      const round: number = Number(matchInfo.f.round);
+
+      let j: number = 0;
+      for (let i = round * 2; i > round; i--) {
+        let team: string = "";
+        if (matchInfo.f.order[j]) team = matchInfo.f.order[j] ?? "";
+
+        // finalPlan데이터가 있으면 그것을 우선 사용한다.
+        if (finalPlan.t[i] && finalPlan.t[i] === "") {
+          console.log(`finalPlan.t[i] 만드는 중 `);
+          console.dir(finalPlan.t[i]);
+          finalPlan.t[i] = team;
+        }
+        j++;
+      }
+    } else {
+      finalPlan.t = {};
+      const round: number = Number(matchInfo.f.round);
+
+      let j: number = 0;
+      for (let i = round * 2; i > round; i--) {
+        let team: string = "";
+        if (matchInfo.f.order[j]) team = matchInfo.f.order[j] ?? "";
+        finalPlan.t[i] = team;
+        j++;
+      }
+    }
+  }
+
+  return finalPlan;
 };

@@ -7,6 +7,7 @@ import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
 import { PreliminaryPlan } from "./PreliminaryPlan";
 import { FinalPlan } from "./FinalPlan";
+import { useGamePlan } from "../../../hooks/cups";
 export interface CupDetailPlanProps {}
 
 const useStyles = makeStyles({
@@ -30,19 +31,26 @@ export const WrapCupDetailPlans: React.FC<WrapCupDetailPlanProps> = ({
   cupID
 }: WrapCupDetailPlanProps) => {
   const classes = useStyles();
-  let matchInfo: CupMatchInfo =
-    cupInfo.matchInfo ?? false
-      ? fromMatchInfo(cupInfo?.matchInfo ?? undefined) // cupInfo?.matchInfo <-- ? 없앨수 없는 버그
-      : fromMatchInfo();
-  const [planPre, setPlanPre] = useState<PlanPreliminary>(
-    cupInfo.matchPlan?.p ?? {
-      gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
-    }
-  );
+  const {
+    planPre,
+    setPlanPre,
+    planFinal,
+    setPlanFinal,
+    matchInfo
+  } = useGamePlan(cupInfo);
+  // let matchInfo: CupMatchInfo =
+  //   cupInfo.matchInfo ?? false
+  //     ? fromMatchInfo(cupInfo?.matchInfo ?? undefined) // cupInfo?.matchInfo <-- ? 없앨수 없는 버그
+  //     : fromMatchInfo();
+  // const [planPre, setPlanPre] = useState<PlanPreliminary>(
+  //   cupInfo.matchPlan?.p ?? {
+  //     gI: { nQ: 2, gT: 45, rT: 15 }
+  //   }
+  // );
 
-  const [planFinal, setPlanFinal] = useState<PlanFinal>(
-    remakeFinalPlan(cupInfo, matchInfo)
-  );
+  // const [planFinal, setPlanFinal] = useState<PlanFinal>(
+  //   remakeFinalPlan(cupInfo, matchInfo)
+  // );
 
   const handleOnSave = async (
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent
@@ -92,48 +100,4 @@ export const WrapCupDetailPlans: React.FC<WrapCupDetailPlanProps> = ({
       )}
     </div>
   );
-};
-
-const remakeFinalPlan = (
-  cupInfo: CupInfo,
-  matchInfo: CupMatchInfo
-): PlanFinal => {
-  let finalPlan: PlanFinal = {
-    gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 }
-  };
-
-  if (cupInfo.matchPlan) {
-    finalPlan = cupInfo.matchPlan.f;
-
-    if (finalPlan.t) {
-      const round: number = Number(matchInfo.f.round);
-
-      let j: number = 0;
-      for (let i = round * 2; i > round; i--) {
-        let team: string = "";
-        if (matchInfo.f.order[j]) team = matchInfo.f.order[j] ?? "";
-
-        // finalPlan데이터가 있으면 그것을 우선 사용한다.
-        if (finalPlan.t[i] && finalPlan.t[i] === "") {
-          console.log(`finalPlan.t[i] 만드는 중 `);
-          console.dir(finalPlan.t[i]);
-          finalPlan.t[i] = team;
-        }
-        j++;
-      }
-    } else {
-      finalPlan.t = {};
-      const round: number = Number(matchInfo.f.round);
-
-      let j: number = 0;
-      for (let i = round * 2; i > round; i--) {
-        let team: string = "";
-        if (matchInfo.f.order[j]) team = matchInfo.f.order[j] ?? "";
-        finalPlan.t[i] = team;
-        j++;
-      }
-    }
-  }
-
-  return finalPlan;
 };

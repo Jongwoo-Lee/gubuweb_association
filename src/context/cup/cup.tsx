@@ -5,9 +5,9 @@ import { useCupInfoList } from "../../hooks";
 export type ContextSetCupInfos = Dispatch<SetStateAction<CupInfoObject>>;
 
 export interface GameInfo {
-  numOfQuarter: number;
-  gameTime: number; // 단위: 분
-  restTime: number; // 단위: 분
+  nQ: number; // numOfQuarter
+  gT: number; // 단위: 분, gameTime
+  rT: number; // 단위: 분, restTime
 }
 
 export interface CupPlanDataStructure {
@@ -16,7 +16,7 @@ export interface CupPlanDataStructure {
 }
 
 export interface CupPlan {
-  gameInfo: GameInfo;
+  gI: GameInfo;
 }
 
 interface GameDetailInfo {

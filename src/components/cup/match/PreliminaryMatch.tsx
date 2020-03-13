@@ -24,11 +24,16 @@ const useStyles = makeStyles({
     width: "80%",
     margin: "50px 0px 0px 0px"
   },
+  roots: {
+    flexGrow: 1
+  },
 
   card: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    margin: "20px",
+    padding: "10px"
   },
   setting: {
     display: "flex",
@@ -38,9 +43,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: 250,
+    width: "80%",
     height: 220,
-    minWidth: 150,
     margin: "10px 10px"
   },
   subItems: {
@@ -132,102 +136,143 @@ export const PreliminaryMatch: React.FC<PreliminaryProps> = () => {
         </CustomExPanelSummary>
         <CustomExPanelDetails className={classes.card}>
           <div className={classes.setting}>
-            <Card className={classes.settingItems} variant="outlined">
-              <Typography
-                className={classes.title}
-                variant="body1"
-                component="span"
-              >
-                조 추가
-              </Typography>
-              <div className={classes.subItems}>
+            <Grid container spacing={3} justify="center">
+              <Card className={classes.card} variant="outlined">
                 <Typography
-                  className={classes.contents}
-                  variant="body2"
+                  className={classes.title}
+                  variant="body1"
                   component="span"
                 >
-                  팀 수
+                  조 추가
                 </Typography>
+                <Grid
+                  container
+                  alignItems="center"
+                  justify="center"
+                  spacing={3}
+                >
+                  <Grid item xs>
+                    <Typography
+                      className={classes.contents}
+                      variant="caption"
+                      component="span"
+                    >
+                      팀 수
+                    </Typography>
+                  </Grid>
+                  <Grid item xs>
+                    <Typography
+                      className={classes.contents}
+                      variant="body2"
+                      component="span"
+                    >
+                      <NumbericUpDownCtrl
+                        numOfItem={numOfTeams}
+                        disPatchItem={setNumOfTeams}
+                      />
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  alignItems="center"
+                  justify="center"
+                  spacing={3}
+                >
+                  <Grid item xs>
+                    <Typography
+                      className={classes.contents}
+                      variant="caption"
+                      component="span"
+                    >
+                      본선 진출 수
+                    </Typography>
+                  </Grid>
+                  <Grid item xs>
+                    <Typography
+                      className={classes.contents}
+                      variant="body2"
+                      component="span"
+                    >
+                      <NumbericUpDownCtrl
+                        numOfItem={numOfAdvFinal}
+                        disPatchItem={setNumOfAdvFinal}
+                      />
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Button onClick={handleMakeCard}>확인</Button>
+              </Card>
+            </Grid>
+            <Grid container spacing={3} justify="center">
+              <div className={classes.card}>
                 <Typography
-                  className={classes.contents}
-                  variant="body2"
+                  className={classes.title}
+                  align="center"
+                  variant="body1"
                   component="span"
                 >
-                  <NumbericUpDownCtrl
-                    numOfItem={numOfTeams}
-                    disPatchItem={setNumOfTeams}
-                  />
+                  예선 설정
                 </Typography>
+                <Grid
+                  container
+                  alignItems="center"
+                  justify="center"
+                  spacing={3}
+                >
+                  <Grid item xs>
+                    <Typography
+                      className={classes.contents}
+                      variant="body2"
+                      component="span"
+                    >
+                      라운드 수
+                    </Typography>
+                  </Grid>
+                  <Grid item xs>
+                    <Typography
+                      className={classes.contents}
+                      variant="body2"
+                      component="span"
+                    >
+                      <NumbericUpDownCtrl
+                        numOfItem={useRound()}
+                        disPatchItem={useSetRound()}
+                      />
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  alignItems="center"
+                  justify="center"
+                  spacing={3}
+                >
+                  <Grid item xs>
+                    <Typography
+                      className={classes.contents}
+                      variant="body2"
+                      component="span"
+                    >
+                      와일드 카드
+                    </Typography>
+                  </Grid>
+                  <Grid item xs>
+                    <Typography
+                      className={classes.contents}
+                      variant="body2"
+                      component="span"
+                    >
+                      <NumbericUpDownCtrl
+                        numOfItem={useNumOfWild()}
+                        disPatchItem={useSetNumOfWild()}
+                      />
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Button onClick={handleMakeCard}>확인</Button>
               </div>
-              <div className={classes.subItems}>
-                <Typography
-                  className={classes.contents}
-                  variant="body2"
-                  component="span"
-                >
-                  본선 진출 수
-                </Typography>
-                <Typography
-                  className={classes.contents}
-                  variant="body2"
-                  component="span"
-                >
-                  <NumbericUpDownCtrl
-                    numOfItem={numOfAdvFinal}
-                    disPatchItem={setNumOfAdvFinal}
-                  />
-                </Typography>
-              </div>
-              <Button onClick={handleMakeCard}>확인</Button>
-            </Card>
-            <div className={classes.settingItems}>
-              <Typography
-                className={classes.title}
-                align="center"
-                variant="body1"
-                component="span"
-              >
-                예선 설정
-              </Typography>
-              <div className={classes.subItems}>
-                <Typography
-                  className={classes.contents}
-                  variant="body2"
-                  component="span"
-                >
-                  라운드 수
-                </Typography>
-                <Typography
-                  className={classes.contents}
-                  variant="body2"
-                  component="span"
-                >
-                  <NumbericUpDownCtrl
-                    numOfItem={useRound()}
-                    disPatchItem={useSetRound()}
-                  />
-                </Typography>
-              </div>
-              <div className={classes.subItems}>
-                <Typography
-                  className={classes.contents}
-                  variant="body2"
-                  component="span"
-                >
-                  와일드 카드
-                </Typography>
-                <Typography
-                  className={classes.contents}
-                  variant="body2"
-                  component="span"
-                >
-                  <NumbericUpDownCtrl
-                    numOfItem={useNumOfWild()}
-                    disPatchItem={useSetNumOfWild()}
-                  />
-                </Typography>
-              </div>
-            </div>
+            </Grid>
           </div>
           {cardObjList.length > 0 &&
             cardObjList.map((o: GroupCardNumOfTeams, index: number) => {

@@ -40,20 +40,20 @@ export const GameInfoInput = <T extends CupPlan>(
 
   const handleQuarter = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPlan: T = JSON.parse(JSON.stringify(plan));
-    newPlan.gameInfo.numOfQuarter = Number(event.target.value);
+    newPlan.gI.nQ = Number(event.target.value);
 
     setPlan(newPlan);
   };
   const handleGameTime = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPlan: T = JSON.parse(JSON.stringify(plan));
-    newPlan.gameInfo.gameTime = Number(event.target.value);
+    newPlan.gI.gT = Number(event.target.value);
 
     setPlan(newPlan);
   };
 
   const handleRestTime = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPlan: T = JSON.parse(JSON.stringify(plan));
-    newPlan.gameInfo.restTime = Number(event.target.value);
+    newPlan.gI.rT = Number(event.target.value);
 
     setPlan(newPlan);
   };
@@ -79,7 +79,7 @@ export const GameInfoInput = <T extends CupPlan>(
               <Input
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
                 id="component-simple"
-                value={plan.gameInfo.numOfQuarter}
+                value={plan.gI.nQ}
                 onChange={handleQuarter}
                 type="number"
               />
@@ -99,7 +99,7 @@ export const GameInfoInput = <T extends CupPlan>(
                 }
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
                 id="component-game-time"
-                value={plan.gameInfo.gameTime}
+                value={plan.gI.gT}
                 onChange={handleGameTime}
                 type="number"
               />
@@ -119,7 +119,7 @@ export const GameInfoInput = <T extends CupPlan>(
                 }
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
                 id="component-rest-time"
-                value={plan.gameInfo.restTime}
+                value={plan.gI.rT}
                 onChange={handleRestTime}
                 type="number"
               />

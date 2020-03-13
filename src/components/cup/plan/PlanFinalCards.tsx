@@ -40,8 +40,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
   const setClose = (obj: ExitWithID) => {
     let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
 
-    if (!newPlan)
-      newPlan = { gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 } };
+    if (!newPlan) newPlan = { gI: { nQ: 2, gT: 45, rT: 15 } };
     if (!newPlan[obj.id]) newPlan[obj.id] = {};
 
     newPlan[obj.id].kt = firestore.Timestamp.fromDate(
@@ -53,8 +52,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
 
   const setLocation = (location: string, id: number) => {
     let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
-    if (!newPlan)
-      newPlan = { gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 } };
+    if (!newPlan) newPlan = { gI: { nQ: 2, gT: 45, rT: 15 } };
     if (!newPlan[id]) newPlan[id] = {};
     newPlan[id].lo = location;
 
@@ -65,8 +63,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
   const setGameUID = (gameUID: string, id: number) => {
     let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
 
-    if (!newPlan)
-      newPlan = { gameInfo: { numOfQuarter: 2, gameTime: 45, restTime: 15 } };
+    if (!newPlan) newPlan = { gI: { nQ: 2, gT: 45, rT: 15 } };
     if (!newPlan[id]) newPlan[id] = { gid: gameUID };
     newPlan[id].gid = gameUID;
 
