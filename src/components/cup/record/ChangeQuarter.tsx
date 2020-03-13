@@ -2,33 +2,59 @@ import React from "react";
 import { makeStyles, Typography, Grid, Button } from "@material-ui/core";
 import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
+import {
+  useSetRecordTime,
+  CurTime,
+  useRecordTime
+} from "../../../context/cup/cupRecord";
 
 export interface ChangeQaurterProps {}
 
 export interface ChangeQaurterProps {
   numOfQuarter: number;
-  curQuarter: number;
 }
 
 export const ChangeQaurter: React.FC<ChangeQaurterProps> = ({
-  numOfQuarter,
-  curQuarter
+  numOfQuarter
 }: ChangeQaurterProps) => {
+  const setTime: React.Dispatch<React.SetStateAction<
+    CurTime
+  >> = useSetRecordTime();
+  const { curQuarter, curTime } = useRecordTime();
+  const handleLeft = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (curQuarter > 1) {
+      const quarter: number = curQuarter - 1;
+      let newTime: CurTime = { curQuarter: quarter, curTime };
+      setTime(newTime);
+    }
+  };
+
+  const handleRight = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (curQuarter < numOfQuarter) {
+      const quarter: number = curQuarter + 1;
+      let newTime: CurTime = { curQuarter: quarter, curTime };
+      setTime(newTime);
+    }
+  };
+
   const text: string =
     numOfQuarter === 2
-      ? curQuarter === 0
+      ? curQuarter === 1
         ? "전반전"
         : "후반전"
-      : `${curQuarter + 1}쿼터`;
+      : `${curQuarter}쿼터`;
+
   return (
     <Grid container direction="row" justify="flex-end" alignItems="center">
-      <Button>
+      <Button onClick={handleLeft}>
         <KeyboardArrowLeftIcon />
       </Button>
       <Typography align="center" color="textPrimary" variant="h4">
         {text}
       </Typography>
-      <Button>
+      <Button onClick={handleRight}>
         <KeyboardArrowRightIcon />
       </Button>
     </Grid>

@@ -1,13 +1,12 @@
 import React, { useContext, useState } from "react";
-import { useCupInfoList } from "../../hooks";
 import { useLoadCupRecord } from "../../hooks/cups";
 import { TeamsRecord } from "../../helpers/Firebase/game";
 
-interface CurTime {
+export interface CurTime {
   curQuarter: number;
   curTime: number;
 }
-// Firebase Auth User Context
+
 interface CupRecordData {
   time: CurTime;
   setTime: React.Dispatch<React.SetStateAction<CurTime>>;

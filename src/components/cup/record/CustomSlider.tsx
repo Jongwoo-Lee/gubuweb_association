@@ -6,7 +6,12 @@ import {
   makeStyles
 } from "@material-ui/core";
 import React from "react";
-import { useConvertTimeStr, convertTimeString } from "../../../hooks/cups";
+import { convertTimeString } from "../../../hooks/cups";
+import {
+  useSetRecordTime,
+  CurTime,
+  useRecordTime
+} from "../../../context/cup/cupRecord";
 
 export interface CupDetailPlanProps {}
 
@@ -48,26 +53,32 @@ const PrettoSlider = withStyles({
 
 export interface CustomSliderProps {
   // seconds: number;
-  curTime: string;
   gameTime: string; // seconds로
-  handleChange: (
-    event: React.ChangeEvent<{}>,
-    value: number | number[]
-  ) => void;
 }
 
 // export const CustomSlider: React.FC<CustomSliderProps> = ({}: CustomSliderProps) => {
 export const CustomSlider: React.FC<CustomSliderProps> = ({
-  curTime,
-  gameTime,
-  handleChange
+  gameTime
 }: CustomSliderProps) => {
   const classes = useStyles();
+  const setTime: React.Dispatch<React.SetStateAction<
+    CurTime
+  >> = useSetRecordTime();
+  const time: CurTime = useRecordTime();
+  const handleChange = (
+    event: React.ChangeEvent<{}>,
+    value: number | number[]
+  ) => {
+    if (!Array.isArray(value)) {
+      let newTime: CurTime = { curQuarter: time.curQuarter, curTime: value };
+      setTime(newTime);
+    }
+  };
   return (
     <Grid container spacing={3} className={classes.margin}>
       <Grid item xs>
         <Typography color="textPrimary" variant="h4" align="center">
-          {curTime}
+          {convertTimeString(time.curTime)}
         </Typography>
       </Grid>
       <Grid item xs={9}>

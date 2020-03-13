@@ -10,7 +10,6 @@ import {
   Slider
 } from "@material-ui/core";
 import {
-  CupMatchInfo,
   convertGroupString,
   convertFinalString
 } from "../../../context/cup/cupMatch";
@@ -22,11 +21,7 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { convertKoTime } from "../plan/DatePickerDlg";
 import { CustomSlider } from "./CustomSlider";
-import {
-  useConvertTimeStr,
-  convertTimeString,
-  fromGameInfo
-} from "../../../hooks/cups";
+import { convertTimeString, fromGameInfo } from "../../../hooks/cups";
 import { ChangeQaurter } from "./ChangeQuarter";
 
 export interface CupDetailPlanProps {}
@@ -64,7 +59,6 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
 }: WrapCupDetailRecordProps) => {
   const classes = useStyles();
   let matchPlan: CupPlanDataStructure | null = cupInfo.matchPlan;
-  const { value: time, onChange: handleChange } = useConvertTimeStr(0);
   const { gameTime, numOfQuarter } = fromGameInfo(matchPlan, gameInfo);
 
   const title: string =
@@ -169,12 +163,8 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
           </Paper>
         </Grid>
       </Grid>
-      <CustomSlider
-        curTime={time}
-        gameTime={convertTimeString(gameTime * 60)}
-        handleChange={handleChange}
-      />
-      <ChangeQaurter numOfQuarter={numOfQuarter} curQuarter={0} />
+      <CustomSlider gameTime={convertTimeString(gameTime * 60)} />
+      <ChangeQaurter numOfQuarter={numOfQuarter} />
 
       {
         //   matchInfo ? (

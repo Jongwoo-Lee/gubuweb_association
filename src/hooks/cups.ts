@@ -59,20 +59,20 @@ export const convertTimeString = (seconds: number): string => {
   return `${min}:${sec}`;
 };
 
-export const useConvertTimeStr = (initialValue: number = 0) => {
-  const [value, setValue] = useState<string>(convertTimeString(0));
+// export const useConvertTimeStr = (initialValue: number = 0) => {
+//   const [value, setValue] = useState<string>(convertTimeString(0));
 
-  return {
-    value,
-    onChange: (event: React.ChangeEvent<{}>, value: number | number[]) => {
-      let time: string = "00:00"; // <-이런식으로 나옴
-      if (!Array.isArray(value)) {
-        time = convertTimeString(value);
-      }
-      setValue(time);
-    }
-  };
-};
+//   return {
+//     value,
+//     onChange: (event: React.ChangeEvent<{}>, value: number | number[]) => {
+//       let time: string = "00:00"; // <-이런식으로 나옴
+//       if (!Array.isArray(value)) {
+//         time = convertTimeString(value);
+//       }
+//       setValue(time);
+//     }
+//   };
+// };
 
 export const fromGameInfo = (
   plan: CupPlanDataStructure | null,
