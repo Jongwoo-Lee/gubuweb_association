@@ -22,7 +22,12 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { convertKoTime } from "../plan/DatePickerDlg";
 import { CustomSlider } from "./CustomSlider";
-import { useConvertTimeStr, convertTimeString } from "../../../hooks/cups";
+import {
+  useConvertTimeStr,
+  convertTimeString,
+  fromGameInfo
+} from "../../../hooks/cups";
+import { ChangeQaurter } from "./ChangeQuarter";
 
 export interface CupDetailPlanProps {}
 
@@ -60,6 +65,7 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
   const classes = useStyles();
   let matchPlan: CupPlanDataStructure | null = cupInfo.matchPlan;
   const { value: time, onChange: handleChange } = useConvertTimeStr(0);
+  const { gameTime, numOfQuarter } = fromGameInfo(matchPlan, gameInfo);
 
   const title: string =
     gameInfo.group === undefined
@@ -165,9 +171,10 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
       </Grid>
       <CustomSlider
         curTime={time}
-        gameTime={convertTimeString(45 * 60)}
+        gameTime={convertTimeString(gameTime * 60)}
         handleChange={handleChange}
       />
+      <ChangeQaurter numOfQuarter={numOfQuarter} curQuarter={0} />
 
       {
         //   matchInfo ? (

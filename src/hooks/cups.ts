@@ -4,6 +4,9 @@ import {
   useSetPreTeams,
   PreDataStructure
 } from "../context/cup/cupMatch";
+import { CupInfo } from "../helpers/Firebase/cup";
+import { SubGameInfo } from "../context/game/game";
+import { CupPlanDataStructure } from "../context/cup/cup";
 
 // 예선전 팀을 제외하고 남은 팀
 export const useTeamsExceptPre = (
@@ -68,4 +71,24 @@ export const useConvertTimeStr = (initialValue: number = 0) => {
       setValue(time);
     }
   };
+};
+
+export const fromGameInfo = (
+  plan: CupPlanDataStructure | null,
+  gameInfo: SubGameInfo
+) => {
+  let gameTime: number = 45;
+  let numOfQuarter: number = 2;
+
+  // final
+  if (plan !== null) {
+    if (gameInfo.group === undefined) {
+      gameTime = plan.f.gameInfo.gameTime;
+      numOfQuarter = plan.f.gameInfo.numOfQuarter;
+    } else {
+      gameTime = plan.p.gameInfo.gameTime;
+      numOfQuarter = plan.p.gameInfo.numOfQuarter;
+    }
+  }
+  return { gameTime, numOfQuarter };
 };

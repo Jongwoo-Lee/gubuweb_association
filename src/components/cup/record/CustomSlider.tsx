@@ -53,7 +53,7 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
   return (
     <Grid container spacing={3}>
       <Grid item xs>
-        <Typography color="textPrimary" variant="h4">
+        <Typography color="textPrimary" variant="h4" align="center">
           {curTime}
         </Typography>
       </Grid>
@@ -66,7 +66,7 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
         />
       </Grid>
       <Grid item xs>
-        <Typography color="textPrimary" variant="h4">
+        <Typography color="textPrimary" variant="h4" align="center">
           {gameTime}
         </Typography>
       </Grid>
