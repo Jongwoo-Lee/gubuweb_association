@@ -19,7 +19,6 @@ export const RecordComponents: React.FC<RealRecordProps> = ({}: RealRecordProps)
     <div className={classes.root}>
       <Grid
         container
-        className={classes.root}
         spacing={10}
         alignItems="center"
         direction="row"

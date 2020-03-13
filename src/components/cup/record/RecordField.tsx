@@ -1,27 +1,37 @@
 import React from "react";
-import { Typography, Grid, makeStyles } from "@material-ui/core";
+import { Typography, Grid, makeStyles, Paper } from "@material-ui/core";
+import { RecordShow } from "./RecordShow";
 
 export interface RecordFieldProps {}
 const useStyles = makeStyles({
   margin: {
-    margin: "20px 0px 0px 0px"
+    marginTop: "20px",
+    height: "700px"
+  },
+  ground: {
+    background: "white",
+    height: "100%"
+  },
+  paper: {
+    background: "green",
+    height: "100%"
   }
 });
 
 export const RecordField: React.FC<RecordFieldProps> = ({}: RecordFieldProps) => {
   const classes = useStyles();
   return (
-    <Grid container spacing={3} className={classes.margin}>
-      <Grid item xs={9}>
-        <Typography color="textPrimary" variant="h4" align="center">
-          그라운드
-        </Typography>
+    <div>
+      <Grid container spacing={1} className={classes.margin}>
+        <Grid item xs={9}>
+          <Paper variant="elevation" className={classes.paper}></Paper>
+        </Grid>
+        <Grid item xs>
+          <Paper variant="elevation" className={classes.ground}></Paper>
+        </Grid>
       </Grid>
-      <Grid item xs>
-        <Typography color="textPrimary" variant="h4" align="center">
-          선수 명단
-        </Typography>
-      </Grid>
-    </Grid>
+
+      <RecordShow />
+    </div>
   );
 };

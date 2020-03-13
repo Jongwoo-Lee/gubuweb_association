@@ -7,7 +7,8 @@ import {
   Button,
   Icon,
   Paper,
-  Slider
+  Slider,
+  CircularProgress
 } from "@material-ui/core";
 import {
   convertGroupString,
@@ -24,6 +25,7 @@ import { CustomSlider } from "./CustomSlider";
 import { convertTimeString, fromGameInfo } from "../../../hooks/cups";
 import { ChangeQaurter } from "./ChangeQuarter";
 import { RecordComponents } from "./RecordComponents";
+import { useRecordloading } from "../../../context/cup/cupRecord";
 
 const useStyles = makeStyles({
   root: {
@@ -32,7 +34,7 @@ const useStyles = makeStyles({
     width: "80%"
   },
   title: {
-    margin: "50px 0px 0px 0px"
+    marginTop: "50px"
   },
   row: {
     display: "flex",
@@ -44,6 +46,9 @@ const useStyles = makeStyles({
 
   paper: {
     padding: "15px 0px 15px 0px"
+  },
+  progress: {
+    margin: "100px"
   }
 });
 
@@ -60,12 +65,18 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
   let matchPlan: CupPlanDataStructure | null = cupInfo.matchPlan;
   const { gameTime, numOfQuarter } = fromGameInfo(matchPlan, gameInfo);
 
+  const loading = useRecordloading();
+
   const title: string =
     gameInfo.group === undefined
       ? `${convertFinalString(gameInfo.id)}`
       : `${convertGroupString(gameInfo.group)}조 - ${gameInfo.id + 1}경기`;
 
-  return (
+  return loading ? (
+    <Grid container direction="row" justify="center" alignItems="center">
+      <CircularProgress className={classes.progress} />
+    </Grid>
+  ) : (
     <div className={classes.root}>
       <TitleGoBack title={cupInfo?.name ?? "No data"} />
       <Grid

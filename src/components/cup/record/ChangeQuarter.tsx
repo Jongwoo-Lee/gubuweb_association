@@ -25,7 +25,7 @@ export const ChangeQaurter: React.FC<ChangeQaurterProps> = ({
     e.preventDefault();
     if (curQuarter > 1) {
       const quarter: number = curQuarter - 1;
-      let newTime: CurTime = { curQuarter: quarter, curTime };
+      let newTime: CurTime = { curQuarter: quarter, curTime: 0 };
       setTime(newTime);
     }
   };
@@ -34,7 +34,7 @@ export const ChangeQaurter: React.FC<ChangeQaurterProps> = ({
     e.preventDefault();
     if (curQuarter < numOfQuarter) {
       const quarter: number = curQuarter + 1;
-      let newTime: CurTime = { curQuarter: quarter, curTime };
+      let newTime: CurTime = { curQuarter: quarter, curTime: 0 };
       setTime(newTime);
     }
   };
