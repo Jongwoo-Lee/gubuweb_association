@@ -1,6 +1,7 @@
 import React, { useContext, Dispatch, SetStateAction } from "react";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { useCupInfoList } from "../../hooks";
+import { firestore } from "firebase";
 
 export type ContextSetCupInfos = Dispatch<SetStateAction<CupInfoObject>>;
 
@@ -35,6 +36,49 @@ export interface PlanFinal extends CupPlan {
   [id: number]: GameDetailInfo;
   t?: { [team: number]: string }; // 4강 => 8팀
 }
+
+// type gaurd로 구분할 수 없어서 제네릭으로 만들지 못함
+export const PlanDeepCopy = <T extends {}>(plan: T, isFinal: boolean): T => {
+  let newPlan: T = JSON.parse(JSON.stringify(plan));
+  if (isFinal) {
+    Object.keys(plan).forEach((id: string) => {
+      const findID: number = Number(id);
+      if (Number.isNaN(findID) === false) {
+        if (((plan as unknown) as PlanFinal)[findID].kt)
+          ((newPlan as unknown) as PlanFinal)[
+            findID
+          ].kt = firestore.Timestamp.fromMillis(
+            ((plan as unknown) as PlanFinal)[findID].kt?.toMillis() ?? 0 // typesciprt에서 못걸러주는듯
+          );
+      }
+    });
+  } else {
+    Object.keys(plan).forEach((group: string) => {
+      const findGroup: number = Number(group);
+      if (Number.isNaN(findGroup) === false)
+        Object.keys(((plan as unknown) as PlanPreliminary)[findGroup]).forEach(
+          (id: string) => {
+            const findID: number = Number(id);
+            if (Number.isNaN(findID) === false) {
+              if (
+                ((plan as unknown) as PlanPreliminary)[Number(group)][findID].kt
+              )
+                ((newPlan as unknown) as PlanPreliminary)[Number(group)][
+                  findID
+                ].kt = firestore.Timestamp.fromMillis(
+                  ((plan as unknown) as PlanPreliminary)[Number(group)][
+                    findID
+                  ].kt?.toMillis() ?? 0 // typesciprt에서 못걸러주는듯
+                );
+            }
+          }
+        );
+    });
+  }
+
+  return newPlan;
+};
+
 /* 4강 예시
 8번 자리에 있는 사람이 우승한다면 8: uid, 4:uid, 0:uid가 적힘
 7번 자리에 있는 사람이 3위한다면 7:uid, 2:uid 에만 적힘 

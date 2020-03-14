@@ -7,7 +7,7 @@ import {
   InputAdornment,
   Grid
 } from "@material-ui/core";
-import { CupPlan } from "../../../context/cup/cup";
+import { CupPlan, PlanDeepCopy } from "../../../context/cup/cup";
 
 const useStyles = makeStyles({
   root: {
@@ -29,6 +29,7 @@ const useStyles = makeStyles({
 interface GameInfoInputProps<T extends CupPlan> {
   plan: T;
   setPlan: React.Dispatch<React.SetStateAction<T>>;
+  isFinal: boolean;
 }
 
 export const GameInfoInput = <T extends CupPlan>(
@@ -39,20 +40,20 @@ export const GameInfoInput = <T extends CupPlan>(
   const classes = useStyles();
 
   const handleQuarter = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newPlan: T = JSON.parse(JSON.stringify(plan));
+    const newPlan: T = PlanDeepCopy(plan, props.isFinal);
     newPlan.gI.nQ = Number(event.target.value);
 
     setPlan(newPlan);
   };
   const handleGameTime = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newPlan: T = JSON.parse(JSON.stringify(plan));
+    const newPlan: T = PlanDeepCopy(plan, props.isFinal);
     newPlan.gI.gT = Number(event.target.value);
 
     setPlan(newPlan);
   };
 
   const handleRestTime = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newPlan: T = JSON.parse(JSON.stringify(plan));
+    const newPlan: T = PlanDeepCopy(plan, props.isFinal);
     newPlan.gI.rT = Number(event.target.value);
 
     setPlan(newPlan);

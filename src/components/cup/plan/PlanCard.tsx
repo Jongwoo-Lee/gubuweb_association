@@ -51,8 +51,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     typeof gameInfo?.kickOffTime !== "undefined"
   ) {
     // deep copy시 Type을 잃어버리네
-    const time: firebase.firestore.Timestamp = gameInfo?.kickOffTime as firebase.firestore.Timestamp;
-    kickOffTime = convertKoTime(time.toDate());
+    kickOffTime = convertKoTime(gameInfo?.kickOffTime.toDate());
   }
 
   const handleClose = (obj: ExitWithID) => {

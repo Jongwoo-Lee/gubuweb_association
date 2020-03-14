@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 });
 
 export interface ExitWithID {
-  date: firebase.firestore.Timestamp;
+  date: firebase.firestore.Timestamp | undefined;
   id: number;
 }
 
@@ -58,7 +58,7 @@ export const DatePickerDlg: React.FC<DatePickerDlgProps> = ({
   } = useDateInput(new Date());
 
   const handleClose = () => {
-    onClose({ date: null, id: parentID });
+    onClose({ date: undefined, id: parentID });
   };
 
   const handleOk = () => {

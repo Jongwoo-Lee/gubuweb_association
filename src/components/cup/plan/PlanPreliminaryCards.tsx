@@ -1,14 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  convertGroupString,
-  PreDataStructure
-} from "../../../context/cup/cupMatch";
+import { PreDataStructure } from "../../../context/cup/cupMatch";
 import {
   PlanPreliminary,
   parseLocation,
   parseTimeStamp,
-  parseGameUID
+  parseGameUID,
+  PlanDeepCopy
 } from "../../../context/cup/cup";
 import { ExitWithID } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
@@ -41,20 +39,24 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
   const numOfTeams: number = preliminaryData[group].t;
 
   const setClose = (obj: ExitWithID) => {
-    const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
+    const newPlan: PlanPreliminary = PlanDeepCopy(planPre, false);
 
     if (!newPlan[group]) newPlan[group] = {};
     if (!newPlan[group][obj.id]) newPlan[group][obj.id] = {};
 
-    newPlan[group][obj.id].kt = firestore.Timestamp.fromMillis(
-      obj.date.seconds * 1000
-    );
+    if (typeof obj.date !== "undefined")
+      newPlan[group][obj.id].kt = firestore.Timestamp.fromMillis(
+        obj.date.seconds * 1000
+      );
 
     setPlanPre(newPlan);
   };
 
   const setLocation = (location: string, id: number) => {
-    const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
+    const newPlan: PlanPreliminary = PlanDeepCopy<PlanPreliminary>(
+      planPre,
+      false
+    );
     if (!newPlan[group]) newPlan[group] = {};
     if (!newPlan[group][id]) newPlan[group][id] = {};
     newPlan[group][id].lo = location;
@@ -64,7 +66,10 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
 
   // 요건 자동 저장한다.
   const setGameUID = (gameUID: string, id: number) => {
-    const newPlan: PlanPreliminary = JSON.parse(JSON.stringify(planPre));
+    const newPlan: PlanPreliminary = PlanDeepCopy<PlanPreliminary>(
+      planPre,
+      false
+    );
     if (!newPlan[group]) newPlan[group] = {};
     if (!newPlan[group][id]) newPlan[group][id] = { gid: gameUID };
     newPlan[group][id].gid = gameUID;

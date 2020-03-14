@@ -73,7 +73,11 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
         </CustomExPanelSummary>
         <CustomExPanelDetails className={classes.card}>
           {matchInfo && (
-            <GameInfoInput setPlan={props.setPlanPre} plan={props.planPre} />
+            <GameInfoInput
+              setPlan={props.setPlanPre}
+              plan={props.planPre}
+              isFinal={false}
+            />
           )}
           <div>
             {matchInfo &&

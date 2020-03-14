@@ -1,15 +1,11 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Typography,
-  ExpansionPanel,
-  ExpansionPanelSummary
-} from "@material-ui/core";
-import {
   PlanFinal,
   parseLocation,
   parseGameUID,
-  parseTimeStamp
+  parseTimeStamp,
+  PlanDeepCopy
 } from "../../../context/cup/cup";
 import { ExitWithID } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
@@ -40,20 +36,21 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
   const classes = useStyles();
 
   const setClose = (obj: ExitWithID) => {
-    let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
+    let newPlan: PlanFinal = PlanDeepCopy(planFinal, true);
 
     if (!newPlan) newPlan = { gI: { nQ: 2, gT: 45, rT: 15 } };
     if (!newPlan[obj.id]) newPlan[obj.id] = {};
 
-    newPlan[obj.id].kt = firestore.Timestamp.fromMillis(
-      obj.date.seconds * 1000
-    );
+    if (typeof obj.date !== "undefined")
+      newPlan[obj.id].kt = firestore.Timestamp.fromMillis(
+        obj.date.seconds * 1000
+      );
 
     setPlanFinal(newPlan);
   };
 
   const setLocation = (location: string, id: number) => {
-    let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
+    let newPlan: PlanFinal = PlanDeepCopy(planFinal, true);
     if (!newPlan) newPlan = { gI: { nQ: 2, gT: 45, rT: 15 } };
     if (!newPlan[id]) newPlan[id] = {};
     newPlan[id].lo = location;
@@ -63,7 +60,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
 
   // 요건 자동 저장한다.
   const setGameUID = (gameUID: string, id: number) => {
-    let newPlan: PlanFinal = JSON.parse(JSON.stringify(planFinal));
+    let newPlan: PlanFinal = PlanDeepCopy(planFinal, true);
 
     if (!newPlan) newPlan = { gI: { nQ: 2, gT: 45, rT: 15 } };
     if (!newPlan[id]) newPlan[id] = { gid: gameUID };

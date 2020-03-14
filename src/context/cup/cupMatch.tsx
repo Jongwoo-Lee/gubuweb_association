@@ -224,7 +224,10 @@ export const convertGroupString = (num: number): string => {
 // 결과는 따른곳에 저장..
 // 2위와 4위 등은 결승 혹은 준결승에서 패배자가 자동으로 되는 것임
 
-export const convertFinalCardString = (id: number): string => {
+export const convertFinalCardString = (
+  id: number,
+  hide: boolean = false
+): string => {
   let cStr: string = "";
   if (id < 3) {
     if (id === 2) cStr = "결승전";
@@ -246,19 +249,19 @@ export const convertFinalCardString = (id: number): string => {
     // find == 2 (4 8)-> id 5 6 7 8
     switch (find) {
       case 1:
-        cStr = `4강 - ${findGame(find, id)}`;
+        cStr = hide ? "준결승전" : `준결승 - ${findGame(find, id)}`;
         break;
       case 2:
-        cStr = `8강 - ${findGame(find, id)}`;
+        cStr = hide ? "8강" : `8강 - ${findGame(find, id)}`;
         break;
       case 3:
-        cStr = `16강 - ${findGame(find, id)}`;
+        cStr = hide ? "16강" : `16강 - ${findGame(find, id)}`;
         break;
       case 4:
-        cStr = `32강 - ${findGame(find, id)}`;
+        cStr = hide ? "32강" : `32강 - ${findGame(find, id)}`;
         break;
       case 5:
-        cStr = `64강 - ${findGame(find, id)}`;
+        cStr = hide ? "64강" : `64강 - ${findGame(find, id)}`;
         break;
     }
   }

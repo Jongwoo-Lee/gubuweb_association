@@ -71,7 +71,11 @@ export const FinalPlan: React.FC<FinalProps> = ({
         </CustomExPanelSummary>
         <CustomExPanelDetails className={classes.detail}>
           {matchInfo && (
-            <GameInfoInput setPlan={setPlanFinal} plan={planFinal} />
+            <GameInfoInput
+              setPlan={setPlanFinal}
+              plan={planFinal}
+              isFinal={true}
+            />
           )}
           <div>
             {matchInfo &&
@@ -83,7 +87,7 @@ export const FinalPlan: React.FC<FinalProps> = ({
                     className={classes.btn}
                     onClick={e => handleChange(value)}
                   >
-                    {convertFinalCardString(Math.pow(2, value))}
+                    {convertFinalCardString(Math.pow(2, value), true)}
                   </Button>
                 );
               })}
