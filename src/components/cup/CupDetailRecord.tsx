@@ -3,7 +3,7 @@ import { RouteComponentProps, Route } from "react-router-dom";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { useCupsInfo, useCurCupID } from "../../context/cup/cup";
 import { WrapCupDetailRecord } from "./record/WrapCupDetailRecord";
-import { SubGameInfo } from "../../context/game/game";
+import { GameCard } from "../../context/game/game";
 import { CupRecordProvider } from "../../context/cup/cupRecord";
 
 interface MatchRecordParams {}
@@ -11,8 +11,8 @@ interface MatchRecordParams {}
 export const CupDetailRecord: React.FC<RouteComponentProps<
   MatchRecordParams
 >> = (props: RouteComponentProps<MatchRecordParams>) => {
-  const data: { gameInfo: SubGameInfo } = props.location.state as {
-    gameInfo: SubGameInfo;
+  const data: { gameInfo: GameCard } = props.location.state as {
+    gameInfo: GameCard;
   };
   const cupID = useCurCupID();
   const cupsInfo = useCupsInfo();
@@ -23,7 +23,7 @@ export const CupDetailRecord: React.FC<RouteComponentProps<
   // return cupInfo ? (
   return cupInfo && cupID && data.gameInfo.gid ? (
     <CupRecordProvider cupID={cupID} gameID={data.gameInfo.gid}>
-      <WrapCupDetailRecord cupInfo={cupInfo} gameInfo={data.gameInfo} />
+      <WrapCupDetailRecord cupInfo={cupInfo} gameCard={data.gameInfo} />
     </CupRecordProvider>
   ) : (
     <div></div>

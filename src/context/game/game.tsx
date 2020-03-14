@@ -1,18 +1,64 @@
 import { Score } from "../cup/cup";
+import { firestore } from "firebase";
 
-export interface SubGameInfo {
-  // [No: number]: string | null; // 4조(group) - 1 (No)
+export class GameCard {
   team1: string | null;
-  team1No?: number;
   team2: string | null;
+  id: number; // Game Card ID
+  team1No?: number;
   team2No?: number;
   location?: string;
   kickOffTime?: firebase.firestore.Timestamp;
-  id: number;
-  gid?: string;
   group?: number; // final에는 없다.
   score?: Score; // score
   winner?: string; // winner uid , undefined-> 경기 하지 않은 상태, "" -> 비긴상태
+  gid?: string;
+
+  constructor(
+    team1: string | null,
+    team2: string | null,
+    id: number,
+    team1No?: number,
+    team2No?: number,
+    location?: string,
+    kickOffTime?: firebase.firestore.Timestamp,
+    group?: number,
+    score?: Score,
+    winner?: string,
+    gid?: string
+  ) {
+    this.team1 = team1;
+    this.team2 = team2;
+    this.id = id;
+    this.location = location;
+    this.team1No = team1No;
+    this.team2No = team2No;
+    this.kickOffTime = kickOffTime;
+    this.group = group;
+    this.score = score;
+    this.winner = winner;
+    this.gid = gid;
+  }
+
+  static fromGameCard(other: GameCard) {
+    return new GameCard(
+      other.team1,
+      other.team2,
+      other.id,
+      other.team1No,
+      other.team2No,
+      other.location,
+      other.kickOffTime !== undefined
+        ? firestore.Timestamp.fromMillis(other.kickOffTime.seconds * 1000)
+        : undefined,
+      other.group,
+      other.score !== undefined
+        ? { hp: other.score.hp, ap: other.score.ap }
+        : undefined,
+      other.winner,
+      other.gid
+    );
+  }
 }
 
 export class TableData {

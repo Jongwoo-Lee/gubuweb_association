@@ -12,7 +12,7 @@ import {
 } from "../../../context/cup/cup";
 import { ExitWithID } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
-import { SubGameInfo } from "../../../context/game/game";
+import { GameCard } from "../../../context/game/game";
 import { firestore } from "firebase";
 
 const useStyles = makeStyles({
@@ -73,7 +73,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
   };
 
   const createCard = () => {
-    const arr: Array<SubGameInfo> = [];
+    const arr: Array<GameCard> = [];
     let subGameId: number = Math.pow(2, cardId);
     if (cardId !== 0) {
       const next: number = Math.pow(2, cardId - 1); //
@@ -95,18 +95,21 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
         const winner: string | undefined = parseWinner(planFinal, i);
         const score: Score | undefined = parseScore(planFinal, i);
 
-        arr.push({
-          team1: team1,
-          team2: team2,
-          id: i,
-          location: location,
-          kickOffTime: time
-            ? firestore.Timestamp.fromMillis(time.seconds * 1000)
-            : time,
-          gid: gameUID,
-          winner: winner,
-          score: score
-        });
+        arr.push(
+          new GameCard(
+            team1,
+            team2,
+            i,
+            undefined,
+            undefined,
+            location,
+            time ? firestore.Timestamp.fromMillis(time.seconds * 1000) : time,
+            undefined,
+            score,
+            winner,
+            gameUID
+          )
+        );
       }
     } else {
       // 3,4위전 카드 생성
@@ -127,18 +130,21 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
       const winner: string | undefined = parseWinner(planFinal, subGameId);
       const score: Score | undefined = parseScore(planFinal, subGameId);
 
-      arr.push({
-        team1: team1,
-        team2: team2,
-        id: subGameId,
-        location: location,
-        kickOffTime: time
-          ? firestore.Timestamp.fromMillis(time.seconds * 1000)
-          : time,
-        gid: gameUID,
-        winner: winner,
-        score: score
-      });
+      arr.push(
+        new GameCard(
+          team1,
+          team2,
+          subGameId,
+          undefined,
+          undefined,
+          location,
+          time ? firestore.Timestamp.fromMillis(time.seconds * 1000) : time,
+          undefined,
+          score,
+          winner,
+          gameUID
+        )
+      );
     }
 
     return arr;
@@ -146,7 +152,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
 
   return (
     <div className={classes.item}>
-      {createCard().map((value: SubGameInfo, index: number) => {
+      {createCard().map((value: GameCard, index: number) => {
         // TypeScript에서 firebase timeStamp와 Date 타입체크 버그가 있고
         // 자바스크립트로 오브젝트의 타입이 timeStamp인지 Date인지 체크가 안됨.... 음..
         // if (typeof value?.kickOffTime !== "undefined") {

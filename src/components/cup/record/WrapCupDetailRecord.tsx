@@ -17,7 +17,7 @@ import {
 import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
 import { CupPlanDataStructure } from "../../../context/cup/cup";
-import { SubGameInfo } from "../../../context/game/game";
+import { GameCard } from "../../../context/game/game";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { convertKoTime } from "../plan/DatePickerDlg";
@@ -54,23 +54,23 @@ const useStyles = makeStyles({
 
 export interface WrapCupDetailRecordProps {
   cupInfo: CupInfo;
-  gameInfo: SubGameInfo;
+  gameCard: GameCard;
 }
 
 export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
   cupInfo,
-  gameInfo
+  gameCard
 }: WrapCupDetailRecordProps) => {
   const classes = useStyles();
   let matchPlan: CupPlanDataStructure | null = cupInfo.matchPlan;
-  const { gameTime, numOfQuarter } = fromGameInfo(matchPlan, gameInfo);
+  const { gameTime, numOfQuarter } = fromGameInfo(matchPlan, gameCard);
 
   const loading = useRecordloading();
 
   const title: string =
-    gameInfo.group === undefined
-      ? `${convertFinalCardString(gameInfo.id)}`
-      : `${convertGroupString(gameInfo.group)}조 - ${gameInfo.id + 1}경기`;
+    gameCard.group === undefined
+      ? `${convertFinalCardString(gameCard.id)}`
+      : `${convertGroupString(gameCard.group)}조 - ${gameCard.id + 1}경기`;
 
   return loading ? (
     <Grid container direction="row" justify="center" alignItems="center">
@@ -105,8 +105,8 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
       <div className={classes.row}>
         <CalendarTodayIcon className={classes.icon} />
         <Typography align="left" color="textPrimary" variant="h6">
-          {gameInfo?.kickOffTime
-            ? convertKoTime(gameInfo?.kickOffTime.toDate())
+          {gameCard?.kickOffTime
+            ? convertKoTime(gameCard?.kickOffTime.toDate())
             : ""}
         </Typography>
       </div>
@@ -114,14 +114,14 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
       <Grid container spacing={3}>
         <Grid item xs>
           <Typography align="center" color="textPrimary" variant="h4">
-            {gameInfo.team1}
+            {gameCard.team1}
           </Typography>
         </Grid>
         <Grid item xs />
 
         <Grid item xs>
           <Typography align="center" color="textPrimary" variant="h4">
-            {gameInfo.team2}
+            {gameCard.team2}
           </Typography>
         </Grid>
       </Grid>

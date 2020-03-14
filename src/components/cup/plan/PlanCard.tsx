@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Card, Typography, Grid, Input, Button } from "@material-ui/core";
 import { DatePickerDlg, ExitWithID, convertKoTime } from "./DatePickerDlg";
 import { MakeSubGameBtn } from "./makeSubGameBtn";
-import { SubGameInfo } from "../../../context/game/game";
+import { GameCard } from "../../../context/game/game";
 import {
   convertGroupString,
   convertFinalCardString
@@ -32,7 +32,7 @@ export interface PlanCardProps {
   handleOnLocation: Function;
   handleOnClose: Function;
   handleOnSetGameUID: Function;
-  gameInfo: SubGameInfo;
+  gameInfo: GameCard;
 }
 
 export const PlanCard: React.FC<PlanCardProps> = ({
@@ -179,7 +179,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             <Grid item xs={1} />
             <Grid item xs={6}>
               <MakeSubGameBtn
-                subGameInfo={gameInfo}
+                gameCard={gameInfo}
                 setGameUID={handleOnSetGameUID}
               />
             </Grid>

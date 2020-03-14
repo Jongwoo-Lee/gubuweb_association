@@ -14,7 +14,7 @@ import {
 import { ExitWithID } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
 import { PreGroupTable } from "./preliminaryGroupTable";
-import { SubGameInfo } from "../../../context/game/game";
+import { GameCard } from "../../../context/game/game";
 import { firestore } from "firebase";
 
 const useStyles = makeStyles({
@@ -81,7 +81,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
   };
 
   const createCard = () => {
-    const arr: Array<SubGameInfo> = [];
+    const arr: Array<GameCard> = [];
     let subGameId = 0;
     for (let ro: number = 0; ro < round; ro++)
       for (let i: number = 0; i < numOfTeams - 1; i++) {
@@ -101,38 +101,38 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
           const score: Score | undefined =
             planPre[group] && parseScore(planPre[group], subGameId);
 
-          arr.push({
-            team1: preliminaryData[group][i] ?? null,
-            team1No: i + 1,
-            team2: preliminaryData[group][j] ?? null,
-            team2No: j + 1,
-            id: subGameId,
-            location: location,
-            kickOffTime: time
-              ? firestore.Timestamp.fromMillis(time.seconds * 1000)
-              : time,
-            gid: gameUID,
-            group: group,
-            winner: winner,
-            score: score
-          });
+          arr.push(
+            new GameCard(
+              preliminaryData[group][i] ?? null,
+              preliminaryData[group][j] ?? null,
+              subGameId,
+              i + 1,
+              j + 1,
+              location,
+              time ? firestore.Timestamp.fromMillis(time.seconds * 1000) : time,
+              group,
+              score,
+              winner,
+              gameUID
+            )
+          );
           subGameId++;
         }
       }
     return arr;
   };
 
-  const cardData: Array<SubGameInfo> = createCard();
+  const cardData: Array<GameCard> = createCard();
 
   return (
     <div className={classes.item}>
       <PreGroupTable
         group={group}
         data={preliminaryData}
-        subGameInfos={cardData}
+        gameCards={cardData}
       />
 
-      {cardData.map((value: SubGameInfo, index: number) => {
+      {cardData.map((value: GameCard, index: number) => {
         return (
           <PlanCard
             key={`pre- ${index}`}

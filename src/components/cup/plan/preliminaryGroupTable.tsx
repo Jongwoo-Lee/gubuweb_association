@@ -19,7 +19,7 @@ import {
   convertGroupString,
   PreDataStructure
 } from "../../../context/cup/cupMatch";
-import { SubGameInfo, TableData } from "../../../context/game/game";
+import { GameCard, TableData } from "../../../context/game/game";
 
 const useStyles = makeStyles({
   table: {
@@ -57,18 +57,18 @@ const columns: Column[] = [
 export interface PreGroupTableProps {
   group: number;
   data: PreDataStructure;
-  subGameInfos: Array<SubGameInfo>;
+  gameCards: Array<GameCard>;
 }
 
 export const PreGroupTable: React.FC<PreGroupTableProps> = ({
   group,
   data,
-  subGameInfos
+  gameCards
 }: PreGroupTableProps) => {
   const tableData: { [uid: string]: TableData } = makeTableData(
     group,
     data,
-    subGameInfos
+    gameCards
   );
   const classes = useStyles();
 
@@ -136,7 +136,7 @@ export const PreGroupTable: React.FC<PreGroupTableProps> = ({
 const makeTableData = (
   group: number,
   data: PreDataStructure,
-  subGameInfos: Array<SubGameInfo>
+  gameCards: Array<GameCard>
 ): { [uid: string]: TableData } => {
   const numOfTeams: number = data[group].t;
   const initialV: { [uid: string]: TableData } = {};
@@ -147,7 +147,7 @@ const makeTableData = (
     }
   });
 
-  subGameInfos.forEach((subGame: SubGameInfo) => {
+  gameCards.forEach((subGame: GameCard) => {
     if (
       subGame.winner !== undefined &&
       subGame.team1 !== null &&

@@ -7,7 +7,7 @@ import {
   FinalDataStructure
 } from "../context/cup/cupMatch";
 import { CupInfo } from "../helpers/Firebase/cup";
-import { SubGameInfo } from "../context/game/game";
+import { GameCard } from "../context/game/game";
 import {
   CupPlanDataStructure,
   PlanPreliminary,
@@ -67,7 +67,7 @@ export const convertTimeString = (seconds: number): string => {
 
 export const fromGameInfo = (
   plan: CupPlanDataStructure | null,
-  gameInfo: SubGameInfo
+  gameInfo: GameCard
 ) => {
   let gameTime: number = 45;
   let numOfQuarter: number = 2;
