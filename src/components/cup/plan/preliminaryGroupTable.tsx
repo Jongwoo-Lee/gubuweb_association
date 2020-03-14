@@ -65,16 +65,12 @@ export const PreGroupTable: React.FC<PreGroupTableProps> = ({
   data,
   subGameInfos
 }: PreGroupTableProps) => {
-  console.log("datatatatatta");
-  console.dir(data);
-  console.dir(subGameInfos);
   const tableData: { [uid: string]: TableData } = makeTableData(
     group,
     data,
     subGameInfos
   );
   const classes = useStyles();
-  const numOfTeams: number = data[group].t;
 
   return (
     <TableContainer>
