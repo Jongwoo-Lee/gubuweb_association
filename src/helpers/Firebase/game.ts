@@ -15,7 +15,7 @@ export interface Substitution {
   };
 }
 
-export interface Score {
+export interface Goal {
   userUID: string;
   assist_userUID: string;
   timeStamp: number; // milliseconds
@@ -25,16 +25,16 @@ export interface Score {
 }
 
 export class Record {
-  score: Score[];
+  goal: Goal[];
   substitution: Substitution[];
   real_attendance: string[];
 
   constructor(
-    score?: Score[],
+    score?: Goal[],
     substitution?: Substitution[],
     real_attendance?: string[]
   ) {
-    this.score = score ?? [];
+    this.goal = score ?? [];
     this.substitution = substitution ?? [];
     this.real_attendance = real_attendance ?? [];
   }

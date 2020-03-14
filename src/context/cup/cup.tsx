@@ -20,10 +20,17 @@ export interface CupPlan {
   gI: GameInfo;
 }
 
+export interface Score {
+  hp: number; // home point
+  ap: number; // away point
+}
+
 interface GameDetailInfo {
   lo?: string; // lo -> lOCATION
   kt?: firebase.firestore.Timestamp | null; // kt => KICKOFFTIME, Save할 때는 Date
   gid?: string; // gid => Game UID
+  w?: string; // winner uid
+  sc?: Score; // score
 }
 
 export interface PlanPreliminary extends CupPlan {
@@ -114,6 +121,22 @@ export const parseTimeStamp = (
 ): firebase.firestore.Timestamp | undefined =>
   plan[subGameId] && plan[subGameId].kt
     ? plan[subGameId].kt ?? undefined
+    : undefined;
+
+export const parseScore = (
+  plan: { [id: number]: GameDetailInfo },
+  subGameId: number
+): Score | undefined =>
+  plan[subGameId] && plan[subGameId].sc
+    ? plan[subGameId].sc ?? undefined
+    : undefined;
+
+export const parseWinner = (
+  plan: { [id: number]: GameDetailInfo },
+  subGameId: number
+): string | undefined =>
+  plan[subGameId] && plan[subGameId].w
+    ? plan[subGameId].w ?? undefined
     : undefined;
 
 /// Firebase Auth User Context

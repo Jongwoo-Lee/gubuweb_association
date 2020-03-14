@@ -19,6 +19,7 @@ import {
   convertGroupString,
   PreDataStructure
 } from "../../../context/cup/cupMatch";
+import { SubGameInfo, TableData } from "../../../context/game/game";
 
 const useStyles = makeStyles({
   table: {
@@ -39,7 +40,7 @@ interface Column {
     | "diff"
     | "gainPoint"
     | "lossPoint";
-  label: string;
+  label: string | number;
 }
 
 const columns: Column[] = [
@@ -56,12 +57,22 @@ const columns: Column[] = [
 export interface PreGroupTableProps {
   group: number;
   data: PreDataStructure;
+  subGameInfos: Array<SubGameInfo>;
 }
 
 export const PreGroupTable: React.FC<PreGroupTableProps> = ({
   group,
-  data
+  data,
+  subGameInfos
 }: PreGroupTableProps) => {
+  console.log("datatatatatta");
+  console.dir(data);
+  console.dir(subGameInfos);
+  const tableData: { [uid: string]: TableData } = makeTableData(
+    group,
+    data,
+    subGameInfos
+  );
   const classes = useStyles();
   const numOfTeams: number = data[group].t;
 
@@ -71,7 +82,7 @@ export const PreGroupTable: React.FC<PreGroupTableProps> = ({
         <TableHead>
           <TableRow>
             {columns.map((column, index) =>
-              index > 1 ? (
+              index > 0 ? (
                 <TableCell align="right" key={column.id}>
                   {column.label}
                 </TableCell>
@@ -86,21 +97,87 @@ export const PreGroupTable: React.FC<PreGroupTableProps> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {[...Array(numOfTeams).keys()].map((gr: number, index: number) => {
+          {Object.keys(tableData).map((value: string, index: number) => {
             return (
               <TableRow key={index}>
-                {[...Array(8).keys()].map((test: number) => {
+                {columns.map((column, index2) => {
                   return (
-                    <TableCell align={test > 1 ? "right" : undefined}>
-                      {data[group][gr]}
+                    <TableCell
+                      align={index2 > 0 ? "right" : undefined}
+                      key={index2}
+                    >
+                      {tableData[value].value(column.id)}
                     </TableCell>
                   );
                 })}
               </TableRow>
             );
           })}
+          {/* {[...Array(numOfTeams).keys()].map((gr: number, index: number) => {
+            return (
+              <TableRow key={index}>
+                {[...Array(columns.length).keys()].map(
+                  (test: number, index2: number) => {
+                    return (
+                      <TableCell
+                        align={test > 1 ? "right" : undefined}
+                        key={index2}
+                      >
+                        {data[group][gr] + "asdfasdf"}
+                      </TableCell>
+                    );
+                  }
+                )}
+              </TableRow>
+            );
+          })} */}
         </TableBody>
       </Table>
     </TableContainer>
   );
+};
+
+const makeTableData = (
+  group: number,
+  data: PreDataStructure,
+  subGameInfos: Array<SubGameInfo>
+): { [uid: string]: TableData } => {
+  const numOfTeams: number = data[group].t;
+  const initialV: { [uid: string]: TableData } = {};
+  [...Array(numOfTeams).keys()].map((value: number) => {
+    if (data[group][value] !== null) {
+      const uid: string = data[group][value] ?? "";
+      initialV[uid] = new TableData(uid);
+    }
+  });
+
+  subGameInfos.forEach((subGame: SubGameInfo) => {
+    if (
+      subGame.winner !== undefined &&
+      subGame.team1 !== null &&
+      subGame.team2 !== null
+    ) {
+      if (subGame.winner === "") {
+        initialV[subGame.team1].updateDraw();
+        initialV[subGame.team2].updateDraw();
+      } else {
+        if (subGame.winner === subGame.team1) {
+          initialV[subGame.team1].updateWin();
+          initialV[subGame.team2].updateLose();
+        } else {
+          initialV[subGame.team1].updateLose();
+          initialV[subGame.team2].updateWin();
+        }
+      }
+
+      if (typeof subGame?.score !== "undefined")
+        TableData.updateScore(
+          initialV[subGame.team1],
+          initialV[subGame.team2],
+          subGame.score
+        );
+    }
+  });
+
+  return initialV;
 };

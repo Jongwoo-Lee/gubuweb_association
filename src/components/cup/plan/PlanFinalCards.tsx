@@ -5,7 +5,10 @@ import {
   parseLocation,
   parseGameUID,
   parseTimeStamp,
-  PlanDeepCopy
+  PlanDeepCopy,
+  parseWinner,
+  parseScore,
+  Score
 } from "../../../context/cup/cup";
 import { ExitWithID } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
@@ -89,6 +92,9 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
           i
         );
 
+        const winner: string | undefined = parseWinner(planFinal, i);
+        const score: Score | undefined = parseScore(planFinal, i);
+
         arr.push({
           team1: team1,
           team2: team2,
@@ -97,7 +103,9 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
           kickOffTime: time
             ? firestore.Timestamp.fromMillis(time.seconds * 1000)
             : time,
-          gid: gameUID
+          gid: gameUID,
+          winner: winner,
+          score: score
         });
       }
     } else {
@@ -116,6 +124,9 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
         subGameId
       );
 
+      const winner: string | undefined = parseWinner(planFinal, subGameId);
+      const score: Score | undefined = parseScore(planFinal, subGameId);
+
       arr.push({
         team1: team1,
         team2: team2,
@@ -124,7 +135,9 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
         kickOffTime: time
           ? firestore.Timestamp.fromMillis(time.seconds * 1000)
           : time,
-        gid: gameUID
+        gid: gameUID,
+        winner: winner,
+        score: score
       });
     }
 

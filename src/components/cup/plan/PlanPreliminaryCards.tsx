@@ -6,7 +6,10 @@ import {
   parseLocation,
   parseTimeStamp,
   parseGameUID,
-  PlanDeepCopy
+  PlanDeepCopy,
+  parseWinner,
+  parseScore,
+  Score
 } from "../../../context/cup/cup";
 import { ExitWithID } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
@@ -92,6 +95,12 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
           const time: firestore.Timestamp | undefined =
             planPre[group] && parseTimeStamp(planPre[group], subGameId);
 
+          const winner: string | undefined =
+            planPre[group] && parseWinner(planPre[group], subGameId);
+
+          const score: Score | undefined =
+            planPre[group] && parseScore(planPre[group], subGameId);
+
           arr.push({
             team1: preliminaryData[group][i] ?? null,
             team1No: i + 1,
@@ -103,7 +112,9 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
               ? firestore.Timestamp.fromMillis(time.seconds * 1000)
               : time,
             gid: gameUID,
-            group: group
+            group: group,
+            winner: winner,
+            score: score
           });
           subGameId++;
         }
@@ -111,14 +122,20 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
     return arr;
   };
 
+  const cardData: Array<SubGameInfo> = createCard();
+
   return (
     <div className={classes.item}>
-      <PreGroupTable group={group} data={preliminaryData} />
+      <PreGroupTable
+        group={group}
+        data={preliminaryData}
+        subGameInfos={cardData}
+      />
 
-      {createCard().map((value: SubGameInfo, index: number) => {
+      {cardData.map((value: SubGameInfo, index: number) => {
         return (
           <PlanCard
-            key={`${group}- ${index}`}
+            key={`pre- ${index}`}
             handleOnLocation={setLocation}
             handleOnClose={setClose}
             handleOnSetGameUID={setGameUID}
