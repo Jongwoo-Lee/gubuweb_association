@@ -10,7 +10,7 @@ import {
   parseWinner,
   parseScore,
   Score
-} from "../../../context/cup/cup";
+} from "../../../context/cup/cupPlan";
 import { ExitWithID } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
 import { PreGroupTable } from "./preliminaryGroupTable";

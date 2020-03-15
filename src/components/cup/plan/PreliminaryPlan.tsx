@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
-import { ExpandMore, ExpandLessRounded } from "@material-ui/icons";
+import { ExpandMore } from "@material-ui/icons";
 import {
   CupMatchInfo,
   convertGroupString
@@ -12,7 +12,7 @@ import {
   CustomExPanelSummary,
   CustomExPanelDetails
 } from "../CustomExPanel";
-import { PlanPreliminary } from "../../../context/cup/cup";
+import { PlanPreliminary } from "../../../context/cup/cupPlan";
 import { GameInfoInput } from "./GameInfoInput";
 
 interface UserClick {

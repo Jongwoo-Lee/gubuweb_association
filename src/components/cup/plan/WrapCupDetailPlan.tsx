@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { CupInfo, saveCupPlan } from "../../../helpers/Firebase/cup";
 import { makeStyles, Grid, Typography, Button } from "@material-ui/core";
-import { CupMatchInfo, fromMatchInfo } from "../../../context/cup/cupMatch";
-import { PlanPreliminary, PlanFinal } from "../../../context/cup/cup";
+import { PlanPreliminary, PlanFinal } from "../../../context/cup/cupPlan";
 import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
 import { PreliminaryPlan } from "./PreliminaryPlan";

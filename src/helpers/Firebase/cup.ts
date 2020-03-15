@@ -1,6 +1,6 @@
 import Firebase from "../Firebase";
 import firebase from "firebase";
-import { COL_CUP, COL_ASC, COL_GAME } from "../../constants/firestore";
+import { COL_CUP, COL_ASC } from "../../constants/firestore";
 import {
   FinalDataStructure,
   PreDataStructure,
@@ -10,7 +10,7 @@ import {
   CupPlanDataStructure,
   PlanPreliminary,
   PlanFinal
-} from "../../context/cup/cup";
+} from "../../context/cup/cupPlan";
 
 export class CupInfo {
   name: string;

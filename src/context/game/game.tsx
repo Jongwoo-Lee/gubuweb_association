@@ -1,4 +1,4 @@
-import { Score } from "../cup/cup";
+import { Score } from "../cup/cupPlan";
 import { firestore } from "firebase";
 
 export class GameCard {

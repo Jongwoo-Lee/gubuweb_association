@@ -11,7 +11,7 @@ import {
   CustomExPanelDetails
 } from "../CustomExPanel";
 import { ExpandMore } from "@material-ui/icons";
-import { PlanFinal } from "../../../context/cup/cup";
+import { PlanFinal } from "../../../context/cup/cupPlan";
 import { GameInfoInput } from "./GameInfoInput";
 import { PlanFinalCards } from "./PlanFinalCards";
 

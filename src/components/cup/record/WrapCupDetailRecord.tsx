@@ -5,9 +5,7 @@ import {
   Grid,
   Typography,
   Button,
-  Icon,
   Paper,
-  Slider,
   CircularProgress
 } from "@material-ui/core";
 import {
@@ -16,7 +14,7 @@ import {
 } from "../../../context/cup/cupMatch";
 import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
-import { CupPlanDataStructure } from "../../../context/cup/cup";
+import { CupPlanDataStructure } from "../../../context/cup/cupPlan";
 import { GameCard } from "../../../context/game/game";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import LocationOnIcon from "@material-ui/icons/LocationOn";

@@ -4,6 +4,7 @@ import { useCupsInfo } from "../../context/cup/cup";
 import { CupInfo } from "../../helpers/Firebase/cup";
 import { WrapCupDetailPlans } from "./plan/WrapCupDetailPlan";
 import { CupDetailRecord } from "./CupDetailRecord";
+import { CupPlanProvider } from "../../context/cup/cupPlan";
 
 interface MatchParams {
   cupID: string;
@@ -18,12 +19,12 @@ export const CupDetailPlan: React.FC<RouteComponentProps<MatchParams>> = (
   const path: string = props.match.path + "/:gameUID";
 
   return cupInfo ? (
-    <div>
+    <CupPlanProvider cupInfo={cupInfo}>
       <Route exact path={props.match.path}>
         <WrapCupDetailPlans cupID={cupID} cupInfo={cupInfo} />
       </Route>
       <Route path={path} component={CupDetailRecord} />
-    </div>
+    </CupPlanProvider>
   ) : (
     <div></div>
   );

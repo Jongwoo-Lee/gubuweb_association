@@ -12,7 +12,7 @@ import {
   CupPlanDataStructure,
   PlanPreliminary,
   PlanFinal
-} from "../context/cup/cup";
+} from "../context/cup/cupPlan";
 import { getGameRecord, TeamsRecord } from "../helpers/Firebase/game";
 
 // 예선전 팀을 제외하고 남은 팀

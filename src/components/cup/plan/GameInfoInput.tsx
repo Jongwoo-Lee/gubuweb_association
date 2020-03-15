@@ -7,7 +7,7 @@ import {
   InputAdornment,
   Grid
 } from "@material-ui/core";
-import { CupPlan, PlanDeepCopy } from "../../../context/cup/cup";
+import { CupPlan, PlanDeepCopy } from "../../../context/cup/cupPlan";
 
 const useStyles = makeStyles({
   root: {
