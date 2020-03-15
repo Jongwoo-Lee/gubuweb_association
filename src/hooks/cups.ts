@@ -175,7 +175,7 @@ const remakeFinalPlan = (
     gI: { nQ: 2, gT: 45, rT: 15 }
   };
 
-  if (cupInfo.matchPlan) {
+  if (cupInfo.matchPlan && cupInfo.matchPlan.f) {
     finalPlan = cupInfo.matchPlan.f;
   }
 

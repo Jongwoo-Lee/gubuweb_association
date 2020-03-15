@@ -2,7 +2,9 @@ import { makeStyles, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import { RecordScore } from "./RecordScore";
 import { RecordSubstitution } from "./RecordSubstitution";
-import { RecordField } from "./RecordField";
+import { RecordField } from "./dnd/RecordField";
+import { DndProvider } from "react-dnd";
+import Backend from "react-dnd-html5-backend";
 
 const useStyles = makeStyles({
   root: {
@@ -31,7 +33,10 @@ export const RecordComponents: React.FC<RealRecordProps> = ({}: RealRecordProps)
           <RecordSubstitution />
         </Grid>
       </Grid>
-      <RecordField />
+
+      <DndProvider backend={Backend}>
+        <RecordField />
+      </DndProvider>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useLoadCupRecord } from "../../hooks/cups";
-import { TeamsRecord } from "../../helpers/Firebase/game";
+import { TeamsRecord, TeamsPos } from "../../helpers/Firebase/game";
 
 export interface CurTime {
   curQuarter: number;
@@ -12,6 +12,8 @@ interface CupRecordData {
   setTime: React.Dispatch<React.SetStateAction<CurTime>>;
   loading: boolean;
   teamsRecord: TeamsRecord;
+  pos: TeamsPos;
+  setPos: React.Dispatch<React.SetStateAction<TeamsPos>>;
 }
 
 export const CupRecordContext: React.Context<CupRecordData> = React.createContext<
@@ -22,7 +24,11 @@ export const CupRecordContext: React.Context<CupRecordData> = React.createContex
     console.log("setTime is not initilized");
   },
   loading: false,
-  teamsRecord: new TeamsRecord()
+  teamsRecord: new TeamsRecord(),
+  pos: {},
+  setPos: () => {
+    console.log("setPos is not initilized");
+  }
 });
 
 export const CupRecordProvider = (props: {
@@ -32,8 +38,17 @@ export const CupRecordProvider = (props: {
 }) => {
   const { teamsRecord, loading } = useLoadCupRecord(props.cupID, props.gameID);
   const [time, setTime] = useState<CurTime>({ curQuarter: 1, curTime: 0 });
+  const [pos, setPos] = useState<TeamsPos>({
+    0: "test1",
+    1: "test2",
+    2: "test3",
+    3: "test4"
+  });
+
   return (
-    <CupRecordContext.Provider value={{ time, setTime, teamsRecord, loading }}>
+    <CupRecordContext.Provider
+      value={{ time, setTime, teamsRecord, loading, pos, setPos }}
+    >
       {props.children}
     </CupRecordContext.Provider>
   );
@@ -43,3 +58,5 @@ export const useRecordTime = () => useContext(CupRecordContext).time;
 export const useSetRecordTime = () => useContext(CupRecordContext).setTime;
 export const useRecordloading = () => useContext(CupRecordContext).loading;
 export const useTeamRecord = () => useContext(CupRecordContext).teamsRecord;
+export const useTeamPos = () => useContext(CupRecordContext).pos;
+export const useSetTeamPos = () => useContext(CupRecordContext).setPos;

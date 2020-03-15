@@ -50,6 +50,10 @@ export class TeamsRecord {
   }
 }
 
+export interface TeamsPos {
+  [pos: number]: string;
+}
+
 export const recordConverter = {
   toFirestore: (record: TeamsRecord) => {
     return {
