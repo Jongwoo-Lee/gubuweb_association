@@ -94,7 +94,7 @@ export const FinalPlan: React.FC<FinalProps> = () => {
           </div>
           {expandedID !== -1 && (
             <PlanFinalCards
-              cardId={expandedID}
+              BtnID={expandedID}
               setPlanFinal={setPlanFinal}
               planFinal={planFinal}
             />

@@ -15,7 +15,9 @@ import { PlanCard } from "./PlanCard";
 import { GameCard } from "../../../context/game/game";
 import { firestore } from "firebase";
 import { useCurCupID } from "../../../context/cup/cup";
-import { saveGameUID } from "../../../helpers/Firebase/cup";
+import { saveGameUID, saveGameFinalData } from "../../../helpers/Firebase/cup";
+import { Grid, Button } from "@material-ui/core";
+import { convertFinalCardString } from "../../../context/cup/cupMatch";
 
 const useStyles = makeStyles({
   panel: {
@@ -28,13 +30,13 @@ const useStyles = makeStyles({
 });
 
 export interface PlanFinalCardProps {
-  cardId: number;
+  BtnID: number;
   planFinal: PlanFinal;
   setPlanFinal: React.Dispatch<React.SetStateAction<PlanFinal>>;
 }
 
 export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
-  cardId,
+  BtnID,
   planFinal,
   setPlanFinal
 }: PlanFinalCardProps) => {
@@ -72,16 +74,40 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
     if (!newPlan[id]) newPlan[id] = { gid: gameUID };
     newPlan[id].gid = gameUID;
 
-    if (typeof cupID !== "undefined") await saveGameUID(cupID, gameUID, id);
+    if (typeof cupID !== "undefined")
+      await saveGameUID(cupID, gameUID, id, newPlan.gI);
 
     setPlanFinal(newPlan);
   };
 
+  const saveFinalCards = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    const saveArr: Array<number> = [];
+
+    if (BtnID !== 0) {
+      for (let i = Math.pow(2, BtnID); i > Math.pow(2, BtnID - 1); i--) {
+        saveArr.push(i);
+      }
+    } else saveArr.push(1);
+
+    const data: PlanFinal = { gI: planFinal.gI };
+    saveArr.forEach((value: number) => {
+      if (typeof planFinal[value] !== "undefined" || planFinal[value])
+        data[value] = planFinal[value];
+    });
+    if (typeof cupID !== "undefined") {
+      await saveGameFinalData(cupID, data);
+    }
+  };
+
   const createCard = () => {
     const arr: Array<GameCard> = [];
-    let subGameId: number = Math.pow(2, cardId);
-    if (cardId !== 0) {
-      const next: number = Math.pow(2, cardId - 1); //
+    let subGameId: number = Math.pow(2, BtnID);
+    if (BtnID !== 0) {
+      const next: number = Math.pow(2, BtnID - 1); //
       for (let i = subGameId; i > next; i--) {
         let team1: string = "";
         let team2: string = "";
@@ -178,6 +204,17 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
           />
         );
       })}
+      <Grid container direction="row">
+        <Grid item xs={3} />
+        <Grid item xs={6}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={saveFinalCards}
+          >{`${convertFinalCardString(Math.pow(2, BtnID), true)} 저장`}</Button>
+        </Grid>
+        <Grid item xs={3} />
+      </Grid>
     </div>
   );
 };

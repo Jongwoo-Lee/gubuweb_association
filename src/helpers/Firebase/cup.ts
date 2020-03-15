@@ -9,7 +9,8 @@ import {
 import {
   CupPlanDataStructure,
   PlanPreliminary,
-  PlanFinal
+  PlanFinal,
+  GameInfo
 } from "../../context/cup/cupPlan";
 
 export class CupInfo {
@@ -197,15 +198,17 @@ export const saveGameUID = async (
   cupID: string,
   saveGameID: string,
   id: number,
+  gI: GameInfo,
   group?: number
 ) => {
   let saveData: Object;
-  if (group !== null)
+  if (typeof group !== "undefined")
     saveData = {
       [COL_CUP.MATCH]: {
         [COL_CUP.PRELIMINARY]: {
-          group: {
-            id: {
+          gI: gI,
+          [`${group}`]: {
+            [`${id}`]: {
               gid: saveGameID
             }
           }
@@ -216,15 +219,51 @@ export const saveGameUID = async (
     saveData = {
       [COL_CUP.MATCH]: {
         [COL_CUP.FINAL]: {
-          id: {
+          gI: gI,
+          [`${id}`]: {
             gid: saveGameID
           }
         }
       }
     };
   }
-  return Firebase.firestore
+
+  await Firebase.firestore
     .collection(COL_CUP.CUP)
     .doc(cupID)
-    .update({ saveData });
+    .set(saveData, { merge: true });
+};
+
+export const saveGamePreData = async (
+  cupID: string,
+  data: Object,
+  gI: GameInfo,
+  group: number
+) => {
+  let saveData: Object = {
+    [COL_CUP.MATCH]: {
+      [COL_CUP.PRELIMINARY]: {
+        gI: gI,
+        [`${group}`]: data
+      }
+    }
+  };
+
+  await Firebase.firestore
+    .collection(COL_CUP.CUP)
+    .doc(cupID)
+    .set(saveData, { merge: true });
+};
+
+export const saveGameFinalData = async (cupID: string, data: PlanFinal) => {
+  let saveData: Object = {
+    [COL_CUP.MATCH]: {
+      [COL_CUP.FINAL]: data
+    }
+  };
+
+  await Firebase.firestore
+    .collection(COL_CUP.CUP)
+    .doc(cupID)
+    .set(saveData, { merge: true });
 };

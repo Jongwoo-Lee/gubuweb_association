@@ -1,6 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { PreDataStructure } from "../../../context/cup/cupMatch";
+import {
+  PreDataStructure,
+  convertGroupString
+} from "../../../context/cup/cupMatch";
 import {
   PlanPreliminary,
   parseLocation,
@@ -17,7 +20,8 @@ import { PreGroupTable } from "./preliminaryGroupTable";
 import { GameCard } from "../../../context/game/game";
 import { firestore } from "firebase";
 import { useCurCupID } from "../../../context/cup/cup";
-import { saveGameUID } from "../../../helpers/Firebase/cup";
+import { saveGameUID, saveGamePreData } from "../../../helpers/Firebase/cup";
+import { Grid, Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
   item: {
@@ -81,9 +85,20 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
     newPlan[group][id].gid = gameUID;
 
     if (typeof cupID !== "undefined")
-      await saveGameUID(cupID, gameUID, id, group);
+      await saveGameUID(cupID, gameUID, id, newPlan.gI, group);
 
     setPlanPre(newPlan);
+  };
+
+  const saveCurGroup = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    const data: Object = planPre[group];
+    if (typeof cupID !== "undefined") {
+      await saveGamePreData(cupID, data, planPre.gI, group);
+    }
   };
 
   const createCard = () => {
@@ -149,6 +164,18 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
           />
         );
       })}
+
+      <Grid container direction="row">
+        <Grid item xs={3} />
+        <Grid item xs={6}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={saveCurGroup}
+          >{`${convertGroupString(group)}조 저장`}</Button>
+        </Grid>
+        <Grid item xs={3} />
+      </Grid>
     </div>
   );
 };
