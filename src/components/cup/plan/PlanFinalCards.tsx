@@ -14,6 +14,8 @@ import { ExitWithID } from "./DatePickerDlg";
 import { PlanCard } from "./PlanCard";
 import { GameCard } from "../../../context/game/game";
 import { firestore } from "firebase";
+import { useCurCupID } from "../../../context/cup/cup";
+import { saveGameUID } from "../../../helpers/Firebase/cup";
 
 const useStyles = makeStyles({
   panel: {
@@ -37,6 +39,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
   setPlanFinal
 }: PlanFinalCardProps) => {
   const classes = useStyles();
+  const cupID: string | undefined = useCurCupID();
 
   const setClose = (obj: ExitWithID) => {
     let newPlan: PlanFinal = PlanDeepCopy(planFinal, true);
@@ -62,12 +65,14 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
   };
 
   // 요건 자동 저장한다.
-  const setGameUID = (gameUID: string, id: number) => {
+  const setGameUID = async (gameUID: string, id: number) => {
     let newPlan: PlanFinal = PlanDeepCopy(planFinal, true);
 
     if (!newPlan) newPlan = { gI: { nQ: 2, gT: 45, rT: 15 } };
     if (!newPlan[id]) newPlan[id] = { gid: gameUID };
     newPlan[id].gid = gameUID;
+
+    if (typeof cupID !== "undefined") await saveGameUID(cupID, gameUID, id);
 
     setPlanFinal(newPlan);
   };

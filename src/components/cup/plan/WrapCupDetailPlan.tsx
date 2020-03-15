@@ -62,28 +62,8 @@ export const WrapCupDetailPlans: React.FC<WrapCupDetailPlanProps> = ({
           저장
         </Button>
       </Grid>
-      {matchInfo ? (
-        <PreliminaryPlan
-          matchInfo={matchInfo}
-          planPre={planPre}
-          setPlanPre={setPlanPre}
-        />
-      ) : (
-        <Typography color="textPrimary" variant="h4">
-          예선경기 정보가 없습니다.
-        </Typography>
-      )}
-      {matchInfo ? (
-        <FinalPlan
-          matchInfo={matchInfo}
-          planFinal={planFinal}
-          setPlanFinal={setPlanFinal}
-        />
-      ) : (
-        <Typography color="textPrimary" variant="h4">
-          본선경기 정보가 없습니다.
-        </Typography>
-      )}
+      <PreliminaryPlan />
+      <FinalPlan />
     </div>
   );
 };

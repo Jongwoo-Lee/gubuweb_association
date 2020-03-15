@@ -12,7 +12,12 @@ import {
   CustomExPanelSummary,
   CustomExPanelDetails
 } from "../CustomExPanel";
-import { PlanPreliminary } from "../../../context/cup/cupPlan";
+import {
+  PlanPreliminary,
+  usePlanPre,
+  useSetPlanPre,
+  useMatchInfo
+} from "../../../context/cup/cupPlan";
 import { GameInfoInput } from "./GameInfoInput";
 
 interface UserClick {
@@ -34,17 +39,13 @@ const useStyles = makeStyles({
     margin: "0px 10px 0px 10px"
   }
 });
-export interface PreliminaryProps {
-  matchInfo: CupMatchInfo;
-  planPre: PlanPreliminary;
-  setPlanPre: React.Dispatch<React.SetStateAction<PlanPreliminary>>;
-}
+export interface PreliminaryProps {}
 
-export const PreliminaryPlan: React.FC<PreliminaryProps> = (
-  props: PreliminaryProps
-) => {
+export const PreliminaryPlan: React.FC<PreliminaryProps> = () => {
   const classes = useStyles();
-  let matchInfo: CupMatchInfo = props.matchInfo;
+  const planPre = usePlanPre();
+  const setPlanPre = useSetPlanPre();
+  let matchInfo: CupMatchInfo = useMatchInfo();
 
   const [expanded, setExpanded] = useState<UserClick>({ group: -1, id: -1 });
 
@@ -74,8 +75,8 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
         <CustomExPanelDetails className={classes.card}>
           {matchInfo && (
             <GameInfoInput
-              setPlan={props.setPlanPre}
-              plan={props.planPre}
+              setPlan={setPlanPre}
+              plan={planPre}
               isFinal={false}
             />
           )}
@@ -105,8 +106,8 @@ export const PreliminaryPlan: React.FC<PreliminaryProps> = (
               preliminaryData={matchInfo.p}
               round={matchInfo.ro}
               key={expanded.id}
-              setPlanPre={props.setPlanPre}
-              planPre={props.planPre}
+              setPlanPre={setPlanPre}
+              planPre={planPre}
             />
           )}
         </CustomExPanelDetails>

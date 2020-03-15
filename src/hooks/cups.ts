@@ -11,7 +11,8 @@ import { GameCard } from "../context/game/game";
 import {
   CupPlanDataStructure,
   PlanPreliminary,
-  PlanFinal
+  PlanFinal,
+  PlanDeepCopy
 } from "../context/cup/cupPlan";
 import { getGameRecord, TeamsRecord } from "../helpers/Firebase/game";
 
@@ -208,4 +209,12 @@ const remakeFinalPlan = (
   }
 
   return finalPlan;
+};
+
+export const useLocalPlanPreState = (planPre: PlanPreliminary) => {
+  const [tempPlan, setTempPlan] = useState<PlanPreliminary>(
+    PlanDeepCopy(planPre, false)
+  );
+  // useEffect(() => {}, [JSON.stringify(planPre)]);
+  return { tempPlan, setTempPlan };
 };

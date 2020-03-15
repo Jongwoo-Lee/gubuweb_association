@@ -11,7 +11,12 @@ import {
   CustomExPanelDetails
 } from "../CustomExPanel";
 import { ExpandMore } from "@material-ui/icons";
-import { PlanFinal } from "../../../context/cup/cupPlan";
+import {
+  PlanFinal,
+  usePlanFinal,
+  useSetPlanFinal,
+  useMatchInfo
+} from "../../../context/cup/cupPlan";
 import { GameInfoInput } from "./GameInfoInput";
 import { PlanFinalCards } from "./PlanFinalCards";
 
@@ -30,18 +35,13 @@ const useStyles = makeStyles({
   }
 });
 
-export interface FinalProps {
-  matchInfo: CupMatchInfo;
-  planFinal: PlanFinal;
-  setPlanFinal: React.Dispatch<React.SetStateAction<PlanFinal>>;
-}
+export interface FinalProps {}
 
-export const FinalPlan: React.FC<FinalProps> = ({
-  matchInfo,
-  planFinal,
-  setPlanFinal
-}: FinalProps) => {
+export const FinalPlan: React.FC<FinalProps> = () => {
   const classes = useStyles();
+  const planFinal = usePlanFinal();
+  const setPlanFinal = useSetPlanFinal();
+  let matchInfo: CupMatchInfo = useMatchInfo();
   const arr: Array<number> = readyArray(matchInfo);
 
   const [expandedID, setExpandedID] = useState<number>(-1);

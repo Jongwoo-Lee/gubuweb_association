@@ -16,6 +16,8 @@ import { PlanCard } from "./PlanCard";
 import { PreGroupTable } from "./preliminaryGroupTable";
 import { GameCard } from "../../../context/game/game";
 import { firestore } from "firebase";
+import { useCurCupID } from "../../../context/cup/cup";
+import { saveGameUID } from "../../../helpers/Firebase/cup";
 
 const useStyles = makeStyles({
   item: {
@@ -40,6 +42,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
 }: PlanPreliminaryCardProps) => {
   const classes = useStyles();
   const numOfTeams: number = preliminaryData[group].t;
+  const cupID: string | undefined = useCurCupID();
 
   const setClose = (obj: ExitWithID) => {
     const newPlan: PlanPreliminary = PlanDeepCopy(planPre, false);
@@ -68,7 +71,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
   };
 
   // 요건 자동 저장한다.
-  const setGameUID = (gameUID: string, id: number) => {
+  const setGameUID = async (gameUID: string, id: number) => {
     const newPlan: PlanPreliminary = PlanDeepCopy<PlanPreliminary>(
       planPre,
       false
@@ -76,6 +79,9 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
     if (!newPlan[group]) newPlan[group] = {};
     if (!newPlan[group][id]) newPlan[group][id] = { gid: gameUID };
     newPlan[group][id].gid = gameUID;
+
+    if (typeof cupID !== "undefined")
+      await saveGameUID(cupID, gameUID, id, group);
 
     setPlanPre(newPlan);
   };

@@ -192,3 +192,39 @@ export const saveCupPlan = async (
     })
     .catch(err => console.log(`save  Plan error ${err}`));
 };
+
+export const saveGameUID = async (
+  cupID: string,
+  saveGameID: string,
+  id: number,
+  group?: number
+) => {
+  let saveData: Object;
+  if (group !== null)
+    saveData = {
+      [COL_CUP.MATCH]: {
+        [COL_CUP.PRELIMINARY]: {
+          group: {
+            id: {
+              gid: saveGameID
+            }
+          }
+        }
+      }
+    };
+  else {
+    saveData = {
+      [COL_CUP.MATCH]: {
+        [COL_CUP.FINAL]: {
+          id: {
+            gid: saveGameID
+          }
+        }
+      }
+    };
+  }
+  return Firebase.firestore
+    .collection(COL_CUP.CUP)
+    .doc(cupID)
+    .update({ saveData });
+};
