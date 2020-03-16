@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { Team } from "../../helpers/Firebase/team";
 import { useLoadTeam } from "../../hooks/team";
 import { useAssociationValue } from "../user";
+import { Team } from "../../models";
 
 export type ContextSetTeams = React.Dispatch<React.SetStateAction<Team[]>>;
 

@@ -1,8 +1,8 @@
 import React from "react";
-import { CupInfo } from "../../helpers/Firebase/cup";
 import { RouteComponentProps } from "react-router-dom";
 import { useCupsInfo } from "../../context/cup/cup";
 import { WrapCupDetailMatch } from "./match/WrapCupDetailMatch";
+import { CupInfo } from "../../models";
 
 export interface MatchParams {
   cupID: string;

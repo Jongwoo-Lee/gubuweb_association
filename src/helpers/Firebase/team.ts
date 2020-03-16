@@ -1,102 +1,16 @@
 import Firebase from ".";
 import { COL_TEAMS, COL_ASC } from "../../constants/firestore";
-import { firestore } from "firebase";
 
-export class Team {
-  uid: string;
-  name: string;
-  initial: string;
-  manager: Object; // key: uid, value: name
-  region: string | undefined;
-  gender: string | undefined;
-  age: string[] | undefined;
-  logo: string | undefined;
-  invitedAt: Date | undefined;
-  isVerified: boolean | undefined;
-  isDeclined: boolean | undefined;
-  joinedAt: Date | undefined;
-
-  constructor(
-    teamUID: string,
-    teamName: string,
-    teamInitial: string,
-    manager: Object,
-    info: {
-      region?: string;
-      gender?: string;
-      age?: string[];
-      logo?: string;
-      invitedAt?: Date;
-      isVerified?: boolean;
-      isDeclined?: boolean;
-      joinedAt?: Date;
-    }
-  ) {
-    this.uid = teamUID;
-    this.name = teamName;
-    this.initial = teamInitial;
-    this.manager = manager;
-    this.region = info.region;
-    this.gender = info.gender;
-    this.age = info.age;
-    this.logo = info.logo;
-    this.invitedAt = info.invitedAt;
-    this.isVerified = info.isVerified;
-    this.isDeclined = info.isDeclined;
-    this.joinedAt = info.joinedAt;
-  }
-
-  static fromTeam(team: Team) {
-    return new Team(team.uid, team.name, team.initial, team.manager, {
-      region: team.region,
-      gender: team.gender,
-      age: team.age,
-      logo: team.logo,
-      invitedAt: team.invitedAt,
-      isVerified: team.isVerified,
-      isDeclined: team.isDeclined,
-      joinedAt: team.joinedAt
-    });
-  }
-
-  parseValue(value: string): string | string[] {
-    let returnV: string | string[];
-    switch (value) {
-      case "name":
-        returnV = this.name;
-        break;
-
-      case "manager":
-        returnV = Object.values(this.manager);
-        break;
-
-      case "region":
-        returnV = this.region ?? "";
-        break;
-
-      case "age":
-        returnV = this.age ?? "";
-        break;
-
-      case "gender":
-        returnV = this.gender ?? "";
-        break;
-      default:
-        returnV = "";
-    }
-
-    return returnV;
-  }
-}
+import { Player, Team } from "../../models";
 
 export const getTeamInfo = (team: Team) => {
-  const teamScope: string[] = [
-    "팀 이름",
-    "매니저",
-    "활동 지역",
-    "연령대",
-    "성별"
-  ];
+  // const teamScope: string[] = [
+  //   "팀 이름",
+  //   "매니저",
+  //   "활동 지역",
+  //   "연령대",
+  //   "성별"
+  // ];
   // const managers: string[] = Object.values(team.manager);
   // const teamValue = [
   //   team.name,
@@ -132,7 +46,10 @@ export const ascTeamConverter = {
       [COL_ASC.INVITEDAT]: team.invitedAt,
       [COL_ASC.ISVERIFIED]: team.isVerified ?? false,
       [COL_ASC.ISDECLINED]: team.isDeclined ?? null,
-      [COL_ASC.JOINED_AT]: team.joinedAt ?? null
+      [COL_ASC.JOINED_AT]: team.joinedAt ?? null,
+      [COL_ASC.TEAM_MEMBERS]: team.players
+        ? playersToFirestore(team.players)
+        : null
     };
   },
   fromFirestore: (
@@ -140,6 +57,7 @@ export const ascTeamConverter = {
     options: firebase.firestore.SnapshotOptions | undefined
   ) => {
     const data = snapshot.data(options);
+
     return new Team(
       snapshot.id,
       data?.[COL_TEAMS.TEAMS_NAME],
@@ -153,7 +71,8 @@ export const ascTeamConverter = {
         invitedAt: data?.[COL_ASC.INVITEDAT],
         isVerified: data?.[COL_ASC.ISVERIFIED],
         isDeclined: data?.[COL_ASC.ISDECLINED],
-        joinedAt: data?.[COL_ASC.JOINED_AT]
+        joinedAt: data?.[COL_ASC.JOINED_AT],
+        players: playersFromFirestore(data)
       }
     );
   }
@@ -216,3 +135,50 @@ export const teamInviteDocRef = (teamUID: string) =>
     .doc(teamUID)
     .collection(COL_TEAMS.INVITE)
     .doc(COL_TEAMS.TEAMS_ASC);
+
+const playersFromFirestore = (
+  docData: firebase.firestore.DocumentData | undefined
+) => {
+  let players: Player[] = [];
+  if (docData?.[COL_ASC.TEAM_MEMBERS]) {
+    const playersObject = docData?.[COL_ASC.TEAM_MEMBERS];
+
+    for (const uid in playersObject) {
+      if (playersObject.hasOwnProperty(uid)) {
+        var value = playersObject[uid];
+
+        players.push(
+          new Player(
+            value?.[COL_ASC.TEAM_PLAYER_UID],
+            value?.[COL_ASC.TEAM_PLAYER_NAME],
+            {
+              backnumber: value?.[COL_ASC.TEAM_PLAYER_NUM],
+              image: value?.[COL_ASC.TEAM_PLAYER_IMAGE]
+            }
+          )
+        );
+      }
+    }
+  }
+  return players;
+};
+
+const playersToFirestore = (players: Player[]) => {
+  let members: {
+    [uid: string]: {
+      uu: string;
+      dn: string;
+      bn?: number;
+      pu?: string;
+    };
+  } = {};
+  players.forEach(pl => {
+    members[pl.uid] = {
+      uu: pl.uid,
+      dn: pl.name,
+      bn: pl.backnumber,
+      pu: pl.image
+    };
+  });
+  return members;
+};

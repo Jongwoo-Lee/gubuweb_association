@@ -1,5 +1,5 @@
 import React from "react";
-import { CupInfo } from "../../../helpers/Firebase/cup";
+import { CupInfo } from "../../../models";
 import {
   makeStyles,
   Grid,

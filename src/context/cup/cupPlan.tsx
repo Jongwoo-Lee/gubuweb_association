@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useLoadCupRecord, useGamePlan } from "../../hooks/cups";
 import { firestore } from "firebase";
-import { CupInfo } from "../../helpers/Firebase/cup";
+import { CupInfo } from "../../models";
 import { CupMatchInfo, fromMatchInfo } from "./cupMatch";
 
 export interface CupPlanDataStructure {

@@ -9,9 +9,9 @@ import {
 } from "@material-ui/core";
 import { useTextInput } from "../../hooks";
 import { FORMTEXT } from "../../constants/texts";
-import { Team } from "../../helpers/Firebase/team";
 import { useSearchTeam } from "../../hooks/team";
 import { SearchTeams } from "./SearchTeams";
+import { Team } from "../../models";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({

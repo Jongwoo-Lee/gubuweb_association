@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Team } from "../../helpers/Firebase/team";
 import { SquarePopDlgButton } from "./SquarePopDlgButton";
 import { SendBooleanProvider } from "../../context/common";
 import { FORMTEXT } from "../../constants/texts";
 import { CommonSnackbar } from "../common/CommonSnackbar";
+import { Team } from "../../models";
 export interface SearchTeamsProps {
   teams: Team[];
 }

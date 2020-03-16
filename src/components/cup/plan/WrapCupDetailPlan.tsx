@@ -1,5 +1,6 @@
 import React from "react";
-import { CupInfo, saveCupPlan } from "../../../helpers/Firebase/cup";
+import { saveCupPlan } from "../../../helpers/Firebase/cup";
+import { CupInfo } from "../../../models";
 import { makeStyles, Grid, Typography, Button } from "@material-ui/core";
 import { PlanPreliminary, PlanFinal } from "../../../context/cup/cupPlan";
 import { TitleGoBack } from "../../common/TitleGoBack";

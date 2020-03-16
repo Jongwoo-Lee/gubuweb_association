@@ -1,6 +1,6 @@
 import React from "react";
 import { RouteComponentProps, Route } from "react-router-dom";
-import { CupInfo } from "../../helpers/Firebase/cup";
+import { CupInfo } from "../../models";
 import { useCupsInfo, useCurCupID } from "../../context/cup/cup";
 import { WrapCupDetailRecord } from "./record/WrapCupDetailRecord";
 import { GameCard } from "../../context/game/game";

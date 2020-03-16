@@ -4,7 +4,7 @@ import React from "react";
 import { AuthContextProvider } from "./context/user";
 
 // Constants, Hooks, Interfaces
-import { MuiThemeProvider, CssBaseline } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core";
 import { customTheme } from "./context/theme";
 // Components
 import { Navbar } from "./components/layout/Navbar";
@@ -14,9 +14,12 @@ export const App: React.FC = () => {
   return (
     <div
       className="App"
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+      }}
     >
-      <CssBaseline />
       <MuiThemeProvider theme={customTheme}>
         <AuthContextProvider>
           <Navbar />

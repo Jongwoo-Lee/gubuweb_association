@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Team } from "../../helpers/Firebase/team";
 import {
   batchInviteTeam,
   batchDeleteInviteTeam
@@ -9,6 +8,7 @@ import { TeamInfo } from "../common/TeamInfo";
 import { useAssociationValue } from "../../context/user";
 import { FORMTEXT } from "../../constants/texts";
 import { useSendBoolean } from "../../context/common";
+import { Team } from "../../models";
 
 export interface TeamInviteDlgProps {
   title: string;
