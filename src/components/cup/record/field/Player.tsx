@@ -61,25 +61,6 @@ export const Player: React.FC<PlayerProps> = ({
 }: PlayerProps) => {
   const classes = useStyles();
   const { selUsr, handleOnClick } = useSubstitution(pos);
-  // const selUsr = useSelUsr();
-  // const setSelUsr = useSetSelUsr();
-  // const teamPos = useTeamPos();
-  // const setTeamPos = useSetTeamPos();
-
-  // const handleOnClick = (
-  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  // ) => {
-  //   e.preventDefault();
-  //   console.log(`selUsr  - ${selUsr} pos - ${pos}`);
-  //   if (selUsr === -1) setSelUsr(pos);
-  //   else {
-  //     //swap or move
-
-  //     setSelUsr(-1);
-  //   }
-  // };
-
-  // useSubstitution()
 
   return (
     <Box className={classes.root}>
@@ -116,7 +97,14 @@ export const Player: React.FC<PlayerProps> = ({
         <ButtonBase
           style={{ opacity: 0.5 }}
           className={classes.button}
-          onClick={handleOnClick}
+          disableRipple
+          onClick={
+            selUsr !== -1
+              ? handleOnClick
+              : () => {
+                  console.log(`selUsr - ${selUsr}`);
+                }
+          }
         >
           {/* <img className={classes.imgNot} alt="complex" src={Trophy} /> */}
           <Typography color="secondary" className={classes.stack}>

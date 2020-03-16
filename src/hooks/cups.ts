@@ -236,6 +236,7 @@ export const useSubstitution = (pos: number) => {
   ) => {
     e.preventDefault();
 
+    console.log(`selUsr - ${selUsr} pos - ${pos}`);
     if (selUsr === -1) setSelUsr(pos);
     else {
       let newTeamPos: TeamsPos = JSON.parse(JSON.stringify(teamPos));
