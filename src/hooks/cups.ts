@@ -6,7 +6,7 @@ import {
   CupMatchInfo,
   FinalDataStructure
 } from "../context/cup/cupMatch";
-import { CupInfo } from "../helpers/Firebase/cup";
+import { CupInfo } from "../models";
 import { GameCard } from "../context/game/game";
 import {
   CupPlanDataStructure,

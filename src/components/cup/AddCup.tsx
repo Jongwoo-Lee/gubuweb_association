@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { CupInfo, batchCupInfo } from "../../helpers/Firebase/cup";
+import { batchCupInfo } from "../../helpers/Firebase/cup";
 import { TitleGoBack } from "../common/TitleGoBack";
 import {
   useTextInput,
@@ -31,6 +31,7 @@ import { Delete } from "@material-ui/icons";
 import { ROUTENAMES } from "../../constants/routes";
 import { useAssociationValue } from "../../context/user";
 import { useHistory } from "react-router-dom";
+import { CupInfo } from "../../models";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({

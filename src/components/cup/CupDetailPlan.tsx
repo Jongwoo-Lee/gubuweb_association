@@ -1,7 +1,7 @@
 import React from "react";
 import { RouteComponentProps, Route } from "react-router-dom";
 import { useCupsInfo } from "../../context/cup/cup";
-import { CupInfo } from "../../helpers/Firebase/cup";
+import { CupInfo } from "../../models";
 import { WrapCupDetailPlans } from "./plan/WrapCupDetailPlan";
 import { CupDetailRecord } from "./CupDetailRecord";
 import { CupPlanProvider } from "../../context/cup/cupPlan";

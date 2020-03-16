@@ -1,5 +1,5 @@
 import React, { useContext, Dispatch, SetStateAction } from "react";
-import { CupInfo } from "../../helpers/Firebase/cup";
+import { CupInfo } from "../../models";
 import { useCupInfoList } from "../../hooks";
 import { firestore } from "firebase";
 

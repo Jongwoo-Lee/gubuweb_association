@@ -4,8 +4,9 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { Association, setAscData, updateURL } from "./asc";
+import { setAscData, updateURL } from "./asc";
 import { searchTeams } from "./team";
+import { Association } from "../../models";
 
 const devConfig = {
   apiKey: process.env.REACT_APP_DEV_API_KEY,

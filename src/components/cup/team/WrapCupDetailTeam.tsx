@@ -15,7 +15,8 @@ import {
   Grid
 } from "@material-ui/core";
 import { Team } from "../../../models";
-import { saveTeams, CupInfo } from "../../../helpers/Firebase/cup";
+import { saveTeams } from "../../../helpers/Firebase/cup";
+import { CupInfo } from "../../../models";
 import { useAscTeams } from "../../../context/team/team";
 
 export interface WrapCupDetailTeamProps {

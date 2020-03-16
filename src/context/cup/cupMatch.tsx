@@ -1,5 +1,5 @@
 import React, { useContext, useState, Dispatch, SetStateAction } from "react";
-import { CupInfo } from "../../helpers/Firebase/cup";
+import { CupInfo } from "../../models";
 import { COL_CUP } from "../../constants/firestore";
 // import { COL_CUP } from "../../constants/firestore";
 

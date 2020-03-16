@@ -5,7 +5,7 @@ import { TitleGoBack } from "../../common/TitleGoBack";
 import { Grid, Typography } from "@material-ui/core";
 
 import { PreliminaryMatch } from "../match/PreliminaryMatch";
-import { CupInfo } from "../../../helpers/Firebase/cup";
+import { CupInfo } from "../../../models";
 import { FinalMatch } from "../match/FinalMatch";
 import { EditCupMatchProvider } from "../../../context/cup/cupMatch";
 import { SaveMatchBtn } from "../match/SaveMatchInfo";
