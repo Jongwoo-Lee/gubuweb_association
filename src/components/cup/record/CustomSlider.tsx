@@ -72,6 +72,8 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
       setTime(newTime);
     }
   };
+  console.log("timessssssssssssssssssssssss");
+  console.dir(convertTimeString(time.curTime));
   return (
     <Grid container spacing={3} className={classes.margin}>
       <Grid item xs>
@@ -83,6 +85,7 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
         <PrettoSlider
           aria-label="pretto slider"
           defaultValue={0}
+          value={time.curTime}
           max={60 * 45}
           onChange={handleChange}
         />
