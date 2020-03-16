@@ -22,8 +22,8 @@ import { convertKoTime } from "../plan/DatePickerDlg";
 import { CustomSlider } from "./CustomSlider";
 import { convertTimeString, fromGameInfo } from "../../../hooks/cups";
 import { ChangeQaurter } from "./ChangeQuarter";
-import { RecordComponents } from "./RecordComponents";
 import { useRecordloading } from "../../../context/cup/cupRecord";
+import { RecordField } from "./field/RecordField";
 
 const useStyles = makeStyles({
   root: {
@@ -173,7 +173,7 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
       </Grid>
       <CustomSlider gameTime={convertTimeString(gameTime * 60)} />
       <ChangeQaurter numOfQuarter={numOfQuarter} />
-      <RecordComponents />
+      <RecordField />
     </div>
   );
 };

@@ -14,7 +14,13 @@ import {
   PlanFinal,
   PlanDeepCopy
 } from "../context/cup/cupPlan";
-import { getGameRecord, TeamsRecord } from "../helpers/Firebase/game";
+import { getGameRecord, TeamsRecord, TeamsPos } from "../helpers/Firebase/game";
+import {
+  useSelUsr,
+  useSetSelUsr,
+  useTeamPos,
+  useSetTeamPos
+} from "../context/cup/cupRecord";
 
 // 예선전 팀을 제외하고 남은 팀
 export const useTeamsExceptPre = (
@@ -217,4 +223,43 @@ export const useLocalPlanPreState = (planPre: PlanPreliminary) => {
   );
   // useEffect(() => {}, [JSON.stringify(planPre)]);
   return { tempPlan, setTempPlan };
+};
+
+export const useSubstitution = (pos: number) => {
+  const selUsr = useSelUsr();
+  const setSelUsr = useSetSelUsr();
+  const teamPos = useTeamPos();
+  const setTeamPos = useSetTeamPos();
+
+  const handleOnClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    if (selUsr === -1) setSelUsr(pos);
+    else {
+      let newTeamPos: TeamsPos = JSON.parse(JSON.stringify(teamPos));
+
+      //swap or move
+      if (selUsr !== pos) {
+        let temp = newTeamPos[selUsr];
+        delete newTeamPos[selUsr];
+
+        if (newTeamPos[pos]) {
+          let temp2 = newTeamPos[pos];
+          delete newTeamPos[pos];
+
+          Object.assign(newTeamPos, { [selUsr]: temp2 });
+        }
+
+        Object.assign(newTeamPos, { [pos]: temp });
+      } else {
+        // do nothing
+      }
+
+      setSelUsr(-1);
+      setTeamPos(newTeamPos);
+    }
+  };
+  return { selUsr, handleOnClick };
 };

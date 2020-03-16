@@ -1,20 +1,25 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import { Typography, Paper } from "@material-ui/core";
 import React from "react";
+import { RecordType } from "./field/RecordField";
 
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    width: "80%"
-  }
-});
+export interface RecordScoreProps {
+  rType?: RecordType;
+}
 
-export interface RecordScoreProps {}
-
-export const RecordScore: React.FC<RecordScoreProps> = ({}: RecordScoreProps) => {
+export const RecordScore: React.FC<RecordScoreProps> = ({
+  rType
+}: RecordScoreProps) => {
+  const value = rType === "score" ? "green" : undefined;
   return (
-    <Typography color="textPrimary" variant="h4">
-      득점
-    </Typography>
+    <Paper
+      style={{
+        padding: "20px",
+        background: value
+      }}
+    >
+      <Typography color="textPrimary" variant="h4">
+        득점
+      </Typography>
+    </Paper>
   );
 };

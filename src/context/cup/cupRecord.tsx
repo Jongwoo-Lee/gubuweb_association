@@ -14,6 +14,8 @@ interface CupRecordData {
   teamsRecord: TeamsRecord;
   pos: TeamsPos;
   setPos: React.Dispatch<React.SetStateAction<TeamsPos>>;
+  selUsr: number;
+  setSetUsr: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const CupRecordContext: React.Context<CupRecordData> = React.createContext<
@@ -28,6 +30,10 @@ export const CupRecordContext: React.Context<CupRecordData> = React.createContex
   pos: {},
   setPos: () => {
     console.log("setPos is not initilized");
+  },
+  selUsr: -1,
+  setSetUsr: () => {
+    console.log("setSetUsr is not initilized");
   }
 });
 
@@ -39,15 +45,26 @@ export const CupRecordProvider = (props: {
   const { teamsRecord, loading } = useLoadCupRecord(props.cupID, props.gameID);
   const [time, setTime] = useState<CurTime>({ curQuarter: 1, curTime: 0 });
   const [pos, setPos] = useState<TeamsPos>({
-    0: "test1",
-    1: "test2",
-    2: "test3",
-    3: "test4"
+    0: "test",
+    1000: "test1",
+    1001: "test2",
+    1002: "test3",
+    1003: "test4"
   });
+  const [selUsr, setSetUsr] = useState<number>(-1);
 
   return (
     <CupRecordContext.Provider
-      value={{ time, setTime, teamsRecord, loading, pos, setPos }}
+      value={{
+        time,
+        setTime,
+        teamsRecord,
+        loading,
+        pos,
+        setPos,
+        selUsr,
+        setSetUsr
+      }}
     >
       {props.children}
     </CupRecordContext.Provider>
@@ -60,3 +77,6 @@ export const useRecordloading = () => useContext(CupRecordContext).loading;
 export const useTeamRecord = () => useContext(CupRecordContext).teamsRecord;
 export const useTeamPos = () => useContext(CupRecordContext).pos;
 export const useSetTeamPos = () => useContext(CupRecordContext).setPos;
+
+export const useSelUsr = () => useContext(CupRecordContext).selUsr;
+export const useSetSelUsr = () => useContext(CupRecordContext).setSetUsr;
