@@ -14,13 +14,24 @@ import {
   PlanFinal,
   PlanDeepCopy
 } from "../context/cup/cupPlan";
-import { getGameRecord, TeamsRecord, TeamsPos } from "../helpers/Firebase/game";
+import {
+  getGameRecord,
+  TeamsRecord,
+  TeamsPos,
+  Log
+} from "../helpers/Firebase/game";
 import {
   useSelUsr,
   useSetSelUsr,
   useTeamPos,
-  useSetTeamPos
+  useRecordTime,
+  CurTime,
+  SubstitutionData,
+  makeQuarterString,
+  useSetTeamPos,
+  deepCopySubstitution
 } from "../context/cup/cupRecord";
+import { firestore } from "firebase";
 
 // 예선전 팀을 제외하고 남은 팀
 export const useTeamsExceptPre = (
@@ -228,15 +239,16 @@ export const useLocalPlanPreState = (planPre: PlanPreliminary) => {
 export const useSubstitution = (pos: number) => {
   const selUsr = useSelUsr();
   const setSelUsr = useSetSelUsr();
-  const teamPos = useTeamPos();
+  const teamRealPos = useTeamPos();
   const setTeamPos = useSetTeamPos();
+  const curTime: CurTime = useRecordTime();
+  const teamPos = usePosition(curTime);
 
   const handleOnClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
 
-    console.log(`selUsr - ${selUsr} pos - ${pos}`);
     if (selUsr === -1) setSelUsr(pos);
     else {
       let newTeamPos: TeamsPos = JSON.parse(JSON.stringify(teamPos));
@@ -259,8 +271,78 @@ export const useSubstitution = (pos: number) => {
       }
 
       setSelUsr(-1);
-      setTeamPos(newTeamPos);
+      const newTeamRealPos = deepCopySubstitution(teamRealPos);
+      newTeamRealPos[makeQuarterString(curTime)] = {
+        log: {
+          createdBy: "tester",
+          timeStamp: firestore.Timestamp.now()
+        },
+        player_curPosition: newTeamPos
+      };
+
+      setTeamPos(newTeamRealPos);
     }
   };
   return { selUsr, handleOnClick };
+};
+
+interface Temp {
+  Q: number;
+  T: number;
+  DATA: { log: Log; player_curPosition: TeamsPos };
+}
+
+export const usePosition = (curTime: CurTime): TeamsPos => {
+  // console.time("calculatingTime");
+  const pos: SubstitutionData = useTeamPos();
+  // console.log(`usePosition - pos`);
+  // console.dir(curTime);
+  // console.dir(pos);
+
+  interface Temp {
+    Q: number;
+    T: number;
+    DATA: { log: Log; player_curPosition: TeamsPos };
+  }
+  let findData: TeamsPos = {};
+  // const [test, setTest] = useState(
+  //   Object.keys(pos)
+  //     .map((qurterTime: string) => {
+  //       const q: number = Number(qurterTime.slice(1, 4));
+  //       const time: number = Number(qurterTime.slice(4));
+  //       return {
+  //         Q: q,
+  //         T: time,
+  //         DATA: pos[qurterTime]
+  //       };
+  //     })
+  //     .sort((a: Temp, b: Temp) => {
+  //       if (a.Q !== b.Q) return a.Q - b.Q;
+  //       else return a.T - b.T;
+  //     })
+  // );
+
+  Object.keys(pos)
+    .map((qurterTime: string) => {
+      const q: number = Number(qurterTime.slice(1, 4));
+      const time: number = Number(qurterTime.slice(4));
+      return {
+        Q: q,
+        T: time,
+        DATA: pos[qurterTime]
+      };
+    })
+    .sort((a: Temp, b: Temp) => {
+      if (a.Q !== b.Q) return a.Q - b.Q;
+      else return a.T - b.T;
+    }) // 여기까지는 사실 매번 렌더링 하지 않아도 됨
+    .forEach((st: Temp) => {
+      if (st.Q <= curTime.curQuarter && st.T <= curTime.curTime * 1000) {
+        findData = st.DATA?.player_curPosition ?? {};
+      }
+    });
+  // console.log(`slider bar때문에 매번 랜더링을 하나보네`);
+  // // console.timeEnd("calculatingTime");
+  // console.dir(findData);
+  return findData;
 };

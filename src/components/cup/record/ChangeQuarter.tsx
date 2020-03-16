@@ -24,7 +24,7 @@ export const ChangeQaurter: React.FC<ChangeQaurterProps> = ({
   const handleLeft = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (curQuarter > 1) {
-      const quarter: number = curQuarter - 1;
+      const quarter: number = curQuarter - 2; // quarter index 쉬는 시간까지 2씩 뺴고 더함
       let newTime: CurTime = { curQuarter: quarter, curTime: 0 };
       setTime(newTime);
     }
@@ -33,7 +33,7 @@ export const ChangeQaurter: React.FC<ChangeQaurterProps> = ({
   const handleRight = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (curQuarter < numOfQuarter) {
-      const quarter: number = curQuarter + 1;
+      const quarter: number = curQuarter + 2;
       let newTime: CurTime = { curQuarter: quarter, curTime: 0 };
       setTime(newTime);
     }

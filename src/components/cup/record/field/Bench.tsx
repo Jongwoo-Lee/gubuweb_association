@@ -1,11 +1,12 @@
 import React from "react";
-import { useTeamPos } from "../../../../context/cup/cupRecord";
 import { Player } from "./Player";
 import { Box, makeStyles } from "@material-ui/core";
 import { RecordType } from "./RecordField";
+import { TeamsPos } from "../../../../helpers/Firebase/game";
 
 export interface BenchProps {
   rType: RecordType;
+  teamPos: TeamsPos;
 }
 
 const useStyles = makeStyles({
@@ -29,17 +30,16 @@ const benchStyle: React.CSSProperties = {
   display: "flex",
   flexWrap: "wrap"
 };
-export const Bench: React.FC<BenchProps> = ({ rType }: BenchProps) => {
+export const Bench: React.FC<BenchProps> = ({ rType, teamPos }: BenchProps) => {
   const classes = useStyles();
-  const pos = useTeamPos();
   function renderSquare(i: number) {
-    const isPlayer = pos[i];
+    const isPlayer = teamPos[i];
     return (
       <Box key={i} className={classes.box}>
         <Player
           isIn={isPlayer ? true : false}
           pos={i}
-          name={pos[i]}
+          name={teamPos[i]}
           rType={rType}
         />
       </Box>

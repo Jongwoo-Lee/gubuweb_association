@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     maxHeight: "100%",
     width: "100%",
     height: "100%",
-    opacity: 0.4
+    opacity: 0.2
   },
   stack: {
     position: "absolute",
@@ -68,9 +68,8 @@ export const Player: React.FC<PlayerProps> = ({
         isIn ? (
           <div className={classes.root}>
             <ButtonBase disabled className={classes.button}>
-              {/* <img className={classes.img} alt="complex" src={Trophy} /> */}
               <Typography color="secondary" className={classes.stack}>
-                hi11
+                등번호
               </Typography>
             </ButtonBase>
             <Typography color="secondary">{name}</Typography>
@@ -78,39 +77,31 @@ export const Player: React.FC<PlayerProps> = ({
         ) : (
           <div />
         )
-      ) : isIn ? (
+      ) : (
         <div className={classes.root}>
           <ButtonBase
             style={{
-              backgroundColor: selUsr === pos ? "blue" : undefined
+              backgroundColor: selUsr === pos ? "blue" : undefined,
+              opacity: isIn ? 1 : 0.5
             }}
             className={classes.button}
-            onClick={handleOnClick}
+            onClick={
+              isIn
+                ? handleOnClick
+                : selUsr !== -1
+                ? handleOnClick
+                : () => {
+                    console.log(`selUsr - ${selUsr}`);
+                  }
+            }
+            disableRipple={isIn ? false : true}
           >
             <Typography color="secondary" className={classes.stack}>
-              hi22
+              등번호
             </Typography>
           </ButtonBase>
           <Typography color="secondary">{name}</Typography>
         </div>
-      ) : (
-        <ButtonBase
-          style={{ opacity: 0.5 }}
-          className={classes.button}
-          disableRipple
-          onClick={
-            selUsr !== -1
-              ? handleOnClick
-              : () => {
-                  console.log(`selUsr - ${selUsr}`);
-                }
-          }
-        >
-          {/* <img className={classes.imgNot} alt="complex" src={Trophy} /> */}
-          <Typography color="secondary" className={classes.stack}>
-            hi33
-          </Typography>
-        </ButtonBase>
       )}
     </Box>
   );

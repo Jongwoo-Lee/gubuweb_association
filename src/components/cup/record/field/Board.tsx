@@ -1,8 +1,8 @@
 import React from "react";
-import { useTeamPos } from "../../../../context/cup/cupRecord";
 import { Player } from "./Player";
 import { Box, makeStyles } from "@material-ui/core";
 import { RecordType } from "./RecordField";
+import { TeamsPos } from "../../../../helpers/Firebase/game";
 
 const useStyles = makeStyles({
   root: {
@@ -22,6 +22,7 @@ const useStyles = makeStyles({
 
 export interface BoardProps {
   rType: RecordType;
+  teamPos: TeamsPos;
 }
 
 /** Styling properties applied to the board element */
@@ -32,17 +33,16 @@ const boardStyle: React.CSSProperties = {
   flexWrap: "wrap"
 };
 
-export const Board: React.FC<BoardProps> = ({ rType }: BoardProps) => {
+export const Board: React.FC<BoardProps> = ({ rType, teamPos }: BoardProps) => {
   const classes = useStyles();
-  const pos = useTeamPos();
   function renderSquare(i: number) {
-    const isPlayer = pos[i];
+    const isPlayer = teamPos[i];
     return (
       <Box key={i} className={classes.box}>
         <Player
           isIn={isPlayer ? true : false}
           pos={i}
-          name={pos[i]}
+          name={teamPos[i]}
           rType={rType}
         />
       </Box>
