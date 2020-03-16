@@ -31,7 +31,15 @@ export const SquarePopDlgButton: React.FC<SquarePopDlgButtonProps> = ({
         title={team.name}
         imgSrc={team.logo ?? TeamIcon}
         clickEvent={handleClickOpen}
-        isVerified={team.isVerified}
+        buttonState={
+          team.isVerified
+            ? "승인"
+            : team.isDeclined === true
+            ? "거절"
+            : team.invitedAt !== undefined
+            ? "승인 대기"
+            : ""
+        }
       />
       <TeamInviteDlg
         title={"팀 정보"}
@@ -39,6 +47,7 @@ export const SquarePopDlgButton: React.FC<SquarePopDlgButtonProps> = ({
         open={dlgOpen}
         onClose={handleClose}
         isDelete={isDelete}
+        buttonText={team.isDeclined ? "팀 삭제" : undefined}
       />
     </div>
   );

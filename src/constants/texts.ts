@@ -70,7 +70,8 @@ export const FORMTEXT = {
   INVITE_SUCCESS: "초대를 성공적으로 보냈습니다",
   INVITE_FAIL: "초대가 실패했습니다",
   DELETE_INVITE_SUCCESS: "초대를 취소했습니다",
-  DELETE_INVITE_FAIL: "초대 취소가 실패했습니다"
+  DELETE_INVITE_FAIL: "초대 취소가 실패했습니다",
+  DELETE_TEAM: "팀을 삭제했습니다"
 };
 
 export const ERROR = {

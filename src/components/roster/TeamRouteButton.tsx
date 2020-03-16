@@ -10,7 +10,7 @@ export const TeamRouteButton: React.FC<TeamInfoProps> = ({ team }) => {
   return team.isVerified ? (
     <SquareRouteButton
       title={teamName}
-      route={team.name}
+      route={team.uid}
       imgSrc={team.logo ?? TeamIcon}
     />
   ) : (

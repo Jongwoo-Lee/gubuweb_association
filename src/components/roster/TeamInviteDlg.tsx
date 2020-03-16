@@ -16,6 +16,7 @@ export interface TeamInviteDlgProps {
   team: Team;
   onClose: Function;
   isDelete?: boolean;
+  buttonText?: String;
 }
 
 export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
@@ -23,11 +24,12 @@ export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
   open,
   team,
   onClose,
-  isDelete
+  isDelete,
+  buttonText
 }: TeamInviteDlgProps) => {
   const ascData = useAssociationValue();
   const [isLoading, setLoading] = useState(false);
-  const [isFailure, setFailure] = useState();
+  const [isFailure, setFailure] = useState(false);
   const { setTrue } = useSendBoolean();
 
   const handleClose = () => {
@@ -60,7 +62,7 @@ export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
               setFailure(true);
               console.log(err);
             })
-        : await batchInviteTeam(ascData.uid, team)
+        : await batchInviteTeam(ascData, team)
             .then(() => {
               setLoading(false);
               onClose(true);
@@ -89,12 +91,22 @@ export const TeamInviteDlg: React.FC<TeamInviteDlgProps> = ({
       <DialogTitle id="teaminfo-dialog-title">{title}</DialogTitle>
       <TeamInfo team={team} />
       <Button onClick={handleInvite} disabled={isLoading}>
-        {isDelete ? "초대 취소" : "초대"}
+        {buttonText ?? isDelete
+          ? team.isDeclined
+            ? "팀 삭제"
+            : "초대 취소"
+          : "초대"}
       </Button>
       <Snackbar
         open={isFailure}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        message={isDelete ? FORMTEXT.DELETE_INVITE_FAIL : FORMTEXT.INVITE_FAIL}
+        message={
+          isDelete
+            ? team.isDeclined
+              ? FORMTEXT.DELETE_TEAM
+              : FORMTEXT.DELETE_INVITE_FAIL
+            : FORMTEXT.INVITE_FAIL
+        }
         autoHideDuration={5000}
         onClose={handleSnackBarClose}
       />

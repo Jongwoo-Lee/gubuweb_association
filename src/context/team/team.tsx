@@ -29,7 +29,9 @@ export const TeamProvider = (props: { children: React.ReactNode }) => {
   );
 };
 
-export const useTeams = () => useContext(TeamContext).teams;
+export const useAllTeams = () => useContext(TeamContext).teams;
+export const useAscTeams = () =>
+  useContext(TeamContext).teams.filter(team => team.isVerified);
 export const usePushTeam = () => useContext(TeamContext).setTeams;
 // export const usePushTeam = (team: Team) => {
 //     const teams: Team[] | null = useTeams();

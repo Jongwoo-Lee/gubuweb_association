@@ -13,6 +13,8 @@ export class Team {
   logo: string | undefined;
   invitedAt: Date | undefined;
   isVerified: boolean | undefined;
+  isDeclined: boolean | undefined;
+  joinedAt: Date | undefined;
 
   constructor(
     teamUID: string,
@@ -26,18 +28,22 @@ export class Team {
       logo?: string;
       invitedAt?: Date;
       isVerified?: boolean;
+      isDeclined?: boolean;
+      joinedAt?: Date;
     }
   ) {
     this.uid = teamUID;
     this.name = teamName;
     this.initial = teamInitial;
     this.manager = manager;
-    this.region = info.region ?? undefined;
-    this.gender = info.gender ?? undefined;
-    this.age = info.age ?? undefined;
-    this.logo = info.logo ?? undefined;
-    this.invitedAt = info.invitedAt ?? undefined;
-    this.isVerified = info.isVerified ?? undefined;
+    this.region = info.region;
+    this.gender = info.gender;
+    this.age = info.age;
+    this.logo = info.logo;
+    this.invitedAt = info.invitedAt;
+    this.isVerified = info.isVerified;
+    this.isDeclined = info.isDeclined;
+    this.joinedAt = info.joinedAt;
   }
 
   static fromTeam(team: Team) {
@@ -47,7 +53,9 @@ export class Team {
       age: team.age,
       logo: team.logo,
       invitedAt: team.invitedAt,
-      isVerified: team.isVerified
+      isVerified: team.isVerified,
+      isDeclined: team.isDeclined,
+      joinedAt: team.joinedAt
     });
   }
 
@@ -122,7 +130,9 @@ export const ascTeamConverter = {
       [COL_TEAMS.TEAMS_REGION]: team.region ?? null,
       [COL_TEAMS.TEAMS_GENDER]: team.gender ?? null,
       [COL_ASC.INVITEDAT]: team.invitedAt,
-      [COL_ASC.ISVERIFIED]: team.isVerified ?? false
+      [COL_ASC.ISVERIFIED]: team.isVerified ?? false,
+      [COL_ASC.ISDECLINED]: team.isDeclined ?? null,
+      [COL_ASC.JOINED_AT]: team.joinedAt ?? null
     };
   },
   fromFirestore: (
@@ -141,7 +151,9 @@ export const ascTeamConverter = {
         age: data?.[COL_TEAMS.TEAMS_AGE],
         logo: data?.[COL_TEAMS.TEAMS_LOGO],
         invitedAt: data?.[COL_ASC.INVITEDAT],
-        isVerified: data?.[COL_ASC.ISVERIFIED]
+        isVerified: data?.[COL_ASC.ISVERIFIED],
+        isDeclined: data?.[COL_ASC.ISDECLINED],
+        joinedAt: data?.[COL_ASC.JOINED_AT]
       }
     );
   }
@@ -163,7 +175,9 @@ const makeTeamfromDoc = (
       age: data?.[COL_TEAMS.TEAMS_AGE],
       logo: data?.[COL_TEAMS.TEAMS_LOGO],
       invitedAt: data?.[COL_ASC.INVITEDAT],
-      isVerified: data?.[COL_ASC.ISVERIFIED]
+      isVerified: data?.[COL_ASC.ISVERIFIED],
+      isDeclined: data?.[COL_ASC.ISDECLINED],
+      joinedAt: data?.[COL_ASC.JOINED_AT]
     }
   );
 };

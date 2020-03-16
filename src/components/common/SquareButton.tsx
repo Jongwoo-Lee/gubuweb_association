@@ -18,15 +18,6 @@ const useStyles = makeStyles({
   }
 });
 
-// imgSrc 나 ImgIcon 둘중 하나만 꼭 넣어야 함
-export interface SquareButtonProps {
-  title: string;
-  imgSrc?: string;
-  ImgIcon?(icon: SvgIconProps): JSX.Element;
-  clickEvent: MouseEventHandler;
-  isVerified?: boolean;
-}
-
 export interface SquareRouteButtonProps {
   route: string;
   title: string;
@@ -64,12 +55,21 @@ export const SquareRouteButton: React.FC<SquareRouteButtonProps> = ({
   );
 };
 
+// imgSrc 나 ImgIcon 둘중 하나만 꼭 넣어야 함
+export interface SquareButtonProps {
+  title: string;
+  imgSrc?: string;
+  ImgIcon?(icon: SvgIconProps): JSX.Element;
+  clickEvent: MouseEventHandler;
+  buttonState?: String;
+}
+
 export const SquareButton: React.FC<SquareButtonProps> = ({
   title,
   imgSrc,
   ImgIcon,
   clickEvent,
-  isVerified
+  buttonState
 }: SquareButtonProps) => {
   const classes = useStyles();
   const handleCardClick: MouseEventHandler = clickEvent;
@@ -88,8 +88,7 @@ export const SquareButton: React.FC<SquareButtonProps> = ({
         {ImgIcon !== undefined && <ImgIcon style={{ fontSize: "150px" }} />}
 
         <br />
-        {isVerified === true && "승인"}
-        {isVerified === false && "승인대기"}
+        {buttonState}
         <Typography align="center" variant="body1" component="span">
           {title}
         </Typography>

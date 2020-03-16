@@ -9,7 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { AddTeam } from "./AddTeam";
 import { Team } from "../../helpers/Firebase/team";
 
-import { TeamProvider, useTeams } from "../../context/team/team";
+import { TeamProvider, useAllTeams } from "../../context/team/team";
 import { SendBooleanProvider } from "../../context/common";
 import { FORMTEXT } from "../../constants/texts";
 import { CommonSnackbar } from "../common/CommonSnackbar";
@@ -45,7 +45,7 @@ export const RosterComponent: React.FC<RosterProps> = () => {
   const classes = useStyles();
 
   // fire
-  const teams: Team[] | null = useTeams();
+  const teams: Team[] | null = useAllTeams();
 
   return (
     <div className={classes.root}>

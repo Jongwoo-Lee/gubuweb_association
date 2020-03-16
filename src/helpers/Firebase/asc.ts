@@ -120,7 +120,7 @@ export const updateURL = async (uid: string, url: string) =>
 
 // 1. ASC-tl 에 팀 정보 저장
 // 2. Team-i-asc 에 초대 정보 저장
-export const batchInviteTeam = (ascUID: string, team: Team) => {
+export const batchInviteTeam = (asc: Association, team: Team) => {
   const batch = Firebase.firestore.batch();
   const invitedAt = new Date();
 
@@ -128,7 +128,7 @@ export const batchInviteTeam = (ascUID: string, team: Team) => {
   batchTeam.invitedAt = invitedAt;
   batchTeam.isVerified = batchTeam.isVerified ?? false;
 
-  const ascRef = ascTeamListDocRef(ascUID, batchTeam.uid);
+  const ascRef = ascTeamListDocRef(asc.uid, batchTeam.uid);
   batch.set(
     ascRef,
     batchTeam,
@@ -147,7 +147,17 @@ export const batchInviteTeam = (ascUID: string, team: Team) => {
   );
 
   const teamRef = teamInviteDocRef(batchTeam.uid);
-  batch.set(teamRef, { [ascUID]: invitedAt }, { merge: true });
+  batch.set(
+    teamRef,
+    {
+      [asc.uid]: {
+        [COL_ASC.INVITEDAT]: invitedAt,
+        [COL_ASC.DISPLAYNAME]: asc.name
+      },
+      [COL_ASC.RECENT_SENDER]: asc.uid
+    },
+    { merge: true }
+  );
 
   return batch.commit();
 };

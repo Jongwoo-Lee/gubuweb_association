@@ -18,7 +18,10 @@ export const COL_ASC = {
   ISVERIFIED: "iv",
   CUPLIST: "cl",
   MYTEAMLIST: "tl",
-  INVITEDAT: "ia"
+  INVITEDAT: "ia",
+  RECENT_SENDER: "rs",
+  ISDECLINED: "id",
+  JOINED_AT: "jA"
 };
 
 export const COL_TEAMS = {

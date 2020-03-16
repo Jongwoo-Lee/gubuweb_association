@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import { Team } from "../../../helpers/Firebase/team";
 import { saveTeams, CupInfo } from "../../../helpers/Firebase/cup";
+import { useAscTeams } from "../../../context/team/team";
 
 export interface WrapCupDetailTeamProps {
   cupInfo: CupInfo;
@@ -63,7 +64,8 @@ export const WrapCupDetailTeam: React.FC<WrapCupDetailTeamProps> = ({
   cupID
 }: WrapCupDetailTeamProps) => {
   const classes = useStyles();
-  const teams: Team[] = []; // 연맹에 가입된 팀 목록을 불러오면 될 듯 함
+  const teams = useAscTeams();
+  //  const teams: Team[] = []; // 연맹에 가입된 팀 목록을 불러오면 될 듯 함
   const [selectedUID, setselectedUID] = useState<Array<string>>(
     Array<string>()
   );
