@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const CupDetail: React.SFC<RouteComponentProps> = (
+export const CupDetail: React.FC<RouteComponentProps> = (
   props: RouteComponentProps
 ) => {
   const propPath = props.match.path + "/:cupID";

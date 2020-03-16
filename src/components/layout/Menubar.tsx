@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Menubar: React.SFC<MenubarProps> = () => {
+export const Menubar: React.FC<MenubarProps> = () => {
   const classes = useStyles();
   const authUser = useAuthUserValue();
   const ascData = useAssociationValue();
@@ -62,7 +62,7 @@ export const Menubar: React.SFC<MenubarProps> = () => {
     }
   };
 
-  const UserMenu: React.SFC = () => {
+  const UserMenu: React.FC = () => {
     return (
       <List>
         <MenubarItem text={ROUTENAMES.HOME} key={ROUTENAMES.HOME} />
@@ -73,7 +73,7 @@ export const Menubar: React.SFC<MenubarProps> = () => {
     );
   };
 
-  const HideMenu: React.SFC = () => {
+  const HideMenu: React.FC = () => {
     return (
       <List>
         <MenubarItem text={ROUTENAMES.HOME} key={ROUTENAMES.HOME} />
@@ -82,7 +82,7 @@ export const Menubar: React.SFC<MenubarProps> = () => {
     );
   };
 
-  const LogoutMenu: React.SFC = () => {
+  const LogoutMenu: React.FC = () => {
     return (
       <List>
         <ListItem button key="logout" onClick={handleLogout}>
@@ -93,7 +93,9 @@ export const Menubar: React.SFC<MenubarProps> = () => {
   };
 
   const checkRoute = () => {
-    switch (pathname) {
+    const path = "/" + pathname.split("/")[1];
+
+    switch (path) {
       case ROUTES.HOME:
         return ROUTENAMES.HOME;
       case ROUTES.CUP:
@@ -107,7 +109,7 @@ export const Menubar: React.SFC<MenubarProps> = () => {
     }
   };
 
-  const MenubarItem: React.SFC<{ text: string }> = ({ text }) => {
+  const MenubarItem: React.FC<{ text: string }> = ({ text }) => {
     return (
       <ListItem button onClick={e => handleMenuClick(e, text)} key={text}>
         <ListItemText

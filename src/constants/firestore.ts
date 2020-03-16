@@ -21,7 +21,12 @@ export const COL_ASC = {
   INVITEDAT: "ia",
   RECENT_SENDER: "rs",
   ISDECLINED: "id",
-  JOINED_AT: "jA"
+  JOINED_AT: "jA",
+  TEAM_MEMBERS: "m",
+  TEAM_PLAYER_NUM: "bn",
+  TEAM_PLAYER_NAME: "dn",
+  TEAM_PLAYER_IMAGE: "pu",
+  TEAM_PLAYER_UID: "uu"
 };
 
 export const COL_TEAMS = {

@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Home: React.SFC<HomeProps> = () => {
+export const Home: React.FC<HomeProps> = () => {
   const ascData = useAssociationValue();
   const classes = useStyles();
 

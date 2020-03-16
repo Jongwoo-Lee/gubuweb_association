@@ -1,6 +1,7 @@
 import Firebase from ".";
 import { COL_TEAMS, COL_ASC } from "../../constants/firestore";
-import { firestore } from "firebase";
+
+import { Player } from "../../models";
 
 export class Team {
   uid: string;
@@ -15,6 +16,7 @@ export class Team {
   isVerified: boolean | undefined;
   isDeclined: boolean | undefined;
   joinedAt: Date | undefined;
+  players: Player[] | undefined;
 
   constructor(
     teamUID: string,
@@ -30,6 +32,7 @@ export class Team {
       isVerified?: boolean;
       isDeclined?: boolean;
       joinedAt?: Date;
+      players?: Player[];
     }
   ) {
     this.uid = teamUID;
@@ -44,6 +47,7 @@ export class Team {
     this.isVerified = info.isVerified;
     this.isDeclined = info.isDeclined;
     this.joinedAt = info.joinedAt;
+    this.players = info.players;
   }
 
   static fromTeam(team: Team) {
@@ -55,7 +59,8 @@ export class Team {
       invitedAt: team.invitedAt,
       isVerified: team.isVerified,
       isDeclined: team.isDeclined,
-      joinedAt: team.joinedAt
+      joinedAt: team.joinedAt,
+      players: team.players
     });
   }
 
@@ -90,13 +95,13 @@ export class Team {
 }
 
 export const getTeamInfo = (team: Team) => {
-  const teamScope: string[] = [
-    "팀 이름",
-    "매니저",
-    "활동 지역",
-    "연령대",
-    "성별"
-  ];
+  // const teamScope: string[] = [
+  //   "팀 이름",
+  //   "매니저",
+  //   "활동 지역",
+  //   "연령대",
+  //   "성별"
+  // ];
   // const managers: string[] = Object.values(team.manager);
   // const teamValue = [
   //   team.name,
@@ -132,7 +137,10 @@ export const ascTeamConverter = {
       [COL_ASC.INVITEDAT]: team.invitedAt,
       [COL_ASC.ISVERIFIED]: team.isVerified ?? false,
       [COL_ASC.ISDECLINED]: team.isDeclined ?? null,
-      [COL_ASC.JOINED_AT]: team.joinedAt ?? null
+      [COL_ASC.JOINED_AT]: team.joinedAt ?? null,
+      [COL_ASC.TEAM_MEMBERS]: team.players
+        ? playersToFirestore(team.players)
+        : null
     };
   },
   fromFirestore: (
@@ -140,6 +148,7 @@ export const ascTeamConverter = {
     options: firebase.firestore.SnapshotOptions | undefined
   ) => {
     const data = snapshot.data(options);
+
     return new Team(
       snapshot.id,
       data?.[COL_TEAMS.TEAMS_NAME],
@@ -153,7 +162,8 @@ export const ascTeamConverter = {
         invitedAt: data?.[COL_ASC.INVITEDAT],
         isVerified: data?.[COL_ASC.ISVERIFIED],
         isDeclined: data?.[COL_ASC.ISDECLINED],
-        joinedAt: data?.[COL_ASC.JOINED_AT]
+        joinedAt: data?.[COL_ASC.JOINED_AT],
+        players: playersFromFirestore(data)
       }
     );
   }
@@ -216,3 +226,50 @@ export const teamInviteDocRef = (teamUID: string) =>
     .doc(teamUID)
     .collection(COL_TEAMS.INVITE)
     .doc(COL_TEAMS.TEAMS_ASC);
+
+const playersFromFirestore = (
+  docData: firebase.firestore.DocumentData | undefined
+) => {
+  let players: Player[] = [];
+  if (docData?.[COL_ASC.TEAM_MEMBERS]) {
+    const playersObject = docData?.[COL_ASC.TEAM_MEMBERS];
+
+    for (const uid in playersObject) {
+      if (playersObject.hasOwnProperty(uid)) {
+        var value = playersObject[uid];
+
+        players.push(
+          new Player(
+            value?.[COL_ASC.TEAM_PLAYER_UID],
+            value?.[COL_ASC.TEAM_PLAYER_NAME],
+            {
+              backnumber: value?.[COL_ASC.TEAM_PLAYER_NUM],
+              image: value?.[COL_ASC.TEAM_PLAYER_IMAGE]
+            }
+          )
+        );
+      }
+    }
+  }
+  return players;
+};
+
+const playersToFirestore = (players: Player[]) => {
+  let members: {
+    [uid: string]: {
+      uu: string;
+      dn: string;
+      bn?: number;
+      pu?: string;
+    };
+  } = {};
+  players.forEach(pl => {
+    members[pl.uid] = {
+      uu: pl.uid,
+      dn: pl.name,
+      bn: pl.backnumber,
+      pu: pl.image
+    };
+  });
+  return members;
+};
