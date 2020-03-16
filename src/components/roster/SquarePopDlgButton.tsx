@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Team } from "../../helpers/Firebase/team";
 import { SquareButton } from "../common/SquareButton";
 import TeamIcon from "../../images/team_off.svg";
 import { TeamInviteDlg } from "./TeamInviteDlg";
 import { useSendBoolean } from "../../context/common";
+import { Team } from "../../models";
 
 export interface SquarePopDlgButtonProps {
   team: Team;

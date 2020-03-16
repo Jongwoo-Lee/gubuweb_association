@@ -1,7 +1,8 @@
 import Firebase from "../Firebase";
 import { COL_ASC, COL_TEAMS } from "../../constants/firestore";
 import firebase from "firebase";
-import { teamInviteDocRef, Team, ascTeamConverter } from "./team";
+import { teamInviteDocRef, ascTeamConverter } from "./team";
+import { Team } from "../../models";
 
 // interface FirestoreAsc {
 //   uid: string | null;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Team } from "../helpers/Firebase/team";
 import { ascTeamListColRef } from "../helpers/Firebase/asc";
 import Firebase, { FirebaseAsc } from "../helpers/Firebase";
+import { Team } from "../models";
 
 export const useSearchTeam = (search: string) => {
   const [teams, setTeams] = useState<Team[]>([]);

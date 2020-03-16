@@ -7,13 +7,13 @@ import { SquareRouteButton } from "../common/SquareButton";
 import { TeamRouteButton } from "./TeamRouteButton";
 import AddIcon from "@material-ui/icons/Add";
 import { AddTeam } from "./AddTeam";
-import { Team } from "../../helpers/Firebase/team";
 
 import { useAllTeams } from "../../context/team/team";
 import { SendBooleanProvider } from "../../context/common";
 import { FORMTEXT } from "../../constants/texts";
 import { CommonSnackbar } from "../common/CommonSnackbar";
 import { RosterTeam } from "./RosterTeam";
+import { Team } from "../../models";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

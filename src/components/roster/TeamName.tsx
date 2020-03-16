@@ -1,7 +1,7 @@
 import React from "react";
-import { Team } from "../../helpers/Firebase/team";
 import TeamIcon from "../../images/team_off.svg";
 import { Typography } from "@material-ui/core";
+import { Team } from "../../models";
 
 export interface TeamNameProps {
   team: Team;

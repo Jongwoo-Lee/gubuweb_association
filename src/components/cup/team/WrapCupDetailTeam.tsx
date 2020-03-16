@@ -14,7 +14,7 @@ import {
   Button,
   Grid
 } from "@material-ui/core";
-import { Team } from "../../../helpers/Firebase/team";
+import { Team } from "../../../models";
 import { saveTeams, CupInfo } from "../../../helpers/Firebase/cup";
 import { useAscTeams } from "../../../context/team/team";
 
