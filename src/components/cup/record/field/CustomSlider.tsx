@@ -1,25 +1,25 @@
-import { withStyles, Slider, makeStyles } from "@material-ui/core";
-import React from "react";
+import { withStyles, Slider, makeStyles, Button, ButtonBase } from "@material-ui/core";
+import React, { useRef, useState, useEffect } from "react";
 import { CurTime } from "../../../../context/cup/cupRecord";
 import { TempSubData } from "../../../../hooks/cups";
-
+import ImportExportIcon from '@material-ui/icons/ImportExport';
 const useStyles = makeStyles({
   root: {
     display: "flex",
     flexDirection: "column",
-    background: "yellow"
   },
   thumb: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+
   },
   test: {
     display: "flex",
     flexDirection: "row",
-    position: "absolute"
+    position: "relative",
   },
   margin: {
-    margin: 0
+    margin: "10"
   }
 });
 
@@ -65,6 +65,18 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
   tempData
 }: CustomSliderProps) => {
   const classes = useStyles();
+  // const targetRef = useRef<any>();
+  // const [dimensions, setDimensions] = useState({ width: 0 });
+  // useEffect(() => {
+  //   if (targetRef.current) {
+  //     setDimensions({
+  //       width: targetRef.current.offsetWidth,
+  //     });
+  //     console.log(`${dimensions.width}`)
+  //   }
+  // }, []);
+
+
   const handleChange = (
     event: React.ChangeEvent<{}>,
     value: number | number[]
@@ -74,48 +86,41 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
       setTime(newTime);
     }
   };
-  const makeThumb = () => {
-    tempData.map((data: TempSubData) => {
-      if (data.Q === time.curQuarter) {
-        console.log(
-          `data.T  - ${data.T} - ${(data.T / 1000 / (60 * 45)) * 100}`
-        );
-        return (
-          <div className={classes.thumb} style={{ marginLeft: `40%` }}>
-            ㄱ
-          </div>
-        );
-      } else {
-        return <div>ㄹ</div>;
-      }
-    });
-  };
+
+  const handleClick = (data: TempSubData) => {
+    let newTime: CurTime = { curQuarter: data.Q, curTime: data.T / 1000 };
+
+    setTime(newTime)
+  }
+
 
   return (
     <div className={classes.root}>
-      <div style={{ left: `0%` }}>1</div>
-      <div style={{ marginLeft: `25%` }}>2</div>
-      <div style={{ marginLeft: `100%` }}>3</div>
-      <div style={{ marginLeft: `50%` }}>4</div>
-      <div style={{ marginLeft: `50%` }}>5</div>
-      <div className={classes.thumb}>
-        <div style={{ position: "absolute", left: `0%` }}>1</div>
-        <div style={{ position: "absolute", marginLeft: `25%` }}>2</div>
-        <div style={{ position: "absolute", marginLeft: `100%` }}>3</div>
-        <div style={{ position: "absolute", marginLeft: `50%` }}>4</div>
-        <div style={{ position: "absolute", marginLeft: `50%` }}>5</div>
+      <div className={classes.test}>
+        {
+          tempData.map((data: TempSubData) => {
+            const lMargin: string = (((data.T / 1000) / (45 * 60)) * 100).toPrecision(2).toString();
+            if (data.Q === time.curQuarter) {
+              console.log(lMargin)
+              return (
+                <div style={{ position: "absolute", marginLeft: lMargin, left: "-12px" }}>
+                  <ButtonBase onClick={e => handleClick(data)}> <ImportExportIcon /></ButtonBase></div>
+              );
+            } else {
+              return <div></div>;
+            }
+          })
+        }
       </div>
-      {makeThumb()}
-      <div className={classes.thumb}>
-        <div> </div>
-        <PrettoSlider
-          aria-label="pretto slider"
-          defaultValue={0}
-          value={time.curTime}
-          max={60 * 45}
-          onChange={handleChange}
-        />
-      </div>
+      <div className={classes.margin}> </div>
+      <br />
+      <PrettoSlider
+        aria-label="pretto slider"
+        defaultValue={0}
+        value={time.curTime}
+        max={60 * 45}
+        onChange={handleChange}
+      />
     </div>
   );
 };
