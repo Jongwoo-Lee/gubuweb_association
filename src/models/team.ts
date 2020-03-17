@@ -48,6 +48,10 @@ export class Team {
     this.players = info.players;
   }
 
+  static empty() {
+    return new Team("", "", "", { uid: "", name: "" }, {});
+  }
+
   static fromTeam(team: Team) {
     return new Team(team.uid, team.name, team.initial, team.manager, {
       region: team.region,

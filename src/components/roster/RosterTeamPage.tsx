@@ -2,11 +2,8 @@ import React, { useEffect } from "react";
 import { useCurrentTeam } from "../../context/team/team";
 import { Theme, makeStyles, createStyles, Paper } from "@material-ui/core";
 import { TeamName } from "./TeamName";
-import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import { PlayerTable } from "./PlayerTable";
 
 interface TabPanelProps {
@@ -15,7 +12,7 @@ interface TabPanelProps {
   value: any;
 }
 
-function TabPanel(props: TabPanelProps) {
+const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -30,23 +27,22 @@ function TabPanel(props: TabPanelProps) {
       {value === index && children}
     </div>
   );
-}
-function a11yProps(index: any) {
+};
+
+const a11yProps = (index: any) => {
   return {
     id: `rosterteam-tab-${index}`,
     "aria-controls": `rosterteam-tabpanel-${index}`
   };
-}
+};
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: "flex",
-      flexDirection: "column"
-    },
-    team: {
-      marginTop: "20px",
-      marginLeft: "20px"
+    tab: {
+      width: "320px",
+      [theme.breakpoints.down("xs")]: {
+        width: "160px"
+      }
     }
   })
 );
@@ -63,12 +59,10 @@ export const RosterTeamPage: React.FC<RosterTeamPageProps> = () => {
     setValue(newValue);
   };
 
-  return team === undefined ? (
-    <p></p>
-  ) : (
-    <div className={classes.team}>
+  return (
+    <div>
       <TeamName team={team} />
-      <Paper square style={{ width: "320px" }}>
+      <Paper square className={classes.tab}>
         <Tabs
           value={value}
           onChange={handleChange}

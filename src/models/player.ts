@@ -32,6 +32,10 @@ export class Player {
     this.approveExpire = info.approveExpire;
   }
 
+  static empty() {
+    return new Player("", "", {});
+  }
+
   static fromPlayer(player: Player) {
     return new Player(player.uid, player.name, {
       backnumber: player.backnumber,
