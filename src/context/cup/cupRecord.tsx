@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
-import { useLoadCupRecord, usePosition } from "../../hooks/cups";
 import {
-  TeamsRecord,
-  TeamsPos,
-  Log,
-  Substitution
-} from "../../helpers/Firebase/game";
+  useLoadCupRecord,
+  useMakeTempSubData,
+  TempSubData
+} from "../../hooks/cups";
+import { TeamsRecord, Substitution } from "../../helpers/Firebase/game";
 import { firestore } from "firebase";
 
 export interface CurTime {
@@ -14,12 +13,11 @@ export interface CurTime {
 }
 
 interface CupRecordData {
-  time: CurTime;
-  setTime: React.Dispatch<React.SetStateAction<CurTime>>;
   loading: boolean;
   teamsRecord: TeamsRecord;
   pos: Substitution;
   setPos: React.Dispatch<React.SetStateAction<Substitution>>;
+  tempSubData: Array<TempSubData>;
   selUsr: number;
   setSetUsr: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -27,16 +25,13 @@ interface CupRecordData {
 export const CupRecordContext: React.Context<CupRecordData> = React.createContext<
   CupRecordData
 >({
-  time: { curQuarter: 1, curTime: 0 },
-  setTime: () => {
-    console.log("setTime is not initilized");
-  },
   loading: false,
   teamsRecord: new TeamsRecord(),
   pos: {},
   setPos: () => {
     console.log("setPos is not initilized");
   },
+  tempSubData: [],
   selUsr: -1,
   setSetUsr: () => {
     console.log("setSetUsr is not initilized");
@@ -49,8 +44,6 @@ export const CupRecordProvider = (props: {
   gameID: string;
 }) => {
   const { teamsRecord, loading } = useLoadCupRecord(props.cupID, props.gameID);
-  const [time, setTime] = useState<CurTime>({ curQuarter: 1, curTime: 0 });
-
   const [pos, setPos] = useState<Substitution>({
     Q0010: {
       log: {
@@ -90,17 +83,19 @@ export const CupRecordProvider = (props: {
     }
   });
   const [selUsr, setSetUsr] = useState<number>(-1);
+  const tempSubData = useMakeTempSubData(pos);
+  console.log("provider");
+  console.dir(pos);
 
   return (
     <CupRecordContext.Provider
       value={{
-        time,
-        setTime,
         teamsRecord,
         loading,
         pos,
         setPos,
         selUsr,
+        tempSubData,
         setSetUsr
       }}
     >
@@ -109,14 +104,11 @@ export const CupRecordProvider = (props: {
   );
 };
 
-// 삭제
-export const useRecordTime = () => useContext(CupRecordContext).time;
-export const useSetRecordTime = () => useContext(CupRecordContext).setTime;
-
 export const useRecordloading = () => useContext(CupRecordContext).loading;
 export const useTeamRecord = () => useContext(CupRecordContext).teamsRecord;
 export const useTeamPos = () => useContext(CupRecordContext).pos;
 export const useSetTeamPos = () => useContext(CupRecordContext).setPos;
+export const useTempSubData = () => useContext(CupRecordContext).tempSubData;
 
 export const useSelUsr = () => useContext(CupRecordContext).selUsr;
 export const useSetSelUsr = () => useContext(CupRecordContext).setSetUsr;

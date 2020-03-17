@@ -25,7 +25,6 @@ import {
   useSelUsr,
   useSetSelUsr,
   useTeamPos,
-  useRecordTime,
   CurTime,
   makeQuarterString,
   useSetTeamPos,
@@ -236,13 +235,15 @@ export const useLocalPlanPreState = (planPre: PlanPreliminary) => {
   return { tempPlan, setTempPlan };
 };
 
-export const useSubstitution = (pos: number) => {
+export const useSubstitution = (
+  pos: number,
+  curTime: CurTime,
+  teamPos: TeamsPos
+) => {
   const selUsr = useSelUsr();
   const setSelUsr = useSetSelUsr();
   const teamRealPos = useTeamPos();
   const setTeamPos = useSetTeamPos();
-  const curTime: CurTime = useRecordTime();
-  const teamPos = usePosition(curTime);
 
   const handleOnClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -286,43 +287,16 @@ export const useSubstitution = (pos: number) => {
   return { selUsr, handleOnClick };
 };
 
-interface Temp {
+export interface TempSubData {
   Q: number;
   T: number;
   DATA: { log: Log; player_curPosition: TeamsPos };
 }
 
-export const usePosition = (curTime: CurTime): TeamsPos => {
-  // console.time("calculatingTime");
-  const pos: Substitution = useTeamPos();
-  // console.log(`usePosition - pos`);
-  // console.dir(curTime);
-  // console.dir(pos);
-
-  interface Temp {
-    Q: number;
-    T: number;
-    DATA: { log: Log; player_curPosition: TeamsPos };
-  }
-  let findData: TeamsPos = {};
-  // const [test, setTest] = useState(
-  //   Object.keys(pos)
-  //     .map((qurterTime: string) => {
-  //       const q: number = Number(qurterTime.slice(1, 4));
-  //       const time: number = Number(qurterTime.slice(4));
-  //       return {
-  //         Q: q,
-  //         T: time,
-  //         DATA: pos[qurterTime]
-  //       };
-  //     })
-  //     .sort((a: Temp, b: Temp) => {
-  //       if (a.Q !== b.Q) return a.Q - b.Q;
-  //       else return a.T - b.T;
-  //     })
-  // );
-
-  Object.keys(pos)
+export const useMakeTempSubData = (pos: Substitution): Array<TempSubData> => {
+  console.log(`MakeTemPSubData`);
+  let metaSub: Array<TempSubData> = [];
+  metaSub = Object.keys(pos)
     .map((qurterTime: string) => {
       const q: number = Number(qurterTime.slice(1, 4));
       const time: number = Number(qurterTime.slice(4));
@@ -332,17 +306,28 @@ export const usePosition = (curTime: CurTime): TeamsPos => {
         DATA: pos[qurterTime]
       };
     })
-    .sort((a: Temp, b: Temp) => {
+    .sort((a: TempSubData, b: TempSubData) => {
       if (a.Q !== b.Q) return a.Q - b.Q;
       else return a.T - b.T;
-    }) // 여기까지는 사실 매번 렌더링 하지 않아도 됨
-    .forEach((st: Temp) => {
-      if (st.Q <= curTime.curQuarter && st.T <= curTime.curTime * 1000) {
-        findData = st.DATA?.player_curPosition ?? {};
-      }
-    });
-  // console.log(`slider bar때문에 매번 랜더링을 하나보네`);
-  // // console.timeEnd("calculatingTime");
-  // console.dir(findData);
+    }); // 여기까지는 사실 매번 렌더링 하지 않아도 됨
+
+  return metaSub;
+};
+
+export const usePosition = (
+  test: Array<TempSubData>,
+  curTime: CurTime
+): TeamsPos => {
+  // 0.1 ms => 0.005ms 로 개선
+  console.time("calculatingTime");
+  let findData: TeamsPos = {};
+
+  // 여기까지는 사실 매번 렌더링 하지 않아도 됨
+  test.forEach((st: TempSubData) => {
+    if (st.Q <= curTime.curQuarter && st.T <= curTime.curTime * 1000) {
+      findData = st.DATA?.player_curPosition ?? {};
+    }
+  });
+  console.timeEnd("calculatingTime");
   return findData;
 };

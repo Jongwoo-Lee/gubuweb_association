@@ -5,9 +5,13 @@ import { Board } from "./Board";
 import { Bench } from "./Bench";
 import { RecordScore } from "../RecordScore";
 import { RecordSubstitution } from "../RecordSubstitution";
-import { usePosition, convertTimeString } from "../../../../hooks/cups";
+import {
+  usePosition,
+  convertTimeString,
+  TempSubData
+} from "../../../../hooks/cups";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
-import { useRecordTime, CurTime } from "../../../../context/cup/cupRecord";
+import { CurTime, useTempSubData } from "../../../../context/cup/cupRecord";
 import { CustomSlider } from "../CustomSlider";
 import { ChangeQaurter } from "../ChangeQuarter";
 
@@ -34,9 +38,8 @@ export const RecordField: React.FC<RecordFieldProps> = ({
     curQuarter: 1,
     curTime: 0
   });
-
-  // const curTime: CurTime = useRecordTime();
-  const teamPos: TeamsPos = usePosition(curTime);
+  const data: Array<TempSubData> = useTempSubData();
+  const teamPos: TeamsPos = usePosition(data, curTime); // usePosition(curTime);
 
   const handleScoreClick = (e: RecordType) => {
     if (click !== "score") {
@@ -83,13 +86,10 @@ export const RecordField: React.FC<RecordFieldProps> = ({
 
       <Grid container spacing={1} className={classes.margin}>
         <Grid item xs={8}>
-          <Board rType={click} teamPos={teamPos} />
-          {/* <Paper variant="elevation" className={classes.paper}></Paper> */}
+          <Board rType={click} teamPos={teamPos} curTime={curTime} />
         </Grid>
         <Grid item xs>
-          {/* <Paper variant="elevation" className={classes.ground}></Paper> */}
-          {/* <Bench knightPosition={knightPos2} /> */}
-          <Bench rType={click} teamPos={teamPos} />
+          <Bench rType={click} teamPos={teamPos} curTime={curTime} />
         </Grid>
       </Grid>
 

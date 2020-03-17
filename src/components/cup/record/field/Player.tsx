@@ -3,6 +3,8 @@ import Trophy from "../../../../images/trophy_on.svg";
 import { makeStyles, ButtonBase, Box, Typography } from "@material-ui/core";
 import { RecordType } from "./RecordField";
 import { useSubstitution } from "../../../../hooks/cups";
+import { CurTime } from "../../../../context/cup/cupRecord";
+import { TeamsPos } from "../../../../helpers/Firebase/game";
 
 const useStyles = makeStyles({
   root: {
@@ -49,18 +51,20 @@ const useStyles = makeStyles({
 export interface PlayerProps {
   isIn: boolean;
   pos: number;
-  name: string;
+  curTime: CurTime;
+  teamPos: TeamsPos;
   rType?: RecordType;
 }
 
 export const Player: React.FC<PlayerProps> = ({
   isIn,
   pos,
-  name,
+  curTime,
+  teamPos,
   rType
 }: PlayerProps) => {
   const classes = useStyles();
-  const { selUsr, handleOnClick } = useSubstitution(pos);
+  const { selUsr, handleOnClick } = useSubstitution(pos, curTime, teamPos);
 
   return (
     <Box className={classes.root}>
@@ -72,7 +76,7 @@ export const Player: React.FC<PlayerProps> = ({
                 등번호
               </Typography>
             </ButtonBase>
-            <Typography color="secondary">{name}</Typography>
+            <Typography color="secondary">{teamPos[pos]}</Typography>
           </div>
         ) : (
           <div />
@@ -100,7 +104,7 @@ export const Player: React.FC<PlayerProps> = ({
               등번호
             </Typography>
           </ButtonBase>
-          <Typography color="secondary">{name}</Typography>
+          <Typography color="secondary">{teamPos[pos]}</Typography>
         </div>
       )}
     </Box>
