@@ -24,3 +24,26 @@ export const TeamName: React.FC<TeamNameProps> = ({ team, reverse }) => {
     </div>
   );
 };
+
+export const SmallTeamName: React.FC<TeamNameProps> = ({ team }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        marginLeft: "10px",
+        marginBottom: "10px"
+      }}
+    >
+      <CommonImage src={team.logo} type={1} width="40px" height="40px" />
+      <Typography variant="body2">{team.name}</Typography>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}
+      ></div>
+    </div>
+  );
+};

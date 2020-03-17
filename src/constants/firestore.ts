@@ -21,16 +21,7 @@ export const COL_ASC = {
   INVITEDAT: "ia",
   RECENT_SENDER: "rs",
   ISDECLINED: "id",
-  JOINED_AT: "jA",
-  TEAM_MEMBERS: "m",
-  TEAM_PLAYER_UID: "uu",
-  TEAM_PLAYER_NAME: "dn",
-  TEAM_PLAYER_NUM: "bn",
-  TEAM_PLAYER_IMAGE: "pu",
-  TEAM_PLAYER_STATUS: "st",
-  TEAM_PLAYER_REMARK: "rk",
-  TEAM_PLAYER_APPROVE_DATE: "ad",
-  TEAM_PLAYER_APPROVE_EXPIRE: "ae"
+  JOINED_AT: "jA"
 };
 
 export const COL_TEAMS = {
@@ -49,7 +40,22 @@ export const COL_TEAMS = {
   INVITE: "i",
   INVITEDAT: "ia",
   MEMBERS: "members",
-  TEMPORARIES: "team_temporaries"
+  TEMPORARIES: "team_temporaries",
+  TEAM_MEMBERS: "m",
+  TEAM_PLAYER_UID: "uu",
+  TEAM_PLAYER_NAME: "dn",
+  TEAM_PLAYER_NUM: "bn",
+  TEAM_PLAYER_IMAGE: "pu",
+  TEAM_PLAYER_REMARK: "rk",
+  TEAM_PLAYER_APPROVE: "ap",
+  TEAM_PLAYER_APPROVE_DATE: "ad",
+  TEAM_PLAYER_APPROVE_EXPIRE: "ae",
+  TEAM_PLAYER_STATUS: "st",
+  TEAM_PLAYER_STATUS_WAIT: "wt",
+  TEAM_PLAYER_STATUS_DOC: "dc",
+  TEAM_PLAYER_STATUS_PRO: "pr",
+  TEAM_PLAYER_STATUS_DENY: "de",
+  TEAM_PLAYER_STATUS_EXPIRE: "ex"
 };
 
 export const COL_CUP = {

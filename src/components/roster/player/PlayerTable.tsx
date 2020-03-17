@@ -12,11 +12,11 @@ import {
   Theme,
   createStyles
 } from "@material-ui/core";
-import { useCurrentTeam } from "../../context/team/team";
-import { Player } from "../../models";
-import PlayerIcon from "../../images/user.svg";
+import { useCurrentTeam } from "../../../context/team/team";
+import { Player } from "../../../models";
 import { useHistory } from "react-router-dom";
-import { ROUTES } from "../../constants/routes";
+import { ROUTES } from "../../../constants/routes";
+import PlayerIcon from "../../../images/user.svg";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -93,7 +93,7 @@ export const PlayerTableCell: React.FC<PlayerTableCellProps> = ({ player }) => {
           {player.name}
         </div>
       </TableCell>
-      <TableCell align="right">{player.status && player.status}</TableCell>
+      <TableCell align="right">{player.approve ? "승인" : "미정"}</TableCell>
       <Hidden smDown>
         <TableCell align="right">
           {player.approveDate && player.approveDate}

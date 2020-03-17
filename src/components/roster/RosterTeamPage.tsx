@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useCurrentTeam } from "../../context/team/team";
 import { Theme, makeStyles, createStyles, Paper } from "@material-ui/core";
 import { TeamName } from "./TeamName";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { PlayerTable } from "./PlayerTable";
+import { PlayerTable } from "./player/PlayerTable";
 
 interface TabPanelProps {
   children?: React.ReactNode;

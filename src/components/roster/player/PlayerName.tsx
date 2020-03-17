@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
-import { Player } from "../../models";
-import { CommonImage } from "../common/CommonImage";
+import { Player } from "../../../models";
+import { CommonImage } from "../../common/CommonImage";
 
 export interface PlayerNameProps {
   player: Player;
@@ -14,11 +14,6 @@ export const PlayerName: React.FC<PlayerNameProps> = ({ player }) => {
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Typography variant="h4">{player.name}</Typography>
       </div>
-      {/* <img
-        src={player.image ?? PlayerIcon}
-        alt={player.name + "logo" ?? "undefined team logo"}
-        style={{ width: "75px", height: "75px", marginRight: "20px" }}
-      /> */}
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { CurrentTeamProvider } from "../../context/team/team";
 import { useRouteMatch, Route } from "react-router-dom";
 import { ROUTENAMES, ROUTES } from "../../constants/routes";
 import { RosterTeamPage } from "./RosterTeamPage";
-import { PlayerInfo } from "./PlayerInfo";
+import { PlayerInfo } from "./player/PlayerInfo";
 import { WithTitle } from "../common/WithTitle";
 
 export interface RosterTeamProps {}

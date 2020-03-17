@@ -1,13 +1,19 @@
-enum PlayerStatus {
-  approved
+export interface PlayerStatus {
+  wait: boolean;
+  doc: boolean;
+  pro: boolean;
+  deny: boolean;
+  expire: boolean;
 }
+
 export class Player {
   uid: string;
   name: string;
   backnumber: number | undefined;
   image: string | undefined;
-  status: number | undefined;
+  status: PlayerStatus;
   remark: string | undefined;
+  approve: boolean;
   approveDate: Date | undefined;
   approveExpire: Date | undefined;
 
@@ -17,8 +23,9 @@ export class Player {
     info: {
       backnumber?: number;
       image?: string;
-      status?: number;
+      status?: PlayerStatus;
       remark?: string;
+      approve?: boolean;
       approveDate?: Date;
       approveExpire?: Date;
     }
@@ -27,7 +34,16 @@ export class Player {
     this.name = name ?? "알수없음";
     this.backnumber = info.backnumber;
     this.image = info.image;
-    this.status = info.status;
+    this.status = info.status
+      ? { ...info.status }
+      : {
+          wait: false,
+          doc: false,
+          pro: false,
+          deny: false,
+          expire: false
+        };
+    this.approve = info.approve ?? false;
     this.approveDate = info.approveDate;
     this.approveExpire = info.approveExpire;
   }
@@ -40,8 +56,9 @@ export class Player {
     return new Player(player.uid, player.name, {
       backnumber: player.backnumber,
       image: player.image,
-      status: player.status,
+      status: { ...player.status },
       remark: player.remark,
+      approve: player.approve,
       approveDate: player.approveDate,
       approveExpire: player.approveExpire
     });
