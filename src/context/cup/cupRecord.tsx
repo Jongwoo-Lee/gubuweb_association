@@ -109,8 +109,10 @@ export const CupRecordProvider = (props: {
   );
 };
 
+// 삭제
 export const useRecordTime = () => useContext(CupRecordContext).time;
 export const useSetRecordTime = () => useContext(CupRecordContext).setTime;
+
 export const useRecordloading = () => useContext(CupRecordContext).loading;
 export const useTeamRecord = () => useContext(CupRecordContext).teamsRecord;
 export const useTeamPos = () => useContext(CupRecordContext).pos;

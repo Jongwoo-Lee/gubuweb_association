@@ -5,11 +5,16 @@ import { Board } from "./Board";
 import { Bench } from "./Bench";
 import { RecordScore } from "../RecordScore";
 import { RecordSubstitution } from "../RecordSubstitution";
-import { usePosition } from "../../../../hooks/cups";
+import { usePosition, convertTimeString } from "../../../../hooks/cups";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
 import { useRecordTime, CurTime } from "../../../../context/cup/cupRecord";
+import { CustomSlider } from "../CustomSlider";
+import { ChangeQaurter } from "../ChangeQuarter";
 
-export interface RecordFieldProps {}
+export interface RecordFieldProps {
+  gameTime: number;
+  numOfQuarter: number;
+}
 const useStyles = makeStyles({
   margin: {
     marginTop: "20px",
@@ -19,11 +24,18 @@ const useStyles = makeStyles({
 
 export type RecordType = "score" | "sub" | "";
 
-export const RecordField: React.FC<RecordFieldProps> = ({}: RecordFieldProps) => {
+export const RecordField: React.FC<RecordFieldProps> = ({
+  gameTime,
+  numOfQuarter
+}: RecordFieldProps) => {
   const classes = useStyles();
-  const [click, setClick] = useState<RecordType>(""); //useRecordType(); // useState<RecordType>("");
+  const [click, setClick] = useState<RecordType>("");
+  const [curTime, setcurTime] = useState<CurTime>({
+    curQuarter: 1,
+    curTime: 0
+  });
 
-  const curTime: CurTime = useRecordTime();
+  // const curTime: CurTime = useRecordTime();
   const teamPos: TeamsPos = usePosition(curTime);
 
   const handleScoreClick = (e: RecordType) => {
@@ -40,6 +52,16 @@ export const RecordField: React.FC<RecordFieldProps> = ({}: RecordFieldProps) =>
 
   return (
     <div>
+      <CustomSlider
+        gameTime={convertTimeString(gameTime * 60)}
+        time={curTime}
+        setTime={setcurTime}
+      />
+      <ChangeQaurter
+        numOfQuarter={numOfQuarter}
+        time={curTime}
+        setTime={setcurTime}
+      />
       <Grid
         container
         spacing={10}

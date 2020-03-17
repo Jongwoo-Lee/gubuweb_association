@@ -19,11 +19,9 @@ import { GameCard } from "../../../context/game/game";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { convertKoTime } from "../plan/DatePickerDlg";
-import { CustomSlider } from "./CustomSlider";
-import { convertTimeString, fromGameInfo } from "../../../hooks/cups";
-import { ChangeQaurter } from "./ChangeQuarter";
 import { useRecordloading } from "../../../context/cup/cupRecord";
 import { RecordField } from "./field/RecordField";
+import { fromGameInfo } from "../../../hooks/cups";
 
 const useStyles = makeStyles({
   root: {
@@ -171,9 +169,7 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
           </Paper>
         </Grid>
       </Grid>
-      <CustomSlider gameTime={convertTimeString(gameTime * 60)} />
-      <ChangeQaurter numOfQuarter={numOfQuarter} />
-      <RecordField />
+      <RecordField gameTime={gameTime} numOfQuarter={numOfQuarter} />
     </div>
   );
 };
