@@ -1,10 +1,11 @@
 import { Player } from "./player";
 
+export type TeamManager = { uid: string; name: string };
 export class Team {
   uid: string;
   name: string;
   initial: string;
-  manager: Object; // key: uid, value: name
+  manager: TeamManager; // key: uid, value: name
   region: string | undefined;
   gender: string | undefined;
   age: string[] | undefined;
@@ -19,7 +20,7 @@ export class Team {
     teamUID: string,
     teamName: string,
     teamInitial: string,
-    manager: Object,
+    manager: TeamManager,
     info: {
       region?: string;
       gender?: string;

@@ -72,7 +72,7 @@ export const WrapCupDetailTeam: React.FC<WrapCupDetailTeamProps> = ({
   );
 
   for (let i = 0; i < 100; i++) {
-    const managerObj: Object = { a: "b" };
+    const managerObj = { uid: "b", name: "c" };
     teams.push(
       new Team(`uid${i}`, `tempTeam + ${i}`, "tsx", managerObj, {
         region: `${i}`,
