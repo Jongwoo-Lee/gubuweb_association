@@ -1,6 +1,6 @@
 import { makeStyles, Typography, Paper } from "@material-ui/core";
 import React from "react";
-import { RecordType } from "./field/RecordField";
+import { RecordType } from "./RecordField";
 
 export interface RecordSubstitutionProps {
   rType?: RecordType;

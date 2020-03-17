@@ -319,7 +319,7 @@ export const usePosition = (
   curTime: CurTime
 ): TeamsPos => {
   // 0.1 ms => 0.005ms 로 개선
-  console.time("calculatingTime");
+  // console.time("calculatingTime");
   let findData: TeamsPos = {};
 
   // 여기까지는 사실 매번 렌더링 하지 않아도 됨
@@ -328,6 +328,6 @@ export const usePosition = (
       findData = st.DATA?.player_curPosition ?? {};
     }
   });
-  console.timeEnd("calculatingTime");
+  // console.timeEnd("calculatingTime");
   return findData;
 };

@@ -57,7 +57,7 @@ export const CupRecordProvider = (props: {
         "4": "test3"
       }
     },
-    Q00311100: {
+    Q0031110000: {
       log: {
         createdBy: "tester",
         timeStamp: firestore.Timestamp.now()

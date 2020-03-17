@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, Grid, Button } from "@material-ui/core";
 import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
-import { CurTime } from "../../../context/cup/cupRecord";
+import { CurTime } from "../../../../context/cup/cupRecord";
 
 export interface ChangeQaurterProps {
   time: CurTime;

@@ -3,8 +3,8 @@ import { Grid, makeStyles, ButtonBase } from "@material-ui/core";
 import { RecordShow } from "../field/RecordShow";
 import { Board } from "./Board";
 import { Bench } from "./Bench";
-import { RecordScore } from "../RecordScore";
-import { RecordSubstitution } from "../RecordSubstitution";
+import { RecordScore } from "./RecordScore";
+import { RecordSubstitution } from "./RecordSubstitution";
 import {
   usePosition,
   convertTimeString,
@@ -12,8 +12,8 @@ import {
 } from "../../../../hooks/cups";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
 import { CurTime, useTempSubData } from "../../../../context/cup/cupRecord";
-import { CustomSlider } from "../CustomSlider";
-import { ChangeQaurter } from "../ChangeQuarter";
+import { CustomSliderComponent } from "./CustomSliderComponent";
+import { ChangeQaurter } from "./ChangeQuarter";
 
 export interface RecordFieldProps {
   gameTime: number;
@@ -38,8 +38,8 @@ export const RecordField: React.FC<RecordFieldProps> = ({
     curQuarter: 1,
     curTime: 0
   });
-  const data: Array<TempSubData> = useTempSubData();
-  const teamPos: TeamsPos = usePosition(data, curTime); // usePosition(curTime);
+  const tempData: Array<TempSubData> = useTempSubData();
+  const teamPos: TeamsPos = usePosition(tempData, curTime); // usePosition(curTime);
 
   const handleScoreClick = (e: RecordType) => {
     if (click !== "score") {
@@ -55,10 +55,11 @@ export const RecordField: React.FC<RecordFieldProps> = ({
 
   return (
     <div>
-      <CustomSlider
+      <CustomSliderComponent
         gameTime={convertTimeString(gameTime * 60)}
         time={curTime}
         setTime={setcurTime}
+        tempData={tempData}
       />
       <ChangeQaurter
         numOfQuarter={numOfQuarter}
