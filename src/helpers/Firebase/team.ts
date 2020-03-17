@@ -1,7 +1,7 @@
 import Firebase from ".";
 import { COL_TEAMS, COL_ASC } from "../../constants/firestore";
 
-import { Player, Team } from "../../models";
+import { Player, Team, TeamManager } from "../../models";
 
 export const getTeamInfo = (team: Team) => {
   // const teamScope: string[] = [
@@ -37,7 +37,7 @@ export const ascTeamConverter = {
   toFirestore: (team: Team) => {
     return {
       [COL_TEAMS.TEAMS_NAME]: team.name,
-      [COL_TEAMS.TEAMS_MANAGER]: team.manager,
+      [COL_TEAMS.TEAMS_MANAGER]: { [team.manager.uid]: team.manager.name },
       [COL_TEAMS.TEAMS_INITIAL]: team.initial,
       [COL_TEAMS.TEAMS_LOGO]: team.logo ?? null,
       [COL_TEAMS.TEAMS_AGE]: team.age ?? [],
@@ -62,7 +62,7 @@ export const ascTeamConverter = {
       snapshot.id,
       data?.[COL_TEAMS.TEAMS_NAME],
       data?.[COL_TEAMS.TEAMS_INITIAL],
-      data?.[COL_TEAMS.TEAMS_MANAGER],
+      managerFromFirestore(data),
       {
         region: data?.[COL_TEAMS.TEAMS_REGION],
         gender: data?.[COL_TEAMS.TEAMS_GENDER],
@@ -136,6 +136,23 @@ export const teamInviteDocRef = (teamUID: string) =>
     .collection(COL_TEAMS.INVITE)
     .doc(COL_TEAMS.TEAMS_ASC);
 
+const managerFromFirestore = (
+  docData: firebase.firestore.DocumentData | undefined
+) => {
+  let manager: TeamManager = { uid: "", name: "" };
+
+  if (docData?.[COL_TEAMS.TEAMS_MANAGER]) {
+    const mngObj = docData?.[COL_TEAMS.TEAMS_MANAGER];
+
+    for (const uid in mngObj) {
+      if (mngObj.hasOwnProperty(uid)) {
+        manager = { uid: uid, name: mngObj[uid] };
+      }
+    }
+  }
+  return manager;
+};
+
 const playersFromFirestore = (
   docData: firebase.firestore.DocumentData | undefined
 ) => {
@@ -153,7 +170,11 @@ const playersFromFirestore = (
             value?.[COL_ASC.TEAM_PLAYER_NAME],
             {
               backnumber: value?.[COL_ASC.TEAM_PLAYER_NUM],
-              image: value?.[COL_ASC.TEAM_PLAYER_IMAGE]
+              image: value?.[COL_ASC.TEAM_PLAYER_IMAGE],
+              status: value?.[COL_ASC.TEAM_PLAYER_STATUS],
+              remark: value?.[COL_ASC.TEAM_PLAYER_REMARK],
+              approveDate: value?.[COL_ASC.TEAM_PLAYER_APPROVE_DATE],
+              approveExpire: value?.[COL_ASC.TEAM_PLAYER_APPROVE_EXPIRE]
             }
           )
         );
@@ -170,6 +191,10 @@ const playersToFirestore = (players: Player[]) => {
       dn: string;
       bn?: number;
       pu?: string;
+      st?: number;
+      rk?: string;
+      ad?: Date;
+      ae?: Date;
     };
   } = {};
   players.forEach(pl => {
@@ -177,7 +202,11 @@ const playersToFirestore = (players: Player[]) => {
       uu: pl.uid,
       dn: pl.name,
       bn: pl.backnumber,
-      pu: pl.image
+      pu: pl.image,
+      st: pl.status,
+      rk: pl.remark,
+      ad: pl.approveDate,
+      ae: pl.approveExpire
     };
   });
   return members;

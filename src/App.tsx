@@ -4,7 +4,7 @@ import React from "react";
 import { AuthContextProvider } from "./context/user";
 
 // Constants, Hooks, Interfaces
-import { MuiThemeProvider } from "@material-ui/core";
+import { MuiThemeProvider, CssBaseline } from "@material-ui/core";
 import { customTheme } from "./context/theme";
 // Components
 import { Navbar } from "./components/layout/Navbar";
@@ -21,6 +21,7 @@ export const App: React.FC = () => {
       }}
     >
       <MuiThemeProvider theme={customTheme}>
+        <CssBaseline />
         <AuthContextProvider>
           <Navbar />
           <MainPage />

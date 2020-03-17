@@ -15,7 +15,10 @@ export const TeamName: React.FC<TeamNameProps> = ({ team }) => {
         alt={team.name + "logo" ?? "undefined team logo"}
         style={{ width: "75px", height: "75px", marginRight: "20px" }}
       />
-      <Typography variant="h4">{team.name}</Typography>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <Typography variant="h4">{team.name}</Typography>
+        <Typography variant="body2">매니저: {team.manager.name}</Typography>
+      </div>
     </div>
   );
 };

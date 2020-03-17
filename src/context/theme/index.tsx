@@ -22,5 +22,14 @@ export const customTheme = createMuiTheme({
       default: "#ffffff",
       paper: "#ffffff"
     }
+  },
+  overrides: {
+    MuiCssBaseline: {
+      "@global": {
+        body: {
+          backgroundColor: "#fdfdfd"
+        }
+      }
+    }
   }
 });

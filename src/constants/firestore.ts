@@ -23,10 +23,14 @@ export const COL_ASC = {
   ISDECLINED: "id",
   JOINED_AT: "jA",
   TEAM_MEMBERS: "m",
-  TEAM_PLAYER_NUM: "bn",
+  TEAM_PLAYER_UID: "uu",
   TEAM_PLAYER_NAME: "dn",
+  TEAM_PLAYER_NUM: "bn",
   TEAM_PLAYER_IMAGE: "pu",
-  TEAM_PLAYER_UID: "uu"
+  TEAM_PLAYER_STATUS: "st",
+  TEAM_PLAYER_REMARK: "rk",
+  TEAM_PLAYER_APPROVE_DATE: "ad",
+  TEAM_PLAYER_APPROVE_EXPIRE: "ae"
 };
 
 export const COL_TEAMS = {
