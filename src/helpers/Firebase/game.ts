@@ -9,9 +9,7 @@ export interface Log {
 export interface Substitution {
   [quarter: string]: {
     log: Log;
-    player_curPosition: {
-      [uid: string]: number;
-    };
+    player_curPosition: TeamsPos;
   };
 }
 
@@ -51,7 +49,7 @@ export class TeamsRecord {
 }
 
 export interface TeamsPos {
-  [pos: number]: string;
+  [uid: number]: string;
 }
 
 export const recordConverter = {

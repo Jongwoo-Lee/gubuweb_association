@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
 import { useLoadCupRecord, usePosition } from "../../hooks/cups";
-import { TeamsRecord, TeamsPos, Log } from "../../helpers/Firebase/game";
+import {
+  TeamsRecord,
+  TeamsPos,
+  Log,
+  Substitution
+} from "../../helpers/Firebase/game";
 import { firestore } from "firebase";
-
-export interface SubstitutionData {
-  [qurterTime: string]: { log: Log; player_curPosition: TeamsPos };
-}
 
 export interface CurTime {
   curQuarter: number;
@@ -17,8 +18,8 @@ interface CupRecordData {
   setTime: React.Dispatch<React.SetStateAction<CurTime>>;
   loading: boolean;
   teamsRecord: TeamsRecord;
-  pos: SubstitutionData;
-  setPos: React.Dispatch<React.SetStateAction<SubstitutionData>>;
+  pos: Substitution;
+  setPos: React.Dispatch<React.SetStateAction<Substitution>>;
   selUsr: number;
   setSetUsr: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -50,7 +51,7 @@ export const CupRecordProvider = (props: {
   const { teamsRecord, loading } = useLoadCupRecord(props.cupID, props.gameID);
   const [time, setTime] = useState<CurTime>({ curQuarter: 1, curTime: 0 });
 
-  const [pos, setPos] = useState<SubstitutionData>({
+  const [pos, setPos] = useState<Substitution>({
     Q0010: {
       log: {
         createdBy: "tester",
@@ -124,10 +125,8 @@ export const makeQuarterString = (curTime: CurTime) => {
   return qString + tString;
 };
 
-export const deepCopySubstitution = (
-  data: SubstitutionData
-): SubstitutionData => {
-  const newTeamRealPos: SubstitutionData = JSON.parse(JSON.stringify(data));
+export const deepCopySubstitution = (data: Substitution): Substitution => {
+  const newTeamRealPos: Substitution = JSON.parse(JSON.stringify(data));
   Object.keys(newTeamRealPos).forEach((value: string) => {
     // cast object
     if (newTeamRealPos[value])

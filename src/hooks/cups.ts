@@ -18,7 +18,8 @@ import {
   getGameRecord,
   TeamsRecord,
   TeamsPos,
-  Log
+  Log,
+  Substitution
 } from "../helpers/Firebase/game";
 import {
   useSelUsr,
@@ -26,7 +27,6 @@ import {
   useTeamPos,
   useRecordTime,
   CurTime,
-  SubstitutionData,
   makeQuarterString,
   useSetTeamPos,
   deepCopySubstitution
@@ -294,7 +294,7 @@ interface Temp {
 
 export const usePosition = (curTime: CurTime): TeamsPos => {
   // console.time("calculatingTime");
-  const pos: SubstitutionData = useTeamPos();
+  const pos: Substitution = useTeamPos();
   // console.log(`usePosition - pos`);
   // console.dir(curTime);
   // console.dir(pos);
