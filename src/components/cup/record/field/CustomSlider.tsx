@@ -11,16 +11,8 @@ const useStyles = makeStyles({
   thumb: {
     display: "flex",
     flexDirection: "row",
-
-  },
-  test: {
-    display: "flex",
-    flexDirection: "row",
     position: "relative",
   },
-  margin: {
-    margin: "10"
-  }
 });
 
 const PrettoSlider = withStyles({
@@ -96,12 +88,11 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
 
   return (
     <div className={classes.root}>
-      <div className={classes.test}>
+      <div className={classes.thumb}>
         {
           tempData.map((data: TempSubData) => {
-            const lMargin: string = (((data.T / 1000) / (45 * 60)) * 100).toPrecision(2).toString();
-            if (data.Q === time.curQuarter) {
-              console.log(lMargin)
+            const lMargin: string = (((data.T / 1000) / (45 * 60)) * 100).toPrecision(2).toString() + '%';
+            if (data.Q === time.curQuarter && !(data.Q === 1 && data.T === 0)) {
               return (
                 <div style={{ position: "absolute", marginLeft: lMargin, left: "-12px" }}>
                   <ButtonBase onClick={e => handleClick(data)}> <ImportExportIcon /></ButtonBase></div>
@@ -112,7 +103,6 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
           })
         }
       </div>
-      <div className={classes.margin}> </div>
       <br />
       <PrettoSlider
         aria-label="pretto slider"
