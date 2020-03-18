@@ -1,4 +1,3 @@
-import { getTeamInfo } from "../../helpers/Firebase/team";
 import {
   Card,
   makeStyles,
@@ -10,7 +9,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import TeamIcon from "../../images/team_off.svg";
-import { Team } from "../../models";
+import { Team, getTeamInfo } from "../../models";
 
 const useStyles = makeStyles({
   root: {

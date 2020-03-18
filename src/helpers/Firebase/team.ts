@@ -1,37 +1,7 @@
 import Firebase from ".";
 import { COL_TEAMS, COL_ASC } from "../../constants/firestore";
 
-import { Player, Team, TeamManager } from "../../models";
-
-export const getTeamInfo = (team: Team) => {
-  // const teamScope: string[] = [
-  //   "팀 이름",
-  //   "매니저",
-  //   "활동 지역",
-  //   "연령대",
-  //   "성별"
-  // ];
-  // const managers: string[] = Object.values(team.manager);
-  // const teamValue = [
-  //   team.name,
-  //   managers.join(","),
-  //   team.region,
-  //   team.age?.toString(),
-  //   team.gender
-  // ];
-  // let teamInfo: Map<string, string> = new Map<string, string>();
-
-  // for (let i = 0; i < teamScope.length; i++)
-  //   teamInfo.set(teamScope[i], teamValue[i] ?? "");
-
-  return {
-    "팀 이름": team.name,
-    매니저: Object.values(team.manager).join(","),
-    "활동 지역": team.region,
-    연령대: team.age?.toString(),
-    성별: team.gender
-  };
-};
+import { Player, Team, TeamManager, PlayerStatus } from "../../models";
 
 export const ascTeamConverter = {
   toFirestore: (team: Team) => {
@@ -47,7 +17,7 @@ export const ascTeamConverter = {
       [COL_ASC.ISVERIFIED]: team.isVerified ?? false,
       [COL_ASC.ISDECLINED]: team.isDeclined ?? null,
       [COL_ASC.JOINED_AT]: team.joinedAt ?? null,
-      [COL_ASC.TEAM_MEMBERS]: team.players
+      [COL_TEAMS.TEAM_MEMBERS]: team.players
         ? playersToFirestore(team.players)
         : null
     };
@@ -157,24 +127,25 @@ const playersFromFirestore = (
   docData: firebase.firestore.DocumentData | undefined
 ) => {
   let players: Player[] = [];
-  if (docData?.[COL_ASC.TEAM_MEMBERS]) {
-    const playersObject = docData?.[COL_ASC.TEAM_MEMBERS];
+  if (docData?.[COL_TEAMS.TEAM_MEMBERS]) {
+    const plObj = docData?.[COL_TEAMS.TEAM_MEMBERS];
 
-    for (const uid in playersObject) {
-      if (playersObject.hasOwnProperty(uid)) {
-        var value = playersObject[uid];
+    for (const uid in plObj) {
+      if (plObj.hasOwnProperty(uid)) {
+        var value = plObj[uid];
 
         players.push(
           new Player(
-            value?.[COL_ASC.TEAM_PLAYER_UID],
-            value?.[COL_ASC.TEAM_PLAYER_NAME],
+            value?.[COL_TEAMS.TEAM_PLAYER_UID],
+            value?.[COL_TEAMS.TEAM_PLAYER_NAME],
             {
-              backnumber: value?.[COL_ASC.TEAM_PLAYER_NUM],
-              image: value?.[COL_ASC.TEAM_PLAYER_IMAGE],
-              status: value?.[COL_ASC.TEAM_PLAYER_STATUS],
-              remark: value?.[COL_ASC.TEAM_PLAYER_REMARK],
-              approveDate: value?.[COL_ASC.TEAM_PLAYER_APPROVE_DATE],
-              approveExpire: value?.[COL_ASC.TEAM_PLAYER_APPROVE_EXPIRE]
+              backnumber: value?.[COL_TEAMS.TEAM_PLAYER_NUM],
+              image: value?.[COL_TEAMS.TEAM_PLAYER_IMAGE],
+              status: statusFromFirestore(value),
+              remark: value?.[COL_TEAMS.TEAM_PLAYER_REMARK],
+              approve: value?.[COL_TEAMS.TEAM_PLAYER_APPROVE],
+              approveDate: value?.[COL_TEAMS.TEAM_PLAYER_APPROVE_DATE],
+              approveExpire: value?.[COL_TEAMS.TEAM_PLAYER_APPROVE_EXPIRE]
             }
           )
         );
@@ -184,6 +155,27 @@ const playersFromFirestore = (
   return players;
 };
 
+const statusFromFirestore = (player: any) => {
+  let status: PlayerStatus = {
+    wait: false,
+    doc: false,
+    pro: false,
+    deny: false,
+    expire: false
+  };
+
+  if (player?.[COL_TEAMS.TEAM_PLAYER_STATUS]) {
+    const stObj = player?.[COL_TEAMS.TEAM_PLAYER_STATUS];
+
+    status.wait = stObj[COL_TEAMS.TEAM_PLAYER_STATUS_WAIT] ?? false;
+    status.doc = stObj[COL_TEAMS.TEAM_PLAYER_STATUS_DOC] ?? false;
+    status.pro = stObj[COL_TEAMS.TEAM_PLAYER_STATUS_PRO] ?? false;
+    status.deny = stObj[COL_TEAMS.TEAM_PLAYER_STATUS_DENY] ?? false;
+    status.expire = stObj[COL_TEAMS.TEAM_PLAYER_STATUS_EXPIRE] ?? false;
+  }
+  return status;
+};
+
 const playersToFirestore = (players: Player[]) => {
   let members: {
     [uid: string]: {
@@ -191,8 +183,15 @@ const playersToFirestore = (players: Player[]) => {
       dn: string;
       bn?: number;
       pu?: string;
-      st?: number;
+      st?: {
+        wt?: boolean;
+        dc?: boolean;
+        pr?: boolean;
+        de?: boolean;
+        ex?: boolean;
+      };
       rk?: string;
+      ap?: boolean;
       ad?: Date;
       ae?: Date;
     };
@@ -203,11 +202,22 @@ const playersToFirestore = (players: Player[]) => {
       dn: pl.name,
       bn: pl.backnumber,
       pu: pl.image,
-      st: pl.status,
+      st: statusToFirestore(pl.status),
       rk: pl.remark,
+      ap: pl.approve,
       ad: pl.approveDate,
       ae: pl.approveExpire
     };
   });
   return members;
+};
+
+const statusToFirestore = (status: PlayerStatus | undefined) => {
+  return {
+    wt: status?.wait,
+    dc: status?.doc,
+    pr: status?.pro,
+    de: status?.deny,
+    ex: status?.expire
+  };
 };

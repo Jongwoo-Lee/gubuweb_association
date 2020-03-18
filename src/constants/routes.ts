@@ -33,7 +33,10 @@ export const ROUTES = {
   CUP_DETAIL_RESULT: "/result",
   ROSTER: "/roster",
   ROSTER_TEAM: "/t",
-  ROSTER_TEAM_ID: "/:teamId",
+  ROSTER_TEAM_ID: "/:teamUID",
+  ROSTER_TEAM_PLAYER: "/p",
+  ROSTER_TEAM_PLAYER_ID: "/:playerUID",
+
   ADD_ROSTER: "/add",
   ACCOUNT: "/account",
 
