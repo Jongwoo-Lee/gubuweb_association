@@ -13,7 +13,8 @@ import {
   Typography,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  Hidden
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import { useAssociationValue } from "../../context/user";
@@ -72,11 +73,13 @@ export const Navbar = () => {
                 <img src={logoText} width="100" alt="GUBU" />
               </a>
             </Grid>
-            <Grid item>
-              <Typography color="textPrimary">
-                대회 / 협회 관리 페이지
-              </Typography>
-            </Grid>
+            <Hidden xsDown>
+              <Grid item>
+                <Typography color="textPrimary">
+                  대회 / 협회 관리 페이지
+                </Typography>
+              </Grid>
+            </Hidden>
           </Grid>
           {ascData && (
             <div className={classes.asc}>

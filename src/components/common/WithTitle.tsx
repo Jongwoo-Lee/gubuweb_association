@@ -13,10 +13,14 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: "20px",
       marginLeft: "20px",
       marginBottom: "50px",
-      width: "70vw",
+      width: "55vw",
+      [theme.breakpoints.down("sm")]: {
+        width: "70vw"
+      },
       [theme.breakpoints.down("xs")]: {
         width: "90vw"
-      }
+      },
+      minWidth: "400px"
     }
   })
 );
