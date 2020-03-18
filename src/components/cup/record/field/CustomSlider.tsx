@@ -1,18 +1,24 @@
-import { withStyles, Slider, makeStyles, Button, ButtonBase } from "@material-ui/core";
+import {
+  withStyles,
+  Slider,
+  makeStyles,
+  Button,
+  ButtonBase
+} from "@material-ui/core";
 import React, { useRef, useState, useEffect } from "react";
 import { CurTime } from "../../../../context/cup/cupRecord";
 import { TempSubData } from "../../../../hooks/cups";
-import ImportExportIcon from '@material-ui/icons/ImportExport';
+import ImportExportIcon from "@material-ui/icons/ImportExport";
 const useStyles = makeStyles({
   root: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   thumb: {
     display: "flex",
     flexDirection: "row",
-    position: "relative",
-  },
+    position: "relative"
+  }
 });
 
 const PrettoSlider = withStyles({
@@ -68,7 +74,6 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
   //   }
   // }, []);
 
-
   const handleChange = (
     event: React.ChangeEvent<{}>,
     value: number | number[]
@@ -82,26 +87,34 @@ export const CustomSlider: React.FC<CustomSliderProps> = ({
   const handleClick = (data: TempSubData) => {
     let newTime: CurTime = { curQuarter: data.Q, curTime: data.T / 1000 };
 
-    setTime(newTime)
-  }
-
+    setTime(newTime);
+  };
 
   return (
     <div className={classes.root}>
       <div className={classes.thumb}>
-        {
-          tempData.map((data: TempSubData) => {
-            const lMargin: string = (((data.T / 1000) / (45 * 60)) * 100).toPrecision(2).toString() + '%';
-            if (data.Q === time.curQuarter && !(data.Q === 1 && data.T === 0)) {
-              return (
-                <div style={{ position: "absolute", marginLeft: lMargin, left: "-12px" }}>
-                  <ButtonBase onClick={e => handleClick(data)}> <ImportExportIcon /></ButtonBase></div>
-              );
-            } else {
-              return <div></div>;
-            }
-          })
-        }
+        {tempData.map((data: TempSubData) => {
+          const lMargin: string =
+            ((data.T / 1000 / (45 * 60)) * 100).toPrecision(2).toString() + "%";
+          if (data.Q === time.curQuarter && !(data.Q === 1 && data.T === 0)) {
+            return (
+              <div
+                style={{
+                  position: "absolute",
+                  marginLeft: lMargin,
+                  left: "-12px" // Icon default 24 pixel
+                }}
+              >
+                <ButtonBase onClick={e => handleClick(data)}>
+                  {" "}
+                  <ImportExportIcon />
+                </ButtonBase>
+              </div>
+            );
+          } else {
+            return <div></div>;
+          }
+        })}
       </div>
       <br />
       <PrettoSlider
