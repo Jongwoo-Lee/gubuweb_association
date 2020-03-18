@@ -14,6 +14,7 @@ import { TeamsPos } from "../../../../helpers/Firebase/game";
 import { CurTime, useTempSubData } from "../../../../context/cup/cupRecord";
 import { CustomSliderComponent } from "./CustomSliderComponent";
 import { ChangeQaurter } from "./ChangeQuarter";
+import { AddScore } from "./AddScore";
 
 export interface RecordFieldProps {
   gameTime: number;
@@ -84,7 +85,12 @@ export const RecordField: React.FC<RecordFieldProps> = ({
           </ButtonBase>
         </Grid>
       </Grid>
-
+      {click === "score" &&
+        <Grid container justify="center">
+          <Grid item xs={8}>
+            <AddScore time={curTime} teamPos={teamPos} />
+          </Grid>
+        </Grid>}
       <Grid container spacing={1} className={classes.margin}>
         <Grid item xs={8}>
           <Board rType={click} teamPos={teamPos} curTime={curTime} />
