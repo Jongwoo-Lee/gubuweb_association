@@ -1,10 +1,10 @@
-export interface PlayerStatus {
+export type PlayerStatus = {
   wait: boolean;
   doc: boolean;
   pro: boolean;
   deny: boolean;
   expire: boolean;
-}
+};
 
 export class Player {
   uid: string;
@@ -48,11 +48,11 @@ export class Player {
     this.approveExpire = info.approveExpire;
   }
 
-  static empty() {
+  static empty = () => {
     return new Player("", "", {});
-  }
+  };
 
-  static fromPlayer(player: Player) {
+  static fromPlayer = (player: Player) => {
     return new Player(player.uid, player.name, {
       backnumber: player.backnumber,
       image: player.image,
@@ -62,7 +62,7 @@ export class Player {
       approveDate: player.approveDate,
       approveExpire: player.approveExpire
     });
-  }
+  };
 
   // static fromDoc(value: Object) {
   //   return new Player(value.[COL_ASC.TEAM_PLAYER_UID], value.[COL_ASC.TEAM_PLAYER_NAME], {

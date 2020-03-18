@@ -77,18 +77,10 @@ export const searchTeams = (search: string) =>
     .orderBy(COL_TEAMS.TEAMS_LOWERCASE)
     .startAt(search.toLowerCase())
     .endAt(search.toLowerCase() + "\uf8ff")
+    .withConverter(ascTeamConverter)
     .get()
-    .then(
-      (
-        query: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
-      ) =>
-        query.docs.map(
-          (
-            value: firebase.firestore.QueryDocumentSnapshot<
-              firebase.firestore.DocumentData
-            >
-          ) => makeTeamfromDoc(value)
-        )
+    .then((query: firebase.firestore.QuerySnapshot<Team>) =>
+      query.docs.map(doc => doc.data())
     );
 
 export const getAscTeams = (teamUIDList: string[]) => {

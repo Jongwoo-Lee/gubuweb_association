@@ -105,7 +105,7 @@ export class Team {
 export const getTeamInfo = (team: Team) => {
   return {
     "팀 이름": team.name,
-    매니저: Object.values(team.manager).join(","),
+    매니저: team.manager.name,
     "활동 지역": team.region,
     연령대: team.age?.toString(),
     성별: team.gender

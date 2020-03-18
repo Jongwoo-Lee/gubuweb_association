@@ -13,6 +13,8 @@ import { Button } from "@material-ui/core";
 import { AcceptPlayerSwitch } from "./AcceptPlayerSwitch";
 import { PlayerStatusList } from "./PlayerStatusList";
 import { SizedBox } from "../../common/SizedBox";
+import { PlayerRemark } from "./PlayerRemark";
+import { PlayerDocuments } from "./PlayerDocuments";
 
 export const PlayerInfo: React.FC = () => {
   const match = useRouteMatch<{ playerUID: string }>();
@@ -36,13 +38,19 @@ const PlayerInfoComponent: React.FC = () => {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <PlayerName player={player} />
         <div>
-          <Button variant="contained">저장</Button>
+          <Button style={{ marginRight: "20px" }} variant="contained">
+            저장
+          </Button>
         </div>
       </div>
       <br />
       <AcceptPlayerSwitch player={player} />
       <SizedBox height="40px" />
+      <PlayerRemark />
+      <SizedBox height="40px" />
       <PlayerStatusList />
+      <SizedBox height="40px" />
+      <PlayerDocuments />
     </div>
   );
 };

@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     table: {
       width: "70vw",
+      [theme.breakpoints.down("sm")]: {
+        width: "80vw"
+      },
       [theme.breakpoints.down("xs")]: {
         width: "90vw"
       }
@@ -44,10 +47,10 @@ export const PlayerTable = () => {
           <TableRow style={{ backgroundColor: "#f5f5f5" }}>
             <TableCell align="center">이름</TableCell>
             <TableCell align="right">상태</TableCell>
-            <Hidden smDown>
+            <Hidden xsDown>
               <TableCell align="right">승인 날짜</TableCell>
             </Hidden>
-            <Hidden smDown>
+            <Hidden xsDown>
               <TableCell align="right">승인 만료일</TableCell>
             </Hidden>
           </TableRow>
@@ -94,12 +97,12 @@ export const PlayerTableCell: React.FC<PlayerTableCellProps> = ({ player }) => {
         </div>
       </TableCell>
       <TableCell align="right">{player.approve ? "승인" : "미정"}</TableCell>
-      <Hidden smDown>
+      <Hidden xsDown>
         <TableCell align="right">
           {player.approveDate && player.approveDate}
         </TableCell>
       </Hidden>
-      <Hidden smDown>
+      <Hidden xsDown>
         <TableCell align="right">
           {player.approveExpire && player.approveExpire}
         </TableCell>
