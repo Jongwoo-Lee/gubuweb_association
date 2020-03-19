@@ -19,7 +19,12 @@ import { GameCard } from "../../../context/game/game";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { convertKoTime } from "../plan/DatePickerDlg";
-import { useRecordloading } from "../../../context/cup/cupRecord";
+import {
+  useRecordloading,
+  useCurTeam,
+  useSetCurTeam,
+  useTeamRecordStack
+} from "../../../context/cup/cupRecord";
 import { RecordField } from "./field/RecordField";
 import { fromGameInfo } from "../../../hooks/cups";
 
@@ -60,6 +65,20 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
   const classes = useStyles();
   let matchPlan: CupPlanDataStructure | null = cupInfo.matchPlan;
   const { gameTime, numOfQuarter } = fromGameInfo(matchPlan, gameCard);
+  const curTeam = useCurTeam();
+  const setCurTeam = useSetCurTeam();
+  const recordStack = useTeamRecordStack();
+
+  const curScore = () => {
+    const goal1: number = recordStack[gameCard.team1 ?? "team1"].goals.length;
+    const goal2: number = recordStack[gameCard.team2 ?? "team2"].goals.length;
+
+    return `${goal1} : ${goal2}`;
+  };
+
+  const handleChangeTeam = (team: string) => {
+    setCurTeam(team);
+  };
 
   const loading = useRecordloading();
 
@@ -122,26 +141,38 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
         </Grid>
       </Grid>
       <br />
-      <Grid container spacing={3}>
-        <Grid item xs>
-          <Paper className={classes.paper}>
+      <Grid container spacing={3} direction="row">
+        <Grid item xs style={{ alignSelf: "center" }}>
+          <Button
+            variant="contained"
+            color={
+              curTeam === (gameCard.team1 ?? "team1") ? "primary" : undefined
+            }
+            onClick={e => handleChangeTeam(gameCard.team1 ?? "team1")}
+          >
             <Typography align="center" color="textPrimary" variant="h4">
               Home
             </Typography>
-          </Paper>
+          </Button>
         </Grid>
-        <Grid item xs>
+        <Grid item xs style={{ alignSelf: "center" }}>
           <Typography align="center" color="textPrimary" variant="h4">
-            score
+            {curScore()}
           </Typography>
         </Grid>
 
-        <Grid item xs>
-          <Paper className={classes.paper}>
+        <Grid item xs style={{ alignSelf: "center" }}>
+          <Button
+            variant="contained"
+            color={
+              curTeam === (gameCard.team2 ?? "team2") ? "primary" : undefined
+            }
+            onClick={e => handleChangeTeam(gameCard.team2 ?? "team2")}
+          >
             <Typography align="center" color="textPrimary" variant="h4">
               Away
             </Typography>
-          </Paper>
+          </Button>
         </Grid>
       </Grid>
       <br />

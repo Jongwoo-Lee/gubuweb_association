@@ -22,11 +22,11 @@ import {
   Substitution
 } from "../helpers/Firebase/game";
 import {
-  useTeamPos,
   CurTime,
   makeQuarterString,
-  useSetTeamPos,
-  deepCopySubstitution
+  deepCopySubstitution,
+  useTeamRecordStack,
+  useCurTeam
 } from "../context/cup/cupRecord";
 import { firestore } from "firebase";
 import { useAssociationValue } from "../context/user";
@@ -251,8 +251,11 @@ export const useClickEvent = (
   setSelUsr: React.Dispatch<React.SetStateAction<number>>,
   rType?: RecordType
 ) => {
-  const teamRealPos = useTeamPos();
-  const setTeamPos = useSetTeamPos();
+  const teamRecordData = useTeamRecordStack();
+  const curTeam: string = useCurTeam();
+
+  const teamRealPos = teamRecordData[curTeam].pos;
+  const setTeamPos = teamRecordData[curTeam].setPos;
   const ascData = useAssociationValue();
 
   const handleOnClick =

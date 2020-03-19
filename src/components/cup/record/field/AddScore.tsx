@@ -9,9 +9,11 @@ import {
 } from "@material-ui/core";
 import {
   CurTime,
-  useSetGoals,
+  // useSetGoals,
   deepCopyGoals,
-  useGoals
+  useTeamRecordStack,
+  useCurTeam
+  // useGoals
 } from "../../../../context/cup/cupRecord";
 import { TeamsPos, Goal } from "../../../../helpers/Firebase/game";
 import {
@@ -62,9 +64,12 @@ export const AddScore: React.FC<AddScoreProps> = ({
   setScore,
   setClick
 }: AddScoreProps) => {
+  const teamRecordData = useTeamRecordStack();
+  const curTeam: string = useCurTeam();
+
   const classes = useStyles();
-  const goals = useGoals();
-  const setGoals = useSetGoals();
+  const goals = teamRecordData[curTeam].goals;
+  const setGoals = teamRecordData[curTeam].setGoals;
   const ascData = useAssociationValue();
 
   const avatar = (name: string | undefined | null) => (

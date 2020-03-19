@@ -13,7 +13,11 @@ import {
   ClickScore
 } from "../../../../hooks/cups";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
-import { CurTime, useTempSubData } from "../../../../context/cup/cupRecord";
+import {
+  CurTime,
+  useTeamRecordStack,
+  useCurTeam
+} from "../../../../context/cup/cupRecord";
 import { CustomSliderComponent } from "./CustomSliderComponent";
 import { ChangeQaurter } from "./ChangeQuarter";
 import { AddScore } from "./AddScore";
@@ -39,7 +43,11 @@ export const RecordField: React.FC<RecordFieldProps> = ({
     curQuarter: 1,
     curTime: 0
   });
-  const tempData: Array<TempSubData> = useTempSubData();
+
+  const teamRecordData = useTeamRecordStack();
+  const curTeam: string = useCurTeam();
+
+  const tempData: Array<TempSubData> = teamRecordData[curTeam].tempSubData;
   const teamPos: TeamsPos = usePosition(tempData, curTime); // usePosition(curTime);
   const [selUsr, setSelUsr] = useState<number>(-1);
   const [score, setScore] = useState<ClickScore>({

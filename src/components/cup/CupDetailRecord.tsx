@@ -22,7 +22,7 @@ export const CupDetailRecord: React.FC<RouteComponentProps<
   // Typescript error, cupInfo가 있으려면 cupID가 필요한데 걸러주지를 못한다
   // return cupInfo ? (
   return cupInfo && cupID && data.gameInfo.gid ? (
-    <CupRecordProvider cupID={cupID} gameID={data.gameInfo.gid}>
+    <CupRecordProvider cupID={cupID} gameCard={data.gameInfo}>
       <WrapCupDetailRecord cupInfo={cupInfo} gameCard={data.gameInfo} />
     </CupRecordProvider>
   ) : (

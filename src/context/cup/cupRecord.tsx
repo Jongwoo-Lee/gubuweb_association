@@ -11,21 +11,35 @@ import {
   Log
 } from "../../helpers/Firebase/game";
 import { firestore } from "firebase";
+import { GameCard } from "../game/game";
 
 export interface CurTime {
   curQuarter: number;
   curTime: number;
 }
+interface RecordStack {
+  [teamUID: string]: RecordDetailData;
+}
+
+interface RecordDetailData {
+  pos: Substitution;
+  setPos: React.Dispatch<React.SetStateAction<Substitution>>;
+  tempSubData: Array<TempSubData>;
+  goals: Goal[];
+  setGoals: React.Dispatch<React.SetStateAction<Goal[]>>;
+}
 
 interface CupRecordData {
   loading: boolean;
   teamsRecord: TeamsRecord;
-  pos: Substitution;
-  setPos: React.Dispatch<React.SetStateAction<Substitution>>;
-  tempSubData: Array<TempSubData>;
-  //
-  goals: Goal[];
-  setGoals: React.Dispatch<React.SetStateAction<Goal[]>>;
+  curTeam: string;
+  setCurTeam: React.Dispatch<React.SetStateAction<string>>;
+  recordStack: RecordStack;
+  // pos: Substitution;
+  // setPos: React.Dispatch<React.SetStateAction<Substitution>>;
+  // tempSubData: Array<TempSubData>;
+  // goals: Goal[];
+  // setGoals: React.Dispatch<React.SetStateAction<Goal[]>>;
 }
 
 export const CupRecordContext: React.Context<CupRecordData> = React.createContext<
@@ -33,23 +47,23 @@ export const CupRecordContext: React.Context<CupRecordData> = React.createContex
 >({
   loading: false,
   teamsRecord: new TeamsRecord(),
-  pos: {},
-  setPos: () => {
-    console.log("setPos is not initilized");
+  curTeam: "team1", // or  team2 UID
+  setCurTeam: () => {
+    console.log(`setCurTeam`);
   },
-  tempSubData: [],
-  goals: [],
-  setGoals: () => {
-    console.log("setScoreList is not initilized");
-  }
+  recordStack: {}
 });
 
 export const CupRecordProvider = (props: {
   children: React.ReactNode;
   cupID: string;
-  gameID: string;
+  gameCard: GameCard;
 }) => {
-  const { teamsRecord, loading } = useLoadCupRecord(props.cupID, props.gameID);
+  const { teamsRecord, loading } = useLoadCupRecord(
+    props.cupID,
+    props.gameCard?.gid ?? ""
+  ); // gid는 undefined일 수 없음
+
   const [pos, setPos] = useState<Substitution>({
     Q0010: {
       log: {
@@ -88,19 +102,75 @@ export const CupRecordProvider = (props: {
       }
     }
   });
+  const [pos2, setPos2] = useState<Substitution>({
+    Q0010: {
+      log: {
+        createdBy: "tester",
+        timeStamp: firestore.Timestamp.now()
+      },
+      player_curPosition: {
+        "0": "test",
+        "1": "test1",
+        "3": "test2",
+        "4": "test3"
+      }
+    },
+    Q0031110000: {
+      log: {
+        createdBy: "tester",
+        timeStamp: firestore.Timestamp.now()
+      },
+      player_curPosition: {
+        "0": "test",
+        "1": "test1",
+        "3": "test2",
+        "4": "test3"
+      }
+    },
+    Q0030: {
+      log: {
+        createdBy: "tester",
+        timeStamp: firestore.Timestamp.now()
+      },
+      player_curPosition: {
+        "5": "test",
+        "6": "test1",
+        "7": "test2",
+        "8": "test3"
+      }
+    }
+  });
+
   const tempSubData = useMakeTempSubData(pos);
+  const tempSubData2 = useMakeTempSubData(pos2);
 
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [goals2, setGoals2] = useState<Goal[]>([]);
+
+  const [curTeam, setCurTeam] = useState(props.gameCard.team1 ?? "team1");
   return (
     <CupRecordContext.Provider
       value={{
         teamsRecord,
         loading,
-        pos,
-        setPos,
-        tempSubData,
-        goals,
-        setGoals
+        curTeam,
+        setCurTeam,
+        recordStack: {
+          [props.gameCard.team1 ?? "team1"]: {
+            pos,
+            setPos,
+            tempSubData,
+            goals,
+            setGoals
+          },
+          [props.gameCard.team2 ?? "team2"]: {
+            pos: pos2,
+            setPos: setPos2,
+            tempSubData: tempSubData2,
+            goals: goals2,
+            setGoals: setGoals2
+          }
+        }
       }}
     >
       {props.children}
@@ -109,13 +179,17 @@ export const CupRecordProvider = (props: {
 };
 
 export const useRecordloading = () => useContext(CupRecordContext).loading;
+export const useCurTeam = () => useContext(CupRecordContext).curTeam;
+export const useSetCurTeam = () => useContext(CupRecordContext).setCurTeam;
 export const useTeamRecord = () => useContext(CupRecordContext).teamsRecord;
-export const useTeamPos = () => useContext(CupRecordContext).pos;
-export const useSetTeamPos = () => useContext(CupRecordContext).setPos;
-export const useTempSubData = () => useContext(CupRecordContext).tempSubData;
+export const useTeamRecordStack = () =>
+  useContext(CupRecordContext).recordStack;
+// export const useTeamPos = () => useContext(CupRecordContext).pos;
+// export const useSetTeamPos = () => useContext(CupRecordContext).setPos;
+// export const useTempSubData = () => useContext(CupRecordContext).tempSubData;
 
-export const useGoals = () => useContext(CupRecordContext).goals;
-export const useSetGoals = () => useContext(CupRecordContext).setGoals;
+// export const useGoals = () => useContext(CupRecordContext).goals;
+// export const useSetGoals = () => useContext(CupRecordContext).setGoals;
 
 export const makeQuarterString = (curTime: CurTime) => {
   const qString: string = "Q" + curTime.curQuarter.toString().padStart(3, "0");
