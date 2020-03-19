@@ -142,7 +142,13 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
       </Grid>
       <br />
       <Grid container spacing={3} direction="row">
-        <Grid item xs style={{ alignSelf: "center" }}>
+        <Grid
+          container
+          direction="column"
+          item
+          xs
+          style={{ alignSelf: "center" }}
+        >
           <Button
             variant="contained"
             color={
@@ -161,7 +167,13 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
           </Typography>
         </Grid>
 
-        <Grid item xs style={{ alignSelf: "center" }}>
+        <Grid
+          container
+          direction="column"
+          item
+          xs
+          style={{ alignSelf: "center" }}
+        >
           <Button
             variant="contained"
             color={
