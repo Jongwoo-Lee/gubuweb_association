@@ -14,7 +14,11 @@ import {
   useGoals
 } from "../../../../context/cup/cupRecord";
 import { TeamsPos, Goal } from "../../../../helpers/Firebase/game";
-import { convertTimeString, ClickScore } from "../../../../hooks/cups";
+import {
+  convertTimeString,
+  ClickScore,
+  RecordType
+} from "../../../../hooks/cups";
 import Trophy from "../../../../images/trophy_on.svg";
 import { firestore } from "firebase";
 import { useAssociationValue } from "../../../../context/user";
@@ -24,6 +28,7 @@ export interface AddScoreProps {
   teamPos: TeamsPos;
   score: ClickScore;
   setScore: React.Dispatch<React.SetStateAction<ClickScore>>;
+  setClick: React.Dispatch<React.SetStateAction<RecordType>>;
 }
 
 const useStyles = makeStyles({
@@ -54,7 +59,8 @@ export const AddScore: React.FC<AddScoreProps> = ({
   time,
   teamPos,
   score,
-  setScore
+  setScore,
+  setClick
 }: AddScoreProps) => {
   const classes = useStyles();
   const goals = useGoals();
@@ -98,7 +104,21 @@ export const AddScore: React.FC<AddScoreProps> = ({
     const newGoals: Goal[] = deepCopyGoals(goals);
 
     setGoals([...newGoals, goal]);
-    console.dir([...newGoals, goal]);
+    setScore({
+      scorer: Array<string>(2),
+      curFocus: "goal"
+    });
+  };
+
+  const handleCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+
+    // initialize
+    setClick("");
+    setScore({
+      scorer: Array<string>(2),
+      curFocus: "goal"
+    });
   };
 
   return (
@@ -106,15 +126,16 @@ export const AddScore: React.FC<AddScoreProps> = ({
       <CardContent className={classes.col}>
         <Typography align="center">득점</Typography>
         <Typography>{convertTimeString(time.curTime)}</Typography>
-        <ButtonBase>
-          <Typography>취소</Typography>
+        <ButtonBase onClick={handleCancel}>
+          <Typography style={{ textDecoration: "underline" }}>취소</Typography>
         </ButtonBase>
       </CardContent>
       <CardContent className={classes.row}>
-        <Button onClick={e => handleFocusClick("goal")}>
+        <Button disableRipple onClick={e => handleFocusClick("goal")}>
           <Typography
             style={{
-              fontWeight: score.curFocus === "goal" ? "bold" : "normal"
+              textShadow:
+                score.curFocus === "goal" ? " 0 0 0.2em green" : undefined
             }}
             className={classes.center}
           >
@@ -124,9 +145,12 @@ export const AddScore: React.FC<AddScoreProps> = ({
         {avatar(score.scorer[0])}
       </CardContent>
       <CardContent className={classes.row}>
-        <Button onClick={e => handleFocusClick("ass")}>
+        <Button disableRipple onClick={e => handleFocusClick("ass")}>
           <Typography
-            style={{ fontWeight: score.curFocus === "ass" ? "bold" : "normal" }}
+            style={{
+              textShadow:
+                score.curFocus === "ass" ? " 0 0 0.2em green" : undefined
+            }}
             className={classes.center}
           >
             도움:

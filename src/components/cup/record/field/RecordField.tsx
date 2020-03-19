@@ -92,12 +92,13 @@ export const RecordField: React.FC<RecordFieldProps> = ({
       </Grid>
       {click === "score" && (
         <Grid container justify="center">
-          <Grid item xs={8}>
+          <Grid item xs={10}>
             <AddScore
               time={curTime}
               teamPos={teamPos}
               score={score}
               setScore={setScore}
+              setClick={setClick}
             />
           </Grid>
         </Grid>
