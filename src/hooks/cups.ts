@@ -323,7 +323,6 @@ export interface TempSubData {
 }
 
 export const useMakeTempSubData = (pos: Substitution): Array<TempSubData> => {
-  console.log(`MakeTemPSubData`);
   let metaSub: Array<TempSubData> = [];
   metaSub = Object.keys(pos)
     .map((qurterTime: string) => {

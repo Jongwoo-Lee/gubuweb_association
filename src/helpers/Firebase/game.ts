@@ -22,23 +22,11 @@ export interface Goal {
   log: Log;
 }
 
-export class Record {
-  goal: Goal[];
-  substitution: Substitution;
-  real_attendance: string[];
-  team: string;
-
-  constructor(
-    score?: Goal[],
-    substitution?: Substitution,
-    real_attendance?: string[],
-    team?: string
-  ) {
-    this.goal = score ?? [];
-    this.substitution = substitution ?? {};
-    this.real_attendance = real_attendance ?? [];
-    this.team = team ?? "";
-  }
+export interface Record {
+  score?: Goal[];
+  substitution?: Substitution;
+  real_attendance?: string[];
+  team?: string;
 }
 
 export class TeamsRecord {
@@ -46,11 +34,8 @@ export class TeamsRecord {
   a: Record;
 
   constructor(home?: Record, away?: Record) {
-    console.log(`sfasdfasdff`);
-    console.dir(home);
-    console.dir(away);
-    this.h = home ?? new Record();
-    this.a = away ?? new Record();
+    this.h = home ?? {};
+    this.a = away ?? {};
   }
 }
 
@@ -156,8 +141,6 @@ export const saveRecord = async (
   gameID: string,
   teamsRecord: TeamsRecord
 ) => {
-  console.log(`cupID - ${cupID} gameID - ${gameID}`);
-  console.dir(teamsRecord);
   await Firebase.firestore
     .collection(COL_CUP.CUP)
     .doc(cupID)

@@ -99,19 +99,19 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
   ) => {
     e.preventDefault();
 
-    const record1 = new Record(
-      recordStack[gameCard.team1 ?? "team1"].goals,
-      recordStack[gameCard.team1 ?? "team1"].pos,
-      [],
-      gameCard.team1 ?? "team1"
-    );
+    const record1: Record = {
+      score: recordStack[gameCard.team1 ?? "team1"].goals,
+      substitution: recordStack[gameCard.team1 ?? "team1"].pos,
+      real_attendance: [],
+      team: gameCard.team1 ?? "team1"
+    };
 
-    const record2 = new Record(
-      recordStack[gameCard.team2 ?? "team2"].goals,
-      recordStack[gameCard.team2 ?? "team2"].pos,
-      [],
-      gameCard.team2 ?? "team2"
-    );
+    const record2: Record = {
+      score: recordStack[gameCard.team2 ?? "team2"].goals,
+      substitution: recordStack[gameCard.team2 ?? "team2"].pos,
+      real_attendance: [],
+      team: gameCard.team2 ?? "team2"
+    };
 
     await saveRecord(
       cupID,
