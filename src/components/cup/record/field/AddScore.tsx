@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   makeStyles,
   Card,
@@ -7,7 +7,7 @@ import {
   ButtonBase,
   Button
 } from "@material-ui/core";
-import { CurTime, useSelUsr } from "../../../../context/cup/cupRecord";
+import { CurTime } from "../../../../context/cup/cupRecord";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
 import { convertTimeString, ClickScore } from "../../../../hooks/cups";
 import Trophy from "../../../../images/trophy_on.svg";
@@ -51,16 +51,14 @@ export const AddScore: React.FC<AddScoreProps> = ({
 }: AddScoreProps) => {
   const classes = useStyles();
 
-  const avatar = (name: string) => (
+  const avatar = (name: string | undefined | null) => (
     <div className={classes.row}>
       <div className={classes.center}>
         <img width="30" src={Trophy} alt={"팀원"} />
       </div>
-      <Typography className={classes.center}>{name}</Typography>
+      <Typography className={classes.center}>{name ?? "미입력"}</Typography>
     </div>
   );
-
-  const notEnter = () => avatar("미입력");
 
   const handleFocusClick = (click: "goal" | "ass") => {
     const newScore: ClickScore = JSON.parse(JSON.stringify(score));
@@ -74,13 +72,11 @@ export const AddScore: React.FC<AddScoreProps> = ({
         <Typography align="center">득점</Typography>
         <Typography>{convertTimeString(time.curTime)}</Typography>
         <ButtonBase>
-          {" "}
           <Typography>취소</Typography>
         </ButtonBase>
       </CardContent>
       <CardContent className={classes.row}>
         <Button onClick={e => handleFocusClick("goal")}>
-          {" "}
           <Typography
             style={{
               fontWeight: score.curFocus === "goal" ? "bold" : "normal"
@@ -90,7 +86,7 @@ export const AddScore: React.FC<AddScoreProps> = ({
             골:
           </Typography>
         </Button>
-        {score.scorer[0] ? avatar(score.scorer[0]) : notEnter()}
+        {avatar(score.scorer[0])}
       </CardContent>
       <CardContent className={classes.row}>
         <Button onClick={e => handleFocusClick("ass")}>
@@ -101,7 +97,7 @@ export const AddScore: React.FC<AddScoreProps> = ({
             도움:
           </Typography>
         </Button>
-        {score.scorer[1] ? avatar(score.scorer[1]) : notEnter()}
+        {avatar(score.scorer[1])}
       </CardContent>
       <CardContent className={classes.col}>
         <Button variant="outlined">적용</Button>

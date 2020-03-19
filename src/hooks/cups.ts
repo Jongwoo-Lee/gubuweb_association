@@ -22,8 +22,6 @@ import {
   Substitution
 } from "../helpers/Firebase/game";
 import {
-  useSelUsr,
-  useSetSelUsr,
   useTeamPos,
   CurTime,
   makeQuarterString,
@@ -236,6 +234,7 @@ export const useLocalPlanPreState = (planPre: PlanPreliminary) => {
 };
 
 export type RecordType = "score" | "sub" | "";
+
 export interface ClickScore {
   scorer: Array<string>;
   curFocus: "goal" | "ass";
@@ -247,10 +246,10 @@ export const useClickEvent = (
   teamPos: TeamsPos,
   score: ClickScore,
   setScore: React.Dispatch<React.SetStateAction<ClickScore>>,
+  selUsr: number,
+  setSelUsr: React.Dispatch<React.SetStateAction<number>>,
   rType?: RecordType
 ) => {
-  const selUsr = useSelUsr();
-  const setSelUsr = useSetSelUsr();
   const teamRealPos = useTeamPos();
   const setTeamPos = useSetTeamPos();
 
@@ -309,7 +308,7 @@ export const useClickEvent = (
           console.log("click");
         };
 
-  return { selUsr, handleOnClick };
+  return handleOnClick;
 };
 
 export interface TempSubData {

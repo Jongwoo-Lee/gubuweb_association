@@ -9,6 +9,8 @@ export interface BenchProps {
   rType: RecordType;
   teamPos: TeamsPos;
   curTime: CurTime;
+  selUsr: number;
+  setSelUsr: React.Dispatch<React.SetStateAction<number>>;
   score: ClickScore;
   setScore: React.Dispatch<React.SetStateAction<ClickScore>>;
 }
@@ -39,6 +41,8 @@ export const Bench: React.FC<BenchProps> = ({
   teamPos,
   curTime,
   setScore,
+  selUsr,
+  setSelUsr,
   score
 }: BenchProps) => {
   const classes = useStyles();
@@ -54,6 +58,8 @@ export const Bench: React.FC<BenchProps> = ({
           curTime={curTime}
           score={score}
           setScore={setScore}
+          selUsr={selUsr}
+          setSelUsr={setSelUsr}
         />
       </Box>
     );

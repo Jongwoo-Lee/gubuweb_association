@@ -41,6 +41,7 @@ export const RecordField: React.FC<RecordFieldProps> = ({
   });
   const tempData: Array<TempSubData> = useTempSubData();
   const teamPos: TeamsPos = usePosition(tempData, curTime); // usePosition(curTime);
+  const [selUsr, setSelUsr] = useState<number>(-1);
   const [score, setScore] = useState<ClickScore>({
     scorer: Array<string>(2),
     curFocus: "goal"
@@ -109,6 +110,8 @@ export const RecordField: React.FC<RecordFieldProps> = ({
             curTime={curTime}
             score={score}
             setScore={setScore}
+            selUsr={selUsr}
+            setSelUsr={setSelUsr}
           />
         </Grid>
         <Grid item xs>
@@ -118,6 +121,8 @@ export const RecordField: React.FC<RecordFieldProps> = ({
             curTime={curTime}
             score={score}
             setScore={setScore}
+            selUsr={selUsr}
+            setSelUsr={setSelUsr}
           />
         </Grid>
       </Grid>

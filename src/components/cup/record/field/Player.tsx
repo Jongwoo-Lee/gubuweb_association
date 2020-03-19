@@ -53,6 +53,8 @@ export interface PlayerProps {
   curTime: CurTime;
   teamPos: TeamsPos;
   rType?: RecordType;
+  selUsr: number;
+  setSelUsr: React.Dispatch<React.SetStateAction<number>>;
   score: ClickScore;
   setScore: React.Dispatch<React.SetStateAction<ClickScore>>;
 }
@@ -62,17 +64,21 @@ export const Player: React.FC<PlayerProps> = ({
   pos,
   curTime,
   teamPos,
-  rType,
   setScore,
-  score
+  score,
+  selUsr,
+  setSelUsr,
+  rType
 }: PlayerProps) => {
   const classes = useStyles();
-  const { selUsr, handleOnClick } = useClickEvent(
+  const handleOnClick = useClickEvent(
     pos,
     curTime,
     teamPos,
     score,
     setScore,
+    selUsr,
+    setSelUsr,
     rType
   );
 

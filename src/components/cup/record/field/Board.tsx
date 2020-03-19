@@ -27,6 +27,8 @@ export interface BoardProps {
   curTime: CurTime;
   score: ClickScore;
   setScore: React.Dispatch<React.SetStateAction<ClickScore>>;
+  selUsr: number;
+  setSelUsr: React.Dispatch<React.SetStateAction<number>>;
 }
 
 /** Styling properties applied to the board element */
@@ -42,6 +44,8 @@ export const Board: React.FC<BoardProps> = ({
   teamPos,
   curTime,
   setScore,
+  selUsr,
+  setSelUsr,
   score
 }: BoardProps) => {
   const classes = useStyles();
@@ -57,6 +61,8 @@ export const Board: React.FC<BoardProps> = ({
           curTime={curTime}
           score={score}
           setScore={setScore}
+          selUsr={selUsr}
+          setSelUsr={setSelUsr}
         />
       </Box>
     );

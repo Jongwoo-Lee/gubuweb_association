@@ -4,7 +4,7 @@ import {
   useMakeTempSubData,
   TempSubData
 } from "../../hooks/cups";
-import { TeamsRecord, Substitution } from "../../helpers/Firebase/game";
+import { TeamsRecord, Substitution, Goal } from "../../helpers/Firebase/game";
 import { firestore } from "firebase";
 
 export interface CurTime {
@@ -18,8 +18,9 @@ interface CupRecordData {
   pos: Substitution;
   setPos: React.Dispatch<React.SetStateAction<Substitution>>;
   tempSubData: Array<TempSubData>;
-  selUsr: number;
-  setSetUsr: React.Dispatch<React.SetStateAction<number>>;
+  //
+  goals: Goal[];
+  setGoals: React.Dispatch<React.SetStateAction<Goal[]>>;
 }
 
 export const CupRecordContext: React.Context<CupRecordData> = React.createContext<
@@ -32,9 +33,9 @@ export const CupRecordContext: React.Context<CupRecordData> = React.createContex
     console.log("setPos is not initilized");
   },
   tempSubData: [],
-  selUsr: -1,
-  setSetUsr: () => {
-    console.log("setSetUsr is not initilized");
+  goals: [],
+  setGoals: () => {
+    console.log("setScoreList is not initilized");
   }
 });
 
@@ -82,11 +83,9 @@ export const CupRecordProvider = (props: {
       }
     }
   });
-  const [selUsr, setSetUsr] = useState<number>(-1);
   const tempSubData = useMakeTempSubData(pos);
-  console.log("provider");
-  console.dir(pos);
 
+  const [goals, setGoals] = useState<Goal[]>([]);
   return (
     <CupRecordContext.Provider
       value={{
@@ -94,9 +93,9 @@ export const CupRecordProvider = (props: {
         loading,
         pos,
         setPos,
-        selUsr,
         tempSubData,
-        setSetUsr
+        goals,
+        setGoals
       }}
     >
       {props.children}
@@ -110,8 +109,8 @@ export const useTeamPos = () => useContext(CupRecordContext).pos;
 export const useSetTeamPos = () => useContext(CupRecordContext).setPos;
 export const useTempSubData = () => useContext(CupRecordContext).tempSubData;
 
-export const useSelUsr = () => useContext(CupRecordContext).selUsr;
-export const useSetSelUsr = () => useContext(CupRecordContext).setSetUsr;
+export const useGoals = () => useContext(CupRecordContext).goals;
+export const useSetGoals = () => useContext(CupRecordContext).setGoals;
 
 export const makeQuarterString = (curTime: CurTime) => {
   const qString: string = "Q" + curTime.curQuarter.toString().padStart(3, "0");
