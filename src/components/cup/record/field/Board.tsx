@@ -1,9 +1,9 @@
 import React from "react";
 import { Player } from "./Player";
 import { Box, makeStyles } from "@material-ui/core";
-import { RecordType } from "./RecordField";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
 import { CurTime } from "../../../../context/cup/cupRecord";
+import { RecordType, ClickScore } from "../../../../hooks/cups";
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +25,8 @@ export interface BoardProps {
   rType: RecordType;
   teamPos: TeamsPos;
   curTime: CurTime;
+  score: ClickScore;
+  setScore: React.Dispatch<React.SetStateAction<ClickScore>>;
 }
 
 /** Styling properties applied to the board element */
@@ -38,7 +40,9 @@ const boardStyle: React.CSSProperties = {
 export const Board: React.FC<BoardProps> = ({
   rType,
   teamPos,
-  curTime
+  curTime,
+  setScore,
+  score
 }: BoardProps) => {
   const classes = useStyles();
   function renderSquare(i: number) {
@@ -51,6 +55,8 @@ export const Board: React.FC<BoardProps> = ({
           rType={rType}
           teamPos={teamPos}
           curTime={curTime}
+          score={score}
+          setScore={setScore}
         />
       </Box>
     );

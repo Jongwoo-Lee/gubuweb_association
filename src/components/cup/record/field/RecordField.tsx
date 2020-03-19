@@ -8,7 +8,9 @@ import { RecordSubstitution } from "./RecordSubstitution";
 import {
   usePosition,
   convertTimeString,
-  TempSubData
+  TempSubData,
+  RecordType,
+  ClickScore
 } from "../../../../hooks/cups";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
 import { CurTime, useTempSubData } from "../../../../context/cup/cupRecord";
@@ -27,8 +29,6 @@ const useStyles = makeStyles({
   }
 });
 
-export type RecordType = "score" | "sub" | "";
-
 export const RecordField: React.FC<RecordFieldProps> = ({
   gameTime,
   numOfQuarter
@@ -41,6 +41,10 @@ export const RecordField: React.FC<RecordFieldProps> = ({
   });
   const tempData: Array<TempSubData> = useTempSubData();
   const teamPos: TeamsPos = usePosition(tempData, curTime); // usePosition(curTime);
+  const [score, setScore] = useState<ClickScore>({
+    scorer: Array<string>(2),
+    curFocus: "goal"
+  });
 
   const handleScoreClick = (e: RecordType) => {
     if (click !== "score") {
@@ -85,18 +89,36 @@ export const RecordField: React.FC<RecordFieldProps> = ({
           </ButtonBase>
         </Grid>
       </Grid>
-      {click === "score" &&
+      {click === "score" && (
         <Grid container justify="center">
           <Grid item xs={8}>
-            <AddScore time={curTime} teamPos={teamPos} />
+            <AddScore
+              time={curTime}
+              teamPos={teamPos}
+              score={score}
+              setScore={setScore}
+            />
           </Grid>
-        </Grid>}
+        </Grid>
+      )}
       <Grid container spacing={1} className={classes.margin}>
         <Grid item xs={8}>
-          <Board rType={click} teamPos={teamPos} curTime={curTime} />
+          <Board
+            rType={click}
+            teamPos={teamPos}
+            curTime={curTime}
+            score={score}
+            setScore={setScore}
+          />
         </Grid>
         <Grid item xs>
-          <Bench rType={click} teamPos={teamPos} curTime={curTime} />
+          <Bench
+            rType={click}
+            teamPos={teamPos}
+            curTime={curTime}
+            score={score}
+            setScore={setScore}
+          />
         </Grid>
       </Grid>
 

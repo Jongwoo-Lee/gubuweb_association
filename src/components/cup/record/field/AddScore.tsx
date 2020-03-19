@@ -1,27 +1,22 @@
 import React, { useState } from "react";
-import { Player } from "./Player";
 import {
-  Box,
   makeStyles,
   Card,
   CardContent,
   Typography,
   ButtonBase,
-  Grid
+  Button
 } from "@material-ui/core";
-import { RecordType } from "./RecordField";
-import {
-  CurTime,
-  useSelUsr,
-  makeQuarterString
-} from "../../../../context/cup/cupRecord";
+import { CurTime, useSelUsr } from "../../../../context/cup/cupRecord";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
-import { convertTimeString } from "../../../../hooks/cups";
+import { convertTimeString, ClickScore } from "../../../../hooks/cups";
 import Trophy from "../../../../images/trophy_on.svg";
 
 export interface AddScoreProps {
   time: CurTime;
   teamPos: TeamsPos;
+  score: ClickScore;
+  setScore: React.Dispatch<React.SetStateAction<ClickScore>>;
 }
 
 const useStyles = makeStyles({
@@ -34,7 +29,9 @@ const useStyles = makeStyles({
   },
   col: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    alignContent: "center",
+    justifyContent: "center"
   },
   row: {
     display: "flex",
@@ -48,20 +45,28 @@ const useStyles = makeStyles({
 
 export const AddScore: React.FC<AddScoreProps> = ({
   time,
-  teamPos
+  teamPos,
+  score,
+  setScore
 }: AddScoreProps) => {
   const classes = useStyles();
-  const sel: number = useSelUsr();
-  const [scorers, setScorers] = useState<Array<string>>(Array<string>(2));
 
-  const notEnter = () => (
+  const avatar = (name: string) => (
     <div className={classes.row}>
       <div className={classes.center}>
         <img width="30" src={Trophy} alt={"팀원"} />
       </div>
-      <Typography className={classes.center}>미입력</Typography>
+      <Typography className={classes.center}>{name}</Typography>
     </div>
   );
+
+  const notEnter = () => avatar("미입력");
+
+  const handleFocusClick = (click: "goal" | "ass") => {
+    const newScore: ClickScore = JSON.parse(JSON.stringify(score));
+    newScore.curFocus = click;
+    setScore(newScore);
+  };
 
   return (
     <Card variant="outlined" className={classes.root}>
@@ -74,28 +79,32 @@ export const AddScore: React.FC<AddScoreProps> = ({
         </ButtonBase>
       </CardContent>
       <CardContent className={classes.row}>
-        {/* <Grid container direction="row" alignItems="center"> */}
-        {/* <Grid item> */}
-        <Typography className={classes.center}>골:</Typography>
-        {/* </Grid> */}
-        {scorers[0] !== undefined ? "입력" : notEnter()}
-        {/* </Grid> */}
+        <Button onClick={e => handleFocusClick("goal")}>
+          {" "}
+          <Typography
+            style={{
+              fontWeight: score.curFocus === "goal" ? "bold" : "normal"
+            }}
+            className={classes.center}
+          >
+            골:
+          </Typography>
+        </Button>
+        {score.scorer[0] ? avatar(score.scorer[0]) : notEnter()}
+      </CardContent>
+      <CardContent className={classes.row}>
+        <Button onClick={e => handleFocusClick("ass")}>
+          <Typography
+            style={{ fontWeight: score.curFocus === "ass" ? "bold" : "normal" }}
+            className={classes.center}
+          >
+            도움:
+          </Typography>
+        </Button>
+        {score.scorer[1] ? avatar(score.scorer[1]) : notEnter()}
       </CardContent>
       <CardContent className={classes.col}>
-        <Typography align="center">득점</Typography>
-        <Typography>{convertTimeString(time.curTime)}</Typography>
-        <ButtonBase>
-          {" "}
-          <Typography>취소</Typography>
-        </ButtonBase>
-      </CardContent>
-      <CardContent className={classes.col}>
-        <Typography align="center">득점</Typography>
-        <Typography>{convertTimeString(time.curTime)}</Typography>
-        <ButtonBase>
-          {" "}
-          <Typography>취소</Typography>
-        </ButtonBase>
+        <Button variant="outlined">적용</Button>
       </CardContent>
     </Card>
   );

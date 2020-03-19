@@ -1,14 +1,16 @@
 import React from "react";
 import { Player } from "./Player";
 import { Box, makeStyles } from "@material-ui/core";
-import { RecordType } from "./RecordField";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
 import { CurTime } from "../../../../context/cup/cupRecord";
+import { RecordType, ClickScore } from "../../../../hooks/cups";
 
 export interface BenchProps {
   rType: RecordType;
   teamPos: TeamsPos;
   curTime: CurTime;
+  score: ClickScore;
+  setScore: React.Dispatch<React.SetStateAction<ClickScore>>;
 }
 
 const useStyles = makeStyles({
@@ -35,7 +37,9 @@ const benchStyle: React.CSSProperties = {
 export const Bench: React.FC<BenchProps> = ({
   rType,
   teamPos,
-  curTime
+  curTime,
+  setScore,
+  score
 }: BenchProps) => {
   const classes = useStyles();
   function renderSquare(i: number) {
@@ -48,6 +52,8 @@ export const Bench: React.FC<BenchProps> = ({
           rType={rType}
           teamPos={teamPos}
           curTime={curTime}
+          score={score}
+          setScore={setScore}
         />
       </Box>
     );

@@ -31,7 +31,6 @@ import {
   deepCopySubstitution
 } from "../context/cup/cupRecord";
 import { firestore } from "firebase";
-import { RecordType } from "../components/cup/record/field/RecordField";
 
 // 예선전 팀을 제외하고 남은 팀
 export const useTeamsExceptPre = (
@@ -236,10 +235,18 @@ export const useLocalPlanPreState = (planPre: PlanPreliminary) => {
   return { tempPlan, setTempPlan };
 };
 
+export type RecordType = "score" | "sub" | "";
+export interface ClickScore {
+  scorer: Array<string>;
+  curFocus: "goal" | "ass";
+}
+
 export const useClickEvent = (
   pos: number,
   curTime: CurTime,
   teamPos: TeamsPos,
+  score: ClickScore,
+  setScore: React.Dispatch<React.SetStateAction<ClickScore>>,
   rType?: RecordType
 ) => {
   const selUsr = useSelUsr();
@@ -247,55 +254,61 @@ export const useClickEvent = (
   const teamRealPos = useTeamPos();
   const setTeamPos = useSetTeamPos();
 
-  const handleOnClick = rType === "sub" ? (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
+  const handleOnClick =
+    rType === "sub"
+      ? (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+          e.preventDefault();
 
-    if (selUsr === -1) setSelUsr(pos);
-    else {
-      let newTeamPos: TeamsPos = JSON.parse(JSON.stringify(teamPos));
+          if (selUsr === -1) setSelUsr(pos);
+          else {
+            let newTeamPos: TeamsPos = JSON.parse(JSON.stringify(teamPos));
 
-      //swap or move
-      if (selUsr !== pos) {
-        let temp = newTeamPos[selUsr];
-        delete newTeamPos[selUsr];
+            //swap or move
+            if (selUsr !== pos) {
+              let temp = newTeamPos[selUsr];
+              delete newTeamPos[selUsr];
 
-        if (newTeamPos[pos]) {
-          let temp2 = newTeamPos[pos];
-          delete newTeamPos[pos];
+              if (newTeamPos[pos]) {
+                let temp2 = newTeamPos[pos];
+                delete newTeamPos[pos];
 
-          Object.assign(newTeamPos, { [selUsr]: temp2 });
+                Object.assign(newTeamPos, { [selUsr]: temp2 });
+              }
+
+              Object.assign(newTeamPos, { [pos]: temp });
+            } else {
+              // do nothing
+            }
+
+            setSelUsr(-1);
+            const newTeamRealPos = deepCopySubstitution(teamRealPos);
+            newTeamRealPos[makeQuarterString(curTime)] = {
+              log: {
+                createdBy: "tester",
+                timeStamp: firestore.Timestamp.now()
+              },
+              player_curPosition: newTeamPos
+            };
+
+            setTeamPos(newTeamRealPos);
+          }
         }
+      : rType === "score"
+      ? (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+          e.preventDefault();
+          const newScore: ClickScore = JSON.parse(JSON.stringify(score));
+          if (newScore.curFocus === "goal") {
+            newScore.scorer[0] = teamPos[pos];
+            newScore.curFocus = "ass";
+          } else if (newScore.curFocus === "ass") {
+            newScore.scorer[1] = teamPos[pos];
+          }
+          setScore(newScore);
+        }
+      : (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+          console.log("click");
+        };
 
-        Object.assign(newTeamPos, { [pos]: temp });
-      } else {
-        // do nothing
-      }
-
-      setSelUsr(-1);
-      const newTeamRealPos = deepCopySubstitution(teamRealPos);
-      newTeamRealPos[makeQuarterString(curTime)] = {
-        log: {
-          createdBy: "tester",
-          timeStamp: firestore.Timestamp.now()
-        },
-        player_curPosition: newTeamPos
-      };
-
-      setTeamPos(newTeamRealPos);
-    }
-  } : (rType === "score") ? (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    setSelUsr(pos);
-
-  } : (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-        console.log('click')
-      }
   return { selUsr, handleOnClick };
 };
 

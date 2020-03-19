@@ -1,6 +1,6 @@
 import { Typography, Paper } from "@material-ui/core";
 import React from "react";
-import { RecordType } from "./RecordField";
+import { RecordType } from "../../../../hooks/cups";
 
 export interface RecordScoreProps {
   rType?: RecordType;
