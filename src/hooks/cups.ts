@@ -31,6 +31,7 @@ import {
   deepCopySubstitution
 } from "../context/cup/cupRecord";
 import { firestore } from "firebase";
+import { RecordType } from "../components/cup/record/field/RecordField";
 
 // 예선전 팀을 제외하고 남은 팀
 export const useTeamsExceptPre = (
@@ -235,17 +236,18 @@ export const useLocalPlanPreState = (planPre: PlanPreliminary) => {
   return { tempPlan, setTempPlan };
 };
 
-export const useSubstitution = (
+export const useClickEvent = (
   pos: number,
   curTime: CurTime,
-  teamPos: TeamsPos
+  teamPos: TeamsPos,
+  rType?: RecordType
 ) => {
   const selUsr = useSelUsr();
   const setSelUsr = useSetSelUsr();
   const teamRealPos = useTeamPos();
   const setTeamPos = useSetTeamPos();
 
-  const handleOnClick = (
+  const handleOnClick = rType === "sub" ? (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
@@ -283,7 +285,17 @@ export const useSubstitution = (
 
       setTeamPos(newTeamRealPos);
     }
-  };
+  } : (rType === "score") ? (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setSelUsr(pos);
+
+  } : (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+        console.log('click')
+      }
   return { selUsr, handleOnClick };
 };
 
