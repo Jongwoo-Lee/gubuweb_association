@@ -27,6 +27,11 @@ import {
 } from "../../../context/cup/cupRecord";
 import { RecordField } from "./field/RecordField";
 import { fromGameInfo } from "../../../hooks/cups";
+import {
+  Record,
+  TeamsRecord,
+  saveRecord
+} from "../../../helpers/Firebase/game";
 
 const useStyles = makeStyles({
   root: {
@@ -54,11 +59,13 @@ const useStyles = makeStyles({
 });
 
 export interface WrapCupDetailRecordProps {
+  cupID: string;
   cupInfo: CupInfo;
   gameCard: GameCard;
 }
 
 export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
+  cupID,
   cupInfo,
   gameCard
 }: WrapCupDetailRecordProps) => {
@@ -87,6 +94,32 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
       ? `${convertFinalCardString(gameCard.id)}`
       : `${convertGroupString(gameCard.group)}조 - ${gameCard.id + 1}경기`;
 
+  const handleOnSave = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    const record1 = new Record(
+      recordStack[gameCard.team1 ?? "team1"].goals,
+      recordStack[gameCard.team1 ?? "team1"].pos,
+      [],
+      gameCard.team1 ?? "team1"
+    );
+
+    const record2 = new Record(
+      recordStack[gameCard.team2 ?? "team2"].goals,
+      recordStack[gameCard.team2 ?? "team2"].pos,
+      [],
+      gameCard.team2 ?? "team2"
+    );
+
+    await saveRecord(
+      cupID,
+      gameCard?.gid ?? "",
+      new TeamsRecord(record1, record2)
+    );
+  };
+
   return loading ? (
     <Grid container direction="row" justify="center" alignItems="center">
       <CircularProgress className={classes.progress} />
@@ -104,7 +137,13 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
         <Typography color="textPrimary" variant="h4">
           {ROUTENAMES.CUP_DETAIL_RECORD}
         </Typography>
-        <Button variant="contained">저장</Button>
+        <Button
+          onClick={handleOnSave}
+          style={{ backgroundColor: "white" }}
+          variant="contained"
+        >
+          저장
+        </Button>
       </Grid>
       <Typography align="center" color="textPrimary" variant="h4">
         {title}
@@ -151,9 +190,11 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
         >
           <Button
             variant="contained"
-            color={
-              curTeam === (gameCard.team1 ?? "team1") ? "primary" : undefined
-            }
+            style={{
+              borderRadius: 35,
+              backgroundColor:
+                curTeam === (gameCard.team1 ?? "team1") ? "#21b6ae" : undefined
+            }}
             onClick={e => handleChangeTeam(gameCard.team1 ?? "team1")}
           >
             <Typography align="center" color="textPrimary" variant="h4">
@@ -175,10 +216,12 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
           style={{ alignSelf: "center" }}
         >
           <Button
+            style={{
+              borderRadius: 35,
+              backgroundColor:
+                curTeam === (gameCard.team2 ?? "team2") ? "#21b6ae" : undefined
+            }}
             variant="contained"
-            color={
-              curTeam === (gameCard.team2 ?? "team2") ? "primary" : undefined
-            }
             onClick={e => handleChangeTeam(gameCard.team2 ?? "team2")}
           >
             <Typography align="center" color="textPrimary" variant="h4">

@@ -23,7 +23,11 @@ export const CupDetailRecord: React.FC<RouteComponentProps<
   // return cupInfo ? (
   return cupInfo && cupID && data.gameInfo.gid ? (
     <CupRecordProvider cupID={cupID} gameCard={data.gameInfo}>
-      <WrapCupDetailRecord cupInfo={cupInfo} gameCard={data.gameInfo} />
+      <WrapCupDetailRecord
+        cupID={cupID}
+        cupInfo={cupInfo}
+        gameCard={data.gameInfo}
+      />
     </CupRecordProvider>
   ) : (
     <div></div>

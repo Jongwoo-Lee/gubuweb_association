@@ -24,17 +24,20 @@ export interface Goal {
 
 export class Record {
   goal: Goal[];
-  substitution: Substitution[];
+  substitution: Substitution;
   real_attendance: string[];
+  team: string;
 
   constructor(
     score?: Goal[],
-    substitution?: Substitution[],
-    real_attendance?: string[]
+    substitution?: Substitution,
+    real_attendance?: string[],
+    team?: string
   ) {
     this.goal = score ?? [];
-    this.substitution = substitution ?? [];
+    this.substitution = substitution ?? {};
     this.real_attendance = real_attendance ?? [];
+    this.team = team ?? "";
   }
 }
 
@@ -43,6 +46,9 @@ export class TeamsRecord {
   a: Record;
 
   constructor(home?: Record, away?: Record) {
+    console.log(`sfasdfasdff`);
+    console.dir(home);
+    console.dir(away);
     this.h = home ?? new Record();
     this.a = away ?? new Record();
   }
@@ -144,3 +150,21 @@ export const getGameRecord = (cupID: string, gameID: string) =>
     .doc(COL_GAME.DETAIL)
     .withConverter(recordConverter)
     .get();
+
+export const saveRecord = async (
+  cupID: string,
+  gameID: string,
+  teamsRecord: TeamsRecord
+) => {
+  console.log(`cupID - ${cupID} gameID - ${gameID}`);
+  console.dir(teamsRecord);
+  await Firebase.firestore
+    .collection(COL_CUP.CUP)
+    .doc(cupID)
+    .collection(COL_GAME.GAMES)
+    .doc(gameID)
+    .collection(COL_GAME.DETAIL)
+    .doc(COL_GAME.DETAIL)
+    .withConverter(recordConverter)
+    .set(teamsRecord, { merge: true });
+};
