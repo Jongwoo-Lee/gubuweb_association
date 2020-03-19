@@ -29,6 +29,7 @@ import {
   deepCopySubstitution
 } from "../context/cup/cupRecord";
 import { firestore } from "firebase";
+import { useAssociationValue } from "../context/user";
 
 // 예선전 팀을 제외하고 남은 팀
 export const useTeamsExceptPre = (
@@ -252,6 +253,7 @@ export const useClickEvent = (
 ) => {
   const teamRealPos = useTeamPos();
   const setTeamPos = useSetTeamPos();
+  const ascData = useAssociationValue();
 
   const handleOnClick =
     rType === "sub"
@@ -283,7 +285,7 @@ export const useClickEvent = (
             const newTeamRealPos = deepCopySubstitution(teamRealPos);
             newTeamRealPos[makeQuarterString(curTime)] = {
               log: {
-                createdBy: "tester",
+                createdBy: ascData?.uid ?? "",
                 timeStamp: firestore.Timestamp.now()
               },
               player_curPosition: newTeamPos

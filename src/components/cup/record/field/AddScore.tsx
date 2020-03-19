@@ -7,10 +7,17 @@ import {
   ButtonBase,
   Button
 } from "@material-ui/core";
-import { CurTime } from "../../../../context/cup/cupRecord";
-import { TeamsPos } from "../../../../helpers/Firebase/game";
+import {
+  CurTime,
+  useSetGoals,
+  deepCopyGoals,
+  useGoals
+} from "../../../../context/cup/cupRecord";
+import { TeamsPos, Goal } from "../../../../helpers/Firebase/game";
 import { convertTimeString, ClickScore } from "../../../../hooks/cups";
 import Trophy from "../../../../images/trophy_on.svg";
+import { firestore } from "firebase";
+import { useAssociationValue } from "../../../../context/user";
 
 export interface AddScoreProps {
   time: CurTime;
@@ -50,6 +57,9 @@ export const AddScore: React.FC<AddScoreProps> = ({
   setScore
 }: AddScoreProps) => {
   const classes = useStyles();
+  const goals = useGoals();
+  const setGoals = useSetGoals();
+  const ascData = useAssociationValue();
 
   const avatar = (name: string | undefined | null) => (
     <div className={classes.row}>
@@ -64,6 +74,31 @@ export const AddScore: React.FC<AddScoreProps> = ({
     const newScore: ClickScore = JSON.parse(JSON.stringify(score));
     newScore.curFocus = click;
     setScore(newScore);
+  };
+
+  const MakeGoal = (): Goal => {
+    return {
+      userUID: score.scorer[0],
+      assist_userUID: score.scorer[1],
+      timeStamp: time.curTime * 1000, // milliseconds
+      quarter: time.curQuarter, // quarterIndex, curQuarter * 2 - 1
+      goal_type: 0,
+      log: {
+        createdBy: ascData?.uid ?? "createdBy",
+        timeStamp: firestore.Timestamp.now()
+      }
+    };
+  };
+
+  const handleAddScore = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const goal: Goal = MakeGoal();
+    const newGoals: Goal[] = deepCopyGoals(goals);
+
+    setGoals([...newGoals, goal]);
+    console.dir([...newGoals, goal]);
   };
 
   return (
@@ -100,7 +135,9 @@ export const AddScore: React.FC<AddScoreProps> = ({
         {avatar(score.scorer[1])}
       </CardContent>
       <CardContent className={classes.col}>
-        <Button variant="outlined">적용</Button>
+        <Button onClick={handleAddScore} variant="outlined">
+          적용
+        </Button>
       </CardContent>
     </Card>
   );

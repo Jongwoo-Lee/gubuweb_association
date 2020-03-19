@@ -4,7 +4,12 @@ import {
   useMakeTempSubData,
   TempSubData
 } from "../../hooks/cups";
-import { TeamsRecord, Substitution, Goal } from "../../helpers/Firebase/game";
+import {
+  TeamsRecord,
+  Substitution,
+  Goal,
+  Log
+} from "../../helpers/Firebase/game";
 import { firestore } from "firebase";
 
 export interface CurTime {
@@ -129,4 +134,16 @@ export const deepCopySubstitution = (data: Substitution): Substitution => {
   });
 
   return newTeamRealPos;
+};
+
+export const deepCopyGoals = (data: Goal[]): Goal[] => {
+  const newGoals: Goal[] = JSON.parse(JSON.stringify(data));
+
+  newGoals.forEach((value: Goal) => {
+    value.log.timeStamp = firestore.Timestamp.fromMillis(
+      (value.log as Log).timeStamp.seconds * 1000
+    );
+  });
+
+  return newGoals;
 };
