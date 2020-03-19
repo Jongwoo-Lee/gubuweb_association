@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { Grid, makeStyles, ButtonBase } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  ButtonBase,
+  Paper,
+  Typography
+} from "@material-ui/core";
 import { RecordShow } from "../field/RecordShow";
 import { Board } from "./Board";
 import { Bench } from "./Bench";
-import { RecordScore } from "./RecordScore";
-import { RecordSubstitution } from "./RecordSubstitution";
 import {
   usePosition,
   convertTimeString,
@@ -89,12 +93,30 @@ export const RecordField: React.FC<RecordFieldProps> = ({
       >
         <Grid item>
           <ButtonBase color="primary" onClick={e => handleScoreClick("score")}>
-            <RecordScore rType={click} />
+            <Paper
+              style={{
+                padding: "20px",
+                background: click === "score" ? "green" : undefined
+              }}
+            >
+              <Typography color="textPrimary" variant="h4">
+                득점
+              </Typography>
+            </Paper>
           </ButtonBase>
         </Grid>
         <Grid item>
           <ButtonBase onClick={e => handleSubClick("sub")}>
-            <RecordSubstitution rType={click} />
+            <Paper
+              style={{
+                padding: "20px",
+                background: click === "sub" ? "green" : undefined
+              }}
+            >
+              <Typography color="textPrimary" variant="h4">
+                선발/교체
+              </Typography>
+            </Paper>
           </ButtonBase>
         </Grid>
       </Grid>

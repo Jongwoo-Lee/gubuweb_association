@@ -19,14 +19,16 @@ import {
   TeamsRecord,
   TeamsPos,
   Log,
-  Substitution
+  Substitution,
+  Goal
 } from "../helpers/Firebase/game";
 import {
   CurTime,
   makeQuarterString,
   deepCopySubstitution,
   useTeamRecordStack,
-  useCurTeam
+  useCurTeam,
+  RecordStack
 } from "../context/cup/cupRecord";
 import { firestore } from "firebase";
 import { useAssociationValue } from "../context/user";
@@ -101,11 +103,19 @@ export const fromGameInfo = (
   return { gameTime, numOfQuarter };
 };
 
-export const useLoadCupRecord = (cupID: string, gameID: string) => {
+export const useLoadCupRecord = (
+  cupID: string,
+  gameCard: GameCard
+): [RecordStack, boolean] => {
   const [loading, setLoading] = useState(false);
-  const [teamsRecord, setTeamsRecord] = useState<TeamsRecord>(
-    new TeamsRecord()
-  );
+
+  const [pos, setPos] = useState<Substitution>({});
+  const [goals, setGoals] = useState<Goal[]>([]);
+  const tempSubData = makeTempSubData(pos);
+
+  const [pos2, setPos2] = useState<Substitution>({});
+  const [goals2, setGoals2] = useState<Goal[]>([]);
+  const tempSubData2 = makeTempSubData(pos2);
 
   useEffect(
     () => {
@@ -113,25 +123,45 @@ export const useLoadCupRecord = (cupID: string, gameID: string) => {
         setLoading(true);
 
         let record: TeamsRecord = new TeamsRecord();
-        await getGameRecord(cupID, gameID)
+        await getGameRecord(cupID, gameCard.gid ?? "") // gid는 null undefined이 아님
           .then(querySnapshot => {
             const temp: TeamsRecord | undefined = querySnapshot.data();
             if (typeof temp !== "undefined") record = temp;
           })
           .catch(err => console.log(err));
         setLoading(false);
-        setTeamsRecord(record);
+        setPos(record.h.substitution ?? {});
+        setPos2(record.a.substitution ?? {});
+        setGoals(record.h.score ?? []);
+        setGoals2(record.a.score ?? []);
       };
       loadRecord();
-
       setLoading(false);
     },
     [
       /* 처음만 로딩 */
     ]
   );
-
-  return { teamsRecord, loading };
+  return [
+    {
+      [gameCard.team1 ?? "team1"]: {
+        pos,
+        setPos,
+        tempSubData,
+        goals,
+        setGoals
+      },
+      [gameCard.team2 ?? "team2"]: {
+        pos: pos2,
+        setPos: setPos2,
+        tempSubData: tempSubData2,
+        goals: goals2,
+        setGoals: setGoals2
+      }
+      // loading
+    },
+    loading
+  ];
 };
 
 // Game Plan을 얻어내는 hook...
@@ -322,7 +352,7 @@ export interface TempSubData {
   DATA: { log: Log; player_curPosition: TeamsPos };
 }
 
-export const useMakeTempSubData = (pos: Substitution): Array<TempSubData> => {
+export const makeTempSubData = (pos: Substitution): Array<TempSubData> => {
   let metaSub: Array<TempSubData> = [];
   metaSub = Object.keys(pos)
     .map((qurterTime: string) => {
