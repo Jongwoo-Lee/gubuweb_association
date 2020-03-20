@@ -8,6 +8,8 @@ import {
   convertGroupString,
   convertFinalCardString
 } from "../../../context/cup/cupMatch";
+import EventNoteIcon from "@material-ui/icons/EventNote";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 
 const useStyles = makeStyles({
   root: {
@@ -109,9 +111,10 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               </Grid>
               <Grid item>
                 <Input
+                  startAdornment={<EventNoteIcon />}
                   className={classes.textField}
                   onClick={() => handlePopDlg(gameCard.id)}
-                  disabled
+                  readOnly
                   name="selTime"
                   type="text"
                   id={`time`}
@@ -130,6 +133,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               </Grid>
               <Grid item>
                 <Input
+                  startAdornment={<LocationOnIcon />}
                   className={classes.textField}
                   name="location"
                   type="text"

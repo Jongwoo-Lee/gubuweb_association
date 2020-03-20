@@ -5,6 +5,9 @@ export class GameCard {
   team1: string | null;
   team2: string | null;
   id: number; // Game Card ID
+  quarter: number; // not quarter INdex
+  gameTime: number; // 단위: 분, gameTime
+  restTime: number; // 단위: 분, restTime
   team1No?: number;
   team2No?: number;
   location?: string;
@@ -18,6 +21,9 @@ export class GameCard {
     team1: string | null,
     team2: string | null,
     id: number,
+    quarter: number,
+    gameTime: number,
+    restTime: number,
     team1No?: number,
     team2No?: number,
     location?: string,
@@ -30,6 +36,9 @@ export class GameCard {
     this.team1 = team1;
     this.team2 = team2;
     this.id = id;
+    this.quarter = quarter;
+    this.gameTime = gameTime;
+    this.restTime = restTime;
     this.location = location;
     this.team1No = team1No;
     this.team2No = team2No;
@@ -45,6 +54,9 @@ export class GameCard {
       other.team1,
       other.team2,
       other.id,
+      other.quarter,
+      other.gameTime,
+      other.restTime,
       other.team1No,
       other.team2No,
       other.location,

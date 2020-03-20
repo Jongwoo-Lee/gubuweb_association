@@ -65,6 +65,7 @@ export const makeSubGame = async (
   cupUID: string,
   uID: string,
   round: number, // ex) A조 1경기, 2경기 3경기, or 8강 1경기 2경기 3경기 4경기
+  gameCard: GameCard,
   group?: number // ex) A조 B조 C조 D조
 ) => {
   let returnGameID: string | null = "";
@@ -88,12 +89,15 @@ export const makeSubGame = async (
       [COL_GAME.CREATEDBY]: uID,
       [COL_GAME.ENDTIME]: null,
       [COL_GAME.GAMETYPE]: 2,
-      [COL_GAME.LOCATION]: null,
-      [COL_GAME.QUARTER]: 2,
-      [COL_GAME.QUARTERTIME]: 45,
-      [COL_GAME.RESTTIME]: 20,
-      [COL_GAME.STARTTIME]: null,
-      [COL_GAME.TEAM]: [],
+      [COL_GAME.LOCATION]: gameCard?.location ?? null,
+      [COL_GAME.QUARTER]: gameCard.quarter,
+      [COL_GAME.QUARTERTIME]: gameCard.gameTime,
+      [COL_GAME.RESTTIME]: gameCard.restTime,
+      [COL_GAME.STARTTIME]: gameCard?.kickOffTime ?? null,
+      [COL_GAME.TEAM]:
+        gameCard.team1 && gameCard.team2
+          ? [gameCard.team1, gameCard.team2]
+          : [],
       [COL_GAME.CUPID]: cupUID
     })
     .then(
