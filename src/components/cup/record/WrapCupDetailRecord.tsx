@@ -16,7 +16,7 @@ import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
 import { CupPlanDataStructure } from "../../../context/cup/cupPlan";
 import { GameCard } from "../../../context/game/game";
-import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
+import EventNoteIcon from "@material-ui/icons/EventNote";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { convertKoTime } from "../plan/DatePickerDlg";
 import {
@@ -113,11 +113,7 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
       team: gameCard.team2 ?? "team2"
     };
 
-    await saveRecord(
-      cupID,
-      gameCard,
-      new TeamsRecord(record1, record2)
-    );
+    await saveRecord(cupID, gameCard, new TeamsRecord(record1, record2));
   };
 
   return loading ? (
@@ -149,21 +145,24 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
         {title}
       </Typography>
 
-      <div className={classes.row}>
-        <LocationOnIcon className={classes.icon} />
+      <Grid container direction="row" alignItems="center">
+        <Grid item>
+          <LocationOnIcon className={classes.icon} />
+        </Grid>
         <Typography align="left" color="textPrimary" variant="h6">
-          {"location"}
+          {gameCard?.location ?? ""}
         </Typography>
-      </div>
-
-      <div className={classes.row}>
-        <CalendarTodayIcon className={classes.icon} />
+      </Grid>
+      <Grid container direction="row" alignItems="center">
+        <Grid item>
+          <EventNoteIcon className={classes.icon} />
+        </Grid>
         <Typography align="left" color="textPrimary" variant="h6">
           {gameCard?.kickOffTime
             ? convertKoTime(gameCard?.kickOffTime.toDate())
             : ""}
         </Typography>
-      </div>
+      </Grid>
       <br />
       <Grid container spacing={3}>
         <Grid item xs>
