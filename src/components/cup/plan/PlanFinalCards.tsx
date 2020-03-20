@@ -200,7 +200,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
             handleOnLocation={setLocation}
             handleOnClose={setClose}
             handleOnSetGameUID={setGameUID}
-            gameInfo={value}
+            gameCard={value}
           />
         );
       })}

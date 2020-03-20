@@ -25,11 +25,6 @@ interface CupRecordData {
   curTeam: string;
   setCurTeam: React.Dispatch<React.SetStateAction<string>>;
   recordStack: RecordStack;
-  // pos: Substitution;
-  // setPos: React.Dispatch<React.SetStateAction<Substitution>>;
-  // tempSubData: Array<TempSubData>;
-  // goals: Goal[];
-  // setGoals: React.Dispatch<React.SetStateAction<Goal[]>>;
 }
 
 export const CupRecordContext: React.Context<CupRecordData> = React.createContext<

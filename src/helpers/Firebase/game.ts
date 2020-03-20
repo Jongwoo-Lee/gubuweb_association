@@ -1,5 +1,7 @@
 import Firebase from ".";
 import { COL_CUP, COL_GAME } from "../../constants/firestore";
+import { GameCard } from "../../context/game/game";
+import { Score } from "../../context/cup/cupPlan";
 
 export interface Log {
   createdBy: string;
@@ -66,8 +68,8 @@ export const makeSubGame = async (
   group?: number // ex) A조 B조 C조 D조
 ) => {
   let returnGameID: string | null = "";
-  let makeData: any;
-  if (group === undefined) {
+  let makeData: Function;
+  if (typeof group === "undefined") {
     makeData = (gameUID: string) => {
       return { f: { [`${round}`]: { gid: gameUID } } };
     };
@@ -138,16 +140,55 @@ export const getGameRecord = (cupID: string, gameID: string) =>
 
 export const saveRecord = async (
   cupID: string,
-  gameID: string,
+  gameCard: GameCard,
   teamsRecord: TeamsRecord
 ) => {
-  await Firebase.firestore
-    .collection(COL_CUP.CUP)
-    .doc(cupID)
-    .collection(COL_GAME.GAMES)
-    .doc(gameID)
-    .collection(COL_GAME.DETAIL)
-    .doc(COL_GAME.DETAIL)
-    .withConverter(recordConverter)
-    .set(teamsRecord, { merge: true });
+  const score: Score = {
+    hp: teamsRecord.h.score?.length ?? 0,
+    ap: teamsRecord.a.score?.length ?? 0
+  };
+
+  const winner: string =
+    score.hp > score.ap
+      ? teamsRecord.h.team ?? "team1" // 항상 있는 것
+      : score.hp < score.ap
+      ? teamsRecord.a.team ?? "team2"
+      : ""; /// 무승부 일 때 ""
+
+  let makeData: Object;
+  if (typeof gameCard.group === "undefined") {
+    makeData = { f: { [`${gameCard.id}`]: { sc: score, w: winner } } };
+  } else {
+    makeData = {
+      p: {
+        [`${gameCard.group}`]: {
+          [`${gameCard.id}`]: { sc: score, w: winner }
+        }
+      }
+    };
+  }
+
+  const batch = Firebase.firestore.batch();
+  batch.set(
+    Firebase.firestore
+      .collection(COL_CUP.CUP)
+      .doc(cupID)
+      .collection(COL_GAME.GAMES)
+      .doc(gameCard.gid ?? "") // 항상 gid는 있음.
+      .collection(COL_GAME.DETAIL)
+      .doc(COL_GAME.DETAIL)
+      .withConverter(recordConverter),
+    teamsRecord,
+    { merge: true }
+  );
+
+  batch.set(
+    Firebase.firestore.collection(COL_CUP.CUP).doc(cupID),
+    { [COL_CUP.MATCH]: makeData },
+    {
+      merge: true
+    }
+  );
+
+  return await batch.commit();
 };

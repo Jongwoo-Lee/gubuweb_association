@@ -160,7 +160,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
             handleOnLocation={setLocation}
             handleOnClose={setClose}
             handleOnSetGameUID={setGameUID}
-            gameInfo={value}
+            gameCard={value}
           />
         );
       })}

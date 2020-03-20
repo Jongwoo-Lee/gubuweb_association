@@ -115,7 +115,7 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
 
     await saveRecord(
       cupID,
-      gameCard?.gid ?? "",
+      gameCard,
       new TeamsRecord(record1, record2)
     );
   };
