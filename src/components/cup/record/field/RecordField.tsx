@@ -90,6 +90,7 @@ export const RecordField: React.FC<RecordFieldProps> = ({
         alignItems="center"
         direction="row"
         justify="center"
+        wrap="nowrap"
       >
         <Grid item>
           <ButtonBase color="primary" onClick={e => handleScoreClick("score")}>

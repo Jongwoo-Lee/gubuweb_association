@@ -42,9 +42,8 @@ const useStyles = makeStyles({
   title: {
     marginTop: "50px"
   },
-  row: {
-    display: "flex",
-    flexDirection: "row"
+  btnWidth: {
+    minWidth: "100px"
   },
   icon: {
     margin: "10px 10px 0px 0px"
@@ -145,23 +144,55 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
         {title}
       </Typography>
 
-      <Grid container direction="row" alignItems="center">
-        <Grid item>
-          <LocationOnIcon className={classes.icon} />
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="flex-start"
+        wrap="nowrap"
+        spacing={4}
+      >
+        <Grid item container direction="row" alignItems="center">
+          <Grid item>
+            <LocationOnIcon className={classes.icon} />
+          </Grid>
+          <Typography align="left" color="textPrimary" variant="h6">
+            {gameCard?.location ?? ""}
+          </Typography>
         </Grid>
-        <Typography align="left" color="textPrimary" variant="h6">
-          {gameCard?.location ?? ""}
-        </Typography>
+        <Grid item>
+          <Button
+            style={{ backgroundColor: "white" }}
+            variant="contained"
+            className={classes.btnWidth}
+          >
+            <Typography display="inline" align="center">
+              연장전
+            </Typography>
+          </Button>
+        </Grid>
       </Grid>
-      <Grid container direction="row" alignItems="center">
-        <Grid item>
-          <EventNoteIcon className={classes.icon} />
+
+      <Grid container direction="row" justify="space-between" wrap="nowrap">
+        <Grid container direction="row" alignItems="center">
+          <Grid item>
+            <EventNoteIcon className={classes.icon} />
+          </Grid>
+          <Typography align="left" color="textPrimary" variant="h6">
+            {gameCard?.kickOffTime
+              ? convertKoTime(gameCard?.kickOffTime.toDate())
+              : ""}
+          </Typography>
         </Grid>
-        <Typography align="left" color="textPrimary" variant="h6">
-          {gameCard?.kickOffTime
-            ? convertKoTime(gameCard?.kickOffTime.toDate())
-            : ""}
-        </Typography>
+        <Button
+          style={{ backgroundColor: "white" }}
+          variant="contained"
+          className={classes.btnWidth}
+        >
+          <Typography display="inline" align="center">
+            승부차기
+          </Typography>
+        </Button>
       </Grid>
       <br />
       <Grid container spacing={3}>
@@ -179,7 +210,8 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
         </Grid>
       </Grid>
       <br />
-      <Grid container spacing={3} direction="row">
+      <Grid container spacing={3} direction="row" wrap="nowrap">
+        >
         <Grid
           container
           direction="column"
@@ -206,7 +238,6 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
             {curScore()}
           </Typography>
         </Grid>
-
         <Grid
           container
           direction="column"

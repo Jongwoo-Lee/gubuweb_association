@@ -68,7 +68,7 @@ export const CustomSliderComponent: React.FC<CustomSliderComponentProps> = ({
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3} className={classes.margin}>
+      <Grid container spacing={3} className={classes.margin} wrap="nowrap">
         <Grid item xs>
           <Typography color="textPrimary" variant="h4" align="center">
             {convertTimeString(time.curTime)}
