@@ -1,5 +1,6 @@
 import React from "react";
-import Trophy from "../../../../images/trophy_on.svg";
+import Tshirt from "../../../../images/T-shirt.png";
+import SelTshirt from "../../../../images/T-shirt-sel.png";
 import { makeStyles, ButtonBase, Box, Typography } from "@material-ui/core";
 import { useClickEvent, ClickScore, RecordType } from "../../../../hooks/cups";
 import { CurTime } from "../../../../context/cup/cupRecord";
@@ -17,25 +18,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    height: "100%",
-    backgroundImage: `url(${Trophy})`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center"
-    // background: "white"
-    // backgroundColor: "white"
-  },
-  img: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    width: "100%",
     height: "100%"
-  },
-  imgNot: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    width: "100%",
-    height: "100%",
-    opacity: 0.3
   },
   stack: {
     position: "absolute",
@@ -88,6 +71,12 @@ export const Player: React.FC<PlayerProps> = ({
         isIn ? (
           <div className={classes.root}>
             <ButtonBase
+              style={{
+                backgroundImage: `url(${Tshirt})`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundSize: "80%"
+              }}
               disabled={rType === "score" ? false : true}
               onClick={rType === "score" ? handleOnClick : undefined}
               className={classes.button}
@@ -105,7 +94,12 @@ export const Player: React.FC<PlayerProps> = ({
         <div className={classes.root}>
           <ButtonBase
             style={{
-              backgroundColor: selUsr === pos ? "blue" : undefined,
+              backgroundImage:
+                selUsr !== pos ? `url(${Tshirt})` : `url(${SelTshirt})`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              backgroundSize: "80%",
+              // backgroundColor: selUsr === pos ? "blue" : undefined,
               opacity: isIn ? 1 : 0.5
             }}
             className={classes.button}
@@ -115,7 +109,7 @@ export const Player: React.FC<PlayerProps> = ({
             disableRipple={isIn ? false : true}
           >
             <Typography color="secondary" className={classes.stack}>
-              등번호
+              {isIn ? "등번호" : ""}
             </Typography>
           </ButtonBase>
           <Typography color="secondary">{teamPos[pos]}</Typography>
