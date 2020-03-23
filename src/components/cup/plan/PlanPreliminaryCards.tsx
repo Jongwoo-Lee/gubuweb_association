@@ -127,6 +127,9 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
               preliminaryData[group][i] ?? null,
               preliminaryData[group][j] ?? null,
               subGameId,
+              planPre.gI.nQ,
+              planPre.gI.gT,
+              planPre.gI.rT,
               i + 1,
               j + 1,
               location,
@@ -160,7 +163,7 @@ export const PlanPreliminaryCards: React.FC<PlanPreliminaryCardProps> = ({
             handleOnLocation={setLocation}
             handleOnClose={setClose}
             handleOnSetGameUID={setGameUID}
-            gameInfo={value}
+            gameCard={value}
           />
         );
       })}

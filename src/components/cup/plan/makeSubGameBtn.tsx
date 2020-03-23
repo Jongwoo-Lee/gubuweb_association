@@ -30,7 +30,7 @@ export const MakeSubGameBtn: React.FC<MakeSubGameBtnProps> = ({
     let gameUID: string | null | undefined = subGameID;
     if (typeof gameUID === "undefined")
       if (ascData && cupID) {
-        gameUID = await makeSubGame(cupID, ascData.uid, id, group);
+        gameUID = await makeSubGame(cupID, ascData.uid, id, gameCard, group);
         setGameUID(gameUID, id);
         newCard.gid = gameUID;
       }

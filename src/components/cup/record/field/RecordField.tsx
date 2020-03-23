@@ -1,17 +1,27 @@
 import React, { useState } from "react";
-import { Grid, makeStyles, ButtonBase } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  ButtonBase,
+  Paper,
+  Typography
+} from "@material-ui/core";
 import { RecordShow } from "../field/RecordShow";
 import { Board } from "./Board";
 import { Bench } from "./Bench";
-import { RecordScore } from "./RecordScore";
-import { RecordSubstitution } from "./RecordSubstitution";
 import {
   usePosition,
   convertTimeString,
-  TempSubData
+  TempSubData,
+  RecordType,
+  ClickScore
 } from "../../../../hooks/cups";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
-import { CurTime, useTempSubData } from "../../../../context/cup/cupRecord";
+import {
+  CurTime,
+  useTeamRecordStack,
+  useCurTeam
+} from "../../../../context/cup/cupRecord";
 import { CustomSliderComponent } from "./CustomSliderComponent";
 import { ChangeQaurter } from "./ChangeQuarter";
 import { AddScore } from "./AddScore";
@@ -27,8 +37,6 @@ const useStyles = makeStyles({
   }
 });
 
-export type RecordType = "score" | "sub" | "";
-
 export const RecordField: React.FC<RecordFieldProps> = ({
   gameTime,
   numOfQuarter
@@ -39,8 +47,17 @@ export const RecordField: React.FC<RecordFieldProps> = ({
     curQuarter: 1,
     curTime: 0
   });
-  const tempData: Array<TempSubData> = useTempSubData();
+
+  const teamRecordData = useTeamRecordStack();
+  const curTeam: string = useCurTeam();
+
+  const tempData: Array<TempSubData> = teamRecordData[curTeam].tempSubData;
   const teamPos: TeamsPos = usePosition(tempData, curTime); // usePosition(curTime);
+  const [selUsr, setSelUsr] = useState<number>(-1);
+  const [score, setScore] = useState<ClickScore>({
+    scorer: Array<string>(2),
+    curFocus: "goal"
+  });
 
   const handleScoreClick = (e: RecordType) => {
     if (click !== "score") {
@@ -73,30 +90,72 @@ export const RecordField: React.FC<RecordFieldProps> = ({
         alignItems="center"
         direction="row"
         justify="center"
+        wrap="nowrap"
       >
         <Grid item>
           <ButtonBase color="primary" onClick={e => handleScoreClick("score")}>
-            <RecordScore rType={click} />
+            <Paper
+              style={{
+                padding: "20px",
+                background: click === "score" ? "green" : undefined
+              }}
+            >
+              <Typography color="textPrimary" variant="h4">
+                득점
+              </Typography>
+            </Paper>
           </ButtonBase>
         </Grid>
         <Grid item>
           <ButtonBase onClick={e => handleSubClick("sub")}>
-            <RecordSubstitution rType={click} />
+            <Paper
+              style={{
+                padding: "20px",
+                background: click === "sub" ? "green" : undefined
+              }}
+            >
+              <Typography color="textPrimary" variant="h4">
+                선발/교체
+              </Typography>
+            </Paper>
           </ButtonBase>
         </Grid>
       </Grid>
-      {click === "score" &&
+      {click === "score" && (
         <Grid container justify="center">
-          <Grid item xs={8}>
-            <AddScore time={curTime} teamPos={teamPos} />
+          <Grid item xs={10}>
+            <AddScore
+              time={curTime}
+              teamPos={teamPos}
+              score={score}
+              setScore={setScore}
+              setClick={setClick}
+            />
           </Grid>
-        </Grid>}
+        </Grid>
+      )}
       <Grid container spacing={1} className={classes.margin}>
         <Grid item xs={8}>
-          <Board rType={click} teamPos={teamPos} curTime={curTime} />
+          <Board
+            rType={click}
+            teamPos={teamPos}
+            curTime={curTime}
+            score={score}
+            setScore={setScore}
+            selUsr={selUsr}
+            setSelUsr={setSelUsr}
+          />
         </Grid>
         <Grid item xs>
-          <Bench rType={click} teamPos={teamPos} curTime={curTime} />
+          <Bench
+            rType={click}
+            teamPos={teamPos}
+            curTime={curTime}
+            score={score}
+            setScore={setScore}
+            selUsr={selUsr}
+            setSelUsr={setSelUsr}
+          />
         </Grid>
       </Grid>
 

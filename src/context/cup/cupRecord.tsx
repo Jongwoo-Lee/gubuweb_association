@@ -1,102 +1,57 @@
 import React, { useContext, useState } from "react";
-import {
-  useLoadCupRecord,
-  useMakeTempSubData,
-  TempSubData
-} from "../../hooks/cups";
-import { TeamsRecord, Substitution } from "../../helpers/Firebase/game";
+import { useLoadCupRecord, TempSubData } from "../../hooks/cups";
+import { Substitution, Goal, Log } from "../../helpers/Firebase/game";
 import { firestore } from "firebase";
+import { GameCard } from "../game/game";
 
 export interface CurTime {
   curQuarter: number;
   curTime: number;
 }
+export interface RecordStack {
+  [teamUID: string]: RecordDetailData;
+}
 
-interface CupRecordData {
-  loading: boolean;
-  teamsRecord: TeamsRecord;
+interface RecordDetailData {
   pos: Substitution;
   setPos: React.Dispatch<React.SetStateAction<Substitution>>;
   tempSubData: Array<TempSubData>;
-  selUsr: number;
-  setSetUsr: React.Dispatch<React.SetStateAction<number>>;
+  goals: Goal[];
+  setGoals: React.Dispatch<React.SetStateAction<Goal[]>>;
+}
+
+interface CupRecordData {
+  loading: boolean;
+  curTeam: string;
+  setCurTeam: React.Dispatch<React.SetStateAction<string>>;
+  recordStack: RecordStack;
 }
 
 export const CupRecordContext: React.Context<CupRecordData> = React.createContext<
   CupRecordData
 >({
   loading: false,
-  teamsRecord: new TeamsRecord(),
-  pos: {},
-  setPos: () => {
-    console.log("setPos is not initilized");
+  curTeam: "team1", // or  team2 UID
+  setCurTeam: () => {
+    console.log(`setCurTeam`);
   },
-  tempSubData: [],
-  selUsr: -1,
-  setSetUsr: () => {
-    console.log("setSetUsr is not initilized");
-  }
+  recordStack: {}
 });
 
 export const CupRecordProvider = (props: {
   children: React.ReactNode;
   cupID: string;
-  gameID: string;
+  gameCard: GameCard;
 }) => {
-  const { teamsRecord, loading } = useLoadCupRecord(props.cupID, props.gameID);
-  const [pos, setPos] = useState<Substitution>({
-    Q0010: {
-      log: {
-        createdBy: "tester",
-        timeStamp: firestore.Timestamp.now()
-      },
-      player_curPosition: {
-        "0": "test",
-        "1": "test1",
-        "3": "test2",
-        "4": "test3"
-      }
-    },
-    Q0031110000: {
-      log: {
-        createdBy: "tester",
-        timeStamp: firestore.Timestamp.now()
-      },
-      player_curPosition: {
-        "0": "test",
-        "1": "test1",
-        "3": "test2",
-        "4": "test3"
-      }
-    },
-    Q0030: {
-      log: {
-        createdBy: "tester",
-        timeStamp: firestore.Timestamp.now()
-      },
-      player_curPosition: {
-        "5": "test",
-        "6": "test1",
-        "7": "test2",
-        "8": "test3"
-      }
-    }
-  });
-  const [selUsr, setSetUsr] = useState<number>(-1);
-  const tempSubData = useMakeTempSubData(pos);
-  console.log("provider");
-  console.dir(pos);
-
+  const [recordStack, loading] = useLoadCupRecord(props.cupID, props.gameCard);
+  const [curTeam, setCurTeam] = useState(props.gameCard.team1 ?? "team1");
   return (
     <CupRecordContext.Provider
       value={{
-        teamsRecord,
         loading,
-        pos,
-        setPos,
-        selUsr,
-        tempSubData,
-        setSetUsr
+        curTeam,
+        setCurTeam,
+        recordStack
       }}
     >
       {props.children}
@@ -105,13 +60,10 @@ export const CupRecordProvider = (props: {
 };
 
 export const useRecordloading = () => useContext(CupRecordContext).loading;
-export const useTeamRecord = () => useContext(CupRecordContext).teamsRecord;
-export const useTeamPos = () => useContext(CupRecordContext).pos;
-export const useSetTeamPos = () => useContext(CupRecordContext).setPos;
-export const useTempSubData = () => useContext(CupRecordContext).tempSubData;
-
-export const useSelUsr = () => useContext(CupRecordContext).selUsr;
-export const useSetSelUsr = () => useContext(CupRecordContext).setSetUsr;
+export const useCurTeam = () => useContext(CupRecordContext).curTeam;
+export const useSetCurTeam = () => useContext(CupRecordContext).setCurTeam;
+export const useTeamRecordStack = () =>
+  useContext(CupRecordContext).recordStack;
 
 export const makeQuarterString = (curTime: CurTime) => {
   const qString: string = "Q" + curTime.curQuarter.toString().padStart(3, "0");
@@ -130,4 +82,16 @@ export const deepCopySubstitution = (data: Substitution): Substitution => {
   });
 
   return newTeamRealPos;
+};
+
+export const deepCopyGoals = (data: Goal[]): Goal[] => {
+  const newGoals: Goal[] = JSON.parse(JSON.stringify(data));
+
+  newGoals.forEach((value: Goal) => {
+    value.log.timeStamp = firestore.Timestamp.fromMillis(
+      (value.log as Log).timeStamp.seconds * 1000
+    );
+  });
+
+  return newGoals;
 };

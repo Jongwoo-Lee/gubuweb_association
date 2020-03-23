@@ -8,6 +8,8 @@ import {
   convertGroupString,
   convertFinalCardString
 } from "../../../context/cup/cupMatch";
+import EventNoteIcon from "@material-ui/icons/EventNote";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 
 const useStyles = makeStyles({
   root: {
@@ -32,26 +34,26 @@ export interface PlanCardProps {
   handleOnLocation: Function;
   handleOnClose: Function;
   handleOnSetGameUID: Function;
-  gameInfo: GameCard;
+  gameCard: GameCard;
 }
 
 export const PlanCard: React.FC<PlanCardProps> = ({
   handleOnLocation,
   handleOnClose,
   handleOnSetGameUID,
-  gameInfo
+  gameCard
 }: PlanCardProps) => {
   const classes = useStyles();
   const [selectedID, setSelectedID] = useState(-1); //=> -1이면 no
-  const location: string = gameInfo?.location ?? "";
+  const location: string = gameCard?.location ?? "";
 
   let kickOffTime: string = "";
   if (
-    (gameInfo?.kickOffTime ?? false) &&
-    typeof gameInfo?.kickOffTime !== "undefined"
+    (gameCard?.kickOffTime ?? false) &&
+    typeof gameCard?.kickOffTime !== "undefined"
   ) {
     // deep copy시 Type을 잃어버리네
-    kickOffTime = convertKoTime(gameInfo?.kickOffTime.toDate());
+    kickOffTime = convertKoTime(gameCard?.kickOffTime.toDate());
   }
 
   const handleClose = (obj: ExitWithID) => {
@@ -79,11 +81,11 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     "AWAY"
   ];
   const teamNameList = () => [
-    `${gameInfo.team1}`,
+    `${gameCard.team1}`,
     "",
     "",
     "",
-    `${gameInfo.team2}`
+    `${gameCard.team2}`
   ];
 
   return (
@@ -92,10 +94,10 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         <Grid container className={classes.card}>
           <Grid item xs={12} alignItems="flex-start">
             <Typography align="left" variant="h6" component="span">
-              {gameInfo.group !== undefined
-                ? `${convertGroupString(gameInfo.group)}조 - ${gameInfo.id +
+              {gameCard.group !== undefined
+                ? `${convertGroupString(gameCard.group)}조 - ${gameCard.id +
                     1}경기`
-                : convertFinalCardString(gameInfo.id)}
+                : convertFinalCardString(gameCard.id)}
             </Typography>
           </Grid>
           <br />
@@ -109,9 +111,10 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               </Grid>
               <Grid item>
                 <Input
+                  startAdornment={<EventNoteIcon />}
                   className={classes.textField}
-                  onClick={() => handlePopDlg(gameInfo.id)}
-                  disabled
+                  onClick={() => handlePopDlg(gameCard.id)}
+                  readOnly
                   name="selTime"
                   type="text"
                   id={`time`}
@@ -130,12 +133,13 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               </Grid>
               <Grid item>
                 <Input
+                  startAdornment={<LocationOnIcon />}
                   className={classes.textField}
                   name="location"
                   type="text"
                   id={`location`}
                   value={location}
-                  onChange={e => handleLocation(e, gameInfo.id)}
+                  onChange={e => handleLocation(e, gameCard.id)}
                   aria-describedby="component-location"
                 />
               </Grid>
@@ -173,20 +177,20 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           <Grid container direction="row" className={classes.margin}>
             <Grid item xs={2}>
               <Typography align="center" variant="subtitle1">
-                0
+                {gameCard.score?.hp ?? "0"}
               </Typography>
             </Grid>
             <Grid item xs={1} />
             <Grid item xs={6}>
               <MakeSubGameBtn
-                gameCard={gameInfo}
+                gameCard={gameCard}
                 setGameUID={handleOnSetGameUID}
               />
             </Grid>
             <Grid item xs={1} />
             <Grid item xs={2}>
               <Typography align="center" variant="subtitle1">
-                0
+                {gameCard.score?.ap ?? "0"}
               </Typography>
             </Grid>
           </Grid>

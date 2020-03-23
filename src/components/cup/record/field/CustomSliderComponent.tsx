@@ -51,24 +51,24 @@ const PrettoSlider = withStyles({
   }
 })(Slider);
 
-export interface CustomSliderProps {
+export interface CustomSliderComponentProps {
   time: CurTime;
   setTime: React.Dispatch<React.SetStateAction<CurTime>>;
   tempData: Array<TempSubData>;
   gameTime: string; // seconds로
 }
 
-export const CustomSliderComponent: React.FC<CustomSliderProps> = ({
+export const CustomSliderComponent: React.FC<CustomSliderComponentProps> = ({
   time,
   setTime,
   tempData,
   gameTime
-}: CustomSliderProps) => {
+}: CustomSliderComponentProps) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3} className={classes.margin}>
+      <Grid container spacing={3} className={classes.margin} wrap="nowrap">
         <Grid item xs>
           <Typography color="textPrimary" variant="h4" align="center">
             {convertTimeString(time.curTime)}

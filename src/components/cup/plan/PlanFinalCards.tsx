@@ -131,6 +131,9 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
             team1,
             team2,
             i,
+            planFinal.gI.nQ,
+            planFinal.gI.gT,
+            planFinal.gI.rT,
             undefined,
             undefined,
             location,
@@ -166,6 +169,9 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
           team1,
           team2,
           subGameId,
+          planFinal.gI.nQ,
+          planFinal.gI.gT,
+          planFinal.gI.rT,
           undefined,
           undefined,
           location,
@@ -200,7 +206,7 @@ export const PlanFinalCards: React.FC<PlanFinalCardProps> = ({
             handleOnLocation={setLocation}
             handleOnClose={setClose}
             handleOnSetGameUID={setGameUID}
-            gameInfo={value}
+            gameCard={value}
           />
         );
       })}

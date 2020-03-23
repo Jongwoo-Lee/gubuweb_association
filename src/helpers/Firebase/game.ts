@@ -1,5 +1,7 @@
 import Firebase from ".";
 import { COL_CUP, COL_GAME } from "../../constants/firestore";
+import { GameCard } from "../../context/game/game";
+import { Score } from "../../context/cup/cupPlan";
 
 export interface Log {
   createdBy: string;
@@ -22,20 +24,11 @@ export interface Goal {
   log: Log;
 }
 
-export class Record {
-  goal: Goal[];
-  substitution: Substitution[];
-  real_attendance: string[];
-
-  constructor(
-    score?: Goal[],
-    substitution?: Substitution[],
-    real_attendance?: string[]
-  ) {
-    this.goal = score ?? [];
-    this.substitution = substitution ?? [];
-    this.real_attendance = real_attendance ?? [];
-  }
+export interface Record {
+  score?: Goal[];
+  substitution?: Substitution;
+  real_attendance?: string[];
+  team?: string;
 }
 
 export class TeamsRecord {
@@ -43,8 +36,8 @@ export class TeamsRecord {
   a: Record;
 
   constructor(home?: Record, away?: Record) {
-    this.h = home ?? new Record();
-    this.a = away ?? new Record();
+    this.h = home ?? {};
+    this.a = away ?? {};
   }
 }
 
@@ -72,11 +65,12 @@ export const makeSubGame = async (
   cupUID: string,
   uID: string,
   round: number, // ex) A조 1경기, 2경기 3경기, or 8강 1경기 2경기 3경기 4경기
+  gameCard: GameCard,
   group?: number // ex) A조 B조 C조 D조
 ) => {
   let returnGameID: string | null = "";
-  let makeData: any;
-  if (group === undefined) {
+  let makeData: Function;
+  if (typeof group === "undefined") {
     makeData = (gameUID: string) => {
       return { f: { [`${round}`]: { gid: gameUID } } };
     };
@@ -95,12 +89,15 @@ export const makeSubGame = async (
       [COL_GAME.CREATEDBY]: uID,
       [COL_GAME.ENDTIME]: null,
       [COL_GAME.GAMETYPE]: 2,
-      [COL_GAME.LOCATION]: null,
-      [COL_GAME.QUARTER]: 2,
-      [COL_GAME.QUARTERTIME]: 45,
-      [COL_GAME.RESTTIME]: 20,
-      [COL_GAME.STARTTIME]: null,
-      [COL_GAME.TEAM]: [],
+      [COL_GAME.LOCATION]: gameCard?.location ?? null,
+      [COL_GAME.QUARTER]: gameCard.quarter,
+      [COL_GAME.QUARTERTIME]: gameCard.gameTime,
+      [COL_GAME.RESTTIME]: gameCard.restTime,
+      [COL_GAME.STARTTIME]: gameCard?.kickOffTime ?? null,
+      [COL_GAME.TEAM]:
+        gameCard.team1 && gameCard.team2
+          ? [gameCard.team1, gameCard.team2]
+          : [],
       [COL_GAME.CUPID]: cupUID
     })
     .then(
@@ -144,3 +141,58 @@ export const getGameRecord = (cupID: string, gameID: string) =>
     .doc(COL_GAME.DETAIL)
     .withConverter(recordConverter)
     .get();
+
+export const saveRecord = async (
+  cupID: string,
+  gameCard: GameCard,
+  teamsRecord: TeamsRecord
+) => {
+  const score: Score = {
+    hp: teamsRecord.h.score?.length ?? 0,
+    ap: teamsRecord.a.score?.length ?? 0
+  };
+
+  const winner: string =
+    score.hp > score.ap
+      ? teamsRecord.h.team ?? "team1" // 항상 있는 것
+      : score.hp < score.ap
+      ? teamsRecord.a.team ?? "team2"
+      : ""; /// 무승부 일 때 ""
+
+  let makeData: Object;
+  if (typeof gameCard.group === "undefined") {
+    makeData = { f: { [`${gameCard.id}`]: { sc: score, w: winner } } };
+  } else {
+    makeData = {
+      p: {
+        [`${gameCard.group}`]: {
+          [`${gameCard.id}`]: { sc: score, w: winner }
+        }
+      }
+    };
+  }
+
+  const batch = Firebase.firestore.batch();
+  batch.set(
+    Firebase.firestore
+      .collection(COL_CUP.CUP)
+      .doc(cupID)
+      .collection(COL_GAME.GAMES)
+      .doc(gameCard.gid ?? "") // 항상 gid는 있음.
+      .collection(COL_GAME.DETAIL)
+      .doc(COL_GAME.DETAIL)
+      .withConverter(recordConverter),
+    teamsRecord,
+    { merge: true }
+  );
+
+  batch.set(
+    Firebase.firestore.collection(COL_CUP.CUP).doc(cupID),
+    { [COL_CUP.MATCH]: makeData },
+    {
+      merge: true
+    }
+  );
+
+  return await batch.commit();
+};

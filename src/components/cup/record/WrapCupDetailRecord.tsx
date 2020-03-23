@@ -16,12 +16,22 @@ import { TitleGoBack } from "../../common/TitleGoBack";
 import { ROUTENAMES } from "../../../constants/routes";
 import { CupPlanDataStructure } from "../../../context/cup/cupPlan";
 import { GameCard } from "../../../context/game/game";
-import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
+import EventNoteIcon from "@material-ui/icons/EventNote";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { convertKoTime } from "../plan/DatePickerDlg";
-import { useRecordloading } from "../../../context/cup/cupRecord";
+import {
+  useRecordloading,
+  useCurTeam,
+  useSetCurTeam,
+  useTeamRecordStack
+} from "../../../context/cup/cupRecord";
 import { RecordField } from "./field/RecordField";
 import { fromGameInfo } from "../../../hooks/cups";
+import {
+  Record,
+  TeamsRecord,
+  saveRecord
+} from "../../../helpers/Firebase/game";
 
 const useStyles = makeStyles({
   root: {
@@ -32,9 +42,8 @@ const useStyles = makeStyles({
   title: {
     marginTop: "50px"
   },
-  row: {
-    display: "flex",
-    flexDirection: "row"
+  btnWidth: {
+    minWidth: "100px"
   },
   icon: {
     margin: "10px 10px 0px 0px"
@@ -49,17 +58,33 @@ const useStyles = makeStyles({
 });
 
 export interface WrapCupDetailRecordProps {
+  cupID: string;
   cupInfo: CupInfo;
   gameCard: GameCard;
 }
 
 export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
+  cupID,
   cupInfo,
   gameCard
 }: WrapCupDetailRecordProps) => {
   const classes = useStyles();
   let matchPlan: CupPlanDataStructure | null = cupInfo.matchPlan;
   const { gameTime, numOfQuarter } = fromGameInfo(matchPlan, gameCard);
+  const curTeam = useCurTeam();
+  const setCurTeam = useSetCurTeam();
+  const recordStack = useTeamRecordStack();
+
+  const curScore = () => {
+    const goal1: number = recordStack[gameCard.team1 ?? "team1"].goals.length;
+    const goal2: number = recordStack[gameCard.team2 ?? "team2"].goals.length;
+
+    return `${goal1} : ${goal2}`;
+  };
+
+  const handleChangeTeam = (team: string) => {
+    setCurTeam(team);
+  };
 
   const loading = useRecordloading();
 
@@ -67,6 +92,28 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
     gameCard.group === undefined
       ? `${convertFinalCardString(gameCard.id)}`
       : `${convertGroupString(gameCard.group)}조 - ${gameCard.id + 1}경기`;
+
+  const handleOnSave = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    const record1: Record = {
+      score: recordStack[gameCard.team1 ?? "team1"].goals,
+      substitution: recordStack[gameCard.team1 ?? "team1"].pos,
+      real_attendance: [],
+      team: gameCard.team1 ?? "team1"
+    };
+
+    const record2: Record = {
+      score: recordStack[gameCard.team2 ?? "team2"].goals,
+      substitution: recordStack[gameCard.team2 ?? "team2"].pos,
+      real_attendance: [],
+      team: gameCard.team2 ?? "team2"
+    };
+
+    await saveRecord(cupID, gameCard, new TeamsRecord(record1, record2));
+  };
 
   return loading ? (
     <Grid container direction="row" justify="center" alignItems="center">
@@ -85,27 +132,68 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
         <Typography color="textPrimary" variant="h4">
           {ROUTENAMES.CUP_DETAIL_RECORD}
         </Typography>
-        <Button variant="contained">저장</Button>
+        <Button
+          onClick={handleOnSave}
+          style={{ backgroundColor: "white" }}
+          variant="contained"
+        >
+          저장
+        </Button>
       </Grid>
       <Typography align="center" color="textPrimary" variant="h4">
         {title}
       </Typography>
 
-      <div className={classes.row}>
-        <LocationOnIcon className={classes.icon} />
-        <Typography align="left" color="textPrimary" variant="h6">
-          {"location"}
-        </Typography>
-      </div>
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="flex-start"
+        wrap="nowrap"
+        spacing={4}
+      >
+        <Grid item container direction="row" alignItems="center">
+          <Grid item>
+            <LocationOnIcon className={classes.icon} />
+          </Grid>
+          <Typography align="left" color="textPrimary" variant="h6">
+            {gameCard?.location ?? ""}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            style={{ backgroundColor: "white" }}
+            variant="contained"
+            className={classes.btnWidth}
+          >
+            <Typography display="inline" align="center">
+              연장전
+            </Typography>
+          </Button>
+        </Grid>
+      </Grid>
 
-      <div className={classes.row}>
-        <CalendarTodayIcon className={classes.icon} />
-        <Typography align="left" color="textPrimary" variant="h6">
-          {gameCard?.kickOffTime
-            ? convertKoTime(gameCard?.kickOffTime.toDate())
-            : ""}
-        </Typography>
-      </div>
+      <Grid container direction="row" justify="space-between" wrap="nowrap">
+        <Grid container direction="row" alignItems="center">
+          <Grid item>
+            <EventNoteIcon className={classes.icon} />
+          </Grid>
+          <Typography align="left" color="textPrimary" variant="h6">
+            {gameCard?.kickOffTime
+              ? convertKoTime(gameCard?.kickOffTime.toDate())
+              : ""}
+          </Typography>
+        </Grid>
+        <Button
+          style={{ backgroundColor: "white" }}
+          variant="contained"
+          className={classes.btnWidth}
+        >
+          <Typography display="inline" align="center">
+            승부차기
+          </Typography>
+        </Button>
+      </Grid>
       <br />
       <Grid container spacing={3}>
         <Grid item xs>
@@ -122,26 +210,54 @@ export const WrapCupDetailRecord: React.FC<WrapCupDetailRecordProps> = ({
         </Grid>
       </Grid>
       <br />
-      <Grid container spacing={3}>
-        <Grid item xs>
-          <Paper className={classes.paper}>
+      <Grid container spacing={3} direction="row" wrap="nowrap">
+        >
+        <Grid
+          container
+          direction="column"
+          item
+          xs
+          style={{ alignSelf: "center" }}
+        >
+          <Button
+            variant="contained"
+            style={{
+              borderRadius: 35,
+              backgroundColor:
+                curTeam === (gameCard.team1 ?? "team1") ? "#21b6ae" : undefined
+            }}
+            onClick={e => handleChangeTeam(gameCard.team1 ?? "team1")}
+          >
             <Typography align="center" color="textPrimary" variant="h4">
               Home
             </Typography>
-          </Paper>
+          </Button>
         </Grid>
-        <Grid item xs>
+        <Grid item xs style={{ alignSelf: "center" }}>
           <Typography align="center" color="textPrimary" variant="h4">
-            score
+            {curScore()}
           </Typography>
         </Grid>
-
-        <Grid item xs>
-          <Paper className={classes.paper}>
+        <Grid
+          container
+          direction="column"
+          item
+          xs
+          style={{ alignSelf: "center" }}
+        >
+          <Button
+            style={{
+              borderRadius: 35,
+              backgroundColor:
+                curTeam === (gameCard.team2 ?? "team2") ? "#21b6ae" : undefined
+            }}
+            variant="contained"
+            onClick={e => handleChangeTeam(gameCard.team2 ?? "team2")}
+          >
             <Typography align="center" color="textPrimary" variant="h4">
               Away
             </Typography>
-          </Paper>
+          </Button>
         </Grid>
       </Grid>
       <br />

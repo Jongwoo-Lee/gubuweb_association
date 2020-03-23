@@ -70,13 +70,6 @@ export const FinalPlan: React.FC<FinalProps> = () => {
           </Typography>
         </CustomExPanelSummary>
         <CustomExPanelDetails className={classes.detail}>
-          {matchInfo && (
-            <GameInfoInput
-              setPlan={setPlanFinal}
-              plan={planFinal}
-              isFinal={true}
-            />
-          )}
           <div>
             {matchInfo &&
               arr.reverse().map((value: number) => {
@@ -92,6 +85,13 @@ export const FinalPlan: React.FC<FinalProps> = () => {
                 );
               })}
           </div>
+          {matchInfo && (
+            <GameInfoInput
+              setPlan={setPlanFinal}
+              plan={planFinal}
+              isFinal={true}
+            />
+          )}
           {expandedID !== -1 && (
             <PlanFinalCards
               BtnID={expandedID}
