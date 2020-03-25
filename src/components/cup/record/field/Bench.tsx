@@ -32,7 +32,6 @@ const useStyles = makeStyles({
 /** Styling properties applied to the board element */
 const benchStyle: React.CSSProperties = {
   width: "100%",
-  height: "700px",
   display: "flex",
   flexWrap: "wrap"
 };

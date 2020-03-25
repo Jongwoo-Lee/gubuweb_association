@@ -16,8 +16,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     justifyContent: "center",
     width: "11.1%", // 100 / 9
-    height: "16.6%", // 100 / 6
-    background: "green"
+    height: "16.6%" // 100 / 6
   }
 });
 
@@ -34,7 +33,6 @@ export interface BoardProps {
 /** Styling properties applied to the board element */
 const boardStyle: React.CSSProperties = {
   width: "100%",
-  height: "700px",
   display: "flex",
   flexWrap: "wrap"
 };

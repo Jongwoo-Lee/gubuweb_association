@@ -25,6 +25,8 @@ import {
 import { CustomSliderComponent } from "./CustomSliderComponent";
 import { ChangeQaurter } from "./ChangeQuarter";
 import { AddScore } from "./AddScore";
+import Stadium from "../../../../images/Stadium.jpg";
+import { Field } from "./Field";
 
 export interface RecordFieldProps {
   gameTime: number;
@@ -32,8 +34,7 @@ export interface RecordFieldProps {
 }
 const useStyles = makeStyles({
   margin: {
-    marginTop: "20px",
-    height: "700px"
+    marginTop: "20px"
   }
 });
 
@@ -135,7 +136,18 @@ export const RecordField: React.FC<RecordFieldProps> = ({
         </Grid>
       )}
       <Grid container spacing={1} className={classes.margin}>
-        <Grid item xs={8}>
+        <Grid
+          item
+          xs={8}
+          style={{
+            padding: "3px",
+            // backgroundColor: "#1a8a1a",
+            outline: "3px solid #ffffff",
+            background:
+              " radial-gradient(100% 200% at 50% 100%, $r 50%, $rT 50.25%) 50% 1.5em / 9em 12em, radial- gradient(100 % 200 % at 50 % 100 %, $w 50 %, $wT 50.25 %) 50% 1.5em / 21em 12em, radial-gradient(100% 200% at 50% 100%, $r 50%, $rT 50.25%) 50% 1.5em / 30em 12em"
+          }}
+        >
+          <Field />
           <Board
             rType={click}
             teamPos={teamPos}
@@ -160,6 +172,7 @@ export const RecordField: React.FC<RecordFieldProps> = ({
       </Grid>
 
       <RecordShow />
+      <Field />
     </div>
   );
 };
