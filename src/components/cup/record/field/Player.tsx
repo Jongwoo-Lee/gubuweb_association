@@ -75,7 +75,8 @@ export const Player: React.FC<PlayerProps> = ({
                 backgroundImage: `url(${Tshirt})`,
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
-                backgroundSize: "80%"
+                backgroundSize: "80%",
+                color: "transparent"
               }}
               disabled={rType === "score" ? false : true}
               onClick={rType === "score" ? handleOnClick : undefined}
@@ -100,7 +101,8 @@ export const Player: React.FC<PlayerProps> = ({
               backgroundPosition: "center",
               backgroundSize: "80%",
               // backgroundColor: selUsr === pos ? "blue" : undefined,
-              opacity: isIn ? 1 : 0.5
+              opacity: isIn ? 1 : 0.5,
+              color: "transparent"
             }}
             className={classes.button}
             onClick={

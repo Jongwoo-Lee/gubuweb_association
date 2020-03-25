@@ -1,9 +1,10 @@
 import React from "react";
 import { Player } from "./Player";
-import { Box, makeStyles } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
 import { CurTime } from "../../../../context/cup/cupRecord";
 import { RecordType, ClickScore } from "../../../../hooks/cups";
+import { useWindowSize } from "../../../../hooks";
 
 export interface BenchProps {
   rType: RecordType;
@@ -15,26 +16,15 @@ export interface BenchProps {
   setScore: React.Dispatch<React.SetStateAction<ClickScore>>;
 }
 
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  box: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    width: "22.5%", // field의 width와 최대한 맞춤
-    background: "white"
-  }
-});
-
 /** Styling properties applied to the board element */
 const benchStyle: React.CSSProperties = {
   width: "100%",
   display: "flex",
-  flexWrap: "wrap"
+  flexWrap: "wrap",
+  backgroundColor: "white",
+  maxWidth: "350px"
 };
+
 export const Bench: React.FC<BenchProps> = ({
   rType,
   teamPos,
@@ -44,11 +34,21 @@ export const Bench: React.FC<BenchProps> = ({
   setSelUsr,
   score
 }: BenchProps) => {
-  const classes = useStyles();
+  const { device } = useWindowSize();
+
   function renderSquare(i: number) {
     const isPlayer = teamPos[i];
     return (
-      <Box key={i} className={classes.box}>
+      <Box
+        key={i}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          width: `${device === "sm" || device === "md" ? "50%" : "22.5%"}`, // field의 width와 최대한 맞춤
+          background: "white"
+        }}
+      >
         <Player
           isIn={isPlayer ? true : false}
           pos={i}

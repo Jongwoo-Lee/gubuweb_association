@@ -5,11 +5,10 @@ export interface FieldProps {}
 
 const useStyles = makeStyles({
   container: {
-    width: "120em",
+    width: "100%",
     height: "80em",
-    backgroundColor: "green",
-    fontSize: "5px",
-    padding: "0"
+    backgroundColor: "transparent",
+    fontSize: "5px"
   },
   field: {
     width: "inherit",
@@ -21,9 +20,9 @@ const useStyles = makeStyles({
     display: "block"
   },
   halfwayLine: {
-    width: "calc(120em / 2)",
+    width: "50%",
     height: "80em",
-    border: "0.3em solid white",
+    borderRight: "0.3em solid white",
     display: "block"
   },
   centerCircle: {
@@ -33,7 +32,7 @@ const useStyles = makeStyles({
     borderRadius: "50%",
     position: "absolute",
     top: "calc((80em - 20em) / 2)",
-    left: "calc((120em - 20em - 0.3em) / 2)",
+    left: "calc((100% - 20em - 0.3em) / 2)",
     display: "block"
   },
   mark: {
@@ -77,7 +76,7 @@ const useStyles = makeStyles({
   right: {
     position: "absolute",
     top: "0",
-    left: "50%",
+    left: "100%",
     transform: "rotateY(180deg)"
   }
 });
@@ -86,7 +85,7 @@ export const Field: React.FC<FieldProps> = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.container}>
+    <div>
       <div className={classes.container}>
         <div className={classes.field}>
           <div className={classes.left}>

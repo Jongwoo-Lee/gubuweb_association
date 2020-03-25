@@ -25,16 +25,23 @@ import {
 import { CustomSliderComponent } from "./CustomSliderComponent";
 import { ChangeQaurter } from "./ChangeQuarter";
 import { AddScore } from "./AddScore";
-import Stadium from "../../../../images/Stadium.jpg";
-import { Field } from "./Field";
 
 export interface RecordFieldProps {
   gameTime: number;
   numOfQuarter: number;
 }
 const useStyles = makeStyles({
-  margin: {
+  tMargin: {
     marginTop: "20px"
+  },
+  lMargin: {
+    marginLeft: "20px"
+  },
+  field: {
+    margin: "20px",
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "row"
   }
 });
 
@@ -135,44 +142,29 @@ export const RecordField: React.FC<RecordFieldProps> = ({
           </Grid>
         </Grid>
       )}
-      <Grid container spacing={1} className={classes.margin}>
-        <Grid
-          item
-          xs={8}
-          style={{
-            padding: "3px",
-            // backgroundColor: "#1a8a1a",
-            outline: "3px solid #ffffff",
-            background:
-              " radial-gradient(100% 200% at 50% 100%, $r 50%, $rT 50.25%) 50% 1.5em / 9em 12em, radial- gradient(100 % 200 % at 50 % 100 %, $w 50 %, $wT 50.25 %) 50% 1.5em / 21em 12em, radial-gradient(100% 200% at 50% 100%, $r 50%, $rT 50.25%) 50% 1.5em / 30em 12em"
-          }}
-        >
-          <Field />
-          <Board
-            rType={click}
-            teamPos={teamPos}
-            curTime={curTime}
-            score={score}
-            setScore={setScore}
-            selUsr={selUsr}
-            setSelUsr={setSelUsr}
-          />
-        </Grid>
-        <Grid item xs>
-          <Bench
-            rType={click}
-            teamPos={teamPos}
-            curTime={curTime}
-            score={score}
-            setScore={setScore}
-            selUsr={selUsr}
-            setSelUsr={setSelUsr}
-          />
-        </Grid>
-      </Grid>
+      <div className={classes.field}>
+        <Board
+          rType={click}
+          teamPos={teamPos}
+          curTime={curTime}
+          score={score}
+          setScore={setScore}
+          selUsr={selUsr}
+          setSelUsr={setSelUsr}
+        />
+        <div className={classes.lMargin} />
+        <Bench
+          rType={click}
+          teamPos={teamPos}
+          curTime={curTime}
+          score={score}
+          setScore={setScore}
+          selUsr={selUsr}
+          setSelUsr={setSelUsr}
+        />
+      </div>
 
       <RecordShow />
-      <Field />
     </div>
   );
 };

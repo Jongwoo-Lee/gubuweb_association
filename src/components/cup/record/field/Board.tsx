@@ -4,6 +4,8 @@ import { Box, makeStyles } from "@material-ui/core";
 import { TeamsPos } from "../../../../helpers/Firebase/game";
 import { CurTime } from "../../../../context/cup/cupRecord";
 import { RecordType, ClickScore } from "../../../../hooks/cups";
+import FieldImg from "../../../../images/Football_field.svg";
+import { useWindowSize } from "../../../../hooks";
 
 const useStyles = makeStyles({
   root: {
@@ -30,13 +32,6 @@ export interface BoardProps {
   setSelUsr: React.Dispatch<React.SetStateAction<number>>;
 }
 
-/** Styling properties applied to the board element */
-const boardStyle: React.CSSProperties = {
-  width: "100%",
-  display: "flex",
-  flexWrap: "wrap"
-};
-
 export const Board: React.FC<BoardProps> = ({
   rType,
   teamPos,
@@ -47,6 +42,9 @@ export const Board: React.FC<BoardProps> = ({
   score
 }: BoardProps) => {
   const classes = useStyles();
+  const ratio: number = 1060 / 700;
+  const { width } = useWindowSize();
+
   function renderSquare(i: number) {
     const isPlayer = teamPos[i];
     return (
@@ -69,5 +67,25 @@ export const Board: React.FC<BoardProps> = ({
   for (let i = 0; i < 9 * 6; i += 1) {
     squares.push(renderSquare(i));
   }
-  return <div style={boardStyle}>{squares}</div>;
+
+  return (
+    <div>
+      <div
+        style={{
+          maxWidth: "700px",
+          maxHeight: "1060px",
+          width: `${width / 2}px`, // image size
+          height: `${(width / 2) * ratio}px`, // image size
+          display: "flex",
+          flexWrap: "wrap",
+          backgroundImage: `url(${FieldImg})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          padding: "25px"
+        }}
+      >
+        {squares}
+      </div>
+    </div>
+  );
 };
